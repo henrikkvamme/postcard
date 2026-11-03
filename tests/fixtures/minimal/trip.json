@@ -1,0 +1,30 @@
+{
+ "version": 1,
+ "id": "test-minimal",
+ "title": "Oslo → Lisbon",
+ "subtitle": "Test fixture · made-up flights and prices",
+ "currency": "EUR",
+ "passengers": 2,
+ "clock": "Europe/Lisbon",
+ "window": { "start": "2027-03-04T06:00", "end": "2027-03-08T23:00" },
+ "home": { "place": "OSL", "name": "Oslo" },
+ "destination": { "place": "LIS", "town": "Lisbon" },
+ "places": {
+  "OSL": { "name": "Oslo Gardermoen", "city": "Oslo", "coord": [11.1004, 60.1976], "tz": "Europe/Oslo" },
+  "LIS": { "name": "Lisbon Humberto Delgado", "city": "Lisbon", "coord": [-9.1342, 38.7742], "tz": "Europe/Lisbon" },
+  "AMS": { "name": "Amsterdam Schiphol", "city": "Amsterdam", "coord": [4.7683, 52.3105], "tz": "Europe/Amsterdam" }
+ },
+ "carriers": { "XA": "Test Air", "XB": "Sample Lines" },
+ "flights": [
+  { "id": "o1", "dir": "out", "carrier": "XA", "dep": "2027-03-04T10:00", "arr": "2027-03-04T13:05", "via": [], "layovers_min": [] },
+  { "id": "o2", "dir": "out", "carrier": "XB", "dep": "2027-03-04T07:10", "arr": "2027-03-04T12:40", "via": ["AMS"], "layovers_min": [75] },
+  { "id": "r1", "dir": "back", "carrier": "XA", "dep": "2027-03-08T14:00", "arr": "2027-03-08T19:20", "via": [], "layovers_min": [] },
+  { "id": "r2", "dir": "back", "carrier": "XB", "dep": "2027-03-08T09:15", "arr": "2027-03-08T16:50", "via": ["AMS"], "layovers_min": [90], "warning": { "short": "bag?", "text": "The basic fare has no cabin bag." } }
+ ],
+ "offers": {
+  "o1": [ { "seller": "Test Air", "kind": "airline", "price": 189, "source": "fixture" } ],
+  "o2": [ { "seller": "Sample Lines", "kind": "airline", "price": 142, "source": "fixture" }, { "seller": "Cheap OTA", "kind": "agency", "price": 120, "source": "fixture", "stars": 3.1, "reviews": 400 } ],
+  "r1": [ { "seller": "Test Air", "kind": "airline", "price": 201, "source": "fixture" } ],
+  "r2": [ { "seller": "Sample Lines", "kind": "airline", "price": 133, "source": "fixture" } ]
+ }
+}

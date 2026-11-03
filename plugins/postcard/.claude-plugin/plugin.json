@@ -1,0 +1,11 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "postcard",
+  "version": "0.1.0",
+  "description": "Find flights in a browser, compare them on an engraved map with a timeline and a trade-off chart, and book up to the payment page.",
+  "author": { "name": "Henrik Halvorsen Kvamme", "url": "https://github.com/henrikkvamme" },
+  "license": "MIT",
+  "homepage": "https://github.com/henrikkvamme/postcard",
+  "repository": "https://github.com/henrikkvamme/postcard",
+  "keywords": ["travel", "flights", "maps", "booking", "browser", "maplibre"]
+}
