@@ -96,7 +96,12 @@ def main():
                 states = {}
                 for k in names:
                     axi("eval", f"(window.__states[{json.dumps(k)}](), 'set')")
-                    time.sleep(2)
+                    # Wait for the map to settle: a pick reframes it, and ends off screen mid-flight are not faults.
+                    for _ in range(12):
+                        time.sleep(1)
+                        if result(axi("eval", "JSON.stringify(!!window.__chart?.map?.isMoving?.())")) is False:
+                            break
+                    time.sleep(0.5)
                     states[k] = result(axi("eval", PROBE))
                 shots[name]["states"] = states
                 bad = [k for k, v in states.items() if not (isinstance(v, dict) and v.get("ok"))]
