@@ -31,13 +31,15 @@ export function timeline(svgEl, T, opts) {
     // Axis: days on top; hours under them on the hour scale, dates on the day scale.
     const D = T.clock.days(from, to);
     const every = days ? Math.ceil(D.length / Math.max(1, (right - left) / 46)) : 1;
+    // A first day cut to a sliver (a window that starts just before midnight) gets no label: it would run into the next.
+    const first = D.findIndex((d) => x(Math.min(to, d.e)) - x(Math.max(from, d.s)) >= 24);
     D.forEach((d, i) => {
       if (!days) for (const [a, b] of [[d.s, d.s + 6.5], [d.e - 1.5, d.e]]) { const aa = Math.max(from, a), bb = Math.min(to, b);
         if (bb > aa) g.append('rect').attr('x', x(aa)).attr('y', top - 4).attr('width', x(bb) - x(aa)).attr('height', bottom - top + 4).attr('fill', 'url(#pc-night)'); }
       if (d.s > from) g.append('line').attr('x1', x(d.s)).attr('x2', x(d.s)).attr('y1', days ? 16 : 0).attr('y2', bottom).attr('stroke', days && d.wd !== 'Mon' ? 'var(--rule2)' : 'var(--rule)');
       const a = Math.max(from, d.s), b = Math.min(to, d.e);
-      if (days) { if (i % every === 0) g.append('text').attr('x', x(a) + 3).attr('y', 28).attr('class', 'pc-tick').text(d.day === 1 || i === 0 ? `${d.day} ${d.mon}` : d.day);
-        if (d.wd === 'Mon' || i === 0) g.append('text').attr('x', x(a) + 3).attr('y', 11).attr('class', 'pc-caps').text(i === 0 || d.day <= 7 ? `${d.mon.toUpperCase()}` : '');
+      if (days) { if (i >= first && (i - first) % every === 0) g.append('text').attr('x', x(a) + 3).attr('y', 28).attr('class', 'pc-tick').text(d.day === 1 || i === first ? `${d.day} ${d.mon}` : d.day);
+        if (i >= first && (d.wd === 'Mon' || i === first)) g.append('text').attr('x', x(a) + 3).attr('y', 11).attr('class', 'pc-caps').text(i === first || d.day <= 7 ? `${d.mon.toUpperCase()}` : '');
         if (d.wd === 'Sat' || d.wd === 'Sun') g.append('rect').attr('x', x(a)).attr('y', top - 4).attr('width', x(b) - x(a)).attr('height', bottom - top + 4).attr('fill', 'url(#pc-night)');
       } else {
         g.append('text').attr('x', x((a + b) / 2)).attr('y', 11).attr('text-anchor', 'middle').attr('class', 'pc-caps big').text(x(b) - x(a) > 60 ? d.label.toUpperCase() : '');
@@ -118,7 +120,7 @@ export function timeline(svgEl, T, opts) {
     api.fl.selectAll('.seg').attr('fill', (d) => S.chosen.has(d.j.id) ? 'var(--red)' : 'var(--ink)').attr('opacity', (d) => S.chosen.has(d.j.id) ? 1 : S.hover === d.j.id ? .7 : .3);
     if (!days || true) {
       api.fl.select('.lead').attr('fill', (d) => on(d) ? 'var(--ink)' : 'var(--muted)').style('font-weight', (d) => S.chosen.has(d.j.id) ? 600 : 400)
-        .text((d) => days && !on(d) ? '' : opts.lead ? opts.lead(d.j) : `${d.j.carrierName || ''} ${wall(d.j, 'dep')}`);
+        .text((d) => days && !on(d) ? '' : opts.lead ? opts.lead(d.j) : `${short(d.j)} ${wall(d.j, 'dep')}`);
       api.fl.select('.side').attr('fill', (d) => S.chosen.has(d.j.id) ? 'var(--red)' : on(d) ? 'var(--ink)' : 'var(--muted)').style('font-weight', (d) => S.chosen.has(d.j.id) ? 600 : 400)
         .text((d) => days && !on(d) ? '' : opts.side ? opts.side(d.j) : wall(d.j, 'arr'));
     }
@@ -149,6 +151,8 @@ export function timeline(svgEl, T, opts) {
     return T.clock.local(j[k]).hm === L.hm ? L.hm : `${L.hm} ${T.clock.abbr(tz, j[k])}`; }
   let focusId = null;
   const off = (j) => !!opts.disabled?.(j);
+  // The default lead names one carrier: a mixed journey's "SBB + BVB + easyJet" is cut to its first and a '+'.
+  const short = (j) => { const n = j.carrierName || ''; return n.length > 14 && /\s\+\s/.test(n) ? n.split(/\s\+\s/)[0] + ' +' : n; };
   const api = { draw, paint, cursor, overlay, marks, days, fmtDur, wall };
   draw();
   return api;

@@ -235,8 +235,10 @@ export function createChart(opts) {
       const k = [x.seg.from, x.seg.to].sort().join('-'); if (seen.has(k)) return false; seen.add(k); return true; }).map((x) => arc(x.seg));
     return [
       new deck.PathLayer({ id: 'shadows', data: ch, getPath: (d) => d.path.map(([x, y]) => [x, y, 0]), getColor: [...INKA, 40], getWidth: 1.5, widthUnits: 'pixels' }),
-      new deck.PathLayer({ id: 'others', data: others, getPath: (d) => d, getColor: [...INKA, 120], getWidth: 1.2, widthUnits: 'pixels',
-        extensions: [new deck.PathStyleExtension({ dash: true })], getDashArray: [1, 4], dashJustified: true }),
+      // Quiet, but visible on the engraved sea: a light halo under a short ink dash.
+      new deck.PathLayer({ id: 'others-halo', data: others, getPath: (d) => d, getColor: [...LANDA, 170], getWidth: 3.6, widthUnits: 'pixels', capRounded: true }),
+      new deck.PathLayer({ id: 'others', data: others, getPath: (d) => d, getColor: [...INKA, 190], getWidth: 1.5, widthUnits: 'pixels',
+        extensions: [new deck.PathStyleExtension({ dash: true })], getDashArray: [3, 3], dashJustified: true }),
       new deck.PathLayer({ id: 'halo', data: ch, getPath: (d) => d.path, getColor: [...LANDA, 235], getWidth: 6, widthUnits: 'pixels', capRounded: true }),
       new deck.PathLayer({ id: 'sel', data: ch, getPath: (d) => d.path, getColor: [...REDA, 255], getWidth: 2.4, widthUnits: 'pixels', capRounded: true }),
       new deck.PathLayer({ id: 'hit', data: ch, getPath: (d) => d.path, getColor: [0, 0, 0, 0], getWidth: 18, widthUnits: 'pixels', pickable: true,

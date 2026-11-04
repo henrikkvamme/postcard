@@ -42,7 +42,7 @@ SEGMENT = {"mode", "from", "to", "dep", "arr", "carrier", "number", "path", "sel
            "operated_by", "aircraft", "headsign"}
 OFFER = {"seller", "kind", "price", "fare", "bags", "source", "seen", "url", "stars", "reviews", "rating_source",
          "note", "refundable", "changeable", "per", "basis", "currency", "original", "price_note", "rules", "bags_note",
-         "seats_left", "read_for"}
+         "seats_left", "read_for", "limit"}
 DEAL = {"journeys", "price", "seller", "kind", "what", "source", "seen", "url", "bags", "fare", "stars", "reviews",
         "rating_source", "note", "basis", "currency", "original", "price_note", "bags_note"}
 MAP = {"view", "labels", "seas", "art", "far"}

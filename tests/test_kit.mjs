@@ -99,5 +99,24 @@ test('a bill keeps unread fees beside the total and splits what the agent books'
   assert.equal(b.tickets[1].known, false);
   assert.equal(b.others.length, 1);
   assert.equal(b.items().length, 4);
-  assert.match(b.promptLines()[1], /was not read: read it before you fill anything/);
+  assert.match(b.promptLines()[1], /^2\. .*\. Cabin bag fee, .* was not read: read it before you fill anything/);
+  assert.doesNotMatch(b.promptLines().join('\n'), /\.\./);
+});
+
+test('a bill never shows an unread fare as 0, and names unread fees of one kind together', async () => {
+  const T = await open(fixture());
+  const noFare = { seller: 'SBB', bags_note: 'Two bags free.' };
+  const b = bill(T, [
+    ...fare(T, T.byId.o1, noFare, {}, { ticket: 'out' }),
+    ...fare(T, T.byId.r1, T.byId.r1.offers[0], { cabin: 1 }, { ticket: 'back' }),
+    ...fare(T, T.byId.r2, T.byId.r2.offers[0], { cabin: 1 }, { ticket: 'alt' }),
+  ]);
+  assert.equal(b.tickets[0].figure(), 'not read');
+  assert.equal(b.items()[0].price, 'fare not read');
+  assert.match(b.promptLines()[0], /Expected price: not known\. Bags: Two bags free\. The fare was not read/);
+  assert.match(b.book.tail({ max: 3 }), /\+ 2 cabin bag fees not read/);
+  assert.match(b.book.tail(), /\+ 2 more$/);
+  const none = bill(T, [{ what: 'Couchette', amount: null }]);
+  assert.equal(none.figure(), 'not read');
+  assert.equal(none.text(), 'not read');
 });

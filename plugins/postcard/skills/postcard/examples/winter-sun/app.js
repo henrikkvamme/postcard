@@ -173,7 +173,7 @@ addEventListener('keydown', (e) => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const i = all.indexOf(sel);
   if ((e.key === 'j' || e.key === 'k') && all.length) { state.pick = all[Math.max(0, Math.min(all.length - 1, i + (e.key === 'j' ? 1 : -1)))].id; render(); }
-  if (e.key === 'Escape' && all.length) { state.pick = all[0].id; render(); }
+  if (e.key === 'Escape') tip.hide();   // Esc backs out one level; it never resets the pick (craft.md, rule 7)
   if (e.key === 'v') { state.view = state.view === 'weeks' ? 'flights' : 'weeks'; save(); renderView(); }
   if (e.key === 'b') openCheckout();
   if (e.key === '0') chart.reset();

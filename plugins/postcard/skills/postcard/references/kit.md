@@ -141,7 +141,7 @@ const b = bill(T, [
   { what: '8 hotel nights', amount: null, who: 'out' },
 ]);
 b.text();        // '≈ CHF 234 + Transfer to the resort not read + 8 hotel nights not counted'
-b.figure(); b.tail({ max: 2 }); b.all();   // the figure, its short tail, every unknown for a tip
+b.figure(); b.tail({ max: 2 }); b.all();   // the figure ('not read' when nothing was read), its short tail, every unknown for a tip
 b.book.text();   // what the agent books: '≈ CHF 187'
 b.tickets;       // one per purchase: { seller, shop, what, when, bags, total, approx, known, limits, parts }
 b.items();       // checkout items, one per ticket, then what the person buys
@@ -159,8 +159,15 @@ on the way, `out` is named but not counted.
 `fare(T, j, offer, need, opts)` makes the parts of one journey from one offer: the fare, and a part
 for each bag in `need` (`{ cabin: 1, checked: 4, skis: 4 }`) that is not included. A bag fee the offer
 does not list is a part with no amount, or an estimate from `opts.guess` (per bag on this journey; a
-journey of two flights that each charge needs the value for both). `offer.price_note` becomes its
-limit and `offer.bags_note` its bag terms.
+journey of two flights that each charge needs the value for both). Any key works in `need`: `skis: 4`
+is a "skis fee" part, priced by `offer.bags.skis` or `opts.guess.skis`. A bag fee is named by the
+flights it is paid on. `offer.limit` becomes the fare's limit, `offer.price_note` goes to its basis,
+and `offer.bags_note` is its bag terms (shown once per seller in the checkout).
+
+A fare that was not read is never a 0: its ticket's figure is "not read", the checkout says "fare not
+read", and the prompt says "Expected price: not known" and asks the agent to read and report it. Unread
+parts of one `kind` are named together in the tail ("+ 2 cabin bag fees not read"); past `max` the
+tail ends with "+ 2 more", and `b.all()` has the full list for a tip.
 
 Show `b.text()` (or `b.figure()` and `b.tail()`) wherever the option's total shows: the row, the
 postcard. Show `b.book.text()` on the book band, with the trip total beside it when they differ.

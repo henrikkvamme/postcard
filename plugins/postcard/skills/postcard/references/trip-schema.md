@@ -125,8 +125,14 @@ Each place you saw the journey for sale.
   (it costs extra, but you did not see the price). Leave a key out when you did not check it. The
   page says "bag fee not checked" for `"fee"` and for a missing key, instead of guessing.
 - Optional provenance: `basis` (`list` when read from a result list, `booking` when read on the
-  seller's own booking page, `estimate`, `other-date` when `T.shift` moved it, with `read_for`), `currency` and `original: { price, currency }` when you
-  converted the price, `price_note`, `rules`, `bags_note`.
+  seller's own booking page, `estimate`, `other-date` when `T.shift` moved it, with `read_for`),
+  `currency` and `original: { price, currency }` when you converted the price, `price_note` (how the
+  price adds up), `rules`, `bags_note`.
+- `limit`: a condition the person must see wherever the price shows ("from price; cabin type not
+  read", "price for 2 adults in an inside cabin"). `bill.js` carries it to the row, the band, the
+  checkout and the prompt.
+- A journey whose price was not read has no offer in trip.json. When the page still books it, pass
+  `fare(T, j, { seller: 'SBB' })`: the bill shows "not read", never 0.
 - Give every offer a `source` and a `seen` date. Give an agency a rating when you can find one, and
   say where it comes from. Without a rating, the "good agencies" filter drops it.
 

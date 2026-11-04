@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Capture a built trip page for judging: screenshots, the probe and the console, at desktop, laptop and phone size.
 
-    python3 evals/capture.py <trip-folder> <out-folder> [--port 4600] [--keep]
+    python3 evals/capture.py <trip-folder> <out-folder> [--port 4600] [--keep] [--saved]
 
 It serves the folder with the skill's serve.py, drives an isolated browser with chrome-devtools-axi
 (session "eval-capture", or CAPTURE_SESSION), and writes <size>.png and probe-<size>.json for desktop
 (1440x900), laptop (1280x720) and phone (390x844), console.txt, check.txt and server.log into the
-out folder. It stops the browser session when done. With --keep the server and the browser stay up,
+out folder. It clears the page's saved picks first, so it shows the defaults; --saved keeps them.
+It stops the browser session when done. With --keep the server and the browser stay up,
 the URL is in url.txt, and the server's pid is in server.pid.
 """
 import argparse
@@ -46,8 +47,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("trip"); ap.add_argument("out")
     ap.add_argument("--port", type=int, default=4600); ap.add_argument("--keep", action="store_true")
+    ap.add_argument("--saved", action="store_true", help="keep the picks saved in the browser")
     a = ap.parse_args()
     trip, out, port, keep = os.path.abspath(a.trip), os.path.abspath(a.out), a.port, a.keep
+    saved = a.saved
     os.makedirs(out, exist_ok=True)
 
     check = subprocess.run([sys.executable, os.path.join(SKILL, "scripts", "check_trip.py"), trip], capture_output=True, text=True)
@@ -75,6 +78,10 @@ def main():
         for name, vp in (("desktop", "1440x900x1"), ("laptop", "1280x720x1"), ("phone", "390x844x2,mobile,touch")):
             axi("open", "about:blank")
             axi("emulate", "--viewport", vp)
+            # Saved picks from a manual test would change what the capture shows: start from the defaults.
+            if not saved:
+                axi("open", url)
+                axi("eval", "localStorage.clear(), sessionStorage.clear(), 'cleared'")
             for attempt in range(2):
                 axi("open", url)
                 time.sleep(8)

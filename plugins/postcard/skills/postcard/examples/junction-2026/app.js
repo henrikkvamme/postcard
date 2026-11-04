@@ -298,7 +298,7 @@ addEventListener('keydown', (e) => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const i = list.indexOf(sel);
   if (e.key === 'j' || e.key === 'k') pick(list[Math.max(0, Math.min(list.length - 1, i + (e.key === 'j' ? 1 : -1)))]);
-  if (e.key === 'Escape') drawer ? setDrawer(false) : pick(list[0]);
+  if (e.key === 'Escape') drawer ? setDrawer(false) : tip.hide();   // never resets the pick (craft.md, rule 7)
   if (e.key === 't') setDrawer(!drawer);
   if (e.key === 'b') openCheckout();
   if (e.key === '0') chart.reset();
