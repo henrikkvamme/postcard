@@ -90,6 +90,12 @@ The person acts on the page. A number that looks more certain than it is will co
   the booking stop rule. A break-even is ≈ when its inputs are. When the pick's total is mostly
   unread, also show the cheapest option that is fully read, with its total and a button that picks it
   ("All buses and the ferry: EUR 294, every fare read").
+  An unpriced fare is never 0 in a score. In a list ranked by score, put an unpriced way at its
+  break-even (the fare at which it ties the best priced way), or after the priced ways; never above
+  them on a fare of 0. Say the break-even once in its row and once on the postcard, not again in the
+  eyebrow and the band. When the break-even counts time as money, the stop rule says so ("with the
+  time on the way counted, flying is then the better trip"). A night fare includes its seat or berth:
+  name the unread class once ("couchette or bed?"), not as a second unread price.
 - **Assumptions.** Do not assume a fact that the ranking depends on. A night train is a bed only
   when the berth is known (`berth`); otherwise it is unknown, and the page says "couchette or seat?".
   Offer a bed only on a night segment that is a train or a ferry; a night bus is a seat. Say which

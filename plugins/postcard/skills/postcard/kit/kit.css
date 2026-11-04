@@ -6,7 +6,9 @@
   --r: 4px; --ease: cubic-bezier(.22, 1, .36, 1);
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; }
+html, /* An element hidden with the hidden attribute stays hidden, whatever display a page rule gives it. */
+[hidden] { display: none !important; }
+body { margin: 0; height: 100%; }
 body { background: var(--paper); color: var(--ink); font: 12px/1.35 var(--sans); font-variant-numeric: tabular-nums; overflow: hidden; }
 button { font: inherit; color: inherit; }
 
