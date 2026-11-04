@@ -98,7 +98,7 @@ export function bill(T, parts) {
         const bags = t.bags && !told.has(t.seller + t.bags) ? t.bags : '';
         if (bags) told.add(t.seller + t.bags);
         return { label: t.seller || 'Ticket', main: esc(t.what),
-          price: esc(!t.fareRead ? 'fare not read' : t.figure() + (t.known ? '' : ' + ?')),
+          price: esc(!t.fareRead ? 'fare not read' : t.figure() + (t.known ? '' : ` + ${t.unknown.length} not read`)),
           meta: esc([t.when, ...t.parts.slice(1).map((p) => `${p.what} ${amt(p)}`), ...t.limits, bags].filter(Boolean).join(' · ')) };
       }),
       ...b.others.map((p) => ({ label: p.who === 'person' ? 'You buy' : 'On the way', main: esc(p.what),

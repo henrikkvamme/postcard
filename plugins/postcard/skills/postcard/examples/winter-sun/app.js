@@ -86,8 +86,8 @@ function drawPostcard() {
       <div class="leg"><b>Back</b><span><em>${fdate(sel.r.depL)} ${sel.r.depL.hm}</em> · ${esc(sel.r.carrierName)}, ${route(sel.r)}</span></div>
       <div class="facts"><span>Travel <b>${fmtDur(sel.travel)}</b></span><span>January high <b>${d.jan_high_c} °C</b></span>${sel.night ? '<span class="red">Leaves or lands at night</span>' : ''}</div>
     </div>
-    <div class="addr"><svg width="150" height="96" style="overflow:visible">${stampSVG({ code: sel.dest, value: `${d.jan_high_c}°C`, x: 80 })}
-      ${postmarkSVG({ top: `${sel.o.depL.wd.toUpperCase()} ${sel.o.depL.day}`, mid: sel.o.depL.hm, x: 30, y: 32, rot: -8, ink: 'var(--red)' })}${postmarkSVG({ top: `${sel.r.depL.wd.toUpperCase()} ${sel.r.depL.day}`, mid: sel.r.depL.hm, x: 60, y: 72, rot: 6 })}</svg>
+    <div class="addr"><svg width="150" height="96" style="overflow:visible">${stampSVG({ code: sel.dest, value: `${d.jan_high_c}°C`, x: 92 })}
+      ${postmarkSVG({ top: `${sel.o.depL.wd.toUpperCase()} ${sel.o.depL.day}`, mid: sel.o.depL.hm, x: 48, y: 34, rot: -8, ink: 'var(--red)' })}${postmarkSVG({ top: `${sel.r.depL.wd.toUpperCase()} ${sel.r.depL.day}`, mid: sel.r.depL.hm, x: 70, y: 74, rot: 6 })}</svg>
       <div class="lines pc-hand"><div>${esc(d.where)}</div></div></div>
     <button class="pc-book" id="book"><span></span><b></b></button>`;
   document.getElementById('book').onclick = openCheckout; bookState();

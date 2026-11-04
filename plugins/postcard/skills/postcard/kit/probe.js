@@ -75,6 +75,42 @@ export function probe() {
     }
   }
 
+  // 4c. Text that runs into other text or into a stamp (textOverlap), and text cut with an ellipsis
+  // (truncated: not a failure, but read it: a fact that answers the question is never cut).
+  out.textOverlap = []; out.truncated = [];
+  for (const { el: root } of hud.filter((h) => !hud.some((o) => o !== h && o.el.contains(h.el)))) {
+    const boxes = [];
+    for (const el of root.querySelectorAll('*')) {
+      if (!visible(el) || el.closest('.pc-sheetbg')) continue;
+      // An svg counts by what it draws (its children), not by its empty box.
+      if (el.tagName === 'svg' && !el.parentElement.closest('svg')) { if (el.children.length <= 40) for (const c of el.children) { const r = c.getBoundingClientRect(); if (r.width > 4 && r.height > 4) boxes.push({ el, r, svg: true }); } continue; }
+      if (el.closest('svg')) continue;
+      const cs = getComputedStyle(el);
+      if (cs.textOverflow === 'ellipsis' && el.scrollWidth > el.clientWidth + 1 && out.truncated.length < 16) out.truncated.push(`${name(el)} "${el.textContent.trim().slice(0, 32)}…"`);
+      for (const n of el.childNodes) if (n.nodeType === 3 && n.textContent.trim()) {
+        const rg = document.createRange(); rg.selectNodeContents(n);
+        // Clip the text to the boxes that hide overflow above it: cut text does not reach its neighbour.
+        let c = { left: -1e9, top: -1e9, right: 1e9, bottom: 1e9 };
+        for (let a = el; a && a !== root.parentElement; a = a.parentElement) { const o = getComputedStyle(a);
+          if (['hidden', 'clip'].includes(o.overflowX) || ['hidden', 'clip'].includes(o.overflowY)) { const q = a.getBoundingClientRect();
+            c = { left: Math.max(c.left, q.left), top: Math.max(c.top, q.top), right: Math.min(c.right, q.right), bottom: Math.min(c.bottom, q.bottom) }; } }
+        for (const q of rg.getClientRects()) { const r = { left: Math.max(q.left, c.left), top: Math.max(q.top, c.top), right: Math.min(q.right, c.right), bottom: Math.min(q.bottom, c.bottom) };
+          if (r.right - r.left > 1 && r.bottom - r.top > 1) boxes.push({ el, r }); }
+      }
+    }
+    // A glyph box is taller than its line, so lines set tight touch: count an overlap of a third of the smaller height.
+    const hit = (a, b) => Math.min(a.right, b.right) - Math.max(a.left, b.left) > 2 &&
+      Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > Math.min(a.bottom - a.top, b.bottom - b.top) / 3;
+    for (let i = 0; i < boxes.length && boxes.length < 1500; i++) for (let k = i + 1; k < boxes.length; k++) {
+      const A = boxes[i], B = boxes[k];
+      if (A.el === B.el || A.el.contains(B.el) || B.el.contains(A.el) || A.svg && B.svg) continue;
+      if (!hit(A.r, B.r)) continue;
+      const t = (x) => x.svg ? `${name(x.el)} (svg)` : `${name(x.el)} "${(x.el.textContent || '').trim().slice(0, 20)}"`;
+      const msg = `${t(A)} runs into ${t(B)}`;
+      if (!out.textOverlap.includes(msg) && out.textOverlap.length < 12) out.textOverlap.push(msg);
+    }
+  }
+
   // 5. Calm: the text sizes in the HUD, the title included (craft.md: six at most) and the text in red
   // outside the book band (craft.md: red means "this one"; read the list and ask if each is the pick).
   const RED = 'rgb(184, 50, 42)', sizes = new Set(); out.redText = [];
@@ -91,6 +127,6 @@ export function probe() {
   out.unnamed = buttons.filter((b) => !(b.textContent.trim() || b.getAttribute('aria-label') || b.title)).map(name);
   out.controls = buttons.length;
   out.labels = [...document.querySelectorAll('.pc-lbl, .pc-hub')].filter(visible).length;
-  out.ok = ['hiddenEnds', 'pageOverflow', 'smallText', 'clipped', 'hudOverlap', 'hudOff', 'spill', 'cutOff', 'sideScroll', 'unnamed', 'manySizes'].every((k) => !out[k].length);
+  out.ok = ['hiddenEnds', 'pageOverflow', 'smallText', 'clipped', 'hudOverlap', 'hudOff', 'spill', 'cutOff', 'sideScroll', 'textOverlap', 'unnamed', 'manySizes'].every((k) => !out[k].length);
   return out;
 }

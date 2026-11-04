@@ -153,7 +153,11 @@ Nothing moves when you hover, pick or switch a view, except what that action cha
 - A card anchored to the bottom keeps one height across picks, views and phone tabs: give lines
   that come and go (a red fact, a "times as on Tue" note) a fixed height, size a list for its longest
   case, and clamp long lines to one line with `text-overflow: ellipsis` and the whole text in a
-  `title` (the probe allows that). Everything in the card fits it at 1280 x 720 too.
+  `title` (the probe allows that, and lists them as `truncated`). Clamp only a detail: a fact that
+  answers the question (the driving hours, what was not read, the stress the person named) is never
+  cut. Shorten its words, or give it two lines.
+- A price that was not read is not a price: set "Fares not read" at body size in ink, never in the
+  big price style. Everything in the card fits it at 1280 x 720 too.
 - A tooltip sits beside what it describes, outside the card (`tip.beside`), and never covers the
   next row's figures. A tap that picks opens no tip.
 - A control that redraws keeps keyboard focus (update it in place, or focus the new node).

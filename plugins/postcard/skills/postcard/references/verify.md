@@ -38,10 +38,11 @@ emulation, not by resizing the window: a headless window does not resize. With
    It returns lists that must be empty: `hiddenEnds` (a route end off screen or under the HUD),
    `pageOverflow`, `smallText`, `clipped`, `hudOverlap`, `hudOff`, `unnamed` (buttons without
    a name), `manySizes` (more than six text sizes in the HUD), `spill` (content out of its card),
-   `cutOff` (content cut by a box that hides overflow) and `sideScroll` (a box that scrolls
-   sideways). `ok` is true when they are all empty. Run it again after you change the pick and
+   `cutOff` (content cut by a box that hides overflow), `sideScroll` (a box that scrolls
+   sideways) and `textOverlap` (text that runs into other text or into a stamp). `ok` is true when they are all empty. Run it again after you change the pick and
    after each tab or view: a card can fit the default and spill on another pick. Also read `redText`: every red text outside the book band must be the pick or the one
-   failing fact on the postcard (craft.md, rule 6).
+   failing fact on the postcard (craft.md, rule 6). Read `truncated` too: each is text cut with "…".
+   A fact that answers the question must not be in it; shorten its words or let it wrap.
 4. Take a screenshot and look at it as the person would. Does the main view answer the question in
    five seconds? Is the best option obvious? Does the postcard match the pick?
 
