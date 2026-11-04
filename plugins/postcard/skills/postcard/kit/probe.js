@@ -84,6 +84,11 @@ export function probe() {
     }
   }
 
+  // 4b2. An element the page hid with the hidden attribute that still shows, because a page rule sets its
+  // display (".key { display: flex }" beats [hidden]). Add "[hidden] { display: none }" for that class.
+  out.hiddenShown = [...document.querySelectorAll('.pc-card [hidden], .pc-hud [hidden], .pc-title[hidden]')]
+    .filter((el) => getComputedStyle(el).display !== 'none' && el.getBoundingClientRect().height > 0).map(name).slice(0, 8);
+
   // 4c. Text that runs into other text or into a stamp (textOverlap), and text cut with an ellipsis
   // (truncated: not a failure, but read it: a fact that answers the question is never cut).
   out.textOverlap = []; out.truncated = [];
@@ -136,6 +141,6 @@ export function probe() {
   out.unnamed = buttons.filter((b) => !(b.textContent.trim() || b.getAttribute('aria-label') || b.title)).map(name);
   out.controls = buttons.length;
   out.labels = [...document.querySelectorAll('.pc-lbl, .pc-hub')].filter(visible).length;
-  out.ok = ['hiddenEnds', 'pageOverflow', 'smallText', 'clipped', 'hudOverlap', 'hudOff', 'spill', 'cutOff', 'sideScroll', 'textOverlap', 'unnamed', 'manySizes'].every((k) => !out[k].length);
+  out.ok = ['hiddenEnds', 'pageOverflow', 'smallText', 'clipped', 'hudOverlap', 'hudOff', 'spill', 'cutOff', 'sideScroll', 'textOverlap', 'hiddenShown', 'unnamed', 'manySizes'].every((k) => !out[k].length);
   return out;
 }

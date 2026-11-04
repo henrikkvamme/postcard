@@ -39,7 +39,8 @@ emulation, not by resizing the window: a headless window does not resize. With
    `pageOverflow`, `smallText`, `clipped`, `hudOverlap`, `hudOff`, `unnamed` (buttons without
    a name), `manySizes` (more than six text sizes in the HUD), `spill` (content out of its card),
    `cutOff` (content cut by a box that hides overflow), `sideScroll` (a box that scrolls
-   sideways) and `textOverlap` (text that runs into other text or into a stamp). `ok` is true when they are all empty. Run it again after you change the pick and
+   sideways) `textOverlap` (text that runs into other text or into a stamp) and `hiddenShown` (an element
+   with the hidden attribute that a page rule still displays; add `[hidden] { display: none }` for it). `ok` is true when they are all empty. Run it again after you change the pick and
    after each tab or view: a card can fit the default and spill on another pick. To make that repeatable, set
    `window.__states = { 'Fly on the day': () => pick('day'), 'Times tab': () => view('times'), ... }` in
    app.js, one entry per pick, view and phone tab; the eval capture script probes after each one. Also read `redText`: every red text outside the book band must be the pick or the one
