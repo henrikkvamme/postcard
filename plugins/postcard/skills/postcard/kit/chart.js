@@ -358,14 +358,22 @@ export function createChart(opts) {
   const unhover = () => { if (hovering) { hovering = false; card.hidden = true; cardAt = null; S.where = null; refresh(); } opts.onRouteHover?.(null); };
   function hoverAt(x, path, px, py, ev, project) {
     if (!x) { unhover(); return; }
-    let best = 0, bd = Infinity;
-    path.forEach((p, i) => { const [sx, sy] = project(p); const d = (sx - px) ** 2 + (sy - py) ** 2; if (d < bd) { bd = d; best = i; } });
+    // The nearest point on the line, not the nearest vertex: a two-point leg reads its time all along.
+    let bd = Infinity, bi = 0, bt = 0;
+    const xy = path.map(project);
+    for (let i = 1; i < xy.length; i++) {
+      const [ax, ay] = xy[i - 1], [bx, by] = xy[i], dx = bx - ax, dy = by - ay, L2 = dx * dx + dy * dy;
+      const t = L2 ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / L2)) : 0;
+      const d = (ax + t * dx - px) ** 2 + (ay + t * dy - py) ** 2;
+      if (d < bd) { bd = d; bi = i; bt = t; }
+    }
     // s is a share of the distance, as along() and whereAt() read it. Path points are not evenly spaced.
     let done = 0, total = 0;
-    for (let i = 1; i < path.length; i++) { const k = geo.km(path[i - 1], path[i]); total += k; if (i <= best) done += k; }
+    for (let i = 1; i < path.length; i++) { const k = geo.km(path[i - 1], path[i]); total += k; if (i < bi) done += k; else if (i === bi) done += k * bt; }
     const s = total ? done / total : 0;
-    const h = { j: x.j, seg: x.seg, s, T: x.seg.a + s * (x.seg.b - x.seg.a), pt: path[best], event: ev };
-    if (cardOn) { hovering = true; S.where = { pt: along(x.seg.path, s).pt, moving: true, mode: x.seg.mode, seg: x.seg, s, j: x.j }; refresh(); showCard(h); }
+    const pt = path.length > 1 ? along(path, s).pt : path[0];
+    const h = { j: x.j, seg: x.seg, s, T: x.seg.a + s * (x.seg.b - x.seg.a), pt, event: ev };
+    if (cardOn) { hovering = true; S.where = { pt, moving: true, mode: x.seg.mode, seg: x.seg, s, j: x.j }; refresh(); showCard(h); }
     opts.onRouteHover?.(h);
   }
   map.on('mousemove', 'r-hit', (e) => { const f = e.features[0]; if (!f) return; const x = segs(S.chosen).find((y) => y.j.id + ':' + y.i === f.properties.key); if (!x) return;
@@ -413,6 +421,8 @@ export function createChart(opts) {
   C.show = ({ chosen = [], others = [], ends, refit = true, legNumbers } = {}) => {
     S.chosen = chosen; S.others = others.filter((j) => !chosen.includes(j)); if (ends) S.ends = ends; S.legNumbers = legNumbers;
     const key = chosen.map((j) => j.id).join('|');
+    // A new pick ends a route hover: its vehicle and card belong to the old route.
+    if (hovering && key !== S.shownKey) { hovering = false; card.hidden = true; cardAt = null; S.where = null; } S.shownKey = key;
     if (S.introDone && refit && lastKey && key !== lastKey) C.frame(chosen);
     lastKey = key;
     if (map.getSource('routes')) map.getSource('routes').setData(routesFC());

@@ -44,7 +44,11 @@ export function norm(a) { const l = Math.hypot(...a) || 1; return [a[0] / l, a[1
 // only when convex; concave caps go through earcut().
 export class Mesh {
   constructor() { this.faces = []; this.lines = []; }
-  face(pts, tone, opts = {}) { this.faces.push({ pts, tone, ink: opts.ink ?? true, flat: opts.flat ?? true }); return this; }
+  face(pts, tone, opts = {}) {
+    pts = pts.filter((p, i, a) => { const q = a[(i + a.length - 1) % a.length]; return Math.abs(p[0] - q[0]) + Math.abs(p[1] - q[1]) + Math.abs(p[2] - q[2]) > 1e-9; });
+    if (pts.length < 3) return this;
+    const n = newell(pts); if (Math.hypot(...n) < 1e-12) return this;
+    this.faces.push({ pts, tone, ink: opts.ink ?? true, flat: opts.flat ?? true }); return this; }
   line(a, b) { this.lines.push([a, b]); return this; }
   merge(m) { this.faces.push(...m.faces); this.lines.push(...m.lines); return this; }
   map(f) { const m = new Mesh(); m.faces = this.faces.map((x) => ({ ...x, pts: x.pts.map(f) })); m.lines = this.lines.map((l) => l.map(f)); return m; }
@@ -114,16 +118,18 @@ export function bake(mesh, { crease = 40, minEdge = 0.025 } = {}) {
     lines: new Float32Array(lines.flat()) };
 }
 
-export function faceNormal(pts) {
-  // Newell's method: robust for any planar polygon.
+export function faceNormal(pts) { return norm(newell(pts)); }
+// Newell's method: robust for any planar polygon; the length is twice the area.
+function newell(pts) {
   let n = [0, 0, 0];
   for (let i = 0; i < pts.length; i++) {
     const a = pts[i], b = pts[(i + 1) % pts.length];
     n = add(n, [(a[1] - b[1]) * (a[2] + b[2]), (a[2] - b[2]) * (a[0] + b[0]), (a[0] - b[0]) * (a[1] + b[1])]);
   }
-  return norm(n);
+  return n;
 }
 
+const convex = (q) => q.every((a, i) => { const b = q[(i + 1) % q.length], c = q[(i + 2) % q.length]; return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]) >= -1e-12; });
 function triangulate(pts) {
   if (pts.length === 3) return [pts];
   const n = faceNormal(pts);
@@ -143,7 +149,7 @@ function triangulate(pts) {
       if (idx.some((j) => j !== ia && j !== ib && j !== ic && inside(p2[j], a, b, c))) continue;
       out.push([pts[ia], pts[ib], pts[ic]]); idx.splice(i, 1); cut = true; break;
     }
-    if (!cut) break; // degenerate rest: fan it
+    if (!cut) { if (idx.length > 3 && !convex(idx.map((i) => p2[i]))) throw new Error(`triangulate: cannot cut a ${idx.length}-point face`); break; }
   }
   for (let i = 1; i + 1 < idx.length; i++) out.push([pts[idx[0]], pts[idx[i]], pts[idx[i + 1]]]);
   return out;

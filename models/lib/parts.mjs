@@ -16,10 +16,11 @@ export function loft(rings, tone, { caps = [true, true], capTone = tone, ink = t
       if (q.length >= 3) m.face(q, tone, { ink });
     }
   }
-  if (caps[0]) m.face([...rings[0]].reverse(), capTone, { ink });
-  if (caps[1]) m.face([...rings[rings.length - 1]], capTone, { ink });
+  if (caps[0] && !collapsed(rings[0])) m.face([...rings[0]].reverse(), capTone, { ink });
+  if (caps[1] && !collapsed(rings[rings.length - 1])) m.face([...rings[rings.length - 1]], capTone, { ink });
   return m;
 }
+const collapsed = (ring) => ring.every((p) => same(p, ring[0]));
 const same = (a, b) => Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]) + Math.abs(a[2] - b[2]) < 1e-9;
 
 // Rings in a horizontal plane at height z. A ring is listed counter-clockwise seen from above.
@@ -44,9 +45,12 @@ export const round2 = (w, d, r, k = 3, cx = 0, cy = 0) => {
 export function block(plan, z0, z1, tone, { bevel = 0, top = tone, ink = true } = {}) {
   if (!bevel) return loft([ringAt(plan, z0), ringAt(plan, z1)], tone, { capTone: top, ink });
   const inner = inset(plan, bevel);
+  if (bevel >= z1 - z0 || area2(inner) <= 0 || Math.sign(area2(inner)) !== Math.sign(area2(plan))) throw new Error(`block: bevel ${bevel} collapses the plan or is taller than the block`);
   return group(loft([ringAt(plan, z0), ringAt(plan, z1 - bevel)], tone, { caps: [true, false], ink }),
     loft([ringAt(plan, z1 - bevel), ringAt(inner, z1)], top, { caps: [false, true], capTone: top, ink }));
 }
+
+const area2 = (pl) => pl.reduce((a, p, i) => { const q = pl[(i + 1) % pl.length]; return a + p[0] * q[1] - q[0] * p[1]; }, 0) / 2;
 
 // Move each edge of a counter-clockwise plan polygon inward by d (mitred corners).
 export function inset(plan, d) {
