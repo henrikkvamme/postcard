@@ -182,6 +182,11 @@ rest, and the postcard and the book band stay visible.
 
 - The main view shows every option without a sideways scroll: make each option one compact row
   (name, one thin bar, the price). Three to six options fit without scrolling inside the card.
+- On a touch screen a tap picks, so a tip never shows. Every fact a tip holds (the source, the fare
+  basis, the transfers, a warning) is on the postcard of the pick or behind a small "i" button on the
+  row.
+- The limits beside a total (a "from" price, fees not read, hotels not counted) stay beside it on a
+  phone, on the postcard and on the band. Shorten them; never hide them.
 - Keep on a phone what the answer needs: the measure's name and unit ("stress hours"), the top-pick
   mark, the weights line (one line, or behind an "i"), and the figure the question turns on for every
   row (the spare time before a meeting). Hide decoration first.

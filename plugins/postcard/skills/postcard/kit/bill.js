@@ -31,7 +31,7 @@
 // An 'out' part is never in a total; it is listed beside it ("+ 8 hotel nights not counted").
 
 const STATE = (p) => p.state || (p.amount == null ? 'unknown' : 'read');
-const KIND = { fare: ['fare', 'fares'], cabin: ['cabin bag fee', 'cabin bag fees'], checked: ['checked bag fee', 'checked bag fees'], small: ['small bag fee', 'small bag fees'] };
+const KIND = { fare: ['fare', 'fares'], berth: ['night class', 'night classes'], cabin: ['cabin bag fee', 'cabin bag fees'], checked: ['checked bag fee', 'checked bag fees'], small: ['small bag fee', 'small bag fees'] };
 const kindName = (k, n) => (KIND[k] || [`${k} fee`, `${k} fees`])[n > 1 ? 1 : 0];
 const cap = (s) => s ? s[0].toUpperCase() + s.slice(1) : s;
 const stop = (s) => String(s || '').trim().replace(/[.\s]+$/, '');
@@ -147,6 +147,9 @@ export function fare(T, j, offer, need = {}, opts = {}) {
     state: offer?.price == null ? 'unknown' : offer.basis === 'estimate' || offer.basis === 'other-date' ? 'estimate' : 'read',
     basis: offer ? [`${offer.source || offer.seller}, seen ${offer.seen || '?'}`, offer.price_note].filter(Boolean).join('; ') : 'fare not read',
     limit: offer?.limit, bags: offer?.bags_note }];
+  // A night train or ferry whose class was not read: the price may buy a seat or a bed. Say so wherever it goes.
+  if (j.raw?.overnight && (!j.raw.berth || j.raw.berth === 'unknown') && ['train', 'ferry', 'mixed'].includes(j.mode))
+    parts.push({ ...base, kind: 'berth', what: `Night class (seat, couchette or sleeper) on ${label}`, amount: null, basis: 'class not read' });
   const flights = (j.segments || []).filter((s) => s.mode === 'plane');
   const ends = flights.length ? `${name(flights[0].from)} → ${name(flights[flights.length - 1].to)}` : `${name(j.from)} → ${name(j.to)}`;
   const bags = offer?.bags || {};
