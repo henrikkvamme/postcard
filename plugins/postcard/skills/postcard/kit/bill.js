@@ -103,7 +103,8 @@ export function bill(T, parts) {
         if (bags) told.add(t.seller + t.bags);
         return { label: t.seller || 'Ticket', main: esc(t.what),
           price: esc(!t.fareRead ? 'fare not read' : t.figure() + (t.known ? '' : ` + ${t.unknown.length} not read`)),
-          meta: esc([t.when, ...t.parts.slice(1).map((p) => `${p.what} ${amt(p)}`), ...t.limits, bags].filter(Boolean).join(' · ')) };
+          // A ticket of more than one vehicle shows each leg (the connection and the arrival), not only the start.
+          meta: esc([t.legs?.includes('; ') ? t.legs : t.when, ...t.parts.slice(1).map((p) => `${p.what} ${amt(p)}`), ...t.limits, bags].filter(Boolean).join(' · ')) };
       }),
       ...b.others.map((p) => ({ label: p.who === 'person' ? 'You buy' : 'On the way', main: esc(p.what),
         price: esc(amt(p)), meta: esc(['Not in this booking', p.basis].filter(Boolean).join(' · ')) })),
