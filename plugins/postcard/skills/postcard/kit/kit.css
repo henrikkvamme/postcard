@@ -102,7 +102,7 @@ button { font: inherit; color: inherit; }
 .pc-sheet .sub { color: var(--ink2); font-size: 12px; }
 .pc-ticket { display: grid; grid-template-columns: 54px 1fr auto; gap: 2px 14px; align-items: center; padding: 14px 0; border-top: 1px dashed var(--rule); }
 .pc-ticket:first-of-type { margin-top: 16px; }
-.pc-ticket .dir { font: 600 10px var(--sans); letter-spacing: .16em; color: var(--red); grid-row: span 2; text-transform: uppercase; }
+.pc-ticket .dir { font: 600 10px var(--sans); letter-spacing: .16em; color: var(--ink2); grid-row: span 2; text-transform: uppercase; }
 .pc-ticket .main { font: italic 400 16px var(--serif); }
 .pc-ticket .meta { font-size: 12px; color: var(--ink2); }
 .pc-ticket .price { font: 600 15px var(--serif); text-align: right; grid-row: span 2; }

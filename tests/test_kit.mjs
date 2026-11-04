@@ -4,6 +4,7 @@ import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
 import { wallMs, makeClock } from '../plugins/postcard/skills/postcard/kit/time.js';
 import { openTrip } from '../plugins/postcard/skills/postcard/kit/trip.js';
+import { bill, fare } from '../plugins/postcard/skills/postcard/kit/bill.js';
 
 const fixture = () => JSON.parse(readFileSync(new URL('./fixtures/minimal/trip.json', import.meta.url)));
 const open = (raw) => openTrip({ raw, base: new URL('file:///nowhere/') });
@@ -76,4 +77,27 @@ test('a window end without a time means the end of that day', async () => {
   const day = new Date(Date.parse(a.window.end) + 86400000).toISOString().slice(0, 10);
   b.window.end = day + 'T00:00';
   assert.equal((await open(a)).T1, (await open(b)).T1);
+});
+
+test('a bill keeps unread fees beside the total and splits what the agent books', async () => {
+  const T = await open(fixture());
+  const b = bill(T, [
+    ...fare(T, T.byId.o1, T.byId.o1.offers[0], { cabin: 1, checked: 2 }, { ticket: 'out' }),  // cabin included, 2 x 30 read
+    ...fare(T, T.byId.r1, T.byId.r1.offers[0], { cabin: 1 }, { ticket: 'back' }),             // cabin fee not listed
+    ...fare(T, T.byId.r2, T.byId.r2.offers[0], { checked: 1 }, { ticket: 'alt', guess: { checked: { value: 40, basis: 'list' } } }),
+    { what: 'Train to the airport', amount: 7, state: 'estimate', who: 'person' },
+    { what: 'Hotel', amount: null, who: 'out' },
+  ]);
+  // 189 + 60 + 201 + 133 + 40 (estimate) + 7 (estimate)
+  assert.equal(b.total, 630);
+  assert.equal(b.approx, true);
+  assert.deepEqual(b.unknown, [`cabin bag fee, ${T.places.LIS.label} → ${T.places.OSL.label}`]);
+  assert.match(b.text(), /^≈ EUR 630 \+ cabin bag fee, .* not read \+ Hotel not counted$/);
+  assert.equal(b.book.total, 623);
+  assert.equal(b.tickets.length, 3);
+  assert.equal(b.tickets[0].total, 249);
+  assert.equal(b.tickets[1].known, false);
+  assert.equal(b.others.length, 1);
+  assert.equal(b.items().length, 4);
+  assert.match(b.promptLines()[1], /was not read: read it before you fill anything/);
 });

@@ -54,7 +54,7 @@ const card = document.getElementById('card');
 // The map keeps its routes above the card, so the padding comes from the card's real height.
 const padFor = () => { const top = document.getElementById('card').getBoundingClientRect().top || innerHeight * .45;
   return innerWidth < 760 ? { left: 20, right: 20, top: 96, bottom: innerHeight - top + 10 } : { left: 60, right: 60, top: 110, bottom: innerHeight - top + 30 }; };
-const chart = createChart({ el: '#map', trip: T, pad: padFor(), far: innerWidth < 760 ? 1.6 : 2.6,
+const chart = createChart({ el: '#map', trip: T, pad: padFor(), far: innerWidth < 760 ? 1.6 : innerHeight < 800 ? 2 : 2.6,
   onRouteHover(h) { if (!h) { tip.hide(); chart.where(null); tl?.cursor(null); return; }
     tip.show(h.event, `<b>${esc(h.j.carrierName)}</b> ${h.seg.from} → ${h.seg.to}<br>${fmtDur(h.T - h.seg.a)} flown, ${fmtDur(h.seg.b - h.T)} to go<br><span style="opacity:.7">${esc(chart.over(h.pt))}</span>`); } });
 
@@ -117,13 +117,14 @@ function drawWeeks() {
   const prices = all.map((h) => h.price), lo = Math.min(...prices), hi = Math.max(...prices);
   const shade = (p) => hi > lo ? (p - lo) / (hi - lo) : 0;
   const head = STARTS.map((s) => { const l = T.clock.local(T.clock.H(s)); const e = T.clock.local(T.clock.H(s) + NIGHTS * 24); return `<th><b>${l.wd} ${l.day}</b> → ${e.day} ${e.mon}</th>`; }).join('');
+  const foot = `Best value per cell: the price, plus CHF ${HOUR} for each hour of travel or a night flight. ${esc(X.bags_note || '')} Climate: ${DESTS.map((d) => `${esc(d.name)} ${esc(d.climate_source)}`).join('; ')}. Prices seen ${esc(T.raw.sources.seen)}.`;
   el.innerHTML = `<table class="grid"><colgroup><col class="name"><col class="t">${STARTS.map(() => '<col>').join('')}</colgroup><thead><tr><th></th><th class="num">Jan high</th>${head}</tr></thead><tbody>${DESTS.map((d) => `<tr><th><b>${esc(d.name)}</b><span>${esc(d.where)}</span></th><td class="num temp">${d.jan_high_c}°</td>${STARTS.map((s) => {
     const h = cellBest(d.place, s);
     if (!h) return `<td class="none">–</td>`;
-    return `<td><button class="cell" data-id="${h.id}" aria-pressed="${h === sel}" style="--w:${Math.round((1 - shade(h.price)) * 100)}"><b>${money(h.price)}</b>${h.bagsKnown ? '' : '<i>+ bag?</i>'}<span>${fmtDur(h.travel)}${homeEnd(h.o) !== HOME ? ' · ' + homeEnd(h.o) : ''}</span></button></td>`; }).join('')}</tr>`).join('')}</tbody></table>
-    <p class="foot">Best value per cell: the price, plus CHF ${HOUR} for each hour of travel or a night flight. ${esc(X.bags_note || '')} Climate: ${DESTS.map((d) => `${esc(d.name)} ${esc(d.climate_source)}`).join('; ')}. Prices seen ${esc(T.raw.sources.seen)}.</p>`;
+    return `<td><button class="cell" data-id="${h.id}" aria-pressed="${h === sel}" style="--w:${Math.round((1 - shade(h.price)) * 100)}"><b>${money(h.price)}</b>${h.bagsKnown ? '' : '<i>+ bag?</i>'}<span title="${fmtDur(h.travel)} travel${homeEnd(h.o) !== HOME ? ', from ' + esc(T.places[homeEnd(h.o)].label) : ''}">${fmtDur(h.travel)}${homeEnd(h.o) !== HOME ? '<small class="ap"> · ' + homeEnd(h.o) + '</small>' : ''}</span></button></td>`; }).join('')}</tr>`).join('')}</tbody></table>
+    <p class="foot" title="${foot}">${foot}</p>`;
   el.querySelectorAll('.cell').forEach((b) => { b.onclick = () => { state.pick = b.dataset.id; render(); };
-    b.onmousemove = (e) => { const h = all.find((x) => x.id === b.dataset.id); tip.show(e, `<b>${esc(D(h.dest).name)}</b>, ${fdate(h.o.depL)} → ${fdate(h.r.depL)}<br>Out ${h.o.depL.hm} ${esc(h.o.carrierName)}, ${route(h.o)}<br>Back ${h.r.depL.hm} ${esc(h.r.carrierName)}, ${route(h.r)}<br><b>${money(h.price)}</b>, travel ${fmtDur(h.travel)}`); };
+    if (tip.canHover) b.onmouseenter = () => { const h = all.find((x) => x.id === b.dataset.id); tip.beside(b, `<b>${esc(D(h.dest).name)}</b>, ${fdate(h.o.depL)} → ${fdate(h.r.depL)}<br>Out ${h.o.depL.hm} ${esc(h.o.carrierName)}, ${route(h.o)}<br>Back ${h.r.depL.hm} ${esc(h.r.carrierName)}, ${route(h.r)}<br><b>${money(h.price)}</b>, travel ${fmtDur(h.travel)}`, { avoid: document.getElementById('card') }); };
     b.onmouseleave = tip.hide; });
 }
 // The chosen place and week: every flight out and back, on a day scale, so you can swap one.

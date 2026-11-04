@@ -77,7 +77,9 @@ Fix every error. Read every warning.
 1. Read `references/craft.md` and `references/kit.md`.
 2. Copy `index.html` and `app.js` from the closest example into the trip folder.
 3. Write the model first: what one option is, what it costs, how options rank. Pure functions at the
-   top of `app.js`, on top of `T.best`, `T.price` and `T.combos`.
+   top of `app.js`, on top of `T.best`, `T.price` and `T.combos`. Give each option one bill
+   (`kit/bill.js`) with every part from door to door; the row, the postcard, the band and the
+   checkout all read it.
 4. Then the HUD: the one main view that answers the question, the postcard of the pick, the
    controls that change it, the book band. Remove every part of the example that this question does
    not need.
@@ -89,7 +91,7 @@ Do not edit `kit/` for one trip. Write what the kit lacks in the page.
 
 ### 5. Verify
 
-Follow `references/verify.md`: the check, the console, the probe at desktop and phone width,
+Follow `references/verify.md`: the check, the console, the probe at desktop, laptop and phone width,
 reading the numbers as the person, every control and the keyboard, reduced motion, and a
 screenshot you look at as the person would. Then send the
 link with the host name, not `localhost`.

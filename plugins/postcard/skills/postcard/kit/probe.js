@@ -33,7 +33,9 @@ export function probe() {
     if (!own) continue;
     const cs = getComputedStyle(el), fs = parseFloat(cs.fontSize), caps = cs.textTransform === 'uppercase' || /^[^a-z]*$/.test(el.textContent.trim());
     if ((fs < 9 || (fs < 10 && !caps)) && !el.closest('svg')) out.smallText.push(`${name(el)} ${fs}px "${el.textContent.trim().slice(0, 30)}"`);
-    if (el.scrollWidth > el.clientWidth + 2 && getComputedStyle(el).overflowX !== 'visible' && !['auto', 'scroll'].includes(getComputedStyle(el).overflowX))
+    // A line clamped on purpose (one line, an ellipsis, and the whole text in its title) is fine (craft.md, rule 7).
+    const clamp = cs.textOverflow === 'ellipsis' && (el.title || el.closest('[title]'));
+    if (!clamp && el.scrollWidth > el.clientWidth + 2 && cs.overflowX !== 'visible' && !['auto', 'scroll'].includes(cs.overflowX))
       out.clipped.push(`${name(el)} "${el.textContent.trim().slice(0, 30)}"`);
   }
   // SVG text under 9px rendered size.
@@ -49,7 +51,31 @@ export function probe() {
       const x = Math.min(a.right, b.right) - Math.max(a.left, b.left), y = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
       if (x > 4 && y > 4) out.hudOverlap.push(`${name(tops[i].el)} and ${name(tops[k].el)} (${Math.round(x)}x${Math.round(y)})`); } }
 
-  // 5. Calm: the text sizes in the HUD (craft.md: five at most; more than six fails) and the text in red
+  // 4b. Inside the HUD: a part that hangs out of its card (spill), a part cut off by a box that hides its
+  // overflow (cutOff), and a list that scrolls sideways (sideScroll; a timeline in .pc-scroll-x may).
+  out.spill = []; out.cutOff = []; out.sideScroll = [];
+  const clips = (el) => { const o = getComputedStyle(el); return o.overflowX !== 'visible' || o.overflowY !== 'visible'; };
+  for (const { el: root, r: R } of hud.filter((h) => !hud.some((o) => o !== h && o.el.contains(h.el)))) {
+    for (const el of root.querySelectorAll('*')) {
+      if (!visible(el) || el.closest('svg') && el.tagName !== 'svg') continue;
+      const o = getComputedStyle(el);
+      if (['auto', 'scroll'].includes(o.overflowX) && el.scrollWidth > el.clientWidth + 2 && !el.closest('.pc-scroll-x'))
+        out.sideScroll.push(`${name(el)} scrolls ${el.scrollWidth - el.clientWidth}px sideways`);
+      const text = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
+      if (!text && !el.matches('button, [role=button], input, select, svg, .pc-book')) continue;
+      let a = el.parentElement; while (a && a !== root && !clips(a)) a = a.parentElement;
+      const r = el.getBoundingClientRect(), box = a ? a.getBoundingClientRect() : R;
+      const out2 = r.bottom > box.bottom + 2 || r.top < box.top - 2 || r.right > box.right + 2 || r.left < box.left - 2;
+      if (!out2) continue;
+      const lbl = `${name(el)} "${(el.textContent || '').trim().slice(0, 24)}"`;
+      if (a && a !== root) { const ao = getComputedStyle(a); if (['hidden', 'clip'].includes(ao.overflowY) || ['hidden', 'clip'].includes(ao.overflowX)) out.cutOff.push(`${lbl} cut by ${name(a)}`); }
+      else if (clips(root)) out.cutOff.push(`${lbl} cut by ${name(root)}`);
+      else out.spill.push(`${lbl} hangs ${Math.round(Math.max(r.bottom - R.bottom, R.top - r.top, r.right - R.right, R.left - r.left))}px out of ${name(root)}`);
+      if (out.spill.length + out.cutOff.length > 12) break;
+    }
+  }
+
+  // 5. Calm: the text sizes in the HUD, the title included (craft.md: six at most) and the text in red
   // outside the book band (craft.md: red means "this one"; read the list and ask if each is the pick).
   const RED = 'rgb(184, 50, 42)', sizes = new Set(); out.redText = [];
   for (const { el: root } of tops) for (const el of [root, ...root.querySelectorAll('*')]) {
@@ -65,6 +91,6 @@ export function probe() {
   out.unnamed = buttons.filter((b) => !(b.textContent.trim() || b.getAttribute('aria-label') || b.title)).map(name);
   out.controls = buttons.length;
   out.labels = [...document.querySelectorAll('.pc-lbl, .pc-hub')].filter(visible).length;
-  out.ok = ['hiddenEnds', 'pageOverflow', 'smallText', 'clipped', 'hudOverlap', 'hudOff', 'unnamed', 'manySizes'].every((k) => !out[k].length);
+  out.ok = ['hiddenEnds', 'pageOverflow', 'smallText', 'clipped', 'hudOverlap', 'hudOff', 'spill', 'cutOff', 'sideScroll', 'unnamed', 'manySizes'].every((k) => !out[k].length);
   return out;
 }

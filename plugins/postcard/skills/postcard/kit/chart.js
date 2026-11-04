@@ -27,7 +27,7 @@ function chartStyle(land, borders) {
     ...d3.range(15).map((i) => ({ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: d3.range(73).map((j) => [-180 + j * 5, -70 + i * 10]) } })) ] };
   const routeLine = (id, filter, paint, layout = {}) => ({ id, type: 'line', source: 'routes', filter, layout: { 'line-join': 'round', 'line-cap': 'round', ...layout }, paint });
   const chosen = ['==', ['get', 'chosen'], true], other = ['==', ['get', 'chosen'], false], mode = (...m) => ['in', ['get', 'mode'], ['literal', m]];
-  const col = ['case', ['get', 'chosen'], RED, INK], op = ['case', ['get', 'chosen'], 1, .5];
+  const col = ['case', ['get', 'chosen'], RED, INK], op = ['case', ['get', 'chosen'], 1, .38];
   return {
     version: 8, projection: { type: 'globe' }, glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',
     sky: { 'sky-color': '#e9e5d8', 'horizon-color': PAPER, 'fog-color': PAPER, 'sky-horizon-blend': .7, 'horizon-fog-blend': .8, 'fog-ground-blend': .7,
@@ -67,13 +67,14 @@ function chartStyle(land, borders) {
       // Ground routes lie on the terrain. Each mode has its own line, as on an old map.
       routeLine('r-halo', chosen, { 'line-color': LAND, 'line-width': 7, 'line-opacity': .92 }),
       // Rail: a thin line with cross ties.
-      routeLine('r-rail', mode('train'), { 'line-color': col, 'line-opacity': op, 'line-width': ['case', ['get', 'chosen'], 2, 1.2] }),
+      routeLine('r-rail', mode('train'), { 'line-color': col, 'line-opacity': op, 'line-width': ['case', ['get', 'chosen'], 2.4, 1.1] }),
       routeLine('r-ties', mode('train'), { 'line-color': col, 'line-opacity': op, 'line-width': ['case', ['get', 'chosen'], 7, 5], 'line-dasharray': [.25, 2.2] }, { 'line-cap': 'butt' }),
       // Road: a double line for car and taxi, a single one for bus and coach.
-      routeLine('r-road', mode('car', 'taxi', 'bus', 'coach', 'mixed'), { 'line-color': col, 'line-opacity': op, 'line-width': ['case', ['get', 'chosen'], 2.2, 1.3] }),
-      routeLine('r-road-gap', ['all', mode('car', 'taxi'), chosen], { 'line-color': LAND, 'line-width': .8 }),
+      // The chosen road is always heavier than any quiet route beside it: 3.6 px with a 1 px gap for a car.
+      routeLine('r-road', mode('car', 'taxi', 'bus', 'coach', 'mixed'), { 'line-color': col, 'line-opacity': op, 'line-width': ['case', ['get', 'chosen'], ['case', ['in', ['get', 'mode'], ['literal', ['car', 'taxi']]], 3.6, 2.6], 1.1] }),
+      routeLine('r-road-gap', ['all', mode('car', 'taxi'), chosen], { 'line-color': LAND, 'line-width': 1 }),
       // Sea: long dashes. Walk: dots.
-      routeLine('r-sea', mode('ferry'), { 'line-color': col, 'line-opacity': op, 'line-width': ['case', ['get', 'chosen'], 2.2, 1.3], 'line-dasharray': [4, 2.5] }, { 'line-cap': 'butt' }),
+      routeLine('r-sea', mode('ferry'), { 'line-color': col, 'line-opacity': op, 'line-width': ['case', ['get', 'chosen'], 2.6, 1.1], 'line-dasharray': [4, 2.5] }, { 'line-cap': 'butt' }),
       routeLine('r-walk', mode('walk'), { 'line-color': col, 'line-opacity': op, 'line-width': 2.2, 'line-dasharray': [.1, 2] }),
       // A route the agent could not trace is a faint straight dash, so it never looks like a real line.
       routeLine('r-guess', ['==', ['get', 'guessed'], true], { 'line-color': col, 'line-opacity': .45, 'line-width': 1, 'line-dasharray': [1, 3] }),
@@ -245,6 +246,9 @@ export function createChart(opts) {
   }
   const overlay = new deck.MapboxOverlay({ interleaved: false, layers: [], getCursor: ({ isHovering, isDragging }) => isHovering ? 'crosshair' : isDragging ? 'grabbing' : 'grab' });
   map.addControl(overlay);
+  // deck.gl's canvas takes a Tab stop with no name; the map canvas already has one.
+  const deckQuiet = () => document.querySelectorAll('#deckgl-overlay, .deckgl-overlay').forEach((c) => { c.removeAttribute('tabindex'); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; });
+  deckQuiet(); map.once('idle', deckQuiet);
   const refresh = () => overlay.setProps({ layers: deckLayers() });
   map.on('zoom', refresh); map.on('rotate', refresh);
 

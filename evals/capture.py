@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Capture a built trip page for judging: screenshots, the probe and the console, at desktop and phone size.
+"""Capture a built trip page for judging: screenshots, the probe and the console, at desktop, laptop and phone size.
 
     python3 evals/capture.py <trip-folder> <out-folder> [--port 4600] [--keep]
 
 It serves the folder with the skill's serve.py, drives an isolated browser with chrome-devtools-axi
-(session "eval-capture"), and writes desktop.png, phone.png, probe-desktop.json, probe-phone.json,
-console.txt and check.txt into the out folder. With --keep the server stays up and its URL is in
-url.txt; stop it with the pid in server.pid.
+(session "eval-capture", or CAPTURE_SESSION), and writes <size>.png and probe-<size>.json for desktop
+(1440x900), laptop (1280x720) and phone (390x844), console.txt, check.txt and server.log into the
+out folder. It stops the browser session when done. With --keep the server and the browser stay up,
+the URL is in url.txt, and the server's pid is in server.pid.
 """
 import argparse
-import threading
 import json
 import os
 import re
@@ -53,23 +53,26 @@ def main():
     check = subprocess.run([sys.executable, os.path.join(SKILL, "scripts", "check_trip.py"), trip], capture_output=True, text=True)
     open(os.path.join(out, "check.txt"), "w").write(check.stdout)
 
+    # The server writes to a log file, not a pipe, so it keeps running after this script exits (--keep).
+    log = open(os.path.join(out, "server.log"), "w")
     srv = subprocess.Popen([sys.executable, os.path.join(SKILL, "scripts", "serve.py"), trip, "--port", str(port)],
-                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+                           stdout=log, stderr=subprocess.STDOUT, text=True, start_new_session=True)
     url = None
-    for line in srv.stdout:
-        m = re.search(r"(http://\S+/)", line)
+    for _ in range(100):
+        m = re.search(r"(http://\S+/)", open(os.path.join(out, "server.log")).read())
         if m:
             url = m.group(1)
             break
-    # Keep reading the server's log, so a full pipe never blocks it.
-    threading.Thread(target=lambda: [None for _ in srv.stdout], daemon=True).start()
+        if srv.poll() is not None:
+            break
+        time.sleep(0.1)
     if not url:
         print("serve.py did not start")
         srv.kill()
         return 1
     try:
         shots, cons = {}, ""
-        for name, vp in (("desktop", "1440x900x1"), ("phone", "390x844x2,mobile,touch")):
+        for name, vp in (("desktop", "1440x900x1"), ("laptop", "1280x720x1"), ("phone", "390x844x2,mobile,touch")):
             axi("open", "about:blank")
             axi("emulate", "--viewport", vp)
             for attempt in range(2):
@@ -97,6 +100,7 @@ def main():
         else:
             srv.terminate()
             srv.wait()
+            axi("stop")
     return 0
 
 

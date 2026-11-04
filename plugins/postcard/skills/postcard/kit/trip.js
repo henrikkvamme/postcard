@@ -87,6 +87,8 @@ export async function openTrip({ raw, base }) {
   const tzOf = (id) => places[id].tz;
   const offerOf = (s) => ({ ...s, kind: s.kind === 'airline' ? 'operator' : s.kind });
 
+  // A walk or a taxi never takes the journey's carrier: "Walking, SBB + SNCF" reads wrong.
+  const FOOT = new Set(['walk', 'taxi', 'car']);
   const norm = async (x) => {
     const segsRaw = x.segments?.length ? x.segments : [{ mode: x.mode, from: x.from, to: x.to, dep: x.dep, arr: x.arr, carrier: x.carrier, number: x.numbers, path: x.path }];
     const segments = await Promise.all(segsRaw.map(async (s) => {
@@ -94,7 +96,7 @@ export async function openTrip({ raw, base }) {
       let path = await readPath(s.path, base), guessed = false;
       const ends = [places[s.from].coord, places[s.to].coord];
       if (!path) { path = MODES[mode]?.air ? geo.greatCircle(...ends) : ends; guessed = !MODES[mode]?.air; }
-      return { mode, from: s.from, to: s.to, a, b, carrier: s.carrier || x.carrier, number: s.number, path, guessed, km: pathKm(path), self: !!s.self_transfer };
+      return { mode, from: s.from, to: s.to, a, b, carrier: s.carrier || (FOOT.has(mode) ? null : x.carrier), number: s.number, path, guessed, km: pathKm(path), self: !!s.self_transfer };
     }));
     const dep = clock.H(x.dep, tzOf(x.from)), arr = clock.H(x.arr, tzOf(x.to));
     const j = { id: x.id, mode: x.mode, group: x.group, from: x.from, to: x.to, dep, arr,
@@ -183,13 +185,15 @@ export async function openTrip({ raw, base }) {
   // For a chain of journeys in time order. pt is [lng, lat]; seg and s say where on which segment.
   const whereAt = (chain, T) => {
     const name = (id) => places[id].label;
+    // A stop's own name for a change of place ("Geneva Airport → Genève-Aéroport"), never its id.
+    const stop = (id) => places[id].code || places[id].name || places[id].label;
     for (const j of chain) {
       for (const seg of j.segments) if (T >= seg.a && T <= seg.b) {
         const s = seg.b > seg.a ? (T - seg.a) / (seg.b - seg.a) : 0, { pt, head } = along(seg.path, s);
         return { pt, head, moving: true, mode: seg.mode, seg, s, j, status: `${MODES[seg.mode]?.verb || 'Travelling'}${seg.carrier ? ', ' + (carriers[seg.carrier] || seg.carrier) : ''}` };
       }
       for (const t of j.transfers) if (T > t.a && T < t.b)
-        return { pt: places[t.at].coord, place: t.at, j, status: t.ground ? `Change in ${name(t.at)}: ${t.at} → ${t.next}` : `Change in ${name(t.at)}, ${fmtDur(t.b - t.a)}` };
+        return { pt: places[t.at].coord, place: t.at, j, status: t.ground ? `Change in ${name(t.at)}: ${stop(t.at)} → ${stop(t.next)}` : `Change in ${name(t.at)}, ${fmtDur(t.b - t.a)}` };
     }
     const first = chain[0], last = chain[chain.length - 1];
     if (T < first.dep) return { pt: places[first.from].coord, place: first.from, status: `In ${name(first.from)}` };

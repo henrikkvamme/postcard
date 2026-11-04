@@ -21,7 +21,7 @@
   .dhead { display: flex; align-items: flex-end; gap: 16px; border-bottom: 1px solid var(--rule2); margin-bottom: 12px; }
   .tabs { display: flex; gap: 22px; flex: none; white-space: nowrap; }
   .tabs button { all: unset; cursor: pointer; padding: 6px 0 7px; margin-bottom: -1px; border-bottom: 1.5px solid transparent; font: 600 10px var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-  .tabs button:hover { color: var(--ink2); } .tabs button[aria-pressed="true"] { color: var(--ink); border-color: var(--red); }
+  .tabs button:hover { color: var(--ink2); } .tabs button[aria-pressed="true"] { color: var(--ink); border-color: var(--ink); }
   #ctl { margin-left: auto; display: flex; gap: 6px 14px; flex-wrap: wrap; justify-content: flex-end; padding-bottom: 6px; }
   #ctl .pc-chips + .pc-chips { margin-top: 0; padding-left: 14px; border-left: 1px solid var(--rule2); }
   .views { position: relative; min-height: 0; } .view { position: absolute; inset: 0; width: 100%; height: 100%; } .view.off { display: none !important; }
@@ -42,7 +42,7 @@
   .cell b { font: 600 15px var(--serif); } .cell[aria-pressed="true"] b { color: var(--red); }
   .cell i { position: absolute; right: 10px; top: 8px; font: 500 10px var(--sans); color: var(--muted); font-style: normal; }
   .cell span { font-size: 12px; color: var(--ink2); }
-  #v-weeks { overflow: auto; } #v-weeks .foot { margin: 10px 0 0; font-size: 12px; color: var(--muted); line-height: 1.45; }
+  #v-weeks { overflow: auto; } #v-weeks .foot { margin: 10px 0 0; font-size: 12px; color: var(--muted); line-height: 1.45; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .postcard { display: grid; grid-template-columns: minmax(0, 1fr) 150px; grid-template-rows: 1fr auto; gap: 0 14px; padding: 18px 20px 0; }
   .postcard h2 { margin: 2px 0 0; font: 700 34px/1.05 var(--serif); display: flex; align-items: baseline; gap: 10px; }
   .postcard h2 span { font: 600 21px var(--serif); color: var(--ink); }
@@ -55,13 +55,16 @@
   .postcard .pc-book { grid-column: 1 / -1; margin: 12px -20px 0; border-radius: 0 0 var(--r) 0; }
   .empty { grid-column: 1 / -1; color: var(--ink2); }
   @media (max-width: 960px) {
-    .card { left: 10px; right: 10px; bottom: 10px; height: auto; max-height: none; grid-template-columns: 1fr; grid-template-rows: 236px auto; }
-    .card > .vrule { display: none; } .left { min-height: 0; padding: 10px 12px 8px; } #v-weeks { overflow: auto; } .dhead { flex-wrap: wrap; } #ctl { margin-left: 0; justify-content: flex-start; }
-    .postcard { border-top: 1px solid var(--rule2); grid-template-columns: 1fr 110px; } .addr svg { transform: scale(.72); transform-origin: top left; }
+    .card { left: 10px; right: 10px; bottom: 10px; height: auto; max-height: none; grid-template-columns: minmax(0, 1fr); grid-template-rows: 292px auto; }
+    .card > .vrule { display: none; } .left { min-height: 0; padding: 10px 12px 8px; } #v-weeks { overflow: auto; } .dhead { flex-wrap: wrap; } #ctl { margin-left: 0; justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; } #ctl .pc-chips { flex-wrap: nowrap; flex: none; }
+    /* A phone keeps the facts and drops the stamps: they repeat the dates and the temperature. */
+    .postcard { border-top: 1px solid var(--rule2); grid-template-columns: minmax(0, 1fr); padding-top: 12px; } .addr { display: none; }
+    .postcard h2 { font-size: 30px; } .postcard .pc-price { margin: 2px 0 6px; } .facts { margin-top: 6px; }
+    .left { grid-template-columns: minmax(0, 1fr); } .dhead { min-width: 0; }
     .postcard .pc-book { border-radius: 0 0 var(--r) var(--r); } .pc-title { left: 20px; top: 20px; } .pc-title h1 { font-size: 30px; }
     #v-flights { min-width: 720px; } .views { overflow-x: auto; }
     #ctl .pc-chips + .pc-chips { padding-left: 0; border-left: 0; } .grid tbody th span { display: none; } .grid col.name { width: 26%; } .grid col.t { width: 13%; }
-    .grid tbody th b { font-size: 15px; } .grid .temp { font-size: 15px; padding-right: 6px; } .cell { padding: 4px 6px 8px; } .cell b { font-size: 12px; } .cell span { font-size: 10px; }
+    .grid tbody th b { font-size: 15px; } .grid .temp { font-size: 15px; padding-right: 6px; } .cell { padding: 3px 6px 7px; } .cell b { font-size: 12px; white-space: nowrap; } .cell span { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .dhead { margin-bottom: 6px; } .cell .ap { display: none; } .grid th, .grid td { padding: 3px 3px; }
   }
 </style>
 </head>
@@ -71,7 +74,7 @@
 <div class="pc-title pc-halo pc-hud"><h1 id="t-h1"></h1><div class="sub" id="t-sub"></div></div>
 <div class="pc-card card pc-hud" id="card" style="--d:.35s">
   <div class="left">
-    <div class="dhead"><div class="tabs" id="tabs"></div><div id="ctl"></div></div>
+    <div class="dhead"><div class="tabs" id="tabs"></div><div id="ctl" class="pc-scroll-x"></div></div>
     <div class="views"><div id="v-weeks" class="view" data-v="weeks"></div><svg id="v-flights" class="view off" data-v="flights"></svg></div>
   </div>
   <div class="vrule"></div>

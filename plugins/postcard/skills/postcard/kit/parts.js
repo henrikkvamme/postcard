@@ -15,10 +15,25 @@ export function store(id) {
 // One tooltip for the page. show(event, html) puts it beside the pointer and inside the window.
 export function tooltip() {
   let el = document.getElementById('tip');
-  if (!el) { el = document.createElement('div'); el.id = 'tip'; el.className = 'pc-tip'; document.body.append(el); }
+  if (!el) { el = document.createElement('div'); el.id = 'tip'; el.className = 'pc-tip'; el.setAttribute('role', 'tooltip'); document.body.append(el); }
+  const put = (x, y) => { el.style.left = Math.max(8, Math.min(x, innerWidth - el.offsetWidth - 8)) + 'px'; el.style.top = Math.max(8, Math.min(y, innerHeight - el.offsetHeight - 8)) + 'px'; };
+  const hits = (a, b) => a.x < b.right && a.x + a.w > b.left && a.y < b.bottom && a.y + a.h > b.top;
   return {
-    show(e, html) { el.innerHTML = html; el.style.opacity = 1;
-      el.style.left = Math.max(8, Math.min(e.clientX + 14, innerWidth - el.offsetWidth - 10)) + 'px'; el.style.top = Math.max(8, e.clientY - el.offsetHeight - 10) + 'px'; },
+    // True on a device with a mouse. On a touch screen a tap that picks must not also open a tip.
+    canHover: matchMedia('(hover: hover)').matches,
+    // At the pointer, below and to the right, for a point on the map or a bar.
+    show(e, html) { el.innerHTML = html; el.style.opacity = 1; put(e.clientX + 14, e.clientY + 16); },
+    // Beside an element (a row, a cell): outside the box `avoid` (usually the card), so the tip never
+    // covers the next row's figures. Tries left of avoid, above it, then right and left of el.
+    beside(target, html, { avoid } = {}) {
+      el.innerHTML = html; el.style.opacity = 1;
+      const r = target.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight, A = avoid?.getBoundingClientRect?.() || avoid;
+      const tries = [];
+      if (A) tries.push({ x: A.left - w - 12, y: r.top }, { x: r.left, y: A.top - h - 12 }, { x: A.right + 12, y: r.top });
+      tries.push({ x: r.right + 10, y: r.top }, { x: r.left - w - 10, y: r.top }, { x: r.left, y: r.bottom + 8 });
+      const fits = (t) => t.x >= 8 && t.y >= 8 && t.x + w <= innerWidth - 8 && t.y + h <= innerHeight - 8 && !(A && hits({ ...t, w, h }, A));
+      const t = tries.find(fits) || tries[tries.length - 1]; put(t.x, t.y);
+    },
     hide() { el.style.opacity = 0; },
   };
 }
@@ -50,28 +65,33 @@ export function postmarkSVG({ top, mid, x, y, rot = 0, ink = 'var(--ink)' }) {
 }
 
 // A modal sheet in the paper style. open(html) shows it; Esc or a click outside closes it.
+// Every sheet() shares one element and one key handler; the sheet shown last owns close and focus.
+let SHEET = null;
 export function sheet(label = 'Details') {
   let bg = document.getElementById('pc-sheetbg');
   if (!bg) { bg = document.createElement('div'); bg.id = 'pc-sheetbg'; bg.className = 'pc-sheetbg'; bg.hidden = true;
-    bg.innerHTML = `<div class="pc-card pc-sheet" role="dialog" aria-modal="true" aria-label="${esc(label)}"></div>`; document.body.append(bg); }
-  const box = bg.firstElementChild, api = {
-    el: box, get open() { return !bg.hidden; },
-    // Focus moves into the sheet, stays there on Tab, and goes back to the opener on close.
-    show(html) { opener = document.activeElement; box.innerHTML = html; bg.hidden = false; box.querySelector('button, a, input, textarea, select')?.focus(); },
-    close() { bg.hidden = true; api.onclose?.(); if (opener?.isConnected) opener.focus(); opener = null; },
-  };
+    bg.innerHTML = '<div class="pc-card pc-sheet" role="dialog" aria-modal="true"></div>'; document.body.append(bg);
+    bg.onclick = (e) => { if (e.target === bg) SHEET?.close(); };
+    addEventListener('keydown', (e) => {
+      if (bg.hidden || !SHEET) return;
+      if (e.key === 'Escape') { SHEET.close(); e.stopImmediatePropagation(); e.preventDefault(); return; }
+      if (e.key !== 'Tab') return;
+      const box = bg.firstElementChild;
+      const f = [...box.querySelectorAll('button, a[href], input, textarea, select, [tabindex]:not([tabindex="-1"])')].filter((x) => !x.disabled && x.offsetParent);
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (!box.contains(document.activeElement)) { first.focus(); e.preventDefault(); }
+      else if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); } }, true); }
+  const box = bg.firstElementChild;
   let opener = null;
-  bg.onclick = (e) => { if (e.target === bg) api.close(); };
-  addEventListener('keydown', (e) => {
-    if (bg.hidden) return;
-    if (e.key === 'Escape') { api.close(); e.stopImmediatePropagation(); return; }
-    if (e.key !== 'Tab') return;
-    const f = [...box.querySelectorAll('button, a[href], input, textarea, select, [tabindex]:not([tabindex="-1"])')].filter((x) => !x.disabled && x.offsetParent);
-    if (!f.length) return;
-    const first = f[0], last = f[f.length - 1];
-    if (!box.contains(document.activeElement)) { first.focus(); e.preventDefault(); }
-    else if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
-    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); } }, true);
+  const api = {
+    el: box, get open() { return !bg.hidden && SHEET === api; },
+    // Focus moves into the sheet, stays there on Tab, and goes back to the opener on close.
+    show(html) { if (SHEET && SHEET !== api && !bg.hidden) SHEET.close(); SHEET = api; opener = document.activeElement;
+      box.setAttribute('aria-label', label); box.innerHTML = html; bg.hidden = false; box.querySelector('button, a, input, textarea, select')?.focus(); },
+    close() { if (SHEET !== api || bg.hidden) return; bg.hidden = true; SHEET = null; api.onclose?.(); if (opener?.isConnected) opener.focus(); opener = null; },
+  };
   return api;
 }
 

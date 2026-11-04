@@ -70,7 +70,9 @@ the chosen `trip` and a `prompt` in plain words.
 The page calls `checkout()` from `kit/checkout.js` (see kit.md). Its `prompt` is the request you
 get in the job, in plain words. Write it so that you could book from it alone.
 
-Build the items and the prompt from tickets, not from journeys:
+Build the items and the prompt from the option's bill (`bill.js`, kit.md), not from journeys:
+`request.items` is `b.items()`, and the prompt's lines are `b.promptLines()`. One bill feeds the
+row, the band, the checkout and the prompt, so they cannot disagree.
 
 - **One line per ticket.** A ticket is what one seller sells in one purchase. A mixed journey (a
   train to Basel, a bus to the airport, an easyJet flight) is three tickets with three sellers, or
@@ -78,7 +80,11 @@ Build the items and the prompt from tickets, not from journeys:
   `nightjet.com`, `sbb.ch`), the segments with their numbers, the local times with their dates, the
   expected price, and the bag terms you read (`bags_note`).
 - **A deal is one line** with the deal price. List the journeys inside it; do not give each part a
-  price of its own.
+  price of its own. A deal has one expected price: when the page shows the one-way prices too, say
+  which one the agent books and why.
+- **Separate one-way bookings** are named as such: "two tickets, one per direction, on easyJet".
+- **Every bag the person named** is a line or a part of a line, in every mode: suitcases on the
+  train, skis on the flight. So is the way to the airport and back.
 - **Unknowns are instructions.** A fee or a fare you did not read becomes a step: "Read the cabin bag
   fee before you fill; stop if it is over CHF 30." "Read the couchette fare and report before you
   fill anything." Never write an unread fee into the expected price as if it were known.

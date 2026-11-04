@@ -8,6 +8,7 @@ import { esc } from './parts.js';
 // opts.bands: [{ label, spans: [{ a, b, kind }], marks: [{ at, label, name, weight }] }]  kind: 'event' | 'work' | 'stay' | 'plain'
 // opts.side(j): text after the bar (a price). opts.lead(j): text before it (carrier and time).
 // opts.onPick(j), opts.onHover(j|null, event), opts.onTime(T|null): pointer over the axis gives a time.
+// opts.disabled(j): true for a journey that cannot be picked.
 // opts.from, opts.to: hours; default the trip window. opts.scale: 'auto' | 'hours' | 'days'.
 export function timeline(svgEl, T, opts) {
   const svg = d3.select(svgEl), S = { chosen: new Set(), hover: null, dim: () => false };
@@ -23,7 +24,10 @@ export function timeline(svgEl, T, opts) {
     g = svg.append('g');
     g.append('defs').html(`<pattern id="pc-night" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width=".6" height="4" fill="var(--ink)" opacity=".07"/></pattern>
       <pattern id="pc-hatch-red" width="3.2" height="3.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width=".8" height="3.2" fill="var(--red)"/></pattern>`);
-    g.append('text').attr('x', 0).attr('y', 29).attr('class', 'pc-caps muted').text((opts.title ? opts.title + ' · ' : '') + (opts.clockLabel || T.raw.clock_label || T.clock.abbr()).toUpperCase());
+    // The clock label sits left of the axis. A long one is cut to fit, with the whole text on hover, so it never runs into the first tick.
+    const clk = g.append('text').attr('x', 0).attr('y', 29).attr('class', 'pc-caps muted'), full = (opts.title ? opts.title + ' · ' : '') + (opts.clockLabel || T.raw.clock_label || T.clock.abbr()).toUpperCase();
+    clk.text(full); for (let n = full.length; n > 3 && clk.node().getComputedTextLength() > left - 14; n--) clk.text(full.slice(0, n - 1).trimEnd() + '…');
+    if (clk.text() !== full) clk.append('title').text(full);
     // Axis: days on top; hours under them on the hour scale, dates on the day scale.
     const D = T.clock.days(from, to);
     const every = days ? Math.ceil(D.length / Math.max(1, (right - left) / 46)) : 1;
@@ -80,17 +84,19 @@ export function timeline(svgEl, T, opts) {
     const fl = g.append('g').selectAll('g').data(data).join('g').attr('class', 'pc-trow')
       .on('mousemove', (e, d) => { opts.onHover?.(d.j, e); if (S.hover !== d.j.id) { S.hover = d.j.id; paint(); } })
       .on('mouseleave', () => { opts.onHover?.(null); S.hover = null; paint(); })
-      .on('click', (e, d) => { focusId = null; opts.onPick?.(d.j); })
+      .on('click', (e, d) => { if (off(d.j)) return; focusId = null; opts.onPick?.(d.j); })
       // Rows work from the keyboard: Tab to a row, Enter or Space picks it. Focus survives the redraw a pick causes.
-      .attr('tabindex', opts.onPick ? 0 : null).attr('role', opts.onPick ? 'button' : null)
+      // opts.disabled(j): a journey that cannot be picked (it makes no valid option). It is shown dim, is not a Tab stop and does nothing on click.
+      .attr('tabindex', (d) => opts.onPick && !off(d.j) ? 0 : null).attr('role', (d) => opts.onPick && !off(d.j) ? 'button' : null).attr('aria-disabled', (d) => off(d.j) ? 'true' : null)
+      .style('cursor', (d) => opts.onPick && !off(d.j) ? 'pointer' : 'default')
       .attr('aria-label', (d) => `${d.j.carrierName || d.j.carrier || d.j.mode} ${wall(d.j, 'dep')} to ${wall(d.j, 'arr')}`)
       .on('focus', (e, d) => { opts.onHover?.(d.j, e); S.hover = d.j.id; paint(); })
       .on('blur', () => { opts.onHover?.(null); S.hover = null; paint(); })
-      .on('keydown', (e, d) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); focusId = d.j.id; opts.onPick?.(d.j); } });
+      .on('keydown', (e, d) => { if (off(d.j)) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); focusId = d.j.id; opts.onPick?.(d.j); } });
     fl.each(function (d) {
       const r = d3.select(this), j = d.j;
       for (const t of j.transfers) r.append('line').attr('x1', x(t.a) + 1).attr('x2', x(t.b) - 1).attr('y1', d.y).attr('y2', d.y)
-        .attr('stroke', t.ground ? 'var(--red)' : 'var(--ink)').attr('stroke-dasharray', t.ground ? '3 2' : '1 2.5').attr('opacity', t.ground ? .8 : .55);
+        .attr('stroke', 'var(--ink)').attr('stroke-dasharray', t.ground ? '4 2' : '1 2.5').attr('stroke-width', t.ground ? 1.4 : 1).attr('opacity', t.ground ? .8 : .55);
       r.append('rect').attr('x', x(j.dep) - (days ? 4 : 90)).attr('y', d.y - rowH / 2).attr('width', x(j.arr) - x(j.dep) + (days ? 8 : 150)).attr('height', rowH).attr('fill', 'transparent');
       r.append('text').attr('class', 'lead').attr('x', x(j.dep) - 6).attr('y', d.y + 3.8).attr('text-anchor', 'end');
       for (const s of j.segments) r.append('rect').attr('class', 'seg ' + s.mode).attr('x', x(s.a)).attr('y', d.y - 4).attr('width', Math.max(2, x(s.b) - x(s.a))).attr('height', 8).attr('rx', 1.5);
@@ -108,7 +114,7 @@ export function timeline(svgEl, T, opts) {
     if (next) Object.assign(S, next);
     if (!api.fl) return;
     const on = (d) => S.chosen.has(d.j.id) || S.hover === d.j.id;
-    api.fl.attr('opacity', (d) => S.dim(d.j) ? .32 : 1);
+    api.fl.attr('opacity', (d) => S.dim(d.j) || off(d.j) ? .32 : 1);
     api.fl.selectAll('.seg').attr('fill', (d) => S.chosen.has(d.j.id) ? 'var(--red)' : 'var(--ink)').attr('opacity', (d) => S.chosen.has(d.j.id) ? 1 : S.hover === d.j.id ? .7 : .3);
     if (!days || true) {
       api.fl.select('.lead').attr('fill', (d) => on(d) ? 'var(--ink)' : 'var(--muted)').style('font-weight', (d) => S.chosen.has(d.j.id) ? 600 : 400)
@@ -117,16 +123,16 @@ export function timeline(svgEl, T, opts) {
         .text((d) => days && !on(d) ? '' : opts.side ? opts.side(d.j) : wall(d.j, 'arr'));
     }
   }
-  // A red line at T with a label pill at the bottom; null clears it.
+  // An ink line at T with a label pill at the bottom; null clears it. Red stays for the pick.
   function cursor(t, text) {
     if (!cur) return;
     const items = t == null ? [] : [{ t, text }];
     const c = cur.selectAll('g').data(items).join((en) => { const s = en.append('g'); s.append('line'); s.append('rect'); s.append('text'); return s; });
-    c.select('line').attr('y1', 16).attr('y2', api.bottom).attr('stroke', 'var(--red)');
+    c.select('line').attr('y1', 16).attr('y2', api.bottom).attr('stroke', 'var(--ink)');
     c.select('text').attr('y', api.height - 5).attr('text-anchor', 'middle').attr('class', 'pc-pill').text((d) => d.text);
     c.each(function (d) { const s = d3.select(this), w = s.select('text').node().getComputedTextLength() + 16, xt = x(d.t);
       const dx = Math.min(api.width - 36 - (xt + w / 2), Math.max(0, w / 2 - xt));
-      s.attr('transform', `translate(${xt},0)`); s.select('rect').attr('x', -w / 2 + dx).attr('y', api.height - 18).attr('width', w).attr('height', 17).attr('rx', 2).attr('fill', 'var(--red)');
+      s.attr('transform', `translate(${xt},0)`); s.select('rect').attr('x', -w / 2 + dx).attr('y', api.height - 18).attr('width', w).attr('height', 17).attr('rx', 2).attr('fill', 'var(--ink)');
       s.select('text').attr('x', dx); });
   }
   // Draw the part of a band's spans that applies to the chosen option, in red (work lost) or ink (time at the event).
@@ -142,6 +148,7 @@ export function timeline(svgEl, T, opts) {
   function wall(j, k) { const L = k === 'dep' ? j.depL : j.arrL, tz = T.places[k === 'dep' ? j.from : j.to]?.tz;
     return T.clock.local(j[k]).hm === L.hm ? L.hm : `${L.hm} ${T.clock.abbr(tz, j[k])}`; }
   let focusId = null;
+  const off = (j) => !!opts.disabled?.(j);
   const api = { draw, paint, cursor, overlay, marks, days, fmtDur, wall };
   draw();
   return api;

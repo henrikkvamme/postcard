@@ -48,6 +48,6 @@ export function makeClock(tz, start) {
 // 95 -> '1h 35m'. 0.5 -> '30m'. 50 -> '2d 2h' when days is true.
 export function fmtDur(h, { days = false } = {}) {
   const m = Math.round(h * 60);
-  if (days && m >= 1440) { const d = Math.floor(m / 1440), r = Math.round((m % 1440) / 60); return r ? `${d}d ${r}h` : `${d}d`; }
-  return m < 60 ? `${m}m` : `${Math.floor(m / 60)}h ${String(m % 60).padStart(2, '0')}m`;
+  if (days && m >= 1440) { const d = Math.floor(m / 1440), r = Math.round((m % 1440) / 60); return r ? `${d}d\u00a0${r}h` : `${d}d`; }
+  return m < 60 ? `${m}m` : `${Math.floor(m / 60)}h\u00a0${String(m % 60).padStart(2, '0')}m`;
 }

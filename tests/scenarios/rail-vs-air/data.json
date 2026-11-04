@@ -62,7 +62,8 @@
     8.66283,
     50.10668
    ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Berlin",
+   "code": "Frankfurt Hbf"
   },
   "STUTTGART-HBF": {
    "name": "Stuttgart Hbf",
@@ -76,13 +77,14 @@
   },
   "AMSTERDAM-SLOTER": {
    "name": "Amsterdam Sloterdijk",
-   "city": "Amsterdam Sloterdijk",
+   "city": "Amsterdam",
    "kind": "station",
    "coord": [
     4.8385,
     52.38976
    ],
-   "tz": "Europe/Amsterdam"
+   "tz": "Europe/Amsterdam",
+   "code": "Sloterdijk"
   },
   "ZURICH": {
    "name": "Zürich",
@@ -95,14 +97,15 @@
    "tz": "Europe/Zurich"
   },
   "FRANKFURT-CENTRA": {
-   "name": "Frankfurt central station",
+   "name": "Frankfurt Hbf, bus stop (south side)",
    "city": "Frankfurt",
    "kind": "stop",
    "coord": [
     8.66258,
     50.10439
    ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Berlin",
+   "code": "Frankfurt Hbf bus"
   },
   "AMS": {
    "name": "Amsterdam Airport Schiphol",

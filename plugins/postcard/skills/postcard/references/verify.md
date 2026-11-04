@@ -37,8 +37,10 @@ emulation, not by resizing the window: a headless window does not resize. With
 
    It returns lists that must be empty: `hiddenEnds` (a route end off screen or under the HUD),
    `pageOverflow`, `smallText`, `clipped`, `hudOverlap`, `hudOff`, `unnamed` (buttons without
-   a name) and `manySizes` (more than six text sizes in the HUD). `ok` is true when they are all
-   empty. Also read `redText`: every red text outside the book band must be the pick or the one
+   a name), `manySizes` (more than six text sizes in the HUD), `spill` (content out of its card),
+   `cutOff` (content cut by a box that hides overflow) and `sideScroll` (a box that scrolls
+   sideways). `ok` is true when they are all empty. Run it again after you change the pick and
+   after each tab or view: a card can fit the default and spill on another pick. Also read `redText`: every red text outside the book band must be the pick or the one
    failing fact on the postcard (craft.md, rule 6).
 4. Take a screenshot and look at it as the person would. Does the main view answer the question in
    five seconds? Is the best option obvious? Does the postcard match the pick?
@@ -67,7 +69,9 @@ band and the checkout against `trip.json`:
 - Open the checkout sheet, Tab through it (focus stays inside), and close it with Esc.
 - Reload. Saved choices come back.
 
-## 6. Phone
+## 6. Laptop and phone
+
+Emulate a laptop of 1280 x 720, reload and run the probe: everything in the card still fits.
 
 Emulate a phone of 390 x 844 (`emulate --viewport "390x844x2,mobile,touch"`). Reload, run the probe
 again, and take a screenshot. Both ends of the chosen route must be on screen above the card, and
