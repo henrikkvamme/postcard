@@ -89,6 +89,20 @@ def main():
                 if "window.__chart is missing" not in json.dumps(shots[name]):
                     break
             axi("screenshot", os.path.join(out, f"{name}.png"))
+            # Other picks and views: a page that sets window.__states = { 'Fly on the day': () => ..., }
+            # gets a probe after each one, so a spill on a pick that is not the default is found too.
+            names = result(axi("eval", "JSON.stringify(Object.keys(window.__states || {}))"))
+            if isinstance(shots[name], dict) and isinstance(names, list) and names:
+                states = {}
+                for k in names:
+                    axi("eval", f"(window.__states[{json.dumps(k)}](), 'set')")
+                    time.sleep(2)
+                    states[k] = result(axi("eval", PROBE))
+                shots[name]["states"] = states
+                bad = [k for k, v in states.items() if not (isinstance(v, dict) and v.get("ok"))]
+                if bad:
+                    shots[name]["ok"] = False
+                    shots[name]["statesFailed"] = bad
             cons += f"\n--- {name} ---\n" + axi("console")
         axi("open", "about:blank")
         axi("emulate", "--viewport", "1440x900x1")
