@@ -80,9 +80,13 @@ class Handler(SimpleHTTPRequestHandler):
             if os.path.commonpath([base, full]) != base:
                 continue
             if os.path.isdir(full):
-                full = os.path.realpath(os.path.join(full, "index.html"))
-                if os.path.commonpath([base, full]) != base:
+                index = os.path.realpath(os.path.join(full, "index.html"))
+                if os.path.commonpath([base, index]) != base or not os.path.isfile(index):
                     continue
+                # Without the slash, return the folder, so the handler redirects /sub to /sub/ and relative links work.
+                if not path.split("?", 1)[0].split("#", 1)[0].endswith("/"):
+                    return full
+                full = index
             if os.path.isfile(full):
                 return full
         return os.path.join(os.path.realpath(TRIP_DIR), "__postcard_missing__")

@@ -156,6 +156,16 @@ class Serve(unittest.TestCase):
             os.makedirs(os.path.join(self.trip, "sub"))
             os.symlink(os.path.join(outside, "index.html"), os.path.join(self.trip, "sub", "index.html"))
             self.assertEqual(self.get("/sub/")[0], 404)                          # a directory index that links out
+            os.makedirs(os.path.join(self.trip, "ok"))
+            open(os.path.join(self.trip, "ok", "index.html"), "w").write("ok")
+            req = urllib.request.Request(self.url("/ok"))
+            opener = urllib.request.build_opener(type("NoRedirect", (urllib.request.HTTPRedirectHandler,), {"redirect_request": lambda *a: None}))
+            try:
+                code = opener.open(req).status
+            except urllib.error.HTTPError as e:
+                code = e.code
+            self.assertEqual(code, 301)                                          # /ok redirects to /ok/
+            self.assertEqual(self.get("/ok/"), (200, b"ok"))
             self.assertEqual(self.get("/../" + os.path.basename(sibling) + "/s.txt")[0], 404)
         finally:
             shutil.rmtree(outside); shutil.rmtree(sibling)
