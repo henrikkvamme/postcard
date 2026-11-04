@@ -1,0 +1,53 @@
+{
+  "about": "Scenarios for the postcard skill. A builder agent gets the skill, the request and the scenario data, and builds a trip folder. Judges score it with rubric.md. Data: tests/scenarios/<id>/data.json and notes.md, read live on the dates in notes.md.",
+  "scenarios": [
+    {
+      "id": "rail-vs-air",
+      "request": "I have a meeting in Amsterdam on Friday 4 December 2026, 10:00 to 16:00, near Amsterdam Centraal. I live in Zürich, near the main station. Should I take the train or fly? I need to be back by Sunday evening. One person, a cabin bag only. I would take the night train if it makes sense.",
+      "question": "Train or plane, door to door, for a fixed meeting?",
+      "must": [
+        "Compares train and plane door to door: access to the airport or station, waiting, the ride, the transfer into the city.",
+        "Shows whether each option arrives before 10:00 on Friday, with the margin.",
+        "Shows the Nightjet sleeper as its own kind of option, with its night, if the data has it.",
+        "Draws trains on their real rail lines and flights as arcs.",
+        "Books the pick with the right sellers (rail operator, airline)."
+      ]
+    },
+    {
+      "id": "nordic-loop",
+      "request": "My partner and I have 10 days in mid-May 2027. We want to go Oslo, Copenhagen (with the DFDS overnight ferry), Hamburg, Berlin, and back to Oslo. Help us pick how to do each leg and how many nights where. Two adults, normal luggage.",
+      "question": "In what order and how for each leg of a loop, and how many nights where?",
+      "must": [
+        "Shows the loop as legs in order, with the choices for each leg.",
+        "Shows nights per city, from the chosen journeys.",
+        "Draws the ferry, the trains and any bus on their real lines.",
+        "Prices the whole loop for two adults, and says what is not checked.",
+        "Books every leg of the pick, each from its own seller."
+      ]
+    },
+    {
+      "id": "family-ski",
+      "request": "We are 2 adults and 2 children (8 and 11) going from Zürich to Val Thorens, Saturday 13 to Saturday 20 February 2027, with skis. Train, car or fly to Geneva? We want the least stressful option that is not crazy expensive.",
+      "question": "Train, car or plane for a family with ski bags, with stress as a cost?",
+      "must": [
+        "Compares the three ways with all real costs for four people: tickets, ski bags, transfers, fuel, tolls, vignette, parking.",
+        "Shows what makes each option stressful: changes, a long day, a late arrival, a drive in snow.",
+        "Draws the road, the rail and the transfer bus on their real lines.",
+        "Says what was not checked or is an estimate.",
+        "Books the pick, or for the car says what there is to book."
+      ]
+    },
+    {
+      "id": "winter-sun",
+      "request": "I want a warm week in January 2027, any 7 nights. I live in Zürich; Basel and Munich are fine too. One person, I want a cabin bag. Where should I go and when?",
+      "question": "Where and which week, all costs in?",
+      "must": [
+        "Compares places and start dates in one view.",
+        "Prices with the cabin bag, and says when the bag price is not known.",
+        "Counts the extra time and cost to reach Basel or Munich.",
+        "Shows the climate of each place, with its source.",
+        "Books the pick, out and back."
+      ]
+    }
+  ]
+}

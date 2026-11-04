@@ -1,94 +1,17 @@
 {
- "version": 1,
+ "version": 2,
  "id": "junction-2026",
  "title": "Zürich → Helsinki",
  "subtitle": "Junction 2026 · Espoo · 13–15 November",
  "currency": "CHF",
- "passengers": 1,
+ "passengers": {
+  "adults": 1
+ },
  "clock": "Europe/Helsinki",
  "clock_label": "Helsinki time",
  "window": {
   "start": "2026-11-12T12:00",
   "end": "2026-11-16T21:00"
- },
- "home": {
-  "place": "ZRH",
-  "name": "Zürich",
-  "to_airport": "Train to ZRH",
-  "from_airport": "Train to the office"
- },
- "destination": {
-  "place": "HEL",
-  "venue": "Hype Areena",
-  "address": "Espoo, Finland",
-  "transfer": "Train or taxi to Espoo",
-  "transfer_h": 1.5,
-  "stamp": "art/helsinki.png",
-  "town": "Espoo",
-  "to_airport": "Train to the airport",
-  "early": {
-   "before": "06:00",
-   "text": "Taxi, no trains this early"
-  }
- },
- "buffers": {
-  "before_departure_h": 2,
-  "after_arrival_h": 1
- },
- "event": {
-  "name": "Junction",
-  "start": "2026-11-13T16:00",
-  "end": "2026-11-15T17:00",
-  "moments": [
-   {
-    "at": "2026-11-13T16:00",
-    "name": "Doors open",
-    "weight": 1
-   },
-   {
-    "at": "2026-11-13T18:00",
-    "name": "Opening ceremony",
-    "weight": 3,
-    "label": "Opening"
-   },
-   {
-    "at": "2026-11-13T19:30",
-    "name": "Hacking starts",
-    "weight": 2
-   },
-   {
-    "at": "2026-11-15T14:00",
-    "name": "Final ceremony",
-    "weight": 1
-   },
-   {
-    "at": "2026-11-15T15:10",
-    "name": "Challenge winners",
-    "weight": 1
-   },
-   {
-    "at": "2026-11-15T15:50",
-    "name": "Junction winner",
-    "weight": 2,
-    "label": "Winner"
-   },
-   {
-    "at": "2026-11-15T17:00",
-    "name": "Event ends",
-    "weight": 0.5
-   }
-  ]
- },
- "work": {
-  "days": [
-   "2026-11-12",
-   "2026-11-13",
-   "2026-11-16"
-  ],
-  "start": "09:00",
-  "end": "17:00",
-  "tz": "Europe/Zurich",
-  "remote_days": "Fri and Mon"
  },
  "places": {
   "ZRH": {
@@ -98,7 +21,9 @@
     8.5492,
     47.4582
    ],
-   "tz": "Europe/Zurich"
+   "tz": "Europe/Zurich",
+   "kind": "airport",
+   "code": "ZRH"
   },
   "HEL": {
    "name": "Helsinki",
@@ -107,7 +32,9 @@
     24.9633,
     60.3172
    ],
-   "tz": "Europe/Helsinki"
+   "tz": "Europe/Helsinki",
+   "kind": "airport",
+   "code": "HEL"
   },
   "FRA": {
    "name": "Frankfurt",
@@ -116,7 +43,9 @@
     8.5706,
     50.0333
    ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Berlin",
+   "kind": "airport",
+   "code": "FRA"
   },
   "AMS": {
    "name": "Amsterdam",
@@ -125,7 +54,9 @@
     4.7683,
     52.3105
    ],
-   "tz": "Europe/Amsterdam"
+   "tz": "Europe/Amsterdam",
+   "kind": "airport",
+   "code": "AMS"
   },
   "BER": {
    "name": "Berlin",
@@ -134,7 +65,9 @@
     13.5033,
     52.3667
    ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Berlin",
+   "kind": "airport",
+   "code": "BER"
   },
   "CDG": {
    "name": "Paris",
@@ -143,7 +76,9 @@
     2.5479,
     49.0097
    ],
-   "tz": "Europe/Paris"
+   "tz": "Europe/Paris",
+   "kind": "airport",
+   "code": "CDG"
   },
   "RIX": {
    "name": "Riga",
@@ -152,7 +87,9 @@
     23.9711,
     56.9236
    ],
-   "tz": "Europe/Riga"
+   "tz": "Europe/Riga",
+   "kind": "airport",
+   "code": "RIX"
   },
   "CPH": {
    "name": "Copenhagen",
@@ -161,7 +98,9 @@
     12.6561,
     55.6181
    ],
-   "tz": "Europe/Copenhagen"
+   "tz": "Europe/Copenhagen",
+   "kind": "airport",
+   "code": "CPH"
   },
   "MUC": {
    "name": "Munich",
@@ -170,7 +109,9 @@
     11.7861,
     48.3538
    ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Berlin",
+   "kind": "airport",
+   "code": "MUC"
   },
   "LTN": {
    "name": "London Luton",
@@ -179,7 +120,9 @@
     -0.3683,
     51.8747
    ],
-   "tz": "Europe/London"
+   "tz": "Europe/London",
+   "kind": "airport",
+   "code": "LTN"
   },
   "STN": {
    "name": "London Stansted",
@@ -188,7 +131,9 @@
     0.235,
     51.885
    ],
-   "tz": "Europe/London"
+   "tz": "Europe/London",
+   "kind": "airport",
+   "code": "STN"
   }
  },
  "carriers": {
@@ -201,1461 +146,1954 @@
   "SK": "SAS",
   "U2+FR": "easyJet + Ryanair"
  },
- "flights": [
+ "journeys": [
   {
    "id": "o1",
-   "dir": "out",
-   "carrier": "AY",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-12T19:05",
    "arr": "2026-11-12T22:55",
-   "via": [],
-   "layovers_min": []
+   "carrier": "AY",
+   "offers": [
+    {
+     "seller": "Farera",
+     "kind": "agency",
+     "price": 144,
+     "stars": 4.4,
+     "reviews": 914,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kissandfly",
+     "kind": "agency",
+     "price": 145,
+     "stars": 4.9,
+     "reviews": 11,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kiwi.com",
+     "kind": "agency",
+     "price": 163,
+     "stars": 2.9,
+     "reviews": 824,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Flysmarter.ch",
+     "kind": "agency",
+     "price": 166,
+     "stars": 2.1,
+     "reviews": 209,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Finnair",
+     "kind": "operator",
+     "price": 167,
+     "stars": 4.9,
+     "reviews": 22,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 168,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 168,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "lastminute.com",
+     "kind": "agency",
+     "price": 170,
+     "stars": 4.5,
+     "reviews": 2765,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
+   ]
   },
   {
    "id": "o2",
-   "dir": "out",
-   "carrier": "LH",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-12T16:45",
    "arr": "2026-11-13T01:30",
-   "via": [
-    "FRA"
+   "carrier": "LH",
+   "offers": [
+    {
+     "seller": "Lufthansa",
+     "kind": "operator",
+     "price": 169,
+     "source": "Google Flights",
+     "seen": "2026-11-02"
+    },
+    {
+     "seller": "cheapest OTA",
+     "kind": "agency",
+     "price": 164,
+     "source": "Skyscanner",
+     "seen": "2026-11-03"
+    }
    ],
-   "layovers_min": [
-    260
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "to": "FRA",
+     "dep": "2026-11-12T16:45",
+     "arr": "2026-11-12T17:17"
+    },
+    {
+     "mode": "plane",
+     "from": "FRA",
+     "to": "HEL",
+     "dep": "2026-11-12T21:37",
+     "arr": "2026-11-13T01:30"
+    }
    ]
   },
   {
    "id": "o11",
-   "dir": "out",
-   "carrier": "SK",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-12T20:25",
    "arr": "2026-11-13T01:35",
-   "via": [
-    "CPH"
+   "carrier": "SK",
+   "offers": [
+    {
+     "seller": "Kiwi.com",
+     "kind": "agency",
+     "price": 160,
+     "stars": 2.9,
+     "reviews": 824,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Farera",
+     "kind": "agency",
+     "price": 162,
+     "stars": 4.4,
+     "reviews": 914,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "CheapTickets",
+     "kind": "agency",
+     "price": 162,
+     "stars": 3.2,
+     "reviews": 827,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 164,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kissandfly",
+     "kind": "agency",
+     "price": 166,
+     "stars": 4.9,
+     "reviews": 11,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Trip.com",
+     "kind": "agency",
+     "price": 166,
+     "stars": 4.2,
+     "reviews": 338,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 167,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "SAS",
+     "kind": "operator",
+     "price": 174,
+     "stars": 4.6,
+     "reviews": 25,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
    ],
-   "layovers_min": [
-    55
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "to": "CPH",
+     "dep": "2026-11-12T20:25",
+     "arr": "2026-11-12T22:06"
+    },
+    {
+     "mode": "plane",
+     "from": "CPH",
+     "to": "HEL",
+     "dep": "2026-11-12T23:01",
+     "arr": "2026-11-13T01:35"
+    }
    ]
   },
   {
    "id": "o12",
-   "dir": "out",
-   "carrier": "U2+FR",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-12T21:00",
    "arr": "2026-11-13T23:05",
-   "via": [
-    "LTN>STN"
+   "carrier": "U2+FR",
+   "self_transfer": true,
+   "offers": [
+    {
+     "seller": "Trip.com",
+     "kind": "self",
+     "price": 133,
+     "stars": 4.2,
+     "reviews": 338,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kiwi.com",
+     "kind": "self",
+     "price": 141,
+     "stars": 2.9,
+     "reviews": 824,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
    ],
-   "layovers_min": [
-    1225
-   ],
-   "self_transfer": true
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "to": "LTN",
+     "dep": "2026-11-12T21:00",
+     "arr": "2026-11-12T21:27"
+    },
+    {
+     "mode": "plane",
+     "from": "STN",
+     "to": "HEL",
+     "dep": "2026-11-13T17:52",
+     "arr": "2026-11-13T23:05"
+    }
+   ]
   },
   {
    "id": "o3",
-   "dir": "out",
-   "carrier": "LH",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-13T07:00",
    "arr": "2026-11-13T12:55",
-   "via": [
-    "FRA"
+   "carrier": "LH",
+   "offers": [
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 193,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "lastminute.com",
+     "kind": "agency",
+     "price": 195,
+     "stars": 4.5,
+     "reviews": 2765,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gate1.ch",
+     "kind": "agency",
+     "price": 197,
+     "stars": 3.4,
+     "reviews": 126,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Lufthansa",
+     "kind": "operator",
+     "price": 199,
+     "stars": 4.8,
+     "reviews": 119,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 199,
+     "stars": 4.4,
+     "reviews": 1211,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Booking.com",
+     "kind": "agency",
+     "price": 202,
+     "stars": 4.9,
+     "reviews": 1284,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kiwi.com",
+     "kind": "agency",
+     "price": 203,
+     "stars": 2.9,
+     "reviews": 824,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Flysmarter.ch",
+     "kind": "agency",
+     "price": 209,
+     "stars": 2.1,
+     "reviews": 209,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
    ],
-   "layovers_min": [
-    90
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "to": "FRA",
+     "dep": "2026-11-13T07:00",
+     "arr": "2026-11-13T07:32"
+    },
+    {
+     "mode": "plane",
+     "from": "FRA",
+     "to": "HEL",
+     "dep": "2026-11-13T09:02",
+     "arr": "2026-11-13T12:55"
+    }
    ]
   },
   {
    "id": "o4",
-   "dir": "out",
-   "carrier": "KL",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-13T06:50",
    "arr": "2026-11-13T13:10",
-   "via": [
-    "AMS"
+   "carrier": "KL",
+   "offers": [
+    {
+     "seller": "KLM",
+     "kind": "operator",
+     "price": 246,
+     "source": "Google Flights",
+     "seen": "2026-11-02"
+    },
+    {
+     "seller": "cheapest OTA",
+     "kind": "agency",
+     "price": 323,
+     "source": "Skyscanner",
+     "seen": "2026-11-03"
+    }
    ],
-   "layovers_min": [
-    80
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "to": "AMS",
+     "dep": "2026-11-13T06:50",
+     "arr": "2026-11-13T07:58"
+    },
+    {
+     "mode": "plane",
+     "from": "AMS",
+     "to": "HEL",
+     "dep": "2026-11-13T09:18",
+     "arr": "2026-11-13T13:10"
+    }
    ]
   },
   {
    "id": "o5",
-   "dir": "out",
-   "carrier": "EW",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-13T09:05",
    "arr": "2026-11-13T15:30",
-   "via": [
-    "BER"
+   "carrier": "EW",
+   "offers": [
+    {
+     "seller": "Farera",
+     "kind": "agency",
+     "price": 208,
+     "stars": 4.4,
+     "reviews": 914,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 213,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 214,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Booking.com",
+     "kind": "agency",
+     "price": 215,
+     "stars": 4.9,
+     "reviews": 1284,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "lastminute.com",
+     "kind": "agency",
+     "price": 216,
+     "stars": 4.5,
+     "reviews": 2765,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "eDreams",
+     "kind": "agency",
+     "price": 217,
+     "stars": 2.4,
+     "reviews": 607,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 219,
+     "stars": 4.4,
+     "reviews": 1211,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Eurowings",
+     "kind": "operator",
+     "price": 229,
+     "stars": 3.5,
+     "reviews": 19,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
    ],
-   "layovers_min": [
-    120
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "to": "BER",
+     "dep": "2026-11-13T09:05",
+     "arr": "2026-11-13T10:20"
+    },
+    {
+     "mode": "plane",
+     "from": "BER",
+     "to": "HEL",
+     "dep": "2026-11-13T12:20",
+     "arr": "2026-11-13T15:30"
+    }
    ]
   },
   {
    "id": "o6",
-   "dir": "out",
-   "carrier": "KL",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-13T09:10",
    "arr": "2026-11-13T17:25",
-   "via": [
-    "AMS"
+   "carrier": "KL",
+   "offers": [
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 192,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "lastminute.com",
+     "kind": "agency",
+     "price": 193,
+     "stars": 4.5,
+     "reviews": 2765,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Air France",
+     "kind": "operator",
+     "price": 196,
+     "stars": 4.8,
+     "reviews": 102,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Booking.com",
+     "kind": "agency",
+     "price": 196,
+     "stars": 4.9,
+     "reviews": 1284,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Flysmarter.ch",
+     "kind": "agency",
+     "price": 198,
+     "stars": 2.1,
+     "reviews": 209,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 199,
+     "stars": 4.4,
+     "reviews": 1211,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "CheapTickets",
+     "kind": "agency",
+     "price": 205,
+     "stars": 3.2,
+     "reviews": 827,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Trip.com",
+     "kind": "agency",
+     "price": 212,
+     "stars": 4.2,
+     "reviews": 338,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
    ],
-   "layovers_min": [
-    190
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "to": "AMS",
+     "dep": "2026-11-13T09:10",
+     "arr": "2026-11-13T10:20"
+    },
+    {
+     "mode": "plane",
+     "from": "AMS",
+     "to": "HEL",
+     "dep": "2026-11-13T13:30",
+     "arr": "2026-11-13T17:25"
+    }
    ]
   },
   {
    "id": "o7",
-   "dir": "out",
-   "carrier": "AY",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-13T10:35",
    "arr": "2026-11-13T14:25",
-   "via": [],
-   "layovers_min": []
+   "carrier": "AY",
+   "offers": [
+    {
+     "seller": "Farera",
+     "kind": "agency",
+     "price": 256,
+     "stars": 4.4,
+     "reviews": 914,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kiwi.com",
+     "kind": "agency",
+     "price": 262,
+     "stars": 2.9,
+     "reviews": 824,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kissandfly",
+     "kind": "agency",
+     "price": 272,
+     "stars": 4.9,
+     "reviews": 11,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 278,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "CheapTickets",
+     "kind": "agency",
+     "price": 279,
+     "stars": 3.2,
+     "reviews": 827,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "eDreams",
+     "kind": "agency",
+     "price": 281,
+     "stars": 2.4,
+     "reviews": 607,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 294,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Finnair",
+     "kind": "operator",
+     "price": 301,
+     "stars": 4.9,
+     "reviews": 22,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
+   ]
   },
   {
    "id": "o8",
-   "dir": "out",
-   "carrier": "LH",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-13T11:25",
    "arr": "2026-11-13T16:50",
-   "via": [
-    "FRA"
+   "carrier": "LH",
+   "offers": [
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 192,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "lastminute.com",
+     "kind": "agency",
+     "price": 194,
+     "stars": 4.5,
+     "reviews": 2765,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gate1.ch",
+     "kind": "agency",
+     "price": 197,
+     "stars": 3.4,
+     "reviews": 126,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 197,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Lufthansa",
+     "kind": "operator",
+     "price": 199,
+     "stars": 4.8,
+     "reviews": 119,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 199,
+     "stars": 4.4,
+     "reviews": 1211,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kiwi.com",
+     "kind": "agency",
+     "price": 200,
+     "stars": 2.9,
+     "reviews": 824,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "eDreams",
+     "kind": "agency",
+     "price": 200,
+     "stars": 2.4,
+     "reviews": 607,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
    ],
-   "layovers_min": [
-    60
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "to": "FRA",
+     "dep": "2026-11-13T11:25",
+     "arr": "2026-11-13T11:57"
+    },
+    {
+     "mode": "plane",
+     "from": "FRA",
+     "to": "HEL",
+     "dep": "2026-11-13T12:57",
+     "arr": "2026-11-13T16:50"
+    }
    ]
   },
   {
    "id": "o9",
-   "dir": "out",
-   "carrier": "KL",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-13T17:30",
    "arr": "2026-11-14T00:20",
-   "via": [
-    "AMS"
+   "carrier": "KL",
+   "offers": [
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 192,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "lastminute.com",
+     "kind": "agency",
+     "price": 193,
+     "stars": 4.5,
+     "reviews": 2765,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Air France",
+     "kind": "operator",
+     "price": 196,
+     "stars": 4.8,
+     "reviews": 102,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Booking.com",
+     "kind": "agency",
+     "price": 196,
+     "stars": 4.9,
+     "reviews": 1284,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Flysmarter.ch",
+     "kind": "agency",
+     "price": 198,
+     "stars": 2.1,
+     "reviews": 209,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 199,
+     "stars": 4.4,
+     "reviews": 1211,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "CheapTickets",
+     "kind": "agency",
+     "price": 205,
+     "stars": 3.2,
+     "reviews": 827,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Trip.com",
+     "kind": "agency",
+     "price": 212,
+     "stars": 4.2,
+     "reviews": 338,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
    ],
-   "layovers_min": [
-    100
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "to": "AMS",
+     "dep": "2026-11-13T17:30",
+     "arr": "2026-11-13T18:41"
+    },
+    {
+     "mode": "plane",
+     "from": "AMS",
+     "to": "HEL",
+     "dep": "2026-11-13T20:21",
+     "arr": "2026-11-14T00:20"
+    }
    ]
   },
   {
    "id": "o10",
-   "dir": "out",
-   "carrier": "AY",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "HEL",
    "dep": "2026-11-13T19:05",
    "arr": "2026-11-13T22:55",
-   "via": [],
-   "layovers_min": []
+   "carrier": "AY",
+   "offers": [
+    {
+     "seller": "Farera",
+     "kind": "agency",
+     "price": 144,
+     "stars": 4.4,
+     "reviews": 914,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kissandfly",
+     "kind": "agency",
+     "price": 145,
+     "stars": 4.9,
+     "reviews": 11,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 217,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kiwi.com",
+     "kind": "agency",
+     "price": 221,
+     "stars": 2.9,
+     "reviews": 824,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Finnair",
+     "kind": "operator",
+     "price": 222,
+     "stars": 4.9,
+     "reviews": 22,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "lastminute.com",
+     "kind": "agency",
+     "price": 222,
+     "stars": 4.5,
+     "reviews": 2765,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Flysmarter.ch",
+     "kind": "agency",
+     "price": 222,
+     "stars": 2.1,
+     "reviews": 209,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 226,
+     "stars": 4.4,
+     "reviews": 1211,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
+   ]
   },
   {
    "id": "r1",
-   "dir": "back",
-   "carrier": "AY",
+   "mode": "plane",
+   "group": "back",
+   "from": "HEL",
+   "to": "ZRH",
    "dep": "2026-11-15T16:30",
    "arr": "2026-11-15T18:20",
-   "via": [],
-   "layovers_min": []
+   "carrier": "AY",
+   "offers": [
+    {
+     "seller": "Farera",
+     "kind": "agency",
+     "price": 518,
+     "stars": 4.4,
+     "reviews": 914,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 518,
+     "stars": 4.4,
+     "reviews": 1211,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kiwi.com",
+     "kind": "agency",
+     "price": 519,
+     "stars": 2.9,
+     "reviews": 824,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 524,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Finnair",
+     "kind": "operator",
+     "price": 531,
+     "stars": 4.9,
+     "reviews": 22,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kissandfly",
+     "kind": "agency",
+     "price": 536,
+     "stars": 4.9,
+     "reviews": 11,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Booking.com",
+     "kind": "agency",
+     "price": 538,
+     "stars": 4.9,
+     "reviews": 1284,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 542,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
+   ]
   },
   {
    "id": "r2",
-   "dir": "back",
-   "carrier": "LH",
+   "mode": "plane",
+   "group": "back",
+   "from": "HEL",
+   "to": "ZRH",
    "dep": "2026-11-15T17:35",
    "arr": "2026-11-15T21:55",
-   "via": [
-    "FRA"
+   "carrier": "LH",
+   "offers": [
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 248,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "lastminute.com",
+     "kind": "agency",
+     "price": 251,
+     "stars": 4.5,
+     "reviews": 2765,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Farera",
+     "kind": "agency",
+     "price": 251,
+     "stars": 4.4,
+     "reviews": 914,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Booking.com",
+     "kind": "agency",
+     "price": 253,
+     "stars": 4.9,
+     "reviews": 1284,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 253,
+     "stars": 4.4,
+     "reviews": 1211,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Lufthansa",
+     "kind": "operator",
+     "price": 257,
+     "stars": 4.8,
+     "reviews": 119,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 259,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "CheapTickets",
+     "kind": "agency",
+     "price": 259,
+     "stars": 3.2,
+     "reviews": 827,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
    ],
-   "layovers_min": [
-    100
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HEL",
+     "to": "FRA",
+     "dep": "2026-11-15T17:35",
+     "arr": "2026-11-15T19:40"
+    },
+    {
+     "mode": "plane",
+     "from": "FRA",
+     "to": "ZRH",
+     "dep": "2026-11-15T21:20",
+     "arr": "2026-11-15T21:55"
+    }
    ]
   },
   {
    "id": "r3",
-   "dir": "back",
-   "carrier": "AF",
+   "mode": "plane",
+   "group": "back",
+   "from": "HEL",
+   "to": "ZRH",
    "dep": "2026-11-15T17:35",
    "arr": "2026-11-15T22:30",
-   "via": [
-    "CDG"
+   "carrier": "AF",
+   "offers": [
+    {
+     "seller": "Air France",
+     "kind": "operator",
+     "price": 350,
+     "source": "Google Flights",
+     "seen": "2026-11-02"
+    },
+    {
+     "seller": "cheapest OTA",
+     "kind": "agency",
+     "price": 434,
+     "source": "Skyscanner",
+     "seen": "2026-11-03"
+    }
    ],
-   "layovers_min": [
-    70
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HEL",
+     "to": "CDG",
+     "dep": "2026-11-15T17:35",
+     "arr": "2026-11-15T20:23"
+    },
+    {
+     "mode": "plane",
+     "from": "CDG",
+     "to": "ZRH",
+     "dep": "2026-11-15T21:33",
+     "arr": "2026-11-15T22:30"
+    }
    ]
   },
   {
    "id": "r10",
-   "dir": "back",
-   "carrier": "LH",
+   "mode": "plane",
+   "group": "back",
+   "from": "HEL",
+   "to": "ZRH",
    "dep": "2026-11-15T19:30",
    "arr": "2026-11-16T08:45",
-   "via": [
-    "MUC"
+   "carrier": "LH",
+   "offers": [
+    {
+     "seller": "Lufthansa",
+     "kind": "operator",
+     "price": 177,
+     "source": "Google Flights",
+     "seen": "2026-11-03"
+    },
+    {
+     "seller": "cheapest OTA",
+     "kind": "agency",
+     "price": 189,
+     "source": "Skyscanner",
+     "seen": "2026-11-03"
+    }
    ],
-   "layovers_min": [
-    640
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HEL",
+     "to": "MUC",
+     "dep": "2026-11-15T19:30",
+     "arr": "2026-11-15T21:34"
+    },
+    {
+     "mode": "plane",
+     "from": "MUC",
+     "to": "ZRH",
+     "dep": "2026-11-16T08:14",
+     "arr": "2026-11-16T08:45"
+    }
    ]
   },
   {
    "id": "r4",
-   "dir": "back",
-   "carrier": "BT",
+   "mode": "plane",
+   "group": "back",
+   "from": "HEL",
+   "to": "ZRH",
    "dep": "2026-11-15T21:35",
    "arr": "2026-11-16T08:35",
-   "via": [
-    "RIX"
-   ],
-   "layovers_min": [
-    505
-   ],
+   "carrier": "BT",
    "warning": {
     "short": "bag?",
     "text": "The cheapest airBaltic fare may be MINI, with a personal item only. BASIC adds a cabin bag; its price was not checked."
-   }
+   },
+   "offers": [
+    {
+     "seller": "airBaltic",
+     "kind": "operator",
+     "price": 160,
+     "source": "Google Flights",
+     "seen": "2026-11-02"
+    },
+    {
+     "seller": "cheapest OTA",
+     "kind": "agency",
+     "price": 159,
+     "source": "Skyscanner",
+     "seen": "2026-11-03"
+    }
+   ],
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HEL",
+     "to": "RIX",
+     "dep": "2026-11-15T21:35",
+     "arr": "2026-11-15T22:19"
+    },
+    {
+     "mode": "plane",
+     "from": "RIX",
+     "to": "ZRH",
+     "dep": "2026-11-16T06:44",
+     "arr": "2026-11-16T08:35"
+    }
+   ]
   },
   {
    "id": "r5",
-   "dir": "back",
-   "carrier": "BT",
+   "mode": "plane",
+   "group": "back",
+   "from": "HEL",
+   "to": "ZRH",
    "dep": "2026-11-16T05:30",
    "arr": "2026-11-16T08:35",
-   "via": [
-    "RIX"
-   ],
-   "layovers_min": [
-    40
-   ],
+   "carrier": "BT",
    "numbers": "BT326 + BT291",
    "warning": {
     "short": "bag?",
     "text": "The cheapest airBaltic fare may be MINI, with a personal item only. BASIC adds a cabin bag; its price was not checked."
-   }
+   },
+   "offers": [
+    {
+     "seller": "Farera",
+     "kind": "agency",
+     "price": 156,
+     "stars": 4.4,
+     "reviews": 914,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "lastminute.com",
+     "kind": "agency",
+     "price": 157,
+     "stars": 4.5,
+     "reviews": 2765,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 157,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "airBaltic",
+     "kind": "operator",
+     "price": 160,
+     "stars": 4.2,
+     "reviews": 10,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "eDreams",
+     "kind": "agency",
+     "price": 160,
+     "stars": 2.4,
+     "reviews": 607,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 163,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 169,
+     "stars": 4.4,
+     "reviews": 1211,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "CheapTickets",
+     "kind": "agency",
+     "price": 170,
+     "stars": 3.2,
+     "reviews": 827,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
+   ],
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HEL",
+     "to": "RIX",
+     "dep": "2026-11-16T05:30",
+     "arr": "2026-11-16T06:12"
+    },
+    {
+     "mode": "plane",
+     "from": "RIX",
+     "to": "ZRH",
+     "dep": "2026-11-16T06:52",
+     "arr": "2026-11-16T08:35"
+    }
+   ]
   },
   {
    "id": "r8",
-   "dir": "back",
-   "carrier": "SK",
+   "mode": "plane",
+   "group": "back",
+   "from": "HEL",
+   "to": "ZRH",
    "dep": "2026-11-16T06:15",
    "arr": "2026-11-16T09:40",
-   "via": [
-    "CPH"
+   "carrier": "SK",
+   "numbers": "SK1705 + SK601",
+   "offers": [
+    {
+     "seller": "Farera",
+     "kind": "agency",
+     "price": 140,
+     "stars": 4.4,
+     "reviews": 914,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "CheapTickets",
+     "kind": "agency",
+     "price": 140,
+     "stars": 3.2,
+     "reviews": 827,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 141,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 141,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kissandfly",
+     "kind": "agency",
+     "price": 142,
+     "stars": 4.9,
+     "reviews": 11,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Trip.com",
+     "kind": "agency",
+     "price": 143,
+     "stars": 4.2,
+     "reviews": 338,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "eDreams",
+     "kind": "agency",
+     "price": 144,
+     "stars": 2.4,
+     "reviews": 607,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "SAS",
+     "kind": "operator",
+     "price": 152,
+     "stars": 4.6,
+     "reviews": 25,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
    ],
-   "layovers_min": [
-    50
-   ],
-   "numbers": "SK1705 + SK601"
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HEL",
+     "to": "CPH",
+     "dep": "2026-11-16T06:15",
+     "arr": "2026-11-16T06:59"
+    },
+    {
+     "mode": "plane",
+     "from": "CPH",
+     "to": "ZRH",
+     "dep": "2026-11-16T07:49",
+     "arr": "2026-11-16T09:40"
+    }
+   ]
   },
   {
    "id": "r6",
-   "dir": "back",
-   "carrier": "AY",
+   "mode": "plane",
+   "group": "back",
+   "from": "HEL",
+   "to": "ZRH",
    "dep": "2026-11-16T08:00",
    "arr": "2026-11-16T09:50",
-   "via": [],
-   "layovers_min": []
+   "carrier": "AY",
+   "offers": [
+    {
+     "seller": "Finnair",
+     "kind": "operator",
+     "price": 230,
+     "stars": 4.9,
+     "reviews": 22,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "lastminute.com",
+     "kind": "agency",
+     "price": 230,
+     "stars": 4.5,
+     "reviews": 2765,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 230,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 231,
+     "stars": 4.4,
+     "reviews": 1211,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kiwi.com",
+     "kind": "agency",
+     "price": 232,
+     "stars": 2.9,
+     "reviews": 824,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "eDreams",
+     "kind": "agency",
+     "price": 233,
+     "stars": 2.4,
+     "reviews": 607,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Booking.com",
+     "kind": "agency",
+     "price": 237,
+     "stars": 4.9,
+     "reviews": 1284,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 248,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
+   ]
   },
   {
    "id": "r9",
-   "dir": "back",
-   "carrier": "SK",
+   "mode": "plane",
+   "group": "back",
+   "from": "HEL",
+   "to": "ZRH",
    "dep": "2026-11-16T16:05",
    "arr": "2026-11-16T19:40",
-   "via": [
-    "CPH"
+   "carrier": "SK",
+   "offers": [
+    {
+     "seller": "Farera",
+     "kind": "agency",
+     "price": 142,
+     "stars": 4.4,
+     "reviews": 914,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 142,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "CheapTickets",
+     "kind": "agency",
+     "price": 142,
+     "stars": 3.2,
+     "reviews": 827,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 143,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kissandfly",
+     "kind": "agency",
+     "price": 145,
+     "stars": 4.9,
+     "reviews": 11,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Trip.com",
+     "kind": "agency",
+     "price": 145,
+     "stars": 4.2,
+     "reviews": 338,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "eDreams",
+     "kind": "agency",
+     "price": 146,
+     "stars": 2.4,
+     "reviews": 607,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "SAS",
+     "kind": "operator",
+     "price": 154,
+     "stars": 4.6,
+     "reviews": 25,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
    ],
-   "layovers_min": [
-    60
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HEL",
+     "to": "CPH",
+     "dep": "2026-11-16T16:05",
+     "arr": "2026-11-16T16:49"
+    },
+    {
+     "mode": "plane",
+     "from": "CPH",
+     "to": "ZRH",
+     "dep": "2026-11-16T17:49",
+     "arr": "2026-11-16T19:40"
+    }
    ]
   },
   {
    "id": "r7",
-   "dir": "back",
-   "carrier": "AY",
+   "mode": "plane",
+   "group": "back",
+   "from": "HEL",
+   "to": "ZRH",
    "dep": "2026-11-16T16:30",
    "arr": "2026-11-16T18:20",
-   "via": [],
-   "layovers_min": []
+   "carrier": "AY",
+   "offers": [
+    {
+     "seller": "Finnair",
+     "kind": "operator",
+     "price": 241,
+     "stars": 4.9,
+     "reviews": 22,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "lastminute.com",
+     "kind": "agency",
+     "price": 241,
+     "stars": 4.5,
+     "reviews": 2765,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Opodo",
+     "kind": "agency",
+     "price": 241,
+     "stars": 3.3,
+     "reviews": 755,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 242,
+     "stars": 4.4,
+     "reviews": 1211,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Kiwi.com",
+     "kind": "agency",
+     "price": 243,
+     "stars": 2.9,
+     "reviews": 824,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "eDreams",
+     "kind": "agency",
+     "price": 244,
+     "stars": 2.4,
+     "reviews": 607,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Booking.com",
+     "kind": "agency",
+     "price": 248,
+     "stars": 4.9,
+     "reviews": 1284,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    },
+    {
+     "seller": "Mytrip",
+     "kind": "agency",
+     "price": 250,
+     "stars": 4.3,
+     "reviews": 888,
+     "source": "Skyscanner",
+     "seen": "2026-11-03",
+     "rating_source": "Skyscanner partner rating"
+    }
+   ]
   }
  ],
- "offers": {
-  "o1": [
-   {
-    "seller": "Farera",
-    "kind": "agency",
-    "price": 144,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 914
-   },
-   {
-    "seller": "Kissandfly",
-    "kind": "agency",
-    "price": 145,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 11
-   },
-   {
-    "seller": "Kiwi.com",
-    "kind": "agency",
-    "price": 163,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.9,
-    "reviews": 824
-   },
-   {
-    "seller": "Flysmarter.ch",
-    "kind": "agency",
-    "price": 166,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.1,
-    "reviews": 209
-   },
-   {
-    "seller": "Finnair",
-    "kind": "airline",
-    "price": 167,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 22
-   },
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 168,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 168,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   },
-   {
-    "seller": "lastminute.com",
-    "kind": "agency",
-    "price": 170,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.5,
-    "reviews": 2765
-   }
-  ],
-  "o2": [
-   {
-    "seller": "Lufthansa",
-    "kind": "airline",
-    "price": 169,
-    "source": "Google Flights, 1-2 Nov"
-   },
-   {
-    "seller": "cheapest OTA",
-    "kind": "agency",
-    "price": 164,
-    "source": "Skyscanner, 3 Nov"
-   }
-  ],
-  "o11": [
-   {
-    "seller": "Kiwi.com",
-    "kind": "agency",
-    "price": 160,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.9,
-    "reviews": 824
-   },
-   {
-    "seller": "Farera",
-    "kind": "agency",
-    "price": 162,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 914
-   },
-   {
-    "seller": "CheapTickets",
-    "kind": "agency",
-    "price": 162,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.2,
-    "reviews": 827
-   },
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 164,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "Kissandfly",
-    "kind": "agency",
-    "price": 166,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 11
-   },
-   {
-    "seller": "Trip.com",
-    "kind": "agency",
-    "price": 166,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.2,
-    "reviews": 338
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 167,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   },
-   {
-    "seller": "SAS",
-    "kind": "airline",
-    "price": 174,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.6,
-    "reviews": 25
-   }
-  ],
-  "o12": [
-   {
-    "seller": "Trip.com",
-    "kind": "self",
-    "price": 133,
-    "source": "Skyscanner",
-    "stars": 4.2,
-    "reviews": 338
-   },
-   {
-    "seller": "Kiwi.com",
-    "kind": "self",
-    "price": 141,
-    "source": "Skyscanner",
-    "stars": 2.9,
-    "reviews": 824
-   }
-  ],
-  "o3": [
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 193,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "lastminute.com",
-    "kind": "agency",
-    "price": 195,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.5,
-    "reviews": 2765
-   },
-   {
-    "seller": "Gate1.ch",
-    "kind": "agency",
-    "price": 197,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.4,
-    "reviews": 126
-   },
-   {
-    "seller": "Lufthansa",
-    "kind": "airline",
-    "price": 199,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.8,
-    "reviews": 119
-   },
-   {
-    "seller": "Gotogate",
-    "kind": "agency",
-    "price": 199,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 1211
-   },
-   {
-    "seller": "Booking.com",
-    "kind": "agency",
-    "price": 202,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 1284
-   },
-   {
-    "seller": "Kiwi.com",
-    "kind": "agency",
-    "price": 203,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.9,
-    "reviews": 824
-   },
-   {
-    "seller": "Flysmarter.ch",
-    "kind": "agency",
-    "price": 209,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.1,
-    "reviews": 209
-   }
-  ],
-  "o4": [
-   {
-    "seller": "KLM",
-    "kind": "airline",
-    "price": 246,
-    "source": "Google Flights, 1-2 Nov"
-   },
-   {
-    "seller": "cheapest OTA",
-    "kind": "agency",
-    "price": 323,
-    "source": "Skyscanner, 3 Nov"
-   }
-  ],
-  "o5": [
-   {
-    "seller": "Farera",
-    "kind": "agency",
-    "price": 208,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 914
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 213,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   },
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 214,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "Booking.com",
-    "kind": "agency",
-    "price": 215,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 1284
-   },
-   {
-    "seller": "lastminute.com",
-    "kind": "agency",
-    "price": 216,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.5,
-    "reviews": 2765
-   },
-   {
-    "seller": "eDreams",
-    "kind": "agency",
-    "price": 217,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.4,
-    "reviews": 607
-   },
-   {
-    "seller": "Gotogate",
-    "kind": "agency",
-    "price": 219,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 1211
-   },
-   {
-    "seller": "Eurowings",
-    "kind": "airline",
-    "price": 229,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.5,
-    "reviews": 19
-   }
-  ],
-  "o6": [
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 192,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "lastminute.com",
-    "kind": "agency",
-    "price": 193,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.5,
-    "reviews": 2765
-   },
-   {
-    "seller": "Air France",
-    "kind": "airline",
-    "price": 196,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.8,
-    "reviews": 102
-   },
-   {
-    "seller": "Booking.com",
-    "kind": "agency",
-    "price": 196,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 1284
-   },
-   {
-    "seller": "Flysmarter.ch",
-    "kind": "agency",
-    "price": 198,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.1,
-    "reviews": 209
-   },
-   {
-    "seller": "Gotogate",
-    "kind": "agency",
-    "price": 199,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 1211
-   },
-   {
-    "seller": "CheapTickets",
-    "kind": "agency",
-    "price": 205,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.2,
-    "reviews": 827
-   },
-   {
-    "seller": "Trip.com",
-    "kind": "agency",
-    "price": 212,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.2,
-    "reviews": 338
-   }
-  ],
-  "o7": [
-   {
-    "seller": "Farera",
-    "kind": "agency",
-    "price": 256,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 914
-   },
-   {
-    "seller": "Kiwi.com",
-    "kind": "agency",
-    "price": 262,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.9,
-    "reviews": 824
-   },
-   {
-    "seller": "Kissandfly",
-    "kind": "agency",
-    "price": 272,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 11
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 278,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   },
-   {
-    "seller": "CheapTickets",
-    "kind": "agency",
-    "price": 279,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.2,
-    "reviews": 827
-   },
-   {
-    "seller": "eDreams",
-    "kind": "agency",
-    "price": 281,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.4,
-    "reviews": 607
-   },
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 294,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "Finnair",
-    "kind": "airline",
-    "price": 301,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 22
-   }
-  ],
-  "o8": [
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 192,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "lastminute.com",
-    "kind": "agency",
-    "price": 194,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.5,
-    "reviews": 2765
-   },
-   {
-    "seller": "Gate1.ch",
-    "kind": "agency",
-    "price": 197,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.4,
-    "reviews": 126
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 197,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   },
-   {
-    "seller": "Lufthansa",
-    "kind": "airline",
-    "price": 199,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.8,
-    "reviews": 119
-   },
-   {
-    "seller": "Gotogate",
-    "kind": "agency",
-    "price": 199,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 1211
-   },
-   {
-    "seller": "Kiwi.com",
-    "kind": "agency",
-    "price": 200,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.9,
-    "reviews": 824
-   },
-   {
-    "seller": "eDreams",
-    "kind": "agency",
-    "price": 200,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.4,
-    "reviews": 607
-   }
-  ],
-  "o9": [
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 192,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "lastminute.com",
-    "kind": "agency",
-    "price": 193,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.5,
-    "reviews": 2765
-   },
-   {
-    "seller": "Air France",
-    "kind": "airline",
-    "price": 196,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.8,
-    "reviews": 102
-   },
-   {
-    "seller": "Booking.com",
-    "kind": "agency",
-    "price": 196,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 1284
-   },
-   {
-    "seller": "Flysmarter.ch",
-    "kind": "agency",
-    "price": 198,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.1,
-    "reviews": 209
-   },
-   {
-    "seller": "Gotogate",
-    "kind": "agency",
-    "price": 199,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 1211
-   },
-   {
-    "seller": "CheapTickets",
-    "kind": "agency",
-    "price": 205,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.2,
-    "reviews": 827
-   },
-   {
-    "seller": "Trip.com",
-    "kind": "agency",
-    "price": 212,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.2,
-    "reviews": 338
-   }
-  ],
-  "o10": [
-   {
-    "seller": "Farera",
-    "kind": "agency",
-    "price": 144,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 914
-   },
-   {
-    "seller": "Kissandfly",
-    "kind": "agency",
-    "price": 145,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 11
-   },
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 217,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "Kiwi.com",
-    "kind": "agency",
-    "price": 221,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.9,
-    "reviews": 824
-   },
-   {
-    "seller": "Finnair",
-    "kind": "airline",
-    "price": 222,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 22
-   },
-   {
-    "seller": "lastminute.com",
-    "kind": "agency",
-    "price": 222,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.5,
-    "reviews": 2765
-   },
-   {
-    "seller": "Flysmarter.ch",
-    "kind": "agency",
-    "price": 222,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.1,
-    "reviews": 209
-   },
-   {
-    "seller": "Gotogate",
-    "kind": "agency",
-    "price": 226,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 1211
-   }
-  ],
-  "r1": [
-   {
-    "seller": "Farera",
-    "kind": "agency",
-    "price": 518,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 914
-   },
-   {
-    "seller": "Gotogate",
-    "kind": "agency",
-    "price": 518,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 1211
-   },
-   {
-    "seller": "Kiwi.com",
-    "kind": "agency",
-    "price": 519,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.9,
-    "reviews": 824
-   },
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 524,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "Finnair",
-    "kind": "airline",
-    "price": 531,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 22
-   },
-   {
-    "seller": "Kissandfly",
-    "kind": "agency",
-    "price": 536,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 11
-   },
-   {
-    "seller": "Booking.com",
-    "kind": "agency",
-    "price": 538,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 1284
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 542,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   }
-  ],
-  "r2": [
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 248,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "lastminute.com",
-    "kind": "agency",
-    "price": 251,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.5,
-    "reviews": 2765
-   },
-   {
-    "seller": "Farera",
-    "kind": "agency",
-    "price": 251,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 914
-   },
-   {
-    "seller": "Booking.com",
-    "kind": "agency",
-    "price": 253,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 1284
-   },
-   {
-    "seller": "Gotogate",
-    "kind": "agency",
-    "price": 253,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 1211
-   },
-   {
-    "seller": "Lufthansa",
-    "kind": "airline",
-    "price": 257,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.8,
-    "reviews": 119
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 259,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   },
-   {
-    "seller": "CheapTickets",
-    "kind": "agency",
-    "price": 259,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.2,
-    "reviews": 827
-   }
-  ],
-  "r3": [
-   {
-    "seller": "Air France",
-    "kind": "airline",
-    "price": 350,
-    "source": "Google Flights, 1-2 Nov"
-   },
-   {
-    "seller": "cheapest OTA",
-    "kind": "agency",
-    "price": 434,
-    "source": "Skyscanner, 3 Nov"
-   }
-  ],
-  "r10": [
-   {
-    "seller": "Lufthansa",
-    "kind": "airline",
-    "price": 177,
-    "source": "Google Flights"
-   },
-   {
-    "seller": "cheapest OTA",
-    "kind": "agency",
-    "price": 189,
-    "source": "Skyscanner"
-   }
-  ],
-  "r4": [
-   {
-    "seller": "airBaltic",
-    "kind": "airline",
-    "price": 160,
-    "source": "Google Flights, 1-2 Nov"
-   },
-   {
-    "seller": "cheapest OTA",
-    "kind": "agency",
-    "price": 159,
-    "source": "Skyscanner, 3 Nov"
-   }
-  ],
-  "r5": [
-   {
-    "seller": "Farera",
-    "kind": "agency",
-    "price": 156,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 914
-   },
-   {
-    "seller": "lastminute.com",
-    "kind": "agency",
-    "price": 157,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.5,
-    "reviews": 2765
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 157,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   },
-   {
-    "seller": "airBaltic",
-    "kind": "airline",
-    "price": 160,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.2,
-    "reviews": 10
-   },
-   {
-    "seller": "eDreams",
-    "kind": "agency",
-    "price": 160,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.4,
-    "reviews": 607
-   },
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 163,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "Gotogate",
-    "kind": "agency",
-    "price": 169,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 1211
-   },
-   {
-    "seller": "CheapTickets",
-    "kind": "agency",
-    "price": 170,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.2,
-    "reviews": 827
-   }
-  ],
-  "r8": [
-   {
-    "seller": "Farera",
-    "kind": "agency",
-    "price": 140,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 914
-   },
-   {
-    "seller": "CheapTickets",
-    "kind": "agency",
-    "price": 140,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.2,
-    "reviews": 827
-   },
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 141,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 141,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   },
-   {
-    "seller": "Kissandfly",
-    "kind": "agency",
-    "price": 142,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 11
-   },
-   {
-    "seller": "Trip.com",
-    "kind": "agency",
-    "price": 143,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.2,
-    "reviews": 338
-   },
-   {
-    "seller": "eDreams",
-    "kind": "agency",
-    "price": 144,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.4,
-    "reviews": 607
-   },
-   {
-    "seller": "SAS",
-    "kind": "airline",
-    "price": 152,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.6,
-    "reviews": 25
-   }
-  ],
-  "r6": [
-   {
-    "seller": "Finnair",
-    "kind": "airline",
-    "price": 230,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 22
-   },
-   {
-    "seller": "lastminute.com",
-    "kind": "agency",
-    "price": 230,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.5,
-    "reviews": 2765
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 230,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   },
-   {
-    "seller": "Gotogate",
-    "kind": "agency",
-    "price": 231,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 1211
-   },
-   {
-    "seller": "Kiwi.com",
-    "kind": "agency",
-    "price": 232,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.9,
-    "reviews": 824
-   },
-   {
-    "seller": "eDreams",
-    "kind": "agency",
-    "price": 233,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.4,
-    "reviews": 607
-   },
-   {
-    "seller": "Booking.com",
-    "kind": "agency",
-    "price": 237,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 1284
-   },
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 248,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   }
-  ],
-  "r9": [
-   {
-    "seller": "Farera",
-    "kind": "agency",
-    "price": 142,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 914
-   },
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 142,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   },
-   {
-    "seller": "CheapTickets",
-    "kind": "agency",
-    "price": 142,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.2,
-    "reviews": 827
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 143,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   },
-   {
-    "seller": "Kissandfly",
-    "kind": "agency",
-    "price": 145,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 11
-   },
-   {
-    "seller": "Trip.com",
-    "kind": "agency",
-    "price": 145,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.2,
-    "reviews": 338
-   },
-   {
-    "seller": "eDreams",
-    "kind": "agency",
-    "price": 146,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.4,
-    "reviews": 607
-   },
-   {
-    "seller": "SAS",
-    "kind": "airline",
-    "price": 154,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.6,
-    "reviews": 25
-   }
-  ],
-  "r7": [
-   {
-    "seller": "Finnair",
-    "kind": "airline",
-    "price": 241,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 22
-   },
-   {
-    "seller": "lastminute.com",
-    "kind": "agency",
-    "price": 241,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.5,
-    "reviews": 2765
-   },
-   {
-    "seller": "Opodo",
-    "kind": "agency",
-    "price": 241,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 3.3,
-    "reviews": 755
-   },
-   {
-    "seller": "Gotogate",
-    "kind": "agency",
-    "price": 242,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.4,
-    "reviews": 1211
-   },
-   {
-    "seller": "Kiwi.com",
-    "kind": "agency",
-    "price": 243,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.9,
-    "reviews": 824
-   },
-   {
-    "seller": "eDreams",
-    "kind": "agency",
-    "price": 244,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 2.4,
-    "reviews": 607
-   },
-   {
-    "seller": "Booking.com",
-    "kind": "agency",
-    "price": 248,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.9,
-    "reviews": 1284
-   },
-   {
-    "seller": "Mytrip",
-    "kind": "agency",
-    "price": 250,
-    "source": "Skyscanner, 3 Nov",
-    "stars": 4.3,
-    "reviews": 888
-   }
-  ]
- },
  "deals": [
   {
-   "out": "o1",
-   "back": "r6",
    "price": 387,
    "seller": "Finnair",
-   "kind": "airline",
+   "kind": "operator",
    "what": "Finnair round trip",
-   "source": "Google Flights; finnair.com calendar \"from 387\""
+   "source": "Google Flights; finnair.com calendar \"from 387\"",
+   "journeys": [
+    "o1",
+    "r6"
+   ],
+   "seen": "2026-11-03"
   },
   {
-   "out": "o1",
-   "back": "r7",
    "price": 392,
    "seller": "Finnair",
-   "kind": "airline",
+   "kind": "operator",
    "what": "Finnair round trip",
-   "source": "Google Flights"
+   "source": "Google Flights",
+   "journeys": [
+    "o1",
+    "r7"
+   ],
+   "seen": "2026-11-03"
   },
   {
-   "out": "o1",
-   "back": "r8",
    "price": 325,
    "seller": "Kiwi.com",
    "kind": "agency",
    "what": "Kiwi.com, two tickets sold together",
    "source": "Kiwi.com",
    "stars": 2.9,
-   "reviews": 824
+   "reviews": 824,
+   "journeys": [
+    "o1",
+    "r8"
+   ],
+   "seen": "2026-11-03",
+   "rating_source": "Skyscanner partner rating"
   }
  ],
- "sources_note": "Every seller we saw for your two flights. Read 1-3 Nov 2026 on Google Flights, Skyscanner and Kiwi. Kayak and Momondo blocked the search.",
- "prices_seen": "1-3 Nov 2026",
- "booking_note": "with a cabin bag",
+ "sources": {
+  "note": "Every seller we saw for your two flights. Read 1-3 Nov 2026 on Google Flights, Skyscanner and Kiwi. Kayak and Momondo blocked the search.",
+  "seen": "1-3 Nov 2026"
+ },
  "map": {
   "view": {
    "center": [
@@ -1742,96 +2180,178 @@
   ],
   "art": [
    {
-    "img": "art/fjords.png",
+    "img": "kit/art/fjords.png",
     "lng": 8,
     "lat": 61.4,
     "km": 430
    },
    {
-    "img": "art/pines.png",
+    "img": "kit/art/pines.png",
     "lng": 16.2,
     "lat": 60.7,
     "km": 190
    },
    {
-    "img": "art/helsinki.png",
+    "img": "kit/art/helsinki.png",
     "lng": 25.9,
     "lat": 60.55,
     "km": 330,
     "place": "HEL"
    },
    {
-    "img": "art/whale.png",
+    "img": "kit/art/whale.png",
     "lng": -0.5,
     "lat": 59.8,
     "km": 300
    },
    {
-    "img": "art/lighthouse.png",
+    "img": "kit/art/lighthouse.png",
     "lng": 10.4,
     "lat": 58,
     "km": 150
    },
    {
-    "img": "art/riga.png",
+    "img": "kit/art/riga.png",
     "lng": 24,
     "lat": 57.2,
     "km": 170,
     "place": "RIX"
    },
    {
-    "img": "art/ship.png",
+    "img": "kit/art/ship.png",
     "lng": 3,
     "lat": 54.7,
     "km": 260
    },
    {
-    "img": "art/berlin.png",
+    "img": "kit/art/berlin.png",
     "lng": 13.5,
     "lat": 52.6,
     "km": 175,
     "place": "BER"
    },
    {
-    "img": "art/amsterdam.png",
+    "img": "kit/art/amsterdam.png",
     "lng": 4.77,
     "lat": 52.55,
     "km": 170,
     "place": "AMS"
    },
    {
-    "img": "art/frankfurt.png",
+    "img": "kit/art/frankfurt.png",
     "lng": 8.57,
     "lat": 50.25,
     "km": 170,
     "place": "FRA"
    },
    {
-    "img": "art/paris.png",
+    "img": "kit/art/paris.png",
     "lng": 2.55,
     "lat": 49.25,
     "km": 195,
     "place": "CDG"
    },
    {
-    "img": "art/zurich.png",
+    "img": "kit/art/zurich.png",
     "lng": 7.75,
     "lat": 47.62,
     "km": 300,
     "place": "ZRH"
    },
    {
-    "img": "art/compass.png",
+    "img": "kit/art/compass.png",
     "lng": -9,
     "lat": 47.4,
     "km": 340
    },
    {
-    "img": "art/alps.png",
+    "img": "kit/art/alps.png",
     "lng": 12.6,
     "lat": 47,
     "km": 520
    }
   ]
+ },
+ "context": {
+  "home": {
+   "place": "ZRH",
+   "name": "Zürich",
+   "to_airport": "Train to ZRH",
+   "from_airport": "Train to the office"
+  },
+  "destination": {
+   "place": "HEL",
+   "venue": "Hype Areena",
+   "address": "Espoo, Finland",
+   "transfer": "Train or taxi to Espoo",
+   "transfer_h": 1.5,
+   "stamp": "kit/art/helsinki.png",
+   "town": "Espoo",
+   "to_airport": "Train to the airport",
+   "early": {
+    "before": "06:00",
+    "text": "Taxi, no trains this early"
+   }
+  },
+  "buffers": {
+   "before_departure_h": 2,
+   "after_arrival_h": 1
+  },
+  "event": {
+   "name": "Junction",
+   "start": "2026-11-13T16:00",
+   "end": "2026-11-15T17:00",
+   "moments": [
+    {
+     "at": "2026-11-13T16:00",
+     "name": "Doors open",
+     "weight": 1
+    },
+    {
+     "at": "2026-11-13T18:00",
+     "name": "Opening ceremony",
+     "weight": 3,
+     "label": "Opening"
+    },
+    {
+     "at": "2026-11-13T19:30",
+     "name": "Hacking starts",
+     "weight": 2
+    },
+    {
+     "at": "2026-11-15T14:00",
+     "name": "Final ceremony",
+     "weight": 1
+    },
+    {
+     "at": "2026-11-15T15:10",
+     "name": "Challenge winners",
+     "weight": 1
+    },
+    {
+     "at": "2026-11-15T15:50",
+     "name": "Junction winner",
+     "weight": 2,
+     "label": "Winner"
+    },
+    {
+     "at": "2026-11-15T17:00",
+     "name": "Event ends",
+     "weight": 0.5
+    }
+   ]
+  },
+  "work": {
+   "days": [
+    "2026-11-12",
+    "2026-11-13",
+    "2026-11-16"
+   ],
+   "start": "09:00",
+   "end": "17:00",
+   "tz": "Europe/Zurich",
+   "remote_days": "Fri and Mon"
+  },
+  "booking_note": "with a cabin bag"
  }
 }

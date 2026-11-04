@@ -24,24 +24,63 @@ def check(path):
     return subprocess.run([sys.executable, CHECK, path], capture_output=True, text=True)
 
 
-class CheckTrip(unittest.TestCase):
-    def test_example_and_fixture_pass(self):
-        for p in (EXAMPLE, MINIMAL):
-            r = check(p)
-            self.assertEqual(r.returncode, 0, r.stdout)
+EXAMPLES = [os.path.join(SKILL, "examples", d) for d in sorted(os.listdir(os.path.join(SKILL, "examples")))]
 
-    def test_errors_are_found(self):
+
+class CheckTrip(unittest.TestCase):
+    def test_examples_and_fixture_pass(self):
+        for p in EXAMPLES + [MINIMAL]:
+            r = check(p)
+            self.assertEqual(r.returncode, 0, p + "\n" + r.stdout)
+
+    def test_examples_have_a_page(self):
+        for p in EXAMPLES:
+            for f in ("trip.json", "index.html", "app.js"):
+                self.assertTrue(os.path.isfile(os.path.join(p, f)), f"{p} has no {f}")
+
+    def run_broken(self, change, today="2027-03-02"):
         t = json.load(open(os.path.join(MINIMAL, "trip.json")))
-        t["flights"][0]["arr"] = "2027-03-04T08:00"           # lands before take-off
-        t["flights"][1]["via"] = ["XXX"]                      # unknown stop
-        t["offers"]["nope"] = []                              # offer for no flight
-        t["places"]["AMS"]["tz"] = "Mars/Olympus"             # bad zone
+        change(t)
         with tempfile.TemporaryDirectory() as d:
             json.dump(t, open(os.path.join(d, "trip.json"), "w"))
+            return subprocess.run([sys.executable, CHECK, d, "--today", today], capture_output=True, text=True)
+
+    def test_errors_are_found(self):
+        def change(t):
+            j = {x["id"]: x for x in t["journeys"]}
+            j["o1"]["arr"] = "2027-03-04T08:00"                       # lands before take-off
+            j["o2"]["segments"][1]["from"] = "XXX"                    # unknown stop
+            j["r2"]["segments"][1]["to"] = "AMS"                      # chain ends at the wrong place
+            j["t1"]["segments"][0]["path"] = "rail/missing.geojson"   # path file not there
+            j["r1"]["offers"][0]["bags"] = {"checked": "maybe"}       # bad bag value
+            t["deals"].append({"journeys": ["o1", "o2"], "price": 1, "seller": "x", "kind": "operator"})  # same group twice
+            t["places"]["BAD"] = {"name": "Bad", "coord": [0, 0], "tz": "Mars/Olympus"}  # bad zone
+        r = self.run_broken(change)
+        self.assertEqual(r.returncode, 1)
+        for want in ("arrives before it departs", "'XXX' is not a usable place", "ends at AMS", "rail/missing.geojson",
+                     "bags.checked", "same group", "Mars/Olympus"):
+            self.assertIn(want, r.stdout)
+
+    def test_warnings_are_found(self):
+        def change(t):
+            j = {x["id"]: x for x in t["journeys"]}
+            j["o1"]["offers"][0]["kind"] = "airline"                  # v1 name
+            del j["o1"]["offers"][0]["seen"]                          # no date
+            j["o1"]["colour"] = "red"                                 # typo field
+            del j["t1"]["segments"][0]["path"]                        # ground leg without a line
+            j["r1"]["to"] = "AMS"; j["r1"]["arr"] = "2027-03-08T18:20"  # returns somewhere else
+        r = self.run_broken(change, today="2027-03-20")
+        self.assertEqual(r.returncode, 0, r.stdout)
+        for want in ("'airline' is the v1 name", "no seen date", "unknown field 'colour'", "faint straight line",
+                     "back returns to", "more than a week ago"):
+            self.assertIn(want, r.stdout)
+
+    def test_v1_is_named(self):
+        with tempfile.TemporaryDirectory() as d:
+            json.dump({"title": "x", "flights": []}, open(os.path.join(d, "trip.json"), "w"))
             r = check(d)
         self.assertEqual(r.returncode, 1)
-        for want in ("arrives before it departs", "'XXX' is not in places", "offers.nope", "Mars/Olympus"):
-            self.assertIn(want, r.stdout)
+        self.assertIn("v1 trip", r.stdout)
 
 
 class Serve(unittest.TestCase):
@@ -85,8 +124,22 @@ class Serve(unittest.TestCase):
         self.assertEqual(self.get("/")[0], 200)
         self.assertIn(b"Oslo", self.get("/trip.json")[1])
         self.assertEqual(self.get("/art/mine.png"), (200, b"PNG"))       # from the trip folder
-        self.assertEqual(self.get("/art/helsinki.png")[0], 200)           # from the viewer
+        self.assertEqual(self.get("/kit/art/helsinki.png")[0], 200)       # from the kit
+        self.assertEqual(self.get("/kit/trip.js")[0], 200)
+        self.assertEqual(self.get("/favicon.ico")[0], 200)
+        self.assertEqual(self.get("/api/checkout/latest")[0], 204)        # no job yet, and no 404 in the console
         self.assertEqual(self.get("/../scripts/serve.py")[0], 404)
+        self.assertEqual(self.get("/kit/../scripts/serve.py")[0], 404)
+
+    def test_busy_port_moves_on(self):
+        p = subprocess.Popen([sys.executable, SERVE, self.trip, "--port", str(self.port), "--host", "127.0.0.1"],
+                             env=dict(os.environ, POSTCARD_QUEUE=self.queue), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        try:
+            line = next(l for l in p.stdout if "http://" in l)
+            port = int(line.split("http://")[1].split("/")[0].rsplit(":", 1)[1])
+            self.assertGreater(port, self.port)
+        finally:
+            p.terminate(); p.wait()
 
     def test_checkout_round_trip(self):
         code, r = self.post("/api/checkout", {"prompt": "Book it", "trip": {"price": 1}})

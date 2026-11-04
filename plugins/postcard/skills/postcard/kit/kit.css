@@ -1,0 +1,131 @@
+/* The postcard look: navy ink on cream paper, one stamp red for the chosen trip and the one action. */
+:root {
+  --paper: #f4f2ea; --land: #f8f6ef; --card: #fbfaf5; --ink: #1d2a4a; --ink2: #4f5a74; --muted: #7f8597;
+  --rule: rgba(29, 42, 74, .22); --rule2: rgba(29, 42, 74, .1); --red: #b8322a; --green: #2f6b3a;
+  --serif: Fraunces, Georgia, serif; --sans: Inter, -apple-system, system-ui, sans-serif; --hand: Caveat, cursive;
+  --r: 4px; --ease: cubic-bezier(.22, 1, .36, 1);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--paper); color: var(--ink); font: 13px/1.35 var(--sans); font-variant-numeric: tabular-nums; overflow: hidden; }
+button { font: inherit; color: inherit; }
+
+/* Frame: the map fills the page; the airmail border folds away at globe zoom. */
+.pc-map { position: fixed; inset: 0; z-index: 0; isolation: isolate; cursor: grab; touch-action: none; }
+.pc-map:active { cursor: grabbing; }
+.pc-stripes { position: fixed; inset: 0; padding: 10px; pointer-events: none; z-index: 15;
+  background: repeating-linear-gradient(-45deg, var(--red) 0 16px, var(--paper) 16px 24px, var(--ink) 24px 40px, var(--paper) 40px 48px);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  transition: padding .9s var(--ease), opacity .7s ease; }
+.pc-stripes.bare { padding: 0; opacity: 0; }
+.maplibregl-ctrl-attrib { font-size: 10px; background: rgba(251, 250, 245, .8) !important; }
+
+/* Map labels and place marks */
+.pc-lbl { pointer-events: none; font: 600 9.5px var(--serif); letter-spacing: .34em; color: var(--ink); text-shadow: 0 0 3px var(--land), 0 0 6px var(--land); white-space: nowrap; }
+.pc-lbl.sea { font: italic 400 16px var(--serif); letter-spacing: .14em; text-shadow: 0 0 3px var(--paper), 0 0 6px var(--paper), 0 0 9px var(--paper); }
+.pc-lbl.city { font: 600 21px var(--serif); letter-spacing: 0; text-shadow: 0 0 3px var(--land), 0 0 5px var(--land), 0 0 9px var(--land); }
+.pc-lbl.hub { font: 600 9px var(--sans); letter-spacing: .12em; opacity: .7; }
+.pc-lbl.hub.on { opacity: 1; color: var(--red); }
+.pc-dot { width: 15px; height: 15px; border-radius: 50%; background: var(--land); border: 1.5px solid var(--ink); display: grid; place-items: center; pointer-events: none; }
+.pc-dot::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--ink); }
+.pc-hub { width: 7px; height: 7px; border-radius: 50%; background: var(--land); border: 1.1px solid var(--ink); pointer-events: none; }
+.pc-hub.on { background: var(--red); border-color: var(--red); }
+.z-far .pc-lbl, .z-far .pc-hub, .z-far .pc-dot { visibility: hidden !important; }
+.z-mid .pc-lbl:not(.city):not(.sea), .z-mid .pc-hub:not(.on) { visibility: hidden !important; }
+.z-city .pc-lbl:not(.city) { visibility: hidden !important; }
+
+/* Surfaces */
+.pc-card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r); position: relative;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .03), 0 12px 26px -18px rgba(20, 30, 50, .5); }
+.pc-card::after { content: ""; position: absolute; inset: 4px; border: 1px solid var(--rule2); border-radius: 2px; pointer-events: none; }
+.pc-eyebrow { font: 600 9.5px var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.pc-halo { text-shadow: 0 0 3px var(--paper), 0 0 6px var(--paper), 0 0 10px var(--paper); }
+.pc-title { position: fixed; left: 36px; top: 28px; z-index: 10; pointer-events: none; }
+.pc-title h1 { margin: 0; font: 700 42px/1 var(--serif); letter-spacing: -.015em; }
+.pc-title .sub { margin-top: 10px; padding-top: 7px; border-top: 1px solid var(--ink); box-shadow: 0 -3px 0 -2px var(--ink);
+  font: 600 10px var(--sans); letter-spacing: .26em; text-transform: uppercase; color: var(--ink2); display: inline-block; }
+.pc-price { font: 600 34px/1.1 var(--serif); }
+.pc-price small { display: block; font: 500 11px var(--sans); color: var(--ink2); margin-top: 2px; }
+.pc-hand { font: 500 21px/1 var(--hand); }
+
+/* Chips and switches */
+.pc-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pc-chips + .pc-chips { margin-top: 8px; }
+.pc-chip { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: var(--r);
+  box-shadow: inset 0 0 0 1px var(--rule2); font: 500 12px var(--sans); color: var(--ink2); transition: background .15s, color .15s, box-shadow .15s; }
+.pc-chip:hover { color: var(--ink); box-shadow: inset 0 0 0 1px var(--rule); }
+.pc-chip:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.pc-chip[aria-pressed="true"], .pc-chip[aria-checked="true"] { background: rgba(29, 42, 74, .07); color: var(--ink); font-weight: 600; box-shadow: inset 0 0 0 1px var(--ink); }
+.pc-chip .box { width: 10px; height: 10px; border-radius: 2px; box-shadow: inset 0 0 0 1.2px currentColor; display: grid; place-items: center; }
+.pc-chip[aria-checked="true"] .box { background: var(--ink); box-shadow: none; }
+.pc-chip[aria-checked="true"] .box::after { content: ""; width: 5px; height: 3px; border: solid var(--card); border-width: 0 0 1.4px 1.4px; rotate: -45deg; translate: 0 -1px; }
+
+/* The one action: a red airmail band. */
+.pc-book { all: unset; cursor: pointer; position: relative; display: flex; align-items: center; gap: 14px; padding: 12px 20px; background: var(--red); color: #fbf6ec;
+  font: 600 13.5px var(--sans); letter-spacing: .02em; }
+.pc-book::before { content: ""; position: absolute; left: 0; right: 0; top: -5px; height: 5px;
+  background: repeating-linear-gradient(-45deg, var(--red) 0 8px, transparent 8px 12px, var(--ink) 12px 20px, transparent 20px 24px); opacity: .9; }
+.pc-book:hover { background: #a42b24; }
+.pc-book:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.pc-book span { flex: 1; }
+.pc-book b { font: 600 15px var(--serif); padding-left: 12px; border-left: 1px solid rgba(255, 255, 255, .35); }
+.pc-book.busy b { display: none; }
+.pc-book.pay { background: var(--green); } .pc-book.pay:hover { background: #255830; }
+
+/* Tooltip */
+.pc-tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--card); font-size: 11.5px; padding: 7px 10px; border-radius: var(--r);
+  max-width: 360px; opacity: 0; transition: opacity .12s; z-index: 40; line-height: 1.5; }
+.pc-tip b { font-weight: 600; }
+
+/* Text in SVG views */
+.pc-caps { font: 600 9.5px var(--sans); letter-spacing: .16em; fill: var(--ink); }
+.pc-caps.big { font-size: 10.5px; letter-spacing: .22em; }
+.pc-caps.muted { fill: var(--muted); }
+.pc-tick { font: 400 9.5px var(--sans); fill: var(--muted); } .pc-tick.strong { font-weight: 600; fill: var(--ink2); }
+.pc-note { font: italic 400 10.5px var(--serif); fill: var(--ink); }
+.pc-pill { font: 600 10.5px var(--sans); fill: var(--card); }
+.pc-trow { cursor: pointer; }
+.pc-trow text { font: 400 11px var(--sans); }
+
+/* Cells: a small meter of lit squares */
+.pc-cells { display: inline-flex; gap: 1px; flex-wrap: wrap; }
+.pc-cells i { width: 6px; height: 7px; background: var(--rule2); border-radius: 1px; }
+.pc-cells i.on { background: var(--red); }
+
+/* Sheet: checkout and other dialogs */
+.pc-sheetbg { position: fixed; inset: 0; z-index: 30; background: rgba(29, 42, 74, .28); display: grid; place-items: center; padding: 16px; }
+.pc-sheetbg[hidden] { display: none; }
+.pc-sheet { width: min(560px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: 26px 28px 22px; }
+.pc-sheet h2 { margin: 2px 0 4px; font: 700 26px/1.15 var(--serif); }
+.pc-sheet .sub { color: var(--ink2); font-size: 12.5px; }
+.pc-ticket { display: grid; grid-template-columns: 54px 1fr auto; gap: 2px 14px; align-items: center; padding: 14px 0; border-top: 1px dashed var(--rule); }
+.pc-ticket:first-of-type { margin-top: 16px; }
+.pc-ticket .dir { font: 600 9.5px var(--sans); letter-spacing: .16em; color: var(--red); grid-row: span 2; text-transform: uppercase; }
+.pc-ticket .main { font: italic 400 16px var(--serif); }
+.pc-ticket .meta { font-size: 12px; color: var(--ink2); }
+.pc-ticket .price { font: 600 17px var(--serif); text-align: right; grid-row: span 2; }
+.pc-ticket a { color: var(--ink2); }
+.pc-total { display: flex; justify-content: space-between; padding: 12px 0 4px; border-top: 1px solid var(--ink); box-shadow: 0 -3px 0 -2px var(--ink); font: 600 15px var(--serif); }
+.pc-sheet .note { margin: 10px 0 16px; font-size: 12px; color: var(--ink2); line-height: 1.5; }
+.pc-sheet .acts { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+.pc-sheet .acts button, .pc-agent .paid { all: unset; cursor: pointer; padding: 9px 14px; border-radius: var(--r); font: 600 12.5px var(--sans); text-align: center; }
+.pc-sheet .go { background: var(--ink); color: var(--card); } .pc-sheet .go:hover { background: #2a3a63; } .pc-sheet .go[disabled] { opacity: .55; cursor: default; }
+.pc-sheet .ghost { box-shadow: inset 0 0 0 1px var(--rule); color: var(--ink2); }
+.pc-agent { margin: 0 0 14px; padding: 10px 12px; border: 1px dashed var(--rule); border-radius: var(--r); display: grid; gap: 5px; font-size: 12px; }
+.pc-agent[hidden] { display: none; }
+.pc-agent div { display: grid; grid-template-columns: 130px 1fr auto; gap: 10px; color: var(--ink2); }
+.pc-agent b { font-weight: 600; color: var(--ink); }
+.pc-agent div:last-of-type b { color: var(--red); }
+.pc-agent div:last-of-type b::before { content: "● "; animation: pc-blink 1.2s ease-in-out infinite; }
+.pc-agent div.done b::before, .pc-agent div.failed b::before { animation: none !important; }
+.pc-agent i { font-style: normal; color: var(--muted); font-size: 11px; }
+.pc-agent .paid { margin-top: 8px; background: var(--green); color: var(--card); }
+.pc-agent .paidnote { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
+@keyframes pc-blink { 50% { opacity: .25; } }
+
+/* Intro and globe zoom: the HUD settles in after the camera, and steps aside on the globe. */
+.pc-hud { transition: opacity .9s var(--ease) var(--d, 0s), translate 1.1s var(--ease) var(--d, 0s); }
+body.intro .pc-hud { opacity: 0; translate: 0 18px; }
+body.far .pc-hud { opacity: 0; translate: 0 18px; pointer-events: none; transition-delay: 0s; }
+body.far .pc-map { cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { .pc-hud, .pc-stripes { transition: none !important; } }

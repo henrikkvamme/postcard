@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Serve a trip in the postcard viewer, with a small checkout queue.
+"""Serve a trip page, the postcard kit and a small checkout queue.
 
     python3 serve.py <trip-folder> [--port 4471] [--host 0.0.0.0]
 
-The trip folder holds trip.json. A request for a file looks in the trip folder first, then in the
-built-in viewer. So an agent can add its own art, or copy index.html or app.js into the trip folder
-and change them, without touching the skill.
+The trip folder holds trip.json and the page (index.html, app.js) that the agent wrote for this trip.
+A request for /kit/... comes from the kit in this skill, unless the trip folder has its own file at
+that path. When the port is busy, the server takes the next free one and prints its address.
 
 Checkout: the page POSTs a booking request to /api/checkout. The request is saved as one JSON file in
 the queue folder. An agent waits on the queue with wait_checkout.py, works the request in the user's
@@ -18,15 +18,24 @@ agent in the user's browser. Only localhost may report progress.
 Environment: POSTCARD_QUEUE sets the queue folder (default ~/.local/state/postcard/checkout).
 """
 import argparse
+import errno
 import ipaddress
 import json
 import os
 import re
+import socket
 import sys
 import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-VIEWER = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "viewer")
+
+class Server(ThreadingHTTPServer):
+    # A page loads a dozen modules and drawings at once; the default backlog of 5 resets some of them.
+    request_queue_size = 128
+    daemon_threads = True
+
+SKILL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+KIT = os.path.join(SKILL, "kit")
 QUEUE = os.environ.get("POSTCARD_QUEUE") or os.path.expanduser("~/.local/state/postcard/checkout")
 TAILNET = ipaddress.ip_network("100.64.0.0/10")
 STATUSES = {"pending", "claimed", "working", "at-payment", "booked", "done", "failed"}
@@ -57,15 +66,27 @@ def public(job):
 
 class Handler(SimpleHTTPRequestHandler):
     def translate_path(self, path):
-        # The trip folder wins over the viewer, file by file.
+        # The trip folder wins; /kit/... and the icon fall back to the kit in this skill.
         rel = super().translate_path(path)[len(os.getcwd()):].lstrip(os.sep)
-        for root in (TRIP_DIR, VIEWER):
-            full = os.path.realpath(os.path.join(root, rel))
+        roots = [(TRIP_DIR, rel)]
+        if rel.startswith("kit" + os.sep):
+            roots.append((KIT, rel[4:]))
+        if rel == "favicon.ico":
+            roots.append((KIT, "favicon.svg"))
+        for root, r in roots:
+            full = os.path.realpath(os.path.join(root, r))
             if not full.startswith(os.path.realpath(root)):
                 continue
             if os.path.isfile(full) or os.path.isfile(os.path.join(full, "index.html")):
                 return full
-        return os.path.join(VIEWER, rel)
+        return os.path.join(TRIP_DIR, rel)
+
+    def guess_type(self, path):
+        if path.endswith(".js") or path.endswith(".mjs"):
+            return "text/javascript"
+        if path.endswith(".svg"):
+            return "image/svg+xml"
+        return super().guess_type(path)
 
     def allowed(self):
         ip = ipaddress.ip_address(self.client_address[0])
@@ -96,7 +117,13 @@ class Handler(SimpleHTTPRequestHandler):
             if self.path == "/api/checkout/latest":
                 # The newest booking, so a page opened later still finds the one that waits on the user.
                 files = sorted(f for f in os.listdir(QUEUE) if f.endswith(".json"))
-                return self.send_json(200, public(read(files[-1][:-5]))) if files else self.send_json(404, {"error": "none"})
+                if not files:
+                    # No booking yet is a normal state, not an error.
+                    self.send_response(204)
+                    self.send_header("cache-control", "no-store")
+                    self.end_headers()
+                    return
+                return self.send_json(200, public(read(files[-1][:-5])))
             m = re.fullmatch(r"/api/checkout/([0-9a-z-]+)", self.path)
             if m:
                 try:
@@ -173,9 +200,23 @@ def main():
     TRIP_DIR = os.path.abspath(a.trip)
     if not os.path.isfile(os.path.join(TRIP_DIR, "trip.json")):
         sys.exit(f"no trip.json in {TRIP_DIR}")
+    if not os.path.isfile(os.path.join(TRIP_DIR, "index.html")):
+        print(f"postcard: warning: no index.html in {TRIP_DIR}. Copy a page from examples/ first.", file=sys.stderr)
     os.makedirs(QUEUE, exist_ok=True)
-    print(f"postcard: http://{a.host}:{a.port}/  trip {TRIP_DIR}  queue {QUEUE}", flush=True)
-    ThreadingHTTPServer((a.host, a.port), Handler).serve_forever()
+    server = None
+    for port in range(a.port, a.port + 20):
+        try:
+            server = Server((a.host, port), Handler)
+            break
+        except OSError as e:
+            if e.errno not in (errno.EADDRINUSE, errno.EACCES):
+                raise
+            print(f"postcard: port {port} is busy, trying {port + 1}", file=sys.stderr)
+    if server is None:
+        sys.exit(f"postcard: ports {a.port}-{a.port + 19} are all busy")
+    host = socket.gethostname().split(".")[0] if a.host in ("0.0.0.0", "::") else a.host
+    print(f"postcard: http://{host}:{server.server_address[1]}/  trip {TRIP_DIR}  queue {QUEUE}", flush=True)
+    server.serve_forever()
 
 
 if __name__ == "__main__":
