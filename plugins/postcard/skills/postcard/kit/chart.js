@@ -265,7 +265,7 @@ export function createChart(opts) {
       const P = MODELS.plane;
       if (P) {
         // The paper plane, flat from above with a small lean toward the camera, so its wings read as a plan.
-        const tilt = Math.max(0, 30 - map.getPitch() / 2), bb = map.getBearing(), k = (P.px || 96) * .45 * mpp / Math.max(...P.size); // It flies high, nearer the camera, so it reads larger.
+        const tilt = Math.max(0, 30 - map.getPitch() / 2), bb = map.getBearing(), k = (P.px || 96) * .4 * mpp / Math.max(...P.size); // It flies high, nearer the camera, so it reads larger.
         const m = mat.mul(mat.rz(-bb), mat.rx(tilt), mat.rz(bb), mat.rz(270 - head), mat.rx(90), mat.s(k));
         return [new deck.ScenegraphLayer({ id: 'plane', data: [{ pt }], scenegraph: KIT + 'art/3d/plane.glb', getPosition: (d) => d.pt,
           getTransformMatrix: m, _lighting: 'pbr', visible: map.getZoom() >= FAR, getColor: [255, 255, 255, 255] })];
@@ -277,7 +277,7 @@ export function createChart(opts) {
       // Heading from a short look ahead on the path; the model's nose is +x.
       const s0 = Math.max(0, w.s - .004), s1 = Math.min(1, w.s + .004), pt = along(w.seg.path, w.s).pt;
       const head = geo.heading(along(w.seg.path, s0).pt, along(w.seg.path, s1).pt), M = MODELS[model];
-      const z = map.queryTerrainElevation?.(pt) || 0, px = M.px || 56, k = px * mpp / Math.max(...M.size);
+      const z = map.queryTerrainElevation?.(pt) || 0, px = .7 * (M.px || 56), k = px * mpp / Math.max(...M.size);
       // Seen from straight above, a train is a roof. The model leans toward the camera until the view
       // is about 60 degrees from overhead, so it always reads as a three-quarter paper model.
       const tilt = Math.max(0, 60 - map.getPitch()), b = map.getBearing();

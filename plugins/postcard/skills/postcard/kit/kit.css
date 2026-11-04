@@ -34,7 +34,7 @@ button { font: inherit; color: inherit; }
   border-radius: var(--r); padding: 9px 11px 8px; box-shadow: 0 1px 0 var(--rule2); font: 12px/1.35 var(--sans); font-variant-numeric: tabular-nums; }
 .pc-where[hidden] { display: none; }
 .pc-where .pcw-t { display: flex; align-items: baseline; gap: 8px; }
-.pc-where .pcw-t b { font: 600 21px/1 var(--serif); }
+.pc-where .pcw-t b { font: 600 19px/1 var(--serif); }
 .pc-where .pcw-t span { color: var(--ink); }
 .pc-where .pcw-who { color: var(--ink2); margin-top: 3px; }
 .pc-where .pcw-row { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); margin-top: 6px; }
