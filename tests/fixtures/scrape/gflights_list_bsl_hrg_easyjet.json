@@ -1,0 +1,25 @@
+{
+ "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhokEgoyMDI3LTAxLTIwag0IAxIJL20vMDE3MWQwcgcIARIDSFJHQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+ "title": "EuroAirport Basel-Mulhouse-Freiburg to Hurghada | Google Flights",
+ "currency": "CHF",
+ "seen": "2026-11-04",
+ "expanded": 180,
+ "rows": [
+  {
+   "label": "From 41 Swiss francs.This price does not include overhead bin access. Nonstop flight with easyJet. Leaves EuroAirport Basel-Mulhouse-Freiburg at 6:45 AM on Wednesday, January 20 and arrives at Hurghada International Airport at 12:15 PM on Wednesday, January 20. Total duration 4 hr 30 min.   Select flight",
+   "itinerary": "BSL-HRG-U2-1267-20270120",
+   "section": "Top flights",
+   "price_text": "CHF 41",
+   "flags": [],
+   "details": "Departure\nWed, Jan 20\n238 kg CO2e\n-13% emissions\nSelect flight\nCHF 41\nAvoids as much CO2e as 2,070 trees absorb in a day\n6:45 AMEuroAirport Basel-Mulhouse-Freiburg (BSL)\nTravel time: 4 hr 30 min\n12:15 PMHurghada International Airport (HRG)\neasyJetEconomyAirbus A320U2 1267\nEmissions estimate: 238 kg CO2e\nContrail warming potential: Low"
+  },
+  {
+   "label": "From 74 Swiss francs.This price does not include overhead bin access. 1 stop flight with AJet. Operated by Turkish Airlines. Leaves EuroAirport Basel-Mulhouse-Freiburg at 5:15 PM on Wednesday, January 20 and arrives at Hurghada International Airport at 1:40 AM on Thursday, January 21. Total duration 7 hr 25 min.  Layover (1 of 1) is a 1 hr 30 min layover at Sabiha Gökçen International Airport in Istanbul. Select flight",
+   "itinerary": "BSL-SAW-VF-106-20270120,SAW-HRG-VF-253-20270120",
+   "section": "Top flights",
+   "price_text": "CHF 74",
+   "flags": [],
+   "details": "Departure\nWed, Jan 20\n269 kg CO2e\nAvg emissions\nSelect flight\nCHF 74\n5:15 PMEuroAirport Basel-Mulhouse-Freiburg (BSL)\nTravel time: 3 hr 10 min\n10:25 PMSabiha Gökçen International Airport (SAW)\nAJetEconomyBoeing 737VF 106\nBelow average legroom (29 in)\nEmissions estimate: 153 kg CO2e\nContrail warming potential: Medium\n1 hr 30 min layoverIstanbul (SAW)\n11:55 PMSabiha Gökçen International Airport (SAW)\nTravel time: 2 hr 45 min\n1:40 AM+1Hurghada International Airport (HRG)\nAJetEconomyBoeing 737MAX 8 PassengerVF 253\nPlane and crew by Turkish Airlines\nBelow average legroom (29 in)\nIn-seat USB outlet\nEmissions estimate: 116 kg CO2e\nContrail warming potential: Medium"
+  }
+ ]
+}

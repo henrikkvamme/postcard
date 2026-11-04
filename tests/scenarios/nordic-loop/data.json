@@ -1,0 +1,1081 @@
+{
+ "id": "nordic-loop",
+ "title": "Oslo, Copenhagen, Hamburg, Berlin",
+ "currency": "EUR",
+ "passengers": {
+  "adults": 2,
+  "children": 0
+ },
+ "clock": "Europe/Oslo",
+ "window": {
+  "start": "2027-05-15",
+  "end": "2027-05-25"
+ },
+ "places": {
+  "OSLO-S": {
+   "name": "Oslo S",
+   "city": "Oslo S",
+   "kind": "station",
+   "coord": [
+    10.75328,
+    59.91093
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "GOETEBORG-CENTRA": {
+   "name": "Göteborg Centralstation",
+   "city": "Göteborg Centralstation",
+   "kind": "station",
+   "coord": [
+    11.97185,
+    57.71027
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "KOEPENHAMN-H": {
+   "name": "Köpenhamn H",
+   "city": "Köpenhamn H",
+   "kind": "station",
+   "coord": [
+    12.56589,
+    55.6724
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "MALMOE-CENTRAL-T": {
+   "name": "Malmö central train station FlixBus stop",
+   "city": "Malmö central train station FlixBus stop",
+   "kind": "station",
+   "coord": [
+    13.00031,
+    55.60792
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "HAESSLEHOLM-CENT": {
+   "name": "Hässleholm Centralstation",
+   "city": "Hässleholm Centralstation",
+   "kind": "station",
+   "coord": [
+    13.76314,
+    56.15776
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "HELSINGBORG-CENT": {
+   "name": "Helsingborg Centralstation",
+   "city": "Helsingborg Centralstation",
+   "kind": "station",
+   "coord": [
+    12.69453,
+    56.04389
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "OSLO-FERRY": {
+   "name": "Oslo ferry terminal (Akershusstranda)",
+   "city": "Oslo",
+   "kind": "port",
+   "coord": [
+    10.74,
+    59.9045
+   ],
+   "tz": "Europe/Oslo"
+  },
+  "CPH-FERRY": {
+   "name": "Copenhagen ferry terminal (Dampfærgevej)",
+   "city": "Copenhagen",
+   "kind": "port",
+   "coord": [
+    12.597,
+    55.703
+   ],
+   "tz": "Europe/Copenhagen"
+  },
+  "OSLO": {
+   "name": "Oslo",
+   "city": "Oslo",
+   "kind": "stop",
+   "coord": [
+    10.7593,
+    59.91161
+   ],
+   "tz": "Europe/Oslo"
+  },
+  "COPENHAGEN": {
+   "name": "Copenhagen",
+   "city": "Copenhagen",
+   "kind": "stop",
+   "coord": [
+    12.56091,
+    55.66449
+   ],
+   "tz": "Europe/Copenhagen"
+  },
+  "KOEBENHAVN-H": {
+   "name": "Koebenhavn H",
+   "city": "Koebenhavn H",
+   "kind": "station",
+   "coord": [
+    12.56462,
+    55.67272
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "HAMBURG-HBF": {
+   "name": "Hamburg Hbf",
+   "city": "Hamburg Hbf",
+   "kind": "station",
+   "coord": [
+    10.00691,
+    53.55273
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "HAMBURG-ZOB": {
+   "name": "Hamburg ZOB",
+   "city": "Hamburg",
+   "kind": "stop",
+   "coord": [
+    10.01166,
+    53.55177
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "S-U-BERLIN-HAUPT": {
+   "name": "S+U Berlin Hauptbahnhof",
+   "city": "S+U Berlin Hauptbahnhof",
+   "kind": "station",
+   "coord": [
+    13.36917,
+    52.52506
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "BERLIN-CENTRAL-B": {
+   "name": "Berlin central bus station",
+   "city": "Berlin",
+   "kind": "stop",
+   "coord": [
+    13.2794,
+    52.50717
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "BERLIN-ALT-TEGEL": {
+   "name": "Berlin Alt-Tegel",
+   "city": "Berlin",
+   "kind": "stop",
+   "coord": [
+    13.28202,
+    52.59171
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "BERLIN-ALEXANDER": {
+   "name": "Berlin Alexanderplatz",
+   "city": "Berlin",
+   "kind": "stop",
+   "coord": [
+    13.41453,
+    52.5232
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "MALMOE-CENTRALST": {
+   "name": "Malmö Centralstation",
+   "city": "Malmö Centralstation",
+   "kind": "station",
+   "coord": [
+    13.00143,
+    55.60919
+   ],
+   "tz": "Europe/Berlin"
+  }
+ },
+ "context": {
+  "stays": [
+   {
+    "city": "Copenhagen",
+    "from": "2027-05-16",
+    "to": "2027-05-18"
+   },
+   {
+    "city": "Hamburg",
+    "from": "2027-05-18",
+    "to": "2027-05-21"
+   },
+   {
+    "city": "Berlin",
+    "from": "2027-05-21",
+    "to": "2027-05-24"
+   }
+  ]
+ },
+ "journeys": [
+  {
+   "id": "a3",
+   "mode": "mixed",
+   "from": "OSLO-S",
+   "to": "KOEPENHAMN-H",
+   "dep": "2027-05-15T08:24",
+   "arr": "2027-05-15T16:28",
+   "carrier": "Vy bus4you + Öresundståg",
+   "numbers": "606 + Ø Göteborg-Halmstad-Helsingborg-Malmö-Købe",
+   "transfers": 1,
+   "segments": [
+    {
+     "mode": "walk",
+     "from": "OSLO-S",
+     "to": "OSLO-S",
+     "dep": "2027-05-15T08:24",
+     "arr": "2027-05-15T08:30"
+    },
+    {
+     "mode": "bus",
+     "from": "OSLO-S",
+     "to": "GOETEBORG-CENTRA",
+     "dep": "2027-05-15T08:30",
+     "arr": "2027-05-15T12:00",
+     "carrier": "Vy bus4you",
+     "number": "606",
+     "headsign": "Göteborg Nils Ericsonterminal",
+     "path": "paths/606-oslo-s-goeteborg-nils-e.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "GOETEBORG-CENTRA",
+     "to": "GOETEBORG-CENTRA",
+     "dep": "2027-05-15T12:00",
+     "arr": "2027-05-15T12:05"
+    },
+    {
+     "mode": "train",
+     "from": "GOETEBORG-CENTRA",
+     "to": "KOEPENHAMN-H",
+     "dep": "2027-05-15T12:55",
+     "arr": "2027-05-15T16:28",
+     "carrier": "Öresundståg",
+     "number": "Ø Göteborg-Halmstad-Helsingborg-Malmö-Købe",
+     "headsign": "Østerport",
+     "path": "paths/oe-goeteborg-goeteborg-nils-e-koebenhavn-h.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-12",
+   "seen": "2026-11-04",
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-15 is not published yet. These times come from the same train on 2026-12-12. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "oslo-copenhagen"
+  },
+  {
+   "id": "a7",
+   "mode": "train",
+   "from": "OSLO-S",
+   "to": "KOEPENHAMN-H",
+   "dep": "2027-05-15T12:14",
+   "arr": "2027-05-15T20:13",
+   "carrier": "Vy Norge + SJ + Öresundståg",
+   "numbers": "389 + 491 + 51125",
+   "transfers": 2,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "OSLO-S",
+     "to": "GOETEBORG-CENTRA",
+     "dep": "2027-05-15T12:14",
+     "arr": "2027-05-15T15:45",
+     "carrier": "Vy Norge",
+     "number": "389",
+     "headsign": "Göteborg Centralstation",
+     "path": "paths/389-oslo-s-goeteborg-nils-e.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "GOETEBORG-CENTRA",
+     "to": "HAESSLEHOLM-CENT",
+     "dep": "2027-05-15T16:39",
+     "arr": "2027-05-15T18:31",
+     "carrier": "SJ",
+     "number": "491",
+     "headsign": "Malmö Centralstation",
+     "path": "paths/491-goeteborg-nils-e-haessleholm-cent.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "HAESSLEHOLM-CENT",
+     "to": "KOEPENHAMN-H",
+     "dep": "2027-05-15T18:46",
+     "arr": "2027-05-15T20:13",
+     "carrier": "Öresundståg",
+     "number": "51125",
+     "headsign": "Köpenhamn Österport",
+     "path": "paths/51125-haessleholm-cent-koebenhavn-h.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-12",
+   "seen": "2026-11-04",
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-15 is not published yet. These times come from the same train on 2026-12-12. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "oslo-copenhagen"
+  },
+  {
+   "id": "a9",
+   "mode": "train",
+   "from": "OSLO-S",
+   "to": "KOEPENHAMN-H",
+   "dep": "2027-05-15T14:48",
+   "arr": "2027-05-15T22:13",
+   "carrier": "Snälltåget + Öresundståg",
+   "numbers": "31 + 1141",
+   "transfers": 1,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "OSLO-S",
+     "to": "MALMOE-CENTRAL-T",
+     "dep": "2027-05-15T14:48",
+     "arr": "2027-05-15T21:25",
+     "carrier": "Snälltåget",
+     "number": "31",
+     "headsign": "Malmö Centralstation",
+     "path": "paths/31-oslo-s-malmoe-central-t.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "MALMOE-CENTRAL-T",
+     "to": "KOEPENHAMN-H",
+     "dep": "2027-05-15T21:35",
+     "arr": "2027-05-15T22:13",
+     "carrier": "Öresundståg",
+     "number": "1141",
+     "headsign": "Köpenhamn Österport",
+     "path": "paths/1141-malmoe-central-t-koebenhavn-h.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-12",
+   "seen": "2026-11-04",
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-15 is not published yet. These times come from the same train on 2026-12-12. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "oslo-copenhagen"
+  },
+  {
+   "id": "af1",
+   "mode": "ferry",
+   "from": "OSLO-FERRY",
+   "to": "CPH-FERRY",
+   "dep": "2027-05-15T16:30",
+   "arr": "2027-05-16T10:00",
+   "carrier": "Go Nordic Cruiseline",
+   "numbers": "Nordic Pearl",
+   "segments": [
+    {
+     "mode": "ferry",
+     "from": "OSLO-FERRY",
+     "to": "CPH-FERRY",
+     "dep": "2027-05-15T16:30",
+     "arr": "2027-05-16T10:00",
+     "carrier": "Go Nordic Cruiseline",
+     "number": "Nordic Pearl",
+     "path": "paths/ferry-oslo-copenhagen.geojson"
+    }
+   ],
+   "transfers": 0,
+   "overnight": true,
+   "self_transfer": false,
+   "schedule_source": "gonordiccruiseline.no",
+   "warning": {
+    "short": "Not DFDS any more",
+    "text": "DFDS sold this route. Go Nordic Cruiseline (Gotlandsbolaget) runs it since November 2024. The price is the lowest 'from' price for 2 adults; the cabin type was not shown."
+   },
+   "offers": [
+    {
+     "seller": "Go Nordic Cruiseline",
+     "kind": "operator",
+     "price": 79.76,
+     "original": {
+      "price": 823,
+      "currency": "NOK"
+     },
+     "fare": "One way, from price, cabin included",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "Foot passengers carry their own luggage on board. No weight limit is stated.",
+     "price_note": "753 NOK plus 70 NOK online booking fee",
+     "basis": "list",
+     "source": "gonordiccruiseline.no",
+     "seen": "2026-11-04",
+     "url": "https://www.gonordiccruiseline.no/booking/"
+    }
+   ],
+   "group": "oslo-copenhagen"
+  },
+  {
+   "id": "fa1",
+   "mode": "bus",
+   "from": "OSLO",
+   "to": "COPENHAGEN",
+   "dep": "2027-05-15T21:20",
+   "arr": "2027-05-16T05:40",
+   "carrier": "FlixBus",
+   "numbers": "",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "OSLO",
+     "to": "COPENHAGEN",
+     "dep": "2027-05-15T21:20",
+     "arr": "2027-05-16T05:40",
+     "carrier": "FlixBus",
+     "number": "",
+     "path": "paths/bus-oslo-copenhagen.geojson"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "FlixBus",
+     "kind": "operator",
+     "price": 88.97,
+     "fare": "Standard",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "1 hand luggage up to 7 kg and 1 hold bag up to 20 kg are included",
+     "seats_left": 79,
+     "source": "flixbus.com search API",
+     "seen": "2026-11-04",
+     "url": "https://www.flixbus.com/",
+     "stars": 2.4,
+     "reviews": 18361,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "group": "oslo-copenhagen"
+  },
+  {
+   "id": "b1",
+   "mode": "train",
+   "from": "KOEBENHAVN-H",
+   "to": "HAMBURG-HBF",
+   "dep": "2027-05-18T06:22",
+   "arr": "2027-05-18T11:28",
+   "carrier": "Dänische Staatsbahnen",
+   "numbers": "RJ 383",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "KOEBENHAVN-H",
+     "to": "HAMBURG-HBF",
+     "dep": "2027-05-18T06:22",
+     "arr": "2027-05-18T11:28",
+     "carrier": "Dänische Staatsbahnen",
+     "number": "RJ 383",
+     "headsign": "Praha hl.n.",
+     "path": "paths/rj-383-koebenhavn-h-hamburg-hbf.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-08",
+   "seen": "2026-11-04",
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-18 is not published yet. These times come from the same train on 2026-12-08. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "copenhagen-hamburg"
+  },
+  {
+   "id": "b3",
+   "mode": "train",
+   "from": "KOEBENHAVN-H",
+   "to": "HAMBURG-HBF",
+   "dep": "2027-05-18T08:22",
+   "arr": "2027-05-18T13:06",
+   "carrier": "DSB",
+   "numbers": "ECE",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "KOEBENHAVN-H",
+     "to": "HAMBURG-HBF",
+     "dep": "2027-05-18T08:22",
+     "arr": "2027-05-18T13:06",
+     "carrier": "DSB",
+     "number": "ECE",
+     "headsign": "Hamburg Hbf",
+     "path": "paths/ece-koebenhavn-h-hamburg-hbf.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-08",
+   "seen": "2026-11-04",
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-18 is not published yet. These times come from the same train on 2026-12-08. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "copenhagen-hamburg"
+  },
+  {
+   "id": "fb2",
+   "mode": "bus",
+   "from": "COPENHAGEN",
+   "to": "HAMBURG-ZOB",
+   "dep": "2027-05-18T09:35",
+   "arr": "2027-05-18T14:45",
+   "carrier": "FlixBus",
+   "numbers": "",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "COPENHAGEN",
+     "to": "HAMBURG-ZOB",
+     "dep": "2027-05-18T09:35",
+     "arr": "2027-05-18T14:45",
+     "carrier": "FlixBus",
+     "number": "",
+     "path": "paths/bus-copenhagen-hamburg-zob.geojson"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "FlixBus",
+     "kind": "operator",
+     "price": 59.97,
+     "fare": "Standard",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "1 hand luggage up to 7 kg and 1 hold bag up to 20 kg are included",
+     "seats_left": 79,
+     "source": "flixbus.com search API",
+     "seen": "2026-11-04",
+     "url": "https://www.flixbus.com/",
+     "stars": 2.4,
+     "reviews": 18361,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "group": "copenhagen-hamburg"
+  },
+  {
+   "id": "b10",
+   "mode": "train",
+   "from": "KOEBENHAVN-H",
+   "to": "HAMBURG-HBF",
+   "dep": "2027-05-18T12:22",
+   "arr": "2027-05-18T17:04",
+   "carrier": "DSB",
+   "numbers": "ECE",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "KOEBENHAVN-H",
+     "to": "HAMBURG-HBF",
+     "dep": "2027-05-18T12:22",
+     "arr": "2027-05-18T17:04",
+     "carrier": "DSB",
+     "number": "ECE",
+     "headsign": "Hamburg Hbf",
+     "path": "paths/ece-koebenhavn-h-hamburg-hbf.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-08",
+   "seen": "2026-11-04",
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-18 is not published yet. These times come from the same train on 2026-12-08. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "copenhagen-hamburg"
+  },
+  {
+   "id": "fb3",
+   "mode": "bus",
+   "from": "COPENHAGEN",
+   "to": "HAMBURG-ZOB",
+   "dep": "2027-05-18T16:00",
+   "arr": "2027-05-18T21:55",
+   "carrier": "FlixBus",
+   "numbers": "",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "COPENHAGEN",
+     "to": "HAMBURG-ZOB",
+     "dep": "2027-05-18T16:00",
+     "arr": "2027-05-18T21:55",
+     "carrier": "FlixBus",
+     "number": "",
+     "path": "paths/bus-copenhagen-hamburg-zob.geojson"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "FlixBus",
+     "kind": "operator",
+     "price": 57.97,
+     "fare": "Standard",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "1 hand luggage up to 7 kg and 1 hold bag up to 20 kg are included",
+     "seats_left": 79,
+     "source": "flixbus.com search API",
+     "seen": "2026-11-04",
+     "url": "https://www.flixbus.com/",
+     "stars": 2.4,
+     "reviews": 18361,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "group": "copenhagen-hamburg"
+  },
+  {
+   "id": "fc3",
+   "mode": "bus",
+   "from": "HAMBURG-ZOB",
+   "to": "BERLIN-CENTRAL-B",
+   "dep": "2027-05-21T07:30",
+   "arr": "2027-05-21T10:45",
+   "carrier": "FlixBus",
+   "numbers": "",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "HAMBURG-ZOB",
+     "to": "BERLIN-CENTRAL-B",
+     "dep": "2027-05-21T07:30",
+     "arr": "2027-05-21T10:45",
+     "carrier": "FlixBus",
+     "number": "",
+     "path": "paths/bus-hamburg-zob-berlin-central-b.geojson"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "FlixBus",
+     "kind": "operator",
+     "price": 31.47,
+     "fare": "Standard",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "1 hand luggage up to 7 kg and 1 hold bag up to 20 kg are included",
+     "seats_left": 45,
+     "source": "flixbus.com search API",
+     "seen": "2026-11-04",
+     "url": "https://www.flixbus.com/",
+     "stars": 2.4,
+     "reviews": 18361,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "group": "hamburg-berlin"
+  },
+  {
+   "id": "c1",
+   "mode": "train",
+   "from": "HAMBURG-HBF",
+   "to": "S-U-BERLIN-HAUPT",
+   "dep": "2027-05-21T08:34",
+   "arr": "2027-05-21T10:22",
+   "carrier": "DB Fernverkehr AG",
+   "numbers": "ICE 507",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "HAMBURG-HBF",
+     "to": "S-U-BERLIN-HAUPT",
+     "dep": "2027-05-21T08:34",
+     "arr": "2027-05-21T10:22",
+     "carrier": "DB Fernverkehr AG",
+     "number": "ICE 507",
+     "headsign": "Nürnberg Hbf",
+     "path": "paths/ice-507-hamburg-hbf-s-u-berlin-haupt.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-11",
+   "seen": "2026-11-04",
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-21 is not published yet. These times come from the same train on 2026-12-11. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "hamburg-berlin"
+  },
+  {
+   "id": "c2",
+   "mode": "train",
+   "from": "HAMBURG-HBF",
+   "to": "S-U-BERLIN-HAUPT",
+   "dep": "2027-05-21T09:34",
+   "arr": "2027-05-21T11:23",
+   "carrier": "DB Fernverkehr AG",
+   "numbers": "ICE 175",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "HAMBURG-HBF",
+     "to": "S-U-BERLIN-HAUPT",
+     "dep": "2027-05-21T09:34",
+     "arr": "2027-05-21T11:23",
+     "carrier": "DB Fernverkehr AG",
+     "number": "ICE 175",
+     "headsign": "Budapest-Nyugati",
+     "path": "paths/ice-175-hamburg-hbf-s-u-berlin-haupt.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-11",
+   "seen": "2026-11-04",
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-21 is not published yet. These times come from the same train on 2026-12-11. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "hamburg-berlin"
+  },
+  {
+   "id": "c3",
+   "mode": "train",
+   "from": "HAMBURG-HBF",
+   "to": "S-U-BERLIN-HAUPT",
+   "dep": "2027-05-21T09:39",
+   "arr": "2027-05-21T11:38",
+   "carrier": "FlixTrain-eu",
+   "numbers": "FlixTrain FLX10",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "HAMBURG-HBF",
+     "to": "S-U-BERLIN-HAUPT",
+     "dep": "2027-05-21T09:39",
+     "arr": "2027-05-21T11:38",
+     "carrier": "FlixTrain-eu",
+     "number": "FlixTrain FLX10",
+     "headsign": "Stuttgart Central Station (FlixTrain)",
+     "path": "paths/flixtrain-fl-hamburg-hbf-s-u-berlin-haupt.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-11",
+   "seen": "2026-11-04",
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-21 is not published yet. These times come from the same train on 2026-12-11. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "hamburg-berlin"
+  },
+  {
+   "id": "fc5",
+   "mode": "bus",
+   "from": "HAMBURG-ZOB",
+   "to": "BERLIN-ALT-TEGEL",
+   "dep": "2027-05-21T10:45",
+   "arr": "2027-05-21T13:50",
+   "carrier": "FlixBus",
+   "numbers": "",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "HAMBURG-ZOB",
+     "to": "BERLIN-ALT-TEGEL",
+     "dep": "2027-05-21T10:45",
+     "arr": "2027-05-21T13:50",
+     "carrier": "FlixBus",
+     "number": "",
+     "path": "paths/bus-hamburg-zob-berlin-alt-tegel.geojson"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "FlixBus",
+     "kind": "operator",
+     "price": 27.97,
+     "fare": "Standard",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "1 hand luggage up to 7 kg and 1 hold bag up to 20 kg are included",
+     "seats_left": 77,
+     "source": "flixbus.com search API",
+     "seen": "2026-11-04",
+     "url": "https://www.flixbus.com/",
+     "stars": 2.4,
+     "reviews": 18361,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "group": "hamburg-berlin"
+  },
+  {
+   "id": "d1",
+   "mode": "train",
+   "from": "S-U-BERLIN-HAUPT",
+   "to": "OSLO-S",
+   "dep": "2027-05-24T07:37",
+   "arr": "2027-05-24T23:47",
+   "carrier": "DB Fernverkehr AG + Snälltåget + SJ + Vy Norge",
+   "numbers": "ICE 606 + IC + 490 + 398",
+   "transfers": 3,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "S-U-BERLIN-HAUPT",
+     "to": "HAMBURG-HBF",
+     "dep": "2027-05-24T07:37",
+     "arr": "2027-05-24T09:24",
+     "carrier": "DB Fernverkehr AG",
+     "number": "ICE 606",
+     "headsign": "Hamburg-Altona",
+     "path": "paths/ice-606-s-u-berlin-haupt-hamburg-hbf.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "HAMBURG-HBF",
+     "to": "HAMBURG-HBF",
+     "dep": "2027-05-24T09:24",
+     "arr": "2027-05-24T09:29"
+    },
+    {
+     "mode": "train",
+     "from": "HAMBURG-HBF",
+     "to": "MALMOE-CENTRALST",
+     "dep": "2027-05-24T09:51",
+     "arr": "2027-05-24T15:35",
+     "carrier": "Snälltåget",
+     "number": "IC",
+     "headsign": "Stockholm C",
+     "path": "paths/ic-hamburg-hbf-malmoe-centralst.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "MALMOE-CENTRALST",
+     "to": "GOETEBORG-CENTRA",
+     "dep": "2027-05-24T16:01",
+     "arr": "2027-05-24T18:20",
+     "carrier": "SJ",
+     "number": "490",
+     "headsign": "Göteborg Centralstation",
+     "path": "paths/490-malmoe-centralst-goeteborg-centra.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "GOETEBORG-CENTRA",
+     "to": "OSLO-S",
+     "dep": "2027-05-24T20:10",
+     "arr": "2027-05-24T23:47",
+     "carrier": "Vy Norge",
+     "number": "398",
+     "headsign": "Oslo S",
+     "path": "paths/398-goeteborg-centra-oslo-s.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-07",
+   "seen": "2026-11-04",
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-24 is not published yet. These times come from the same train on 2026-12-07. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "berlin-oslo"
+  },
+  {
+   "id": "d3",
+   "mode": "mixed",
+   "from": "S-U-BERLIN-HAUPT",
+   "to": "OSLO-S",
+   "dep": "2027-05-24T10:34",
+   "arr": "2027-05-25T05:56",
+   "carrier": "DSB + Skånetrafiken + Vy bus4you",
+   "numbers": "RJ + 806 + 675",
+   "transfers": 2,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "S-U-BERLIN-HAUPT",
+     "to": "KOEPENHAMN-H",
+     "dep": "2027-05-24T10:34",
+     "arr": "2027-05-24T17:38",
+     "carrier": "DSB",
+     "number": "RJ",
+     "headsign": "København H",
+     "path": "paths/rj-s-u-berlin-haupt-koebenhavn-h.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "KOEPENHAMN-H",
+     "to": "HELSINGBORG-CENT",
+     "dep": "2027-05-24T17:53",
+     "arr": "2027-05-24T19:20",
+     "carrier": "Skånetrafiken",
+     "number": "806",
+     "headsign": "Helsingborg C",
+     "path": "paths/806-koebenhavn-h-helsingborg-c.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "HELSINGBORG-CENT",
+     "to": "HELSINGBORG-CENT",
+     "dep": "2027-05-24T19:20",
+     "arr": "2027-05-24T19:29"
+    },
+    {
+     "mode": "bus",
+     "from": "HELSINGBORG-CENT",
+     "to": "OSLO-S",
+     "dep": "2027-05-24T23:40",
+     "arr": "2027-05-25T05:50",
+     "carrier": "Vy bus4you",
+     "number": "675",
+     "headsign": "Oslo Bussterminal",
+     "path": "paths/675-helsingborg-c-oslo-s.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "OSLO-S",
+     "to": "OSLO-S",
+     "dep": "2027-05-25T05:50",
+     "arr": "2027-05-25T05:56"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-07",
+   "seen": "2026-11-04",
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-24 is not published yet. These times come from the same train on 2026-12-07. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "berlin-oslo"
+  },
+  {
+   "id": "fd1",
+   "mode": "bus",
+   "from": "BERLIN-ALEXANDER",
+   "to": "OSLO",
+   "dep": "2027-05-24T10:45",
+   "arr": "2027-05-25T08:50",
+   "carrier": "FlixBus",
+   "numbers": "",
+   "transfers": 1,
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "BERLIN-ALEXANDER",
+     "to": "HAMBURG-ZOB",
+     "dep": "2027-05-24T10:45",
+     "arr": "2027-05-24T14:15",
+     "carrier": "FlixBus",
+     "number": "",
+     "path": "paths/bus-berlin-alexander-hamburg-zob.geojson"
+    },
+    {
+     "mode": "bus",
+     "from": "HAMBURG-ZOB",
+     "to": "OSLO",
+     "dep": "2027-05-24T18:00",
+     "arr": "2027-05-25T08:50",
+     "carrier": "FlixBus",
+     "number": "",
+     "path": "paths/bus-hamburg-zob-oslo.geojson"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "FlixBus",
+     "kind": "operator",
+     "price": 122.95,
+     "fare": "Standard",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "1 hand luggage up to 7 kg and 1 hold bag up to 20 kg are included",
+     "seats_left": 49,
+     "source": "flixbus.com search API",
+     "seen": "2026-11-04",
+     "url": "https://www.flixbus.com/",
+     "stars": 2.4,
+     "reviews": 18361,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "group": "berlin-oslo"
+  },
+  {
+   "id": "d8",
+   "mode": "train",
+   "from": "S-U-BERLIN-HAUPT",
+   "to": "OSLO-S",
+   "dep": "2027-05-24T21:06",
+   "arr": "2027-05-25T13:16",
+   "carrier": "Snälltåget",
+   "numbers": "300 + 30",
+   "transfers": 1,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "S-U-BERLIN-HAUPT",
+     "to": "MALMOE-CENTRALST",
+     "dep": "2027-05-24T21:06",
+     "arr": "2027-05-25T06:30",
+     "carrier": "Snälltåget",
+     "number": "300",
+     "headsign": "Malmö Centralstation",
+     "path": "paths/300-s-u-berlin-haupt-malmoe-centralst.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "MALMOE-CENTRALST",
+     "to": "OSLO-S",
+     "dep": "2027-05-25T06:38",
+     "arr": "2027-05-25T13:16",
+     "carrier": "Snälltåget",
+     "number": "30",
+     "headsign": "Oslo S",
+     "path": "paths/30-malmoe-centralst-oslo-s.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous, proxy date 2026-12-07",
+   "seen": "2026-11-04",
+   "overnight": true,
+   "warning": {
+    "short": "Times not final, no price",
+    "text": "The timetable for 2027-05-24 is not published yet. These times come from the same train on 2026-12-07. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
+   },
+   "group": "berlin-oslo"
+  }
+ ],
+ "deals": []
+}
