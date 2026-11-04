@@ -119,7 +119,8 @@ export function timeline(svgEl, T, opts) {
     api.fl.attr('opacity', (d) => S.dim(d.j) || off(d.j) ? .32 : 1);
     // A change or ground leg of a row not picked is as quiet as its bars, so it never outweighs the pick.
     api.fl.each(function (d) { const k = S.chosen.has(d.j.id) ? 1 : S.hover === d.j.id ? .7 : .3; d3.select(this).selectAll('.xfer').attr('opacity', function () { return k * this.dataset.o; }); });
-    api.fl.selectAll('.seg').attr('fill', (d) => S.chosen.has(d.j.id) ? 'var(--red)' : 'var(--ink)').attr('opacity', (d) => S.chosen.has(d.j.id) ? 1 : S.hover === d.j.id ? .7 : .3);
+    // Inline styles, so a page's own .seg rule can never hide the pick in the kit timeline.
+    api.fl.selectAll('.seg').style('fill', (d) => S.chosen.has(d.j.id) ? 'var(--red)' : 'var(--ink)').style('opacity', (d) => S.chosen.has(d.j.id) ? 1 : S.hover === d.j.id ? .7 : .3);
     if (!days || true) {
       api.fl.select('.lead').attr('fill', (d) => on(d) ? 'var(--ink)' : 'var(--muted)').style('font-weight', (d) => S.chosen.has(d.j.id) ? 600 : 400)
         .text((d) => days && !on(d) ? '' : opts.lead ? opts.lead(d.j) : `${short(d.j)} ${wall(d.j, 'dep')}`);

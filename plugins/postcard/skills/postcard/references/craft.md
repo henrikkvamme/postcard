@@ -176,6 +176,12 @@ Nothing moves when you hover, pick or switch a view, except what that action cha
   reset as a quiet text button that shows only when the picks differ from the top picks.
 - A row that cannot make a valid option is not a button (`disabled` in the timeline).
 
+- A redraw of a control row (chips, steppers) keeps focus on the control that was used. A control
+  that comes and goes (Reset, "Top pick") keeps its space with `visibility: hidden`, so its row never
+  shifts. The book band keeps one height for every pick.
+- Scope page CSS to the page's own views (`#v-ways .seg`). Never style a kit class such as `.seg`,
+  `.lead` or `.pc-lbl` globally.
+
 ## 8. The postcard and the book band
 
 Every page has a postcard for the current pick: where, when, the price, the journeys in two or

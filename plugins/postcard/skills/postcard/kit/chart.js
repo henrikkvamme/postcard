@@ -190,7 +190,11 @@ export function createChart(opts) {
         p.e.style.visibility = ''; let r = p.e.getBoundingClientRect();
         // An end label points away from the route; when that runs off the screen, put it on the other side of its dot.
         if (p.e.classList.contains('city')) { p.e.style.translate = ''; r = p.e.getBoundingClientRect(); const W = el.clientWidth;
-          if (r.width && (r.left < 8 || r.right > W - 8)) { p.e.style.translate = `${r.left < 8 ? r.width + 24 : -(r.width + 24)}px 0`; r = p.e.getBoundingClientRect(); } }
+          // Off the screen, or lying on the chosen route: put it on the other side of its dot.
+          const bad = (q) => q.left < 8 || q.right > W - 8 || onRoute({ left: q.left + 6, right: q.right - 6, top: q.top + 4, bottom: q.bottom - 4 });
+          if (r.width && bad(r)) { const dx = map.project(p.m.getLngLat()).x + el.getBoundingClientRect().left;
+            p.e.style.translate = `${r.left >= dx ? -(r.width + 24) : r.width + 24}px 0`; const r2 = p.e.getBoundingClientRect();
+            if (bad(r2) && !(r.left < 8 || r.right > W - 8)) p.e.style.translate = ''; else r = r2; } }
         const clash = (r) => r.width && (kept.slice(p.prio >= 9 ? hud.length : 0).some((q) => r.left < q.right + 4 && r.right > q.left - 4 && r.top < q.bottom + 2 && r.bottom > q.top - 2));
         if (p.alts && clash(r)) for (const ll of p.alts) { p.m.setLngLat(ll); r = p.e.getBoundingClientRect(); if (!clash(r)) break; }
         const hit = r.width && (kept.slice(p.prio >= 9 ? hud.length : 0).some((q) => r.left < q.right + 4 && r.right > q.left - 4 && r.top < q.bottom + 2 && r.bottom > q.top - 2)
