@@ -2,6 +2,8 @@
 // a route line drawn the way each mode travels, and a vehicle that rides the chosen route.
 // Needs the globals maplibregl, deck, d3 and topojson (index.html loads them).
 import { geo, MODES, along } from './trip.js';
+import { fmtDur } from './time.js';
+import { esc } from './parts.js';
 import { vehicleIcon } from './vehicles.js';
 
 export const INK = '#1d2a4a', PAPER = '#f4f2ea', LAND = '#f8f6ef', RED = '#b8322a';
@@ -224,13 +226,28 @@ export function createChart(opts) {
 
   // The vehicle shows only while the person points at a time (timeline or route hover). At rest the map
   // shows the route alone, so no vehicle hides a stop.
-  // Planes are a 3D model in deck.gl. Ground vehicles are an engraved cut-out in a MapLibre marker,
-  // which sits on the terrain. (A deck.gl IconLayer drew nothing in this overlay, deck.gl 9.4.)
+  // Every vehicle is a 3D paper model (art/3d/*.glb, built by models/build.mjs) in a deck.gl ScenegraphLayer,
+  // at a constant size on screen. A mode with no model yet falls back to the engraved cut-out in a MapLibre
+  // marker. (A deck.gl IconLayer drew nothing in this overlay, deck.gl 9.4.)
+  // 4x4 column-major matrices for the vehicle pose: rotations in degrees about x and z, a uniform scale.
+  const mat = {
+    rx: (d) => { const c = Math.cos(d * rad), n = Math.sin(d * rad); return [1, 0, 0, 0, 0, c, n, 0, 0, -n, c, 0, 0, 0, 0, 1]; },
+    rz: (d) => { const c = Math.cos(d * rad), n = Math.sin(d * rad); return [c, n, 0, 0, -n, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]; },
+    s: (k) => [k, 0, 0, 0, 0, k, 0, 0, 0, 0, k, 0, 0, 0, 0, 1],
+    mul: (...ms) => ms.reduce((A, B) => { const o = new Array(16).fill(0);
+      for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) for (let i = 0; i < 4; i++) o[c * 4 + r] += A[i * 4 + r] * B[c * 4 + i]; return o; }),
+  };
+  const MODELS = {}; // name -> { size: [x, y, z] metres, px }
+  fetch(KIT + 'art/3d/index.json').then((r) => r.ok ? r.json() : []).then((list) => { for (const m of list) MODELS[m.name] = m; refresh(); }).catch(() => {});
+  // A segment may name its vehicle (trip-schema: segment.vehicle, such as 'night-train' or 'tram'); else the mode picks one.
+  const BY_MODE = { train: 'train-hs', bus: 'coach', coach: 'coach', car: 'car', taxi: 'taxi', ferry: 'ferry', walk: 'walker' };
+  const modelFor = (seg) => [seg.vehicle, BY_MODE[seg.mode]].find((n) => n && MODELS[n]);
   const ground = (() => { const e = document.createElement('img'); e.className = 'pc-vehicle'; e.alt = ''; e.setAttribute('aria-hidden', 'true');
     const m = new maplibregl.Marker({ element: e, anchor: 'bottom', offset: [0, 4] }); quiet(e, true); return { e, m, on: false }; })();
   function vehicle() {
     const w = S.where, mpp = 156543 * Math.cos(map.getCenter().lat * rad) / Math.pow(2, map.getZoom());
-    const groundAt = w?.moving && !MODES[w.seg.mode]?.air && map.getZoom() >= FAR;
+    const air = w?.moving && MODES[w.seg.mode]?.air, model = w?.moving && !air && modelFor(w.seg);
+    const groundAt = w?.moving && !air && !model && map.getZoom() >= FAR;
     if (groundAt) {
       const { pt } = along(w.seg.path, w.s), ahead = along(w.seg.path, Math.min(1, w.s + .01)).pt;
       const a = map.project(pt), b = map.project(ahead), icon = vehicleIcon(w.seg.mode, b.x < a.x - .01);
@@ -238,15 +255,74 @@ export function createChart(opts) {
       ground.m.setLngLat(pt); if (!ground.on) { ground.m.addTo(map); quiet(ground.e, true); ground.on = true; }
     } else if (ground.on) { ground.m.remove(); ground.on = false; }
     if (!w) return [];
-    if (w.moving && MODES[w.seg.mode]?.air) {
+    if (air) {
       const pts = arc(w.seg), f = w.s * (pts.length - 1), i = Math.min(pts.length - 2, Math.floor(f)), t = f - i;
       const pt = pts[i].map((v, k) => v + (pts[i + 1][k] - v) * t), head = geo.heading(pts[i], pts[i + 1]);
       return [new deck.ScenegraphLayer({ id: 'plane', data: [{ pt, head }], scenegraph: KIT + 'art/airplane.glb', getPosition: (d) => d.pt, sizeScale: mpp * .45, _lighting: 'pbr',
         visible: map.getZoom() >= FAR, getOrientation: (d) => [0, 180 - d.head, 90], getColor: [250, 246, 236, 255] })];
     }
+    if (model) {
+      // Heading from a short look ahead on the path; the model's nose is +x.
+      const s0 = Math.max(0, w.s - .004), s1 = Math.min(1, w.s + .004), pt = along(w.seg.path, w.s).pt;
+      const head = geo.heading(along(w.seg.path, s0).pt, along(w.seg.path, s1).pt), M = MODELS[model];
+      const z = map.queryTerrainElevation?.(pt) || 0, px = M.px || 56, k = px * mpp / Math.max(...M.size);
+      // Seen from straight above, a train is a roof. The model leans toward the camera until the view
+      // is about 60 degrees from overhead, so it always reads as a three-quarter paper model.
+      const tilt = Math.max(0, 60 - map.getPitch()), b = map.getBearing();
+      const m = mat.mul(mat.rz(-b), mat.rx(tilt), mat.rz(b), mat.rz(90 - head), mat.rx(90), mat.s(k));
+      return [new deck.ScenegraphLayer({ id: 'vehicle', data: [{ pt: [...pt, z] }], scenegraph: KIT + 'art/3d/' + model + '.glb', getPosition: (d) => d.pt,
+        getTransformMatrix: m, _lighting: 'pbr', visible: map.getZoom() >= FAR, getColor: [255, 255, 255, 255] })];
+    }
     if (w.moving) return [];
     return [new deck.ScatterplotLayer({ id: 'you', data: [w], getPosition: (d) => [...d.pt, (map.queryTerrainElevation?.(d.pt) || 0) + 30], getRadius: 8, radiusUnits: 'pixels',
       getFillColor: [...REDA, 255], getLineColor: [...LANDA, 255], lineWidthUnits: 'pixels', getLineWidth: 2.5, stroked: true })];
+  }
+
+  // The route card: hover on a chosen route puts the vehicle at that point and a small card beside it,
+  // with the time there, the leg and how far along it is. opts.routeCard: false leaves it to the page.
+  const card = (() => { const e = document.createElement('div'); e.className = 'pc-where'; e.hidden = true; e.setAttribute('aria-hidden', 'true'); el.appendChild(e); return e; })();
+  const cardOn = opts.routeCard !== false;
+  let cardAt = null;
+  function placeCard() {
+    if (!cardAt || card.hidden) return;
+    const q = map.project(cardAt), W = el.clientWidth, H = el.clientHeight, r = card.getBoundingClientRect();
+    // Beside the vehicle, never on it: right and up, flipped at the edges.
+    let x = q.x + 34, y = q.y - r.height - 18;
+    if (x + r.width > W - 8) x = q.x - 34 - r.width;
+    if (y < 8) y = q.y + 22;
+    card.style.transform = `translate(${Math.round(Math.max(8, x))}px, ${Math.round(Math.min(H - r.height - 8, y))}px)`;
+  }
+  map.on('move', placeCard);
+  function showCard(h) {
+    const seg = h.seg, P = T.places, tzA = P[seg.from].tz, tzB = P[seg.to].tz, here = T.clock.local(h.T, tzA === tzB ? tzA : T.clock.tz);
+    const name = (id) => P[id].code || P[id].label, who = [T.carriers?.[seg.carrier] || seg.carrier, seg.number].filter(Boolean).join(' ');
+    const gone = h.T - seg.a, left = seg.b - h.T, k = Math.max(0, Math.min(1, h.s));
+    card.innerHTML = `<div class="t"><b>${here.hm}</b><span>${esc(MODES[seg.mode]?.verb || 'Travelling')}${who ? ' · ' + esc(who) : ''}</span></div>`
+      + `<div class="leg"><span>${esc(name(seg.from))} ${T.clock.local(seg.a, tzA).hm}</span><span>${esc(name(seg.to))} ${T.clock.local(seg.b, tzB).hm}</span></div>`
+      + `<div class="bar"><i style="width:${(k * 100).toFixed(1)}%"></i></div>`
+      + `<div class="leg"><span>${fmtDur(gone)} gone</span><span>${fmtDur(left)} to go</span></div>`
+      + (MODES[seg.mode]?.air ? `<div class="leg"><span>${esc(C.over(h.pt))}</span></div>` : '');
+    card.hidden = false; cardAt = h.pt; placeCard();
+  }
+
+  // ---- Landmarks: 3D paper models (art/3d, kind 'landmark') from trip.json map.models. ----
+  // An entry is a model name ('paris') or { model, lng, lat, place, px }; lng and lat default to the model's own.
+  // Each stands at a constant size on screen, a little smaller when zoomed out, turned a third toward the viewer
+  // and leaning like the vehicles, and dims when its place is not on the chosen way (as the drawings do).
+  const LANDMARKS = (M.models || []).map((x) => typeof x === 'string' ? { model: x } : x);
+  function landmarks() {
+    const z = map.getZoom(); if (!LANDMARKS.length || z < 2.2 || z > 9.5) return [];
+    const mpp = 156543 * Math.cos(map.getCenter().lat * rad) / Math.pow(2, z), t = touched();
+    const grow = Math.max(.55, Math.min(1, (z - 2) / 4)), fade = Math.min(1, (z - 2.2) / .8, (9.5 - z) / .8);
+    const tilt = Math.max(0, 60 - map.getPitch()), b = map.getBearing();
+    return LANDMARKS.map((L, i) => {
+      const m = MODELS[L.model]; if (!m) return null;
+      const lng = L.lng ?? m.lng, lat = L.lat ?? m.lat, place = L.place ?? null; if (lng == null || lat == null) return null;
+      const k = (L.px || m.px || 80) * grow * mpp / Math.max(...m.size), on = !place || t.has(place) || S.ends.includes(place);
+      const pose = mat.mul(mat.rz(-b), mat.rx(tilt), mat.rz(-30), mat.rx(90), mat.s(k));
+      return new deck.ScenegraphLayer({ id: 'lm-' + i, data: [{ pt: [lng, lat, map.queryTerrainElevation?.([lng, lat]) || 0] }], scenegraph: KIT + 'art/3d/' + L.model + '.glb',
+        getPosition: (d) => d.pt, getTransformMatrix: pose, _lighting: 'pbr', getColor: [255, 255, 255, 255], opacity: fade * (on ? 1 : .45) });
+    }).filter(Boolean);
   }
 
   function deckLayers() {
@@ -256,6 +332,7 @@ export function createChart(opts) {
     const seen = new Set(), others = segs(S.others).filter(air).filter((x) => !keys.has(x.j.id + ':' + x.i)).filter((x) => {
       const k = [x.seg.from, x.seg.to].sort().join('-'); if (seen.has(k)) return false; seen.add(k); return true; }).map((x) => arc(x.seg));
     return [
+      ...landmarks(),
       new deck.PathLayer({ id: 'shadows', data: ch, getPath: (d) => d.path.map(([x, y]) => [x, y, 0]), getColor: [...INKA, 40], getWidth: 1.5, widthUnits: 'pixels' }),
       // Quiet, but visible on the engraved sea: a light halo under a short ink dash.
       new deck.PathLayer({ id: 'others-halo', data: others, getPath: (d) => d, getColor: [...LANDA, 170], getWidth: 3.6, widthUnits: 'pixels', capRounded: true }),
@@ -274,23 +351,27 @@ export function createChart(opts) {
   const deckQuiet = () => document.querySelectorAll('#deckgl-overlay, .deckgl-overlay').forEach((c) => { c.removeAttribute('tabindex'); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; });
   deckQuiet(); map.once('idle', deckQuiet);
   const refresh = () => overlay.setProps({ layers: deckLayers() });
-  map.on('zoom', refresh); map.on('rotate', refresh);
+  map.on('zoom', refresh); map.on('rotate', refresh); map.on('pitch', refresh);
 
   // Hover on a chosen route: the nearest point gives the time there.
+  let hovering = false;
+  const unhover = () => { if (hovering) { hovering = false; card.hidden = true; cardAt = null; S.where = null; refresh(); } opts.onRouteHover?.(null); };
   function hoverAt(x, path, px, py, ev, project) {
-    if (!x) { opts.onRouteHover?.(null); return; }
+    if (!x) { unhover(); return; }
     let best = 0, bd = Infinity;
     path.forEach((p, i) => { const [sx, sy] = project(p); const d = (sx - px) ** 2 + (sy - py) ** 2; if (d < bd) { bd = d; best = i; } });
     // s is a share of the distance, as along() and whereAt() read it. Path points are not evenly spaced.
     let done = 0, total = 0;
     for (let i = 1; i < path.length; i++) { const k = geo.km(path[i - 1], path[i]); total += k; if (i <= best) done += k; }
     const s = total ? done / total : 0;
-    opts.onRouteHover?.({ j: x.j, seg: x.seg, s, T: x.seg.a + s * (x.seg.b - x.seg.a), pt: path[best], event: ev });
+    const h = { j: x.j, seg: x.seg, s, T: x.seg.a + s * (x.seg.b - x.seg.a), pt: path[best], event: ev };
+    if (cardOn) { hovering = true; S.where = { pt: along(x.seg.path, s).pt, moving: true, mode: x.seg.mode, seg: x.seg, s, j: x.j }; refresh(); showCard(h); }
+    opts.onRouteHover?.(h);
   }
   map.on('mousemove', 'r-hit', (e) => { const f = e.features[0]; if (!f) return; const x = segs(S.chosen).find((y) => y.j.id + ':' + y.i === f.properties.key); if (!x) return;
     hoverAt(x, x.seg.path, e.point.x, e.point.y, e.originalEvent, (p) => { const q = map.project(p); return [q.x, q.y]; }); });
-  map.on('mouseleave', 'r-hit', () => opts.onRouteHover?.(null));
-  map.getCanvas().addEventListener('pointerleave', () => opts.onRouteHover?.(null));
+  map.on('mouseleave', 'r-hit', unhover);
+  map.getCanvas().addEventListener('pointerleave', unhover);
 
   // ---- Camera ----
   // fitBounds fails on the globe in MapLibre 5.24, so frame by hand: centre of the points, zoom from their Mercator extent.
@@ -343,7 +424,7 @@ export function createChart(opts) {
     const xy = pts.map((p) => map.project(p)); const xs = xy.map((q) => q.x + o.left), ys = xy.map((q) => q.y + o.top);
     return { left: d3.min(xs) - 12, right: d3.max(xs) + 12, top: d3.min(ys) - 12, bottom: d3.max(ys) + 12 }; };
   // Put the vehicle where whereAt() says, or back at rest with null.
-  C.where = (w) => { S.where = w; refresh(); };
+  C.where = (w) => { if (hovering && !w) return; S.where = w; refresh(); };
   // 'over France', 'over the North Sea', or 'over the sea'.
   C.over = (ll) => {
     const hit = S.countries.find(({ f, b }) => (b[0][0] > b[1][0] || (ll[0] >= b[0][0] && ll[0] <= b[1][0] && ll[1] >= b[0][1] && ll[1] <= b[1][1])) && d3.geoContains(f, ll));

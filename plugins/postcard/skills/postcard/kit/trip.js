@@ -96,7 +96,7 @@ export async function openTrip({ raw, base }) {
       let path = await readPath(s.path, base), guessed = false;
       const ends = [places[s.from].coord, places[s.to].coord];
       if (!path) { path = MODES[mode]?.air ? geo.greatCircle(...ends) : ends; guessed = !MODES[mode]?.air; }
-      return { mode, from: s.from, to: s.to, a, b, carrier: s.carrier || (FOOT.has(mode) ? null : x.carrier), number: s.number, path, guessed, km: pathKm(path), self: !!s.self_transfer };
+      return { mode, from: s.from, to: s.to, a, b, carrier: s.carrier || (FOOT.has(mode) ? null : x.carrier), number: s.number, vehicle: s.vehicle, path, guessed, km: pathKm(path), self: !!s.self_transfer };
     }));
     const dep = clock.H(x.dep, tzOf(x.from)), arr = clock.H(x.arr, tzOf(x.to));
     const j = { id: x.id, mode: x.mode, group: x.group, from: x.from, to: x.to, dep, arr,

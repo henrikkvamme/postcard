@@ -61,6 +61,23 @@ band and the checkout against `trip.json`:
   the same times.
 - "Door to door", "nights", "best" mean what they say.
 
+Then judge the screenshots, not the code (after taste-skill, `critique.md`). You wrote the code, so
+you read your intentions into it; the pictures show only what is there. Make each pass on its own:
+
+1. **One second, then five.** What did you see first? It should be the answer (the pick and its
+   price on the map), not "a page". In five seconds, can a stranger say what to book and why?
+2. **Squint.** The page reduces to two or three masses with clear size steps. Many small equal masses
+   mean nothing leads.
+3. **Cover the title.** Could the page belong to another trip of the same kind? Then it has no idea
+   (craft.md, rule 6).
+4. **Edges and space.** Count the left edges of text blocks in the HUD: two or three, reused. Gaps
+   inside a group are smaller than gaps between groups. No hole by accident.
+5. **Tells.** Any item from craft.md rule 6's list visible in a screenshot is a fault.
+
+Write the three most visible problems, each with the screenshot it shows in and the fix ("the stop
+rule starts 12 px left of the price"), fix them, capture again, and repeat at most three rounds.
+"Could be more polished" is not a finding.
+
 ## 5. Use it
 
 - Click every control once. Each must change something you can see: the pick, a price, the map.
@@ -68,6 +85,8 @@ band and the checkout against `trip.json`:
 - Pick another option. The map reframes, the postcard and the book band follow, and nothing else
   moves (craft.md, rule 7).
 - Hover the timeline or a row. The vehicle moves along the route and the status line reads well.
+- Hover the chosen route. The 3D vehicle sits at the pointer and the kit's route card stands beside it
+  with the time there; the page draws no second tip for it (kit.md, chart.js).
 - Tab through the HUD. Each control and each option is reachable, Enter picks, and focus stays on
   what you used.
 - Open the checkout sheet, Tab through it (focus stays inside), and close it with Esc.

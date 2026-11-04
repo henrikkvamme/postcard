@@ -66,15 +66,21 @@ ground }`), `stops`, `moving` (hours in a vehicle), `offers`, `carrierName`, `wa
 ```js
 import { createChart, INK, RED } from '/kit/chart.js';
 const chart = createChart({ el: '#map', trip: T, pad: { left, right, top, bottom }, far: 2.6,
-  onFar: (far) => {}, onReady: () => {}, onRouteHover: (hit) => {} });
+  onFar: (far) => {}, onReady: () => {}, onRouteHover: (hit) => {}, routeCard: true });
 chart.show({ chosen: [j1, j2], others: [...], ends: ['ZRH', 'HEL'] });
 chart.where(T.whereAt([j1, j2], hour));   // put the vehicle on the route; null puts it back
 ```
 
+Route hover belongs to the kit. Pointing at a chosen route puts the vehicle at that point and shows
+the route card beside it: the time there, the mode and carrier, the leg's ends with their times, and
+a bar of the time gone and to go (plus "over France" for a flight). `onRouteHover(hit)` still fires
+with `{ j, seg, s, T, pt, event }`, so the page can move its timeline cursor; it must not draw its own
+tip for the same hover. `routeCard: false` turns the card and the hover vehicle off.
+
 | Call | Does |
 | --- | --- |
 | `show({ chosen, others, ends, refit })` | Chosen journeys in red with their vehicle; others thin and quiet; `ends` get big labels. Reframes when the chosen set changes. |
-| `where(w)` | Moves the plane, train, bus, car, ferry or walker to `w` from `whereAt`; null hides it. At rest the map shows no vehicle. |
+| `where(w)` | Moves the vehicle (a 3D paper model) to `w` from `whereAt`; null hides it. At rest the map shows no vehicle. |
 | `frame(journeys or points)` | Flies to fit them inside the padding. |
 | `setPad(pad, { duration, refit })` | The part of the map that the HUD does not cover. Call it whenever the HUD changes size; a ResizeObserver on the card is the simple way. |
 | `reset()`, `home()` | Back to the start view. |
@@ -201,12 +207,24 @@ Classes: `pc-map`, `pc-stripes` (airmail border), `pc-title` and `pc-halo`, `pc-
 `pc-hand`, `pc-chips` and `pc-chip`, `pc-book` (the red band), `pc-tip`, `pc-cells`, the sheet
 classes, and SVG text classes `pc-caps`, `pc-tick`, `pc-note`, `pc-pill`, `pc-trow`.
 
+## 3D models
+
+`kit/art/3d/` has paper models as glTF (`*.glb`) with `index.json` listing each one: `name`, `kind`
+(`vehicle` or `landmark`), `size` in metres, `px` (its size on screen), and for a landmark `place`,
+`label`, `lng`, `lat`. Vehicles ride the route by segment mode or `segment.vehicle` (trip-schema.md).
+Landmarks go in `map.models`. Place a landmark only at its own city, for the places on the trip and at
+most two or three famous ones the route passes near; more makes the chart busy. A place without a
+model gets none; do not use another city's model.
+
+The models are generated, not drawn: `models/` at the repository root has the generator, the parts
+and a gallery (`models/gallery/`). A new model is a new file there, built with `node models/build.mjs`.
+
 ## art
 
 `kit/art/` has engraved drawings in navy ink on transparent ground, about 360 px tall, standing on
 their bottom edge: `alps`, `amsterdam`, `berlin`, `cartouche`, `compass`, `fjords`, `frankfurt`,
-`helsinki`, `lighthouse`, `paris`, `pines`, `riga`, `ship`, `whale`, `zurich`, and the 3D plane
-`airplane.glb`. Use a city drawing only for its own city. Use ship, whale, compass, lighthouse and
+`helsinki`, `lighthouse`, `paris`, `pines`, `riga`, `ship`, `whale`, `zurich`. Prefer a 3D landmark
+in `map.models` to a city drawing when both exist. Use a city drawing only for its own city. Use ship, whale, compass, lighthouse and
 pines on open ground or sea, away from the route. For other places, make new drawings in the same
 style when you can make images, and put them in the trip's `art/`. Without one, leave the place
 without a drawing; do not use another city's drawing.

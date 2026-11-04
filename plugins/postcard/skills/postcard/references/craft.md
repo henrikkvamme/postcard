@@ -156,6 +156,18 @@ airports (home airport only, plus the other one), the stay length, the start dat
 - The weights line and the "not checked" line are one line each. Explanations of a value are on its
   hover and its tap, not in a paragraph.
 - When you add something, remove something.
+- **No generated tells** (after github.com/leonxlnx/taste-skill, `tells.md`). Each one makes a page
+  read as made by default, without a reason: a soft grey shadow under every card; a gradient or glow
+  on text or buttons; glass blur panels; emoji as icons; a tiny tracked capital label above every
+  block (the kit's leg labels and one eyebrow on the postcard are the exceptions, and they carry
+  information); index numbering (01, 02, 03); a pill badge ("New", "Best"); a pulsing dot; every
+  section in the same card layout; more than nine text sizes; generic words ("seamless", "unlock",
+  "effortless"). Removing a tell is not enough: the space it leaves goes to the subject, the map or a
+  bigger answer, not to another ornament.
+- **The idea comes from the trip, not the category.** Before you build, name the one thing that is
+  specific to this trip (the night train that saves a hotel, the queue that decides the car, the
+  week the sea is warm) and make the first screen about it. Cover the title: if the page would fit
+  any trip of its kind, it has no idea yet.
 
 ## 7. Still
 

@@ -38,14 +38,15 @@ JOURNEY = {"id", "mode", "group", "from", "to", "dep", "arr", "carrier", "number
            "warning", "offers", "bags", "notes", "path", "tags", "co2_kg",
            "seen", "schedule_source", "stops", "transfers", "layovers_min", "flags", "km", "drive_minutes",
            "overnight", "berth"}
-SEGMENT = {"mode", "from", "to", "dep", "arr", "carrier", "number", "path", "self_transfer", "note",
+SEGMENT = {"mode", "vehicle", "from", "to", "dep", "arr", "carrier", "number", "path", "self_transfer", "note",
            "operated_by", "aircraft", "headsign"}
 OFFER = {"seller", "kind", "price", "fare", "bags", "source", "seen", "url", "stars", "reviews", "rating_source",
          "note", "refundable", "changeable", "per", "basis", "currency", "original", "price_note", "rules", "bags_note",
          "seats_left", "read_for", "limit"}
 DEAL = {"journeys", "price", "seller", "kind", "what", "source", "seen", "url", "bags", "fare", "stars", "reviews",
         "rating_source", "note", "basis", "currency", "original", "price_note", "bags_note"}
-MAP = {"view", "labels", "seas", "art", "far"}
+MAP = {"view", "labels", "seas", "art", "models", "far"}
+MODEL = {"model", "lng", "lat", "place", "px", "note"}
 ART = {"img", "lng", "lat", "km", "place", "rot", "note"}
 
 errors, warnings = [], []
@@ -391,6 +392,28 @@ def main():
             warn(f"map.art[{k}]: {img} not found (kit/... is the kit's art, anything else is in the trip folder)")
         if a.get("place") and a["place"] not in places:
             warn(f"map.art[{k}]: place '{a['place']}' is not in places")
+    # 3D models: kit/art/3d/index.json lists them (kit.md "3D models").
+    try:
+        with open(os.path.join(KIT, "art", "3d", "index.json")) as fh:
+            models = {x["name"]: x for x in json.load(fh)}
+    except (OSError, ValueError):
+        models = {}
+    for k, x in enumerate(m.get("models", [])):
+        x = {"model": x} if isinstance(x, str) else x
+        if not isinstance(x, dict) or not x.get("model"):
+            err(f"map.models[{k}]: a model name or {{ model, lng, lat, place, px }}")
+            continue
+        unknown(x, MODEL, f"map.models[{k}]")
+        md = models.get(x["model"])
+        if not md or md.get("kind") != "landmark":
+            warn(f"map.models[{k}]: '{x['model']}' is not a landmark in kit/art/3d")
+        if x.get("place") and x["place"] not in places:
+            warn(f"map.models[{k}]: place '{x['place']}' is not in places")
+    for j in t.get("journeys", []):
+        for s in j.get("segments", []):
+            v = s.get("vehicle")
+            if v and models and models.get(v, {}).get("kind") != "vehicle":
+                warn(f"journey {j.get('id')}: vehicle '{v}' is not a vehicle in kit/art/3d")
     src = t.get("sources")
     if not src or not src.get("seen"):
         warn("sources.seen is missing; the page footer says when prices were read")

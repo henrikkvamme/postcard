@@ -77,10 +77,9 @@ let drawer = db.get('drawer', false);
 const padFor = () => innerWidth < 760 ? { left: 20, right: 20, top: 110, bottom: innerHeight - (document.getElementById('hc')?.getBoundingClientRect().top || innerHeight * .4) + 10 } : { left: 60, right: drawer ? 60 : 500, top: 110, bottom: drawer ? 470 : 60 };
 const chart = createChart({ el: '#map', trip: T, pad: padFor(), far: innerWidth < 760 ? 1.6 : 2.6,
   onRouteHover(h) {
-    if (!h) { tip.hide(); tl?.cursor(null); chart.where(null); return; }
-    const { text } = whereText(h.T, sel);
-    tl?.cursor(h.T, `${hhmm(h.T)} · ${text}`);
-    tip.show(h.event, `<b>${h.j.group === 'out' ? 'Out' : 'Back'} · ${hhmm(h.T)}</b> ${esc(T.raw.clock_label || '').toLowerCase()}<br>${esc(h.j.carrierName)} ${h.seg.from} → ${h.seg.to} · ${fmtDur(h.T - h.seg.a)} flown, ${fmtDur(h.seg.b - h.T)} to go<br><span style="opacity:.7">${esc(chart.over(h.pt))}</span>`);
+    // The kit's route card shows the vehicle, the time and the leg; the timeline cursor follows.
+    if (!h) { tl?.cursor(null); return; }
+    tl?.cursor(h.T, `${hhmm(h.T)} · ${whereText(h.T, sel).text}`);
   } });
 
 // ---------- Timeline ----------

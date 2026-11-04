@@ -92,6 +92,11 @@ departs after the one before arrives.
   "carrier": "SJ", "number": "SJ 535", "path": "paths/cph-sto.geojson" }
 ```
 
+- `vehicle` (optional) names the 3D model that rides the segment when the mode's default is wrong:
+  `train-night` for a sleeper, `train-regional`, `tram`, `metro`, `funicular`, `gondola`, `bike`.
+  Defaults by mode: train `train-hs`, bus and coach `coach`, car `car`, taxi `taxi`, ferry `ferry`,
+  walk `walker`. The list is `kit/art/3d/index.json` (kind `vehicle`).
+
 - A change where the next segment starts at another place (LTN to STN, airport to station) is a
   ground transfer. The check warns about it, and the page must show it.
 - `path` is the line the vehicle follows: an inline `[[lng, lat], ...]` list, or a GeoJSON file in
@@ -155,10 +160,14 @@ One journey per group. The kit's `price()` uses a deal when it is cheaper than t
   "view": null,                                     // or { "center": [lng, lat], "zoom": 4, "pitch": 26, "bearing": -6 } to fix the opening view on a desktop; phones always fit the route
   "labels": [["GERMANY", 10.4, 51.1]],               // [text, lng, lat]: countries and regions, in capitals
   "seas": [["Baltic Sea", 19.5, 57.5]],              // [text, lng, lat]; also used for "over the Baltic Sea"
-  "art": [{ "img": "kit/art/helsinki.png", "lng": 24.95, "lat": 60.17, "km": 120, "place": "HEL" }]
+  "models": ["paris", { "model": "helsinki", "place": "HEL" }],  // 3D paper landmarks from kit/art/3d
+  "art": [{ "img": "kit/art/compass.png", "lng": -12, "lat": 47, "km": 300 }]
 }
 ```
 
+- `models` places 3D paper landmarks (kit.md "3D models"). An entry is a model name, or
+  `{ model, lng, lat, place, px }`: `lng` and `lat` default to the landmark's own position, `place`
+  dims it when the place is not on the chosen way, `px` overrides its size on screen.
 - `art.img` starting with `kit/` is a drawing in the skill's `kit/art/`. Any other path is in the
   trip folder. `km` is the drawing's height on the ground. `place` ties a city drawing to its place,
   so the label and the drawing do not collide.

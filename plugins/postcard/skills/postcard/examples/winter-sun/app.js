@@ -55,8 +55,8 @@ const card = document.getElementById('card');
 const padFor = () => { const top = document.getElementById('card').getBoundingClientRect().top || innerHeight * .45;
   return innerWidth < 760 ? { left: 20, right: 20, top: 96, bottom: innerHeight - top + 10 } : { left: 60, right: 60, top: 110, bottom: innerHeight - top + 30 }; };
 const chart = createChart({ el: '#map', trip: T, pad: padFor(), far: innerWidth < 760 ? 1.6 : innerHeight < 800 ? 2 : 2.6,
-  onRouteHover(h) { if (!h) { tip.hide(); chart.where(null); tl?.cursor(null); return; }
-    tip.show(h.event, `<b>${esc(h.j.carrierName)}</b> ${h.seg.from} → ${h.seg.to}<br>${fmtDur(h.T - h.seg.a)} flown, ${fmtDur(h.seg.b - h.T)} to go<br><span style="opacity:.7">${esc(chart.over(h.pt))}</span>`); } });
+  // The kit's route card shows the vehicle, the time and the leg on a route hover.
+  onRouteHover(h) { if (!h) tl?.cursor(null); } });
 
 // ---------- Render ----------
 let tl = null;
