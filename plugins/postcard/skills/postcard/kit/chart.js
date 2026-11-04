@@ -166,7 +166,10 @@ export function createChart(opts) {
     for (const p of legPins.splice(0)) { p.m.remove(); pins.splice(pins.indexOf(p), 1); }
     if (S.legNumbers ?? S.chosen.length >= 3) S.chosen.forEach((j, i) => {
       const sg = d3.greatest(j.segments, (x) => x.km || 0); if (!sg?.path?.length) return;
-      legPins.push(pin(String(i + 1), 'pc-leg', sg.path[Math.floor(sg.path.length / 2)], { prio: 8 })); });
+      const at = (f) => sg.path[Math.min(sg.path.length - 1, Math.floor(sg.path.length * f))];
+      const p = pin(String(i + 1), 'pc-leg', at(.5), { prio: 8 });
+      // Where legs share a corridor the middle can be taken: cull tries these places along the leg first.
+      p.alts = [.5, .35, .65, .2, .8].map(at); legPins.push(p); });
     cull();
   }
   // Hide the labels that collide, keeping the higher priority one. Dots of places always stay.
@@ -188,6 +191,8 @@ export function createChart(opts) {
         // An end label points away from the route; when that runs off the screen, put it on the other side of its dot.
         if (p.e.classList.contains('city')) { p.e.style.translate = ''; r = p.e.getBoundingClientRect(); const W = el.clientWidth;
           if (r.width && (r.left < 8 || r.right > W - 8)) { p.e.style.translate = `${r.left < 8 ? r.width + 24 : -(r.width + 24)}px 0`; r = p.e.getBoundingClientRect(); } }
+        const clash = (r) => r.width && (kept.slice(p.prio >= 9 ? hud.length : 0).some((q) => r.left < q.right + 4 && r.right > q.left - 4 && r.top < q.bottom + 2 && r.bottom > q.top - 2));
+        if (p.alts && clash(r)) for (const ll of p.alts) { p.m.setLngLat(ll); r = p.e.getBoundingClientRect(); if (!clash(r)) break; }
         const hit = r.width && (kept.slice(p.prio >= 9 ? hud.length : 0).some((q) => r.left < q.right + 4 && r.right > q.left - 4 && r.top < q.bottom + 2 && r.bottom > q.top - 2)
           || p.prio <= 2 && onRoute(r));
         if (hit) p.e.style.visibility = 'hidden'; else if (r.width) kept.push(r); } });
