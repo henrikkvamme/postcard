@@ -89,7 +89,9 @@ export function sheet(label = 'Details') {
     el: box, get open() { return !bg.hidden && SHEET === api; },
     // Focus moves into the sheet, stays there on Tab, and goes back to the opener on close.
     show(html) { if (SHEET && SHEET !== api && !bg.hidden) SHEET.close(); SHEET = api; opener = document.activeElement;
-      box.setAttribute('aria-label', label); box.innerHTML = html; bg.hidden = false; box.querySelector('button, a, input, textarea, select')?.focus(); },
+      box.setAttribute('aria-label', label); box.innerHTML = html; bg.hidden = false;
+      // A long sheet opens on its title: focus without scrolling to the first control (often Cancel at the bottom).
+      box.querySelector('button, a, input, textarea, select')?.focus({ preventScroll: true }); box.scrollTop = 0; bg.scrollTop = 0; },
     close() { if (SHEET !== api || bg.hidden) return; bg.hidden = true; SHEET = null; api.onclose?.(); if (opener?.isConnected) opener.focus(); opener = null; },
   };
   return api;
