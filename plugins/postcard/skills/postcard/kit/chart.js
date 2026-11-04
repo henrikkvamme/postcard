@@ -145,10 +145,17 @@ export function createChart(opts) {
     // A stop next to a labelled place of the same name (Copenhagen H beside Copenhagen) adds no label of its own.
     const named = [];
     const near = (id, text) => named.some((n) => n.text === text && geo.km(n.ll, T.places[id].coord) < 4);
-    const ids = [...used].sort((a, b) => (S.ends.includes(b) - S.ends.includes(a)) || (on.has(b) - on.has(a)));
-    for (const id of ids) { const P = T.places[id], end = S.ends.includes(id);
-      const east = P.coord[0] >= d3.mean(S.ends.map((e) => T.places[e].coord[0])) ;
-      const text = end ? P.label : P.code || P.label, same = !end && near(id, text) || !end && near(id, P.label);
+    // The big end labels name the picked option's own places: when the page's end is Amsterdam Centraal
+    // and the pick leaves from Schiphol, the label says Schiphol. A stop of another option next to an end
+    // (a bus stop beside the station) gets a dot and no label, so it never reads as the chosen end.
+    const mine = new Set(S.chosen.flatMap((j) => j.stops)), km = (a, b) => geo.km(T.places[a].coord, T.places[b].coord);
+    const ends = S.ends.map((e) => { if (!mine.size || mine.has(e)) return e;
+      const c = d3.least([...mine], (m) => km(m, e)); return c && km(c, e) < 80 ? c : e; });
+    const byEnd = (id) => !mine.has(id) && ends.some((e) => km(id, e) < 30);
+    const ids = [...used].sort((a, b) => (ends.includes(b) - ends.includes(a)) || (on.has(b) - on.has(a)));
+    for (const id of ids) { const P = T.places[id], end = ends.includes(id);
+      const east = P.coord[0] >= d3.mean(ends.map((e) => T.places[e].coord[0])) ;
+      const text = end ? P.label : P.code || P.label, same = !end && (near(id, text) || near(id, P.label) || byEnd(id));
       const dot = pin('', end ? 'pc-dot' : 'pc-hub' + (on.has(id) ? ' on' : ''), P.coord, { prio: end ? 10 : 6 });
       const lbl = end ? pin(text, 'pc-lbl city', P.coord, { anchor: east ? 'left' : 'right', offset: east ? [12, -12] : [-12, -12], prio: 9 })
         : pin(same ? '' : text, 'pc-lbl hub' + (on.has(id) ? ' on' : ''), P.coord, { anchor: 'left', offset: [7, 0], prio: on.has(id) ? 5 : 3 });

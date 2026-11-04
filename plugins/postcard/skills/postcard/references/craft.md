@@ -13,7 +13,7 @@ Write the question in one line before you write code. The question decides the m
 | --- | --- | --- |
 | "Which flights for this event?" | Ranked choices against the event and work hours on an hour-scale timeline | `junction-2026` |
 | "Where and which week?" | One row per place, ranked, with its climate and its source as a visible caption; columns are shared weeks, each cell the place's best start in that week | `winter-sun` |
-| "Train or plane?" | One row per way (fly both ways, night train, mixed), door-to-door bars on one window per direction, with the door-to-door hours and the spare time as figures | |
+| "Train or plane?" | One row per way (fly both ways, night train, mixed), door-to-door bars on one window per direction (at least 4 px per hour), with the door-to-door hours and the spare time as figures. Each time comes from its own vehicle's segment (a flight shows the flight's time, not the feeder train's). Limits sit on their own line under the price, never inside it. Mark estimated access times with ≈. The map labels each end with the picked way's own station or airport. | |
 | "In what order, on what days?" | The legs in order, each leg's ways under it, and the nights at each stop, set on the stay ("Copenhagen ‹ 2 ›"); say in one line why the default nights are what they are. The map numbers the legs | |
 | "Which way for the family?" | One row per way (train, car, fly), both days at one hour scale, with changes, waits, hours at the wheel and the stress the person named | |
 

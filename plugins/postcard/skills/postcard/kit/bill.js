@@ -45,10 +45,12 @@ export function bill(T, parts) {
     const r = {
       parts: ps,
       total: known.reduce((s, p) => s + p.amount, 0),
-      approx: known.some((p) => p.state === 'estimate'),
+      // An estimate of 0 (a bag assumed included) adds nothing to the sum, so it does not make it ≈;
+      // it is named in the limits instead.
+      approx: known.some((p) => p.state === 'estimate' && p.amount !== 0),
       unknown: missing.map((p) => p.what),
       left: ps.filter((p) => p.who === 'out').map((p) => p.what),
-      limits: [...new Set(ps.map((p) => p.limit).filter(Boolean))],
+      limits: [...new Set([...ps.map((p) => p.limit), ...ps.filter((p) => p.state === 'estimate' && p.amount === 0).map((p) => `${p.what} assumed 0`)].filter(Boolean))],
       // Nothing in it was read: the figure says so instead of a 0.
       none: !known.length && missing.length > 0,
     };
@@ -138,7 +140,10 @@ export function fare(T, j, offer, need = {}, opts = {}) {
   const P = T.places, name = (id) => P[id]?.label || id;
   const label = opts.label || `${[j.carrierName, j.numbers].filter(Boolean).join(' ')}, ${name(j.from)} → ${name(j.to)}`;
   const ticket = opts.ticket ?? j.id, base = { ticket, who: opts.who || 'agent', seller: offer?.seller, shop: opts.shop };
-  const when = opts.when || (j.depL ? `${j.depL.wd} ${j.depL.day} ${j.depL.mon} ${j.depL.hm}` : undefined);
+  // The ticket's time is its own vehicle's: on a train-then-flight journey bought as a flight, the flight's departure.
+  const fl = j.mode === 'mixed' && offer?.kind !== 'self' ? (j.segments || []).find((sg) => sg.mode === 'plane') : null;
+  const dl = fl ? T.clock.local(fl.a, P[fl.from]?.tz) : j.depL;
+  const when = opts.when || (dl ? `${dl.wd} ${dl.day} ${dl.mon} ${dl.hm}` : undefined);
   // Each vehicle of the journey, with its number, stops, full local date and times, for the prompt.
   const stopName = (id) => P[id]?.code || name(id);
   const legs = (j.segments || []).filter((sg) => !['walk', 'taxi'].includes(sg.mode)).map((sg) => {

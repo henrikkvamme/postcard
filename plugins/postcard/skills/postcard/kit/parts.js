@@ -94,7 +94,11 @@ export function sheet(label = 'Details') {
       box.setAttribute('aria-label', label); box.innerHTML = html; bg.hidden = false;
       // A long sheet opens on its title: focus without scrolling to the first control (often Cancel at the bottom).
       box.querySelector('button, a, input, textarea, select')?.focus({ preventScroll: true }); box.scrollTop = 0; bg.scrollTop = 0; },
-    close() { if (SHEET !== api || bg.hidden) return; bg.hidden = true; SHEET = null; api.onclose?.(); if (opener?.isConnected) opener.focus(); opener = null; },
+    // The opener may have been redrawn while the sheet was open (a book band repaints): find it again by
+    // its id, or fall back to the book band.
+    close() { if (SHEET !== api || bg.hidden) return; bg.hidden = true; SHEET = null; api.onclose?.();
+      const back = opener?.isConnected ? opener : opener?.id && document.getElementById(opener.id) || document.querySelector('.pc-book');
+      back?.focus?.(); opener = null; },
   };
   return api;
 }
