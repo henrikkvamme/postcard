@@ -347,7 +347,7 @@ export function createChart(opts) {
       const m = MODELS[L.model]; if (!m) return null;
       const lng = L.lng ?? m.lng, lat = L.lat ?? m.lat, place = L.place ?? null; if (lng == null || lat == null) return null;
       const k = (L.px || .55 * (m.px || 80)) * grow * mpp / Math.max(...m.size), on = !place || t.has(place) || S.ends.includes(place);
-      const pose = mat.mul(mat.rz(-b), mat.rx(tilt), mat.rz(-30), mat.rx(90), mat.s(k));
+      const pose = mat.mul(mat.rz(-b), mat.rx(tilt), mat.rz(150), mat.rx(90), mat.s(k));
       return new deck.ScenegraphLayer({ id: 'lm-' + i, data: [{ pt: [lng, lat, map.queryTerrainElevation?.([lng, lat]) || 0] }], scenegraph: KIT + 'art/3d/' + L.model + '.glb',
         getPosition: (d) => d.pt, getTransformMatrix: pose, _lighting: 'pbr', getColor: [255, 255, 255, 255], opacity: fade * (on ? 1 : .45) });
     }).filter(Boolean);
