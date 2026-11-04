@@ -79,7 +79,11 @@ class Handler(SimpleHTTPRequestHandler):
             # Serve only what lies inside the root after links are resolved.
             if os.path.commonpath([base, full]) != base:
                 continue
-            if os.path.isfile(full) or os.path.isfile(os.path.join(full, "index.html")):
+            if os.path.isdir(full):
+                full = os.path.realpath(os.path.join(full, "index.html"))
+                if os.path.commonpath([base, full]) != base:
+                    continue
+            if os.path.isfile(full):
                 return full
         return os.path.join(os.path.realpath(TRIP_DIR), "__postcard_missing__")
 

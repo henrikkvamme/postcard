@@ -152,6 +152,10 @@ class Serve(unittest.TestCase):
             open(os.path.join(sibling, "s.txt"), "w").write("sibling")
             os.symlink(os.path.join(outside, "secret.txt"), os.path.join(self.trip, "link.txt"))
             self.assertEqual(self.get("/link.txt")[0], 404)
+            open(os.path.join(outside, "index.html"), "w").write("outside")
+            os.makedirs(os.path.join(self.trip, "sub"))
+            os.symlink(os.path.join(outside, "index.html"), os.path.join(self.trip, "sub", "index.html"))
+            self.assertEqual(self.get("/sub/")[0], 404)                          # a directory index that links out
             self.assertEqual(self.get("/../" + os.path.basename(sibling) + "/s.txt")[0], 404)
         finally:
             shutil.rmtree(outside); shutil.rmtree(sibling)

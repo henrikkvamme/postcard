@@ -16,6 +16,14 @@ test('a time that happens twice is the first one, as in Python fold=0', () => {
   assert.equal(new Date(wallMs('2027-07-01T12:00', 'Europe/Zurich')).toISOString(), '2027-07-01T10:00:00.000Z');
 });
 
+test('far from UTC and half-hour changes agree with Python fold=0', () => {
+  const iso = (w, tz) => new Date(wallMs(w, tz)).toISOString().slice(0, 16);
+  assert.equal(iso('2027-04-04T02:30', 'Pacific/Auckland'), '2027-04-03T13:30');    // twice: the first
+  assert.equal(iso('2027-09-26T02:30', 'Pacific/Auckland'), '2027-09-25T14:30');    // does not exist
+  assert.equal(iso('2027-10-03T02:15', 'Australia/Lord_Howe'), '2027-10-02T15:45'); // half-hour jump forward
+  assert.equal(iso('2027-04-04T01:45', 'Australia/Lord_Howe'), '2027-04-03T14:45'); // half-hour repeat
+});
+
 test('local() reads the wall clock across a clock change', () => {
   const c = makeClock('Europe/Zurich', '2027-03-28');
   assert.equal(c.local(3).hm, '04:00');   // three hours after midnight is 04:00 on the day the clocks go forward

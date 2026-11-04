@@ -38,8 +38,9 @@ export function timeline(svgEl, T, opts) {
       } else {
         g.append('text').attr('x', x((a + b) / 2)).attr('y', 11).attr('text-anchor', 'middle').attr('class', 'pc-caps big').text(x(b) - x(a) > 60 ? d.label.toUpperCase() : '');
         // Ticks on the hour, labelled with the wall clock, so a day with a clock change still reads right.
-        for (let k = 1; k < Math.round(d.e - d.s); k++) { const hh = d.s + k; if (hh <= from || hh >= to) continue;
-          const h = Math.round(T.clock.local(hh).h) % 24, major = h % 3 === 0;
+        for (let h = 1; h < 24; h++) { const hh = T.clock.H(`${d.date}T${String(h).padStart(2, '0')}:00`);
+          // Skip an hour the clocks jump over, and one already drawn when they go back.
+          if (hh <= from || hh >= to || T.clock.local(hh).hm !== `${String(h).padStart(2, '0')}:00`) continue; const major = h % 3 === 0;
           g.append('line').attr('x1', x(hh)).attr('x2', x(hh)).attr('y1', major ? 31 : 33).attr('y2', 36).attr('stroke', 'var(--ink)').attr('opacity', major ? .5 : .22);
           if (major) g.append('text').attr('x', x(hh)).attr('y', 28).attr('text-anchor', 'middle').attr('class', 'pc-tick' + (h % 6 ? '' : ' strong')).text(String(h).padStart(2, '0'));
           if (h % 6 === 0) g.append('line').attr('x1', x(hh)).attr('x2', x(hh)).attr('y1', top).attr('y2', bottom).attr('stroke', 'var(--rule2)').attr('stroke-dasharray', '2 3'); }

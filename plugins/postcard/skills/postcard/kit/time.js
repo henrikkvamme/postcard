@@ -17,9 +17,11 @@ export const offsetMin = (ms, tz) => { const p = parts(ms, tz);
 // back is the first one; a time that does not happen when the clocks go forward uses the offset from before the change.
 export function wallMs(iso, tz) {
   const [d, tm = '00:00'] = iso.split('T'), [y, mo, da] = d.split('-').map(Number), [h, mi] = tm.split(':').map(Number);
-  const guess = Date.UTC(y, mo - 1, da, h, mi), before = offsetMin(guess - 43200000, tz), after = offsetMin(guess + 43200000, tz);
-  const real = [before, after].map((o) => guess - o * 60000).filter((ms, i) => offsetMin(ms, tz) === [before, after][i]);
-  return real.length ? Math.min(...real) : guess - before * 60000;
+  const guess = Date.UTC(y, mo - 1, da, h, mi);
+  // Offsets lie within about +-14 h, so the offsets in force from 2 days before to 2 days after cover every candidate.
+  const offs = [...new Set([-48, -36, -24, -14, -12, 0, 12, 14, 24, 36, 48].map((k) => offsetMin(guess + k * 3600000, tz)))];
+  const real = offs.map((o) => guess - o * 60000).filter((ms, i) => offsetMin(ms, tz) === offs[i]);
+  return real.length ? Math.min(...real) : guess - offsetMin(guess - 48 * 3600000, tz) * 60000;
 }
 
 // A clock for one trip. tz is the zone of the page's timeline; start is the window's first day.
