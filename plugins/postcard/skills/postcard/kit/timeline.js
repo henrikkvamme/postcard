@@ -97,8 +97,8 @@ export function timeline(svgEl, T, opts) {
       .on('keydown', (e, d) => { if (off(d.j)) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); focusId = d.j.id; opts.onPick?.(d.j); } });
     fl.each(function (d) {
       const r = d3.select(this), j = d.j;
-      for (const t of j.transfers) r.append('line').attr('x1', x(t.a) + 1).attr('x2', x(t.b) - 1).attr('y1', d.y).attr('y2', d.y)
-        .attr('stroke', 'var(--ink)').attr('stroke-dasharray', t.ground ? '4 2' : '1 2.5').attr('stroke-width', t.ground ? 1.4 : 1).attr('opacity', t.ground ? .8 : .55);
+      for (const t of j.transfers) r.append('line').attr('class', 'xfer').attr('x1', x(t.a) + 1).attr('x2', x(t.b) - 1).attr('y1', d.y).attr('y2', d.y)
+        .attr('stroke', 'var(--ink)').attr('stroke-dasharray', t.ground ? '4 2' : '1 2.5').attr('stroke-width', t.ground ? 1.4 : 1).attr('opacity', t.ground ? .8 : .55).attr('data-o', t.ground ? .8 : .55);
       r.append('rect').attr('x', x(j.dep) - (days ? 4 : 90)).attr('y', d.y - rowH / 2).attr('width', x(j.arr) - x(j.dep) + (days ? 8 : 150)).attr('height', rowH).attr('fill', 'transparent');
       r.append('text').attr('class', 'lead').attr('x', x(j.dep) - 6).attr('y', d.y + 3.8).attr('text-anchor', 'end');
       for (const s of j.segments) r.append('rect').attr('class', 'seg ' + s.mode).attr('x', x(s.a)).attr('y', d.y - 4).attr('width', Math.max(2, x(s.b) - x(s.a))).attr('height', 8).attr('rx', 1.5);
@@ -117,6 +117,8 @@ export function timeline(svgEl, T, opts) {
     if (!api.fl) return;
     const on = (d) => S.chosen.has(d.j.id) || S.hover === d.j.id;
     api.fl.attr('opacity', (d) => S.dim(d.j) || off(d.j) ? .32 : 1);
+    // A change or ground leg of a row not picked is as quiet as its bars, so it never outweighs the pick.
+    api.fl.each(function (d) { const k = S.chosen.has(d.j.id) ? 1 : S.hover === d.j.id ? .7 : .3; d3.select(this).selectAll('.xfer').attr('opacity', function () { return k * this.dataset.o; }); });
     api.fl.selectAll('.seg').attr('fill', (d) => S.chosen.has(d.j.id) ? 'var(--red)' : 'var(--ink)').attr('opacity', (d) => S.chosen.has(d.j.id) ? 1 : S.hover === d.j.id ? .7 : .3);
     if (!days || true) {
       api.fl.select('.lead').attr('fill', (d) => on(d) ? 'var(--ink)' : 'var(--muted)').style('font-weight', (d) => S.chosen.has(d.j.id) ? 600 : 400)

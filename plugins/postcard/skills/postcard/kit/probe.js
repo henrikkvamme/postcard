@@ -63,6 +63,10 @@ export function probe() {
       const o = getComputedStyle(el);
       if (['auto', 'scroll'].includes(o.overflowX) && el.scrollWidth > el.clientWidth + 2 && !el.closest('.pc-scroll-x'))
         out.sideScroll.push(`${name(el)} scrolls ${el.scrollWidth - el.clientWidth}px sideways`);
+      // A .pc-scroll-x scroller that hides more than a quarter of its width: allowed, but read it. On a
+      // phone, figures (prices, arrivals) must not live in the hidden part.
+      else if (['auto', 'scroll'].includes(o.overflowX) && el.scrollWidth > el.clientWidth * 1.25)
+        (out.scrollsAside ||= []).push(`${name(el)} hides ${el.scrollWidth - el.clientWidth}px of ${el.scrollWidth}px`);
       const text = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
       if (!text && !el.matches('button, [role=button], input, select, svg, .pc-book')) continue;
       let a = el.parentElement; while (a && a !== root && !clips(a)) a = a.parentElement;

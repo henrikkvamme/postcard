@@ -181,7 +181,7 @@ export function createChart(opts) {
       const box = el.getBoundingClientRect(), line = [];
       for (const x of segs(S.chosen)) { const pts = (air(x) ? arc(x.seg) : x.seg.path).map((q) => { const s = map.project([q[0], q[1]]); return [s.x + box.left, s.y + box.top]; });
         pts.forEach((q, i) => { const r = pts[i - 1]; if (r) { const n = Math.ceil(Math.hypot(q[0] - r[0], q[1] - r[1]) / 8); for (let k = 1; k < n; k++) line.push([r[0] + (q[0] - r[0]) * k / n, r[1] + (q[1] - r[1]) * k / n]); } line.push(q); }); }
-      const onRoute = (r) => line.some(([x, y]) => x > r.left - 3 && x < r.right + 3 && y > r.top - 3 && y < r.bottom + 3);
+      const onRoute = (r) => line.some(([x, y]) => x > r.left - 8 && x < r.right + 8 && y > r.top - 6 && y < r.bottom + 6);
       for (const p of [...pins].sort((a, b) => b.prio - a.prio)) {
         if (p.e.classList.contains('pc-dot') || p.e.classList.contains('pc-hub')) continue;
         p.e.style.visibility = ''; let r = p.e.getBoundingClientRect();
