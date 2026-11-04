@@ -1,0 +1,472 @@
+{
+ "note": "Trustpilot TrustScore and review count, read on the date in 'seen'. Trustpilot scores airlines and railways low because most reviews are complaints; compare agencies with agencies only.",
+ "sellers": {
+  "www.easyjet.com": {
+   "name": "easyJet",
+   "kind": "operator",
+   "stars": 3.5,
+   "reviews": 82570,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.easyjet.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "easyjet",
+    "U2",
+    "EZS"
+   ]
+  },
+  "www.swiss.com": {
+   "name": "SWISS",
+   "kind": "operator",
+   "stars": 1.3,
+   "reviews": 3295,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.swiss.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "swiss international air lines",
+    "LX"
+   ]
+  },
+  "www.klm.com": {
+   "name": "KLM",
+   "kind": "operator",
+   "stars": 1.3,
+   "reviews": 9262,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.klm.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "KL"
+   ]
+  },
+  "www.ryanair.com": {
+   "name": "Ryanair",
+   "kind": "operator",
+   "stars": 1.2,
+   "reviews": 33574,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.ryanair.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "FR"
+   ]
+  },
+  "www.lufthansa.com": {
+   "name": "Lufthansa",
+   "kind": "operator",
+   "stars": 1.3,
+   "reviews": 15267,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.lufthansa.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "LH"
+   ]
+  },
+  "www.wizzair.com": {
+   "name": "Wizz Air",
+   "kind": "operator",
+   "stars": 1.2,
+   "reviews": 19765,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.wizzair.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "wizzair",
+    "W6"
+   ]
+  },
+  "www.flyedelweiss.com": {
+   "name": "Edelweiss",
+   "kind": "operator",
+   "stars": 1.9,
+   "reviews": 213,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.flyedelweiss.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "edelweiss air",
+    "WK"
+   ]
+  },
+  "www.airfrance.com": {
+   "name": "Air France",
+   "kind": "operator",
+   "stars": 1.3,
+   "reviews": 1703,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.airfrance.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "AF"
+   ]
+  },
+  "www.britishairways.com": {
+   "name": "British Airways",
+   "kind": "operator",
+   "stars": 1.6,
+   "reviews": 16925,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.britishairways.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "BA"
+   ]
+  },
+  "www.norwegian.com": {
+   "name": "Norwegian",
+   "kind": "operator",
+   "stars": 1.6,
+   "reviews": 4506,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.norwegian.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "norwegian air shuttle",
+    "DY",
+    "D8"
+   ]
+  },
+  "www.flysas.com": {
+   "name": "SAS",
+   "kind": "operator",
+   "stars": 1.3,
+   "reviews": 1817,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.flysas.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "scandinavian airlines",
+    "SK"
+   ]
+  },
+  "www.eurowings.com": {
+   "name": "Eurowings",
+   "kind": "operator",
+   "stars": 1.5,
+   "reviews": 1610,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.eurowings.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "EW"
+   ]
+  },
+  "www.condor.com": {
+   "name": "Condor",
+   "kind": "operator",
+   "stars": 1.6,
+   "reviews": 6075,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.condor.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "DE"
+   ]
+  },
+  "www.bahn.de": {
+   "name": "DB",
+   "kind": "operator",
+   "stars": 1.1,
+   "reviews": 30781,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.bahn.de",
+   "seen": "2026-11-04",
+   "aliases": [
+    "deutsche bahn",
+    "db personenverkehr",
+    "db fernverkehr"
+   ]
+  },
+  "www.sbb.ch": {
+   "name": "SBB",
+   "kind": "operator",
+   "stars": 1.3,
+   "reviews": 2972,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.sbb.ch",
+   "seen": "2026-11-04",
+   "aliases": [
+    "sbb cff ffs",
+    "schweizerische bundesbahnen sbb"
+   ]
+  },
+  "www.sncf-connect.com": {
+   "name": "SNCF Connect",
+   "kind": "operator",
+   "stars": 1.2,
+   "reviews": 1380,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.sncf-connect.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "sncf",
+    "sncf voyageurs",
+    "tgv inoui"
+   ]
+  },
+  "www.oebb.at": {
+   "name": "ÖBB",
+   "kind": "operator",
+   "stars": 1.2,
+   "reviews": 250,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.oebb.at",
+   "seen": "2026-11-04",
+   "aliases": [
+    "oebb",
+    "austrian federal railways",
+    "nightjet"
+   ]
+  },
+  "www.flixbus.com": {
+   "name": "FlixBus",
+   "kind": "operator",
+   "stars": 2.4,
+   "reviews": 18361,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.flixbus.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "flixbus-eu",
+    "flixtrain"
+   ]
+  },
+  "www.blablacar.com": {
+   "name": "BlaBlaCar",
+   "kind": "operator",
+   "stars": 4.2,
+   "reviews": 19458,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.blablacar.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "blablacar bus"
+   ]
+  },
+  "www.dfds.com": {
+   "name": "DFDS",
+   "kind": "operator",
+   "stars": 4.1,
+   "reviews": 20692,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.dfds.com",
+   "seen": "2026-11-04",
+   "aliases": []
+  },
+  "www.colorline.com": {
+   "name": "Color Line",
+   "kind": "operator",
+   "stars": 2.0,
+   "reviews": 10,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.colorline.com",
+   "seen": "2026-11-04",
+   "aliases": []
+  },
+  "www.kiwi.com": {
+   "name": "Kiwi.com",
+   "kind": "agency",
+   "stars": 4.0,
+   "reviews": 208335,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.kiwi.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "kiwi"
+   ]
+  },
+  "www.edreams.com": {
+   "name": "eDreams",
+   "kind": "agency",
+   "stars": 4.3,
+   "reviews": 433547,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.edreams.com",
+   "seen": "2026-11-04",
+   "aliases": []
+  },
+  "www.opodo.com": {
+   "name": "Opodo",
+   "kind": "agency",
+   "stars": 4.3,
+   "reviews": 321911,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.opodo.com",
+   "seen": "2026-11-04",
+   "aliases": []
+  },
+  "www.mytrip.com": {
+   "name": "Mytrip",
+   "kind": "agency",
+   "stars": 2.9,
+   "reviews": 78957,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.mytrip.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "mytrip.com"
+   ]
+  },
+  "www.gotogate.com": {
+   "name": "Gotogate",
+   "kind": "agency",
+   "stars": 2.4,
+   "reviews": 151946,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.gotogate.com",
+   "seen": "2026-11-04",
+   "aliases": []
+  },
+  "www.trip.com": {
+   "name": "Trip.com",
+   "kind": "agency",
+   "stars": 4.4,
+   "reviews": 212969,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.trip.com",
+   "seen": "2026-11-04",
+   "aliases": []
+  },
+  "www.thetrainline.com": {
+   "name": "Trainline",
+   "kind": "agency",
+   "stars": 4.1,
+   "reviews": 157504,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.thetrainline.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "thetrainline"
+   ]
+  },
+  "www.omio.com": {
+   "name": "Omio",
+   "kind": "agency",
+   "stars": 3.9,
+   "reviews": 23616,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.omio.com",
+   "seen": "2026-11-04",
+   "aliases": []
+  },
+  "www.expedia.com": {
+   "name": "Expedia",
+   "kind": "agency",
+   "stars": 4.0,
+   "reviews": 47103,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.expedia.com",
+   "seen": "2026-11-04",
+   "aliases": []
+  },
+  "www.lastminute.com": {
+   "name": "lastminute.com",
+   "kind": "agency",
+   "stars": 4.0,
+   "reviews": 234971,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.lastminute.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "lastminute"
+   ]
+  },
+  "www.budgetair.com": {
+   "name": "BudgetAir",
+   "kind": "agency",
+   "stars": 3.6,
+   "reviews": 30669,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.budgetair.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "budgetair.com"
+   ]
+  },
+  "www.bravofly.com": {
+   "name": "Bravofly",
+   "kind": "agency",
+   "stars": 3.3,
+   "reviews": 26987,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.bravofly.com",
+   "seen": "2026-11-04",
+   "aliases": []
+  },
+  "www.booking.com": {
+   "name": "Booking.com",
+   "kind": "agency",
+   "stars": 1.4,
+   "reviews": 129860,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.booking.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "booking.com flights"
+   ]
+  },
+  "www.travelgenio.com": {
+   "name": "Travelgenio",
+   "kind": "agency",
+   "stars": null,
+   "reviews": 35015,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.travelgenio.com",
+   "seen": "2026-11-04",
+   "aliases": [],
+   "note": "Trustpilot shows no TrustScore for this company"
+  },
+  "www.stenaline.com": {
+   "name": "Stena Line",
+   "kind": "operator",
+   "stars": null,
+   "reviews": 97,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.stenaline.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "stena line group"
+   ],
+   "note": "Trustpilot shows no TrustScore"
+  },
+  "www.flypgs.com": {
+   "name": "Pegasus",
+   "kind": "operator",
+   "stars": 1.4,
+   "reviews": 4594,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.flypgs.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "pegasus airlines",
+    "PC"
+   ]
+  },
+  "ajet.com": {
+   "name": "AJet",
+   "kind": "operator",
+   "stars": 1.5,
+   "reviews": 2006,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/ajet.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "VF"
+   ]
+  },
+  "www.iberia.com": {
+   "name": "Iberia",
+   "kind": "operator",
+   "stars": 1.2,
+   "reviews": 713,
+   "rating_source": "trustpilot",
+   "url": "https://www.trustpilot.com/review/www.iberia.com",
+   "seen": "2026-11-04",
+   "aliases": [
+    "IB"
+   ]
+  }
+ }
+}

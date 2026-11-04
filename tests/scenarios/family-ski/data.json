@@ -1,0 +1,1024 @@
+{
+ "id": "family-ski",
+ "title": "Ski week in Val Thorens",
+ "currency": "CHF",
+ "passengers": {
+  "adults": 2,
+  "children": 2,
+  "children_ages": [
+   8,
+   11
+  ]
+ },
+ "clock": "Europe/Zurich",
+ "window": {
+  "start": "2027-02-13",
+  "end": "2027-02-20"
+ },
+ "places": {
+  "ZUERICH-HB": {
+   "name": "Zürich HB",
+   "city": "Zürich HB",
+   "kind": "station",
+   "coord": [
+    8.53655,
+    47.379
+   ],
+   "tz": "Europe/Zurich"
+  },
+  "GENEVE": {
+   "name": "Genève",
+   "city": "Genève",
+   "kind": "station",
+   "coord": [
+    6.14242,
+    46.21052
+   ],
+   "tz": "Europe/Zurich"
+  },
+  "MOUTIERS-SALINS": {
+   "name": "Moûtiers-Salins-Brides-les-B.",
+   "city": "Moûtiers-Salins-Brides-les-B.",
+   "kind": "station",
+   "coord": [
+    6.5314,
+    45.48647
+   ],
+   "tz": "Europe/Paris"
+  },
+  "VAL-THORENS-PLAC": {
+   "name": "VAL THORENS Place des Arolles",
+   "city": "VAL THORENS Place des Arolles",
+   "kind": "station",
+   "coord": [
+    6.57959,
+    45.2981
+   ],
+   "tz": "Europe/Paris"
+  },
+  "CHAMBERY-CHALLES": {
+   "name": "Chambéry - Challes-les-Eaux",
+   "city": "Chambéry - Challes-les-Eaux",
+   "kind": "station",
+   "coord": [
+    5.91955,
+    45.5713
+   ],
+   "tz": "Europe/Paris"
+  },
+  "PARIS-GARE-DE-LY": {
+   "name": "Paris Gare de Lyon Hall 1 - 2",
+   "city": "Paris Gare de Lyon Hall 1 - 2",
+   "kind": "station",
+   "coord": [
+    2.37348,
+    48.84494
+   ],
+   "tz": "Europe/Paris"
+  },
+  "GENEVE-AEROPORT": {
+   "name": "Genève-Aéroport",
+   "city": "Genève-Aéroport",
+   "kind": "station",
+   "coord": [
+    6.11231,
+    46.23254
+   ],
+   "tz": "Europe/Zurich"
+  },
+  "GVA": {
+   "name": "Geneva International Airport",
+   "city": "Geneva",
+   "kind": "airport",
+   "coord": [
+    6.109,
+    46.2381
+   ],
+   "tz": "Europe/Paris"
+  },
+  "ZRH": {
+   "name": "Zürich Airport",
+   "city": "Zurich",
+   "kind": "airport",
+   "coord": [
+    8.5481,
+    47.4581
+   ],
+   "tz": "Europe/Zurich"
+  }
+ },
+ "context": {
+  "stays": [
+   {
+    "city": "Val Thorens",
+    "from": "2027-02-13",
+    "to": "2027-02-20"
+   }
+  ],
+  "luggage": "4 pairs of skis in ski bags, 4 suitcases"
+ },
+ "journeys": [
+  {
+   "id": "t2",
+   "mode": "mixed",
+   "from": "ZUERICH-HB",
+   "to": "VAL-THORENS-PLAC",
+   "dep": "2027-02-13T06:32",
+   "arr": "2027-02-13T14:36",
+   "carrier": "Schweizerische Bundesbahnen SBB + SNCF VOYAGEURS + REGION - cars Région Savoie lignes touristiques",
+   "numbers": "IC1 + TER 96634 + TER 883209 + S63",
+   "transfers": 3,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "ZUERICH-HB",
+     "to": "GENEVE",
+     "dep": "2027-02-13T06:32",
+     "arr": "2027-02-13T09:25",
+     "carrier": "Schweizerische Bundesbahnen SBB",
+     "number": "IC1",
+     "headsign": "Genève-Aéroport",
+     "path": "paths/ic1-zuerich-hb-geneve.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "GENEVE",
+     "to": "GENEVE",
+     "dep": "2027-02-13T09:25",
+     "arr": "2027-02-13T09:27"
+    },
+    {
+     "mode": "train",
+     "from": "GENEVE",
+     "to": "CHAMBERY-CHALLES",
+     "dep": "2027-02-13T09:57",
+     "arr": "2027-02-13T11:18",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TER 96634",
+     "path": "paths/ter-96634-geneve-chambery-challes.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "CHAMBERY-CHALLES",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-13T11:29",
+     "arr": "2027-02-13T12:38",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TER 883209",
+     "path": "paths/ter-883209-chambery-challes-moutiers-salins.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "MOUTIERS-SALINS",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-13T12:38",
+     "arr": "2027-02-13T12:40"
+    },
+    {
+     "mode": "bus",
+     "from": "MOUTIERS-SALINS",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-13T13:15",
+     "arr": "2027-02-13T14:30",
+     "carrier": "REGION - cars Région Savoie lignes touristiques",
+     "number": "S63",
+     "headsign": "VAL THORENS Place des Arolles - Les Belleville",
+     "path": "paths/s63-moutiers-salins-val-thorens-plac.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "VAL-THORENS-PLAC",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-13T14:30",
+     "arr": "2027-02-13T14:36"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "out",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. sbb.ch stayed blank and SNCF Connect was not proven in the automated browser on 2026-11-04. Read the price on sbb.ch or sncf-connect.com."
+   }
+  },
+  {
+   "id": "c1",
+   "group": "out",
+   "mode": "car",
+   "from": "ZUERICH-HB",
+   "to": "VAL-THORENS-PLAC",
+   "dep": "2027-02-13T07:00",
+   "arr": "2027-02-13T13:19",
+   "carrier": "Own car",
+   "numbers": "",
+   "segments": [
+    {
+     "mode": "car",
+     "from": "ZUERICH-HB",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-13T07:00",
+     "arr": "2027-02-13T13:19",
+     "carrier": "Own car",
+     "number": "",
+     "path": "paths/car-zurich-val-thorens.geojson"
+    }
+   ],
+   "transfers": 0,
+   "self_transfer": false,
+   "km": 428.5,
+   "drive_minutes": 334,
+   "warning": {
+    "short": "Estimate, Saturday traffic",
+    "text": "OSRM gives 5 h 34 min without traffic. The arrival adds 45 min for breaks. Saturdays in February are the busiest days on the roads to the Tarentaise valley; expect queues after Albertville. Parking in Val Thorens is not included. Snow chains or winter tyres are required."
+   },
+   "offers": [
+    {
+     "seller": "Own car",
+     "kind": "self",
+     "price": 75.51,
+     "basis": "estimate",
+     "fare": "Fuel and tolls for the car, one way",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "4 pairs of skis need a roof box or a ski rack.",
+     "price_note": "428.5 km x 7.5 l/100 km x CHF 2.11 + tolls CHF 7.70. Tolls: A41 Saint-Julien-en-Genevois to Villy-le-Pelloux, class 1, EUR 8.40 (ADELAC 2026 tariff), CHF 7.70 at the ECB rate of 2026-11-03. The short AREA section to Annecy was not read. The Swiss vignette (CHF 40) is not counted: a Swiss car has it.",
+     "source": "OSRM distance; TCS fuel price 2026-10-31 (CHF 2.11/l); ADELAC toll tariff 2026",
+     "seen": "2026-11-04"
+    }
+   ]
+  },
+  {
+   "id": "t4",
+   "mode": "mixed",
+   "from": "ZUERICH-HB",
+   "to": "VAL-THORENS-PLAC",
+   "dep": "2027-02-13T07:25",
+   "arr": "2027-02-13T18:21",
+   "carrier": "SNCF VOYAGEURS + REGION - cars Région Savoie lignes touristiques",
+   "numbers": "TGV Lyria 9206 + TGV INOUI 933 + S63",
+   "transfers": 2,
+   "segments": [
+    {
+     "mode": "walk",
+     "from": "ZUERICH-HB",
+     "to": "ZUERICH-HB",
+     "dep": "2027-02-13T07:25",
+     "arr": "2027-02-13T07:34"
+    },
+    {
+     "mode": "train",
+     "from": "ZUERICH-HB",
+     "to": "PARIS-GARE-DE-LY",
+     "dep": "2027-02-13T07:34",
+     "arr": "2027-02-13T11:38",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TGV Lyria 9206",
+     "path": "paths/tgv-lyria-92-zuerich-hb-paris-gare-de-ly.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "PARIS-GARE-DE-LY",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-13T12:09",
+     "arr": "2027-02-13T16:36",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TGV INOUI 933",
+     "path": "paths/tgv-inoui-93-paris-gare-de-ly-moutiers-salins.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "MOUTIERS-SALINS",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-13T16:36",
+     "arr": "2027-02-13T16:38"
+    },
+    {
+     "mode": "bus",
+     "from": "MOUTIERS-SALINS",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-13T17:00",
+     "arr": "2027-02-13T18:15",
+     "carrier": "REGION - cars Région Savoie lignes touristiques",
+     "number": "S63",
+     "headsign": "VAL THORENS Place des Arolles - Les Belleville",
+     "path": "paths/s63-moutiers-salins-val-thorens-plac.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "VAL-THORENS-PLAC",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-13T18:15",
+     "arr": "2027-02-13T18:21"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "out",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. sbb.ch stayed blank and SNCF Connect was not proven in the automated browser on 2026-11-04. Read the price on sbb.ch or sncf-connect.com."
+   }
+  },
+  {
+   "id": "a1",
+   "mode": "mixed",
+   "from": "ZRH",
+   "to": "VAL-THORENS-PLAC",
+   "dep": "2027-02-13T07:30",
+   "arr": "2027-02-13T14:36",
+   "carrier": "SWISS + Schweizerische Bundesbahnen SBB + SNCF VOYAGEURS + REGION - cars Région Savoie lignes touristiques",
+   "numbers": "LX 2802 + IR15 + TER 96634 + TER 883209 + S63",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "to": "GVA",
+     "dep": "2027-02-13T07:30",
+     "arr": "2027-02-13T08:25",
+     "carrier": "SWISS",
+     "number": "LX 2802"
+    },
+    {
+     "mode": "train",
+     "from": "GENEVE-AEROPORT",
+     "to": "GENEVE",
+     "dep": "2027-02-13T09:45",
+     "arr": "2027-02-13T09:52",
+     "carrier": "Schweizerische Bundesbahnen SBB",
+     "number": "IR15",
+     "headsign": "Luzern",
+     "path": "paths/ir15-geneve-aeroport-geneve.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "GENEVE",
+     "to": "GENEVE",
+     "dep": "2027-02-13T09:52",
+     "arr": "2027-02-13T09:54"
+    },
+    {
+     "mode": "train",
+     "from": "GENEVE",
+     "to": "CHAMBERY-CHALLES",
+     "dep": "2027-02-13T09:57",
+     "arr": "2027-02-13T11:18",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TER 96634",
+     "path": "paths/ter-96634-geneve-chambery-challes.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "CHAMBERY-CHALLES",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-13T11:29",
+     "arr": "2027-02-13T12:38",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TER 883209",
+     "path": "paths/ter-883209-chambery-challes-moutiers-salins.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "MOUTIERS-SALINS",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-13T12:38",
+     "arr": "2027-02-13T12:40"
+    },
+    {
+     "mode": "bus",
+     "from": "MOUTIERS-SALINS",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-13T13:15",
+     "arr": "2027-02-13T14:30",
+     "carrier": "REGION - cars Région Savoie lignes touristiques",
+     "number": "S63",
+     "headsign": "VAL THORENS Place des Arolles - Les Belleville",
+     "path": "paths/s63-moutiers-salins-val-thorens-plac.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "VAL-THORENS-PLAC",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-13T14:30",
+     "arr": "2027-02-13T14:36"
+    }
+   ],
+   "transfers": 7,
+   "self_transfer": true,
+   "flags": [],
+   "offers": [
+    {
+     "seller": "SWISS",
+     "kind": "operator",
+     "price": 493,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAhpAEgoyMDI3LTAyLTEzIiAKA1pSSBIKMjAyNy0wMi0xMxoDR1ZBKgJMWDIEMjgwMmoHCAESA1pSSHIHCAESA0dWQUABQAFAAkACSAFwAYIBCwj___________8BmAEC&tfu=CmxDalJJWjBwamQwVlRXa3RvYmxWQlNrTkRTSGRDUnkwdExTMHRMWGRtZVdZeE1TMXVNVUZCUVVGQlIzSnhMV2t3VDNoYVRVTkJFZ1pNV0RJNE1ESWFDd2pzZ0FNUUFob0RRMGhHT0J4d3Q5Y0QSAggAIgA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "fee"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees. Fare not shown; the list price is the lowest fare, probably Economy Light. Economy Light does not carry skis free: CHF 90 for each ski bag on each flight (skiingunlocked.com and transferbnb.com, 2026/27; check on swiss.com). For 4 ski bags: CHF 360 for each direction, not in the price.",
+     "stars": 1.3,
+     "reviews": 3295,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "Booking.com",
+     "kind": "agency",
+     "price": 749,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAhpAEgoyMDI3LTAyLTEzIiAKA1pSSBIKMjAyNy0wMi0xMxoDR1ZBKgJMWDIEMjgwMmoHCAESA1pSSHIHCAESA0dWQUABQAFAAkACSAFwAYIBCwj___________8BmAEC&tfu=CmxDalJJWjBwamQwVlRXa3RvYmxWQlNrTkRTSGRDUnkwdExTMHRMWGRtZVdZeE1TMXVNVUZCUVVGQlIzSnhMV2t3VDNoYVRVTkJFZ1pNV0RJNE1ESWFDd2pzZ0FNUUFob0RRMGhHT0J4d3Q5Y0QSAggAIgA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "fee"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees. Fare not shown; the list price is the lowest fare, probably Economy Light. Economy Light does not carry skis free: CHF 90 for each ski bag on each flight (skiingunlocked.com and transferbnb.com, 2026/27; check on swiss.com). For 4 ski bags: CHF 360 for each direction, not in the price.",
+     "stars": 1.4,
+     "reviews": 129860,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 811,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAhpAEgoyMDI3LTAyLTEzIiAKA1pSSBIKMjAyNy0wMi0xMxoDR1ZBKgJMWDIEMjgwMmoHCAESA1pSSHIHCAESA0dWQUABQAFAAkACSAFwAYIBCwj___________8BmAEC&tfu=CmxDalJJWjBwamQwVlRXa3RvYmxWQlNrTkRTSGRDUnkwdExTMHRMWGRtZVdZeE1TMXVNVUZCUVVGQlIzSnhMV2t3VDNoYVRVTkJFZ1pNV0RJNE1ESWFDd2pzZ0FNUUFob0RRMGhHT0J4d3Q5Y0QSAggAIgA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "fee"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees. Fare not shown; the list price is the lowest fare, probably Economy Light. Economy Light does not carry skis free: CHF 90 for each ski bag on each flight (skiingunlocked.com and transferbnb.com, 2026/27; check on swiss.com). For 4 ski bags: CHF 360 for each direction, not in the price.",
+     "stars": 2.4,
+     "reviews": 151946,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "Tripado",
+     "kind": "agency",
+     "price": 870,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAhpAEgoyMDI3LTAyLTEzIiAKA1pSSBIKMjAyNy0wMi0xMxoDR1ZBKgJMWDIEMjgwMmoHCAESA1pSSHIHCAESA0dWQUABQAFAAkACSAFwAYIBCwj___________8BmAEC&tfu=CmxDalJJWjBwamQwVlRXa3RvYmxWQlNrTkRTSGRDUnkwdExTMHRMWGRtZVdZeE1TMXVNVUZCUVVGQlIzSnhMV2t3VDNoYVRVTkJFZ1pNV0RJNE1ESWFDd2pzZ0FNUUFob0RRMGhHT0J4d3Q5Y0QSAggAIgA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "fee"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees. Fare not shown; the list price is the lowest fare, probably Economy Light. Economy Light does not carry skis free: CHF 90 for each ski bag on each flight (skiingunlocked.com and transferbnb.com, 2026/27; check on swiss.com). For 4 ski bags: CHF 360 for each direction, not in the price."
+    }
+   ],
+   "warning": {
+    "short": "Transfer not priced",
+    "text": "The price does not include Schweizerische Bundesbahnen SBB + SNCF VOYAGEURS + REGION - cars Région Savoie lignes touristiques 09:45-14:36. Separate tickets: a late first part does not protect the next one."
+   },
+   "group": "out"
+  },
+  {
+   "id": "t6",
+   "mode": "mixed",
+   "from": "ZUERICH-HB",
+   "to": "VAL-THORENS-PLAC",
+   "dep": "2027-02-13T08:32",
+   "arr": "2027-02-13T16:46",
+   "carrier": "Schweizerische Bundesbahnen SBB + SNCF VOYAGEURS + REGION - cars Région Savoie lignes touristiques",
+   "numbers": "IC1 + TER 96638 + TER 883215 + S63",
+   "transfers": 3,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "ZUERICH-HB",
+     "to": "GENEVE",
+     "dep": "2027-02-13T08:32",
+     "arr": "2027-02-13T11:25",
+     "carrier": "Schweizerische Bundesbahnen SBB",
+     "number": "IC1",
+     "headsign": "Genève-Aéroport",
+     "path": "paths/ic1-zuerich-hb-geneve.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "GENEVE",
+     "to": "GENEVE",
+     "dep": "2027-02-13T11:25",
+     "arr": "2027-02-13T11:27"
+    },
+    {
+     "mode": "train",
+     "from": "GENEVE",
+     "to": "CHAMBERY-CHALLES",
+     "dep": "2027-02-13T11:57",
+     "arr": "2027-02-13T13:17",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TER 96638",
+     "path": "paths/ter-96638-geneve-chambery-challes.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "CHAMBERY-CHALLES",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-13T13:26",
+     "arr": "2027-02-13T14:35",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TER 883215",
+     "path": "paths/ter-883215-chambery-challes-moutiers-salins.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "MOUTIERS-SALINS",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-13T14:35",
+     "arr": "2027-02-13T14:37"
+    },
+    {
+     "mode": "bus",
+     "from": "MOUTIERS-SALINS",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-13T15:25",
+     "arr": "2027-02-13T16:40",
+     "carrier": "REGION - cars Région Savoie lignes touristiques",
+     "number": "S63",
+     "headsign": "VAL THORENS Place des Arolles - Les Belleville",
+     "path": "paths/s63-moutiers-salins-val-thorens-plac.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "VAL-THORENS-PLAC",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-13T16:40",
+     "arr": "2027-02-13T16:46"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "out",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. sbb.ch stayed blank and SNCF Connect was not proven in the automated browser on 2026-11-04. Read the price on sbb.ch or sncf-connect.com."
+   }
+  },
+  {
+   "id": "r1",
+   "mode": "mixed",
+   "from": "VAL-THORENS-PLAC",
+   "to": "ZUERICH-HB",
+   "dep": "2027-02-20T07:54",
+   "arr": "2027-02-20T18:35",
+   "carrier": "REGION - cars Région Savoie lignes touristiques + SNCF VOYAGEURS",
+   "numbers": "S63 + TGV INOUI 6420 + TGV Lyria 9215",
+   "transfers": 2,
+   "segments": [
+    {
+     "mode": "walk",
+     "from": "VAL-THORENS-PLAC",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-20T07:54",
+     "arr": "2027-02-20T08:00"
+    },
+    {
+     "mode": "bus",
+     "from": "VAL-THORENS-PLAC",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-20T08:00",
+     "arr": "2027-02-20T09:15",
+     "carrier": "REGION - cars Région Savoie lignes touristiques",
+     "number": "S63",
+     "headsign": "Gare routiere - Moûtiers",
+     "path": "paths/s63-val-thorens-gare-routiere.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "MOUTIERS-SALINS",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-20T09:15",
+     "arr": "2027-02-20T09:17"
+    },
+    {
+     "mode": "train",
+     "from": "MOUTIERS-SALINS",
+     "to": "PARIS-GARE-DE-LY",
+     "dep": "2027-02-20T09:49",
+     "arr": "2027-02-20T14:16",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TGV INOUI 6420",
+     "path": "paths/tgv-inoui-64-gare-routiere-paris-gare-de-ly.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "PARIS-GARE-DE-LY",
+     "to": "ZUERICH-HB",
+     "dep": "2027-02-20T14:22",
+     "arr": "2027-02-20T18:26",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TGV Lyria 9215",
+     "path": "paths/tgv-lyria-92-paris-gare-de-ly-zuerich-hb.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "ZUERICH-HB",
+     "to": "ZUERICH-HB",
+     "dep": "2027-02-20T18:26",
+     "arr": "2027-02-20T18:35"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "back",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. sbb.ch stayed blank and SNCF Connect was not proven in the automated browser on 2026-11-04. Read the price on sbb.ch or sncf-connect.com."
+   }
+  },
+  {
+   "id": "b1",
+   "mode": "mixed",
+   "from": "VAL-THORENS-PLAC",
+   "to": "ZRH",
+   "dep": "2027-02-20T07:54",
+   "arr": "2027-02-20T21:05",
+   "carrier": "REGION - cars Région Savoie lignes touristiques + SNCF VOYAGEURS + FlixBus-eu + SWISS",
+   "numbers": "S63 + TER 883262 + FlixBus 1739 + LX 2819",
+   "segments": [
+    {
+     "mode": "walk",
+     "from": "VAL-THORENS-PLAC",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-20T07:54",
+     "arr": "2027-02-20T08:00"
+    },
+    {
+     "mode": "bus",
+     "from": "VAL-THORENS-PLAC",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-20T08:00",
+     "arr": "2027-02-20T09:15",
+     "carrier": "REGION - cars Région Savoie lignes touristiques",
+     "number": "S63",
+     "headsign": "Gare routiere - Moûtiers",
+     "path": "paths/s63-val-thorens-gare-routiere.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "MOUTIERS-SALINS",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-20T09:15",
+     "arr": "2027-02-20T09:17"
+    },
+    {
+     "mode": "train",
+     "from": "MOUTIERS-SALINS",
+     "to": "CHAMBERY-CHALLES",
+     "dep": "2027-02-20T09:17",
+     "arr": "2027-02-20T10:30",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TER 883262",
+     "path": "paths/ter-883262-gare-routiere-chambery-challes.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "CHAMBERY-CHALLES",
+     "to": "CHAMBERY-CHALLES",
+     "dep": "2027-02-20T10:30",
+     "arr": "2027-02-20T10:32"
+    },
+    {
+     "mode": "bus",
+     "from": "CHAMBERY-CHALLES",
+     "to": "GENEVE-AEROPORT",
+     "dep": "2027-02-20T11:20",
+     "arr": "2027-02-20T13:30",
+     "carrier": "FlixBus-eu",
+     "number": "FlixBus 1739",
+     "headsign": "Lausanne (P+R Vélodrome)",
+     "path": "paths/flixbus-1739-chambery-challes-geneva-airport-b.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "GENEVE-AEROPORT",
+     "to": "GENEVE-AEROPORT",
+     "dep": "2027-02-20T13:30",
+     "arr": "2027-02-20T13:38"
+    },
+    {
+     "mode": "plane",
+     "from": "GVA",
+     "to": "ZRH",
+     "dep": "2027-02-20T20:15",
+     "arr": "2027-02-20T21:05",
+     "carrier": "SWISS",
+     "number": "LX 2819"
+    }
+   ],
+   "transfers": 7,
+   "self_transfer": true,
+   "flags": [],
+   "offers": [
+    {
+     "seller": "SWISS",
+     "kind": "operator",
+     "price": 519,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAhpAEgoyMDI3LTAyLTIwIiAKA0dWQRIKMjAyNy0wMi0yMBoDWlJIKgJMWDIEMjgxOWoHCAESA0dWQXIHCAESA1pSSEABQAFAAkACSAFwAYIBCwj___________8BmAEC&tfu=CmxDalJJZEdZME0wSm5RbDlQVUc5QlNVcHBXVUZDUnkwdExTMHRMUzB0ZDJaaVpYWXlPRUZCUVVGQlIzSnhMVzUzUzFkdVlVOUJFZ1pNV0RJNE1Ua2FDd2llbFFNUUFob0RRMGhHT0J4d3RQQUQSAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "fee"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees. Fare not shown; the list price is the lowest fare, probably Economy Light. Economy Light does not carry skis free: CHF 90 for each ski bag on each flight (skiingunlocked.com and transferbnb.com, 2026/27; check on swiss.com). For 4 ski bags: CHF 360 for each direction, not in the price.",
+     "stars": 1.3,
+     "reviews": 3295,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "Booking.com",
+     "kind": "agency",
+     "price": 786,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAhpAEgoyMDI3LTAyLTIwIiAKA0dWQRIKMjAyNy0wMi0yMBoDWlJIKgJMWDIEMjgxOWoHCAESA0dWQXIHCAESA1pSSEABQAFAAkACSAFwAYIBCwj___________8BmAEC&tfu=CmxDalJJZEdZME0wSm5RbDlQVUc5QlNVcHBXVUZDUnkwdExTMHRMUzB0ZDJaaVpYWXlPRUZCUVVGQlIzSnhMVzUzUzFkdVlVOUJFZ1pNV0RJNE1Ua2FDd2llbFFNUUFob0RRMGhHT0J4d3RQQUQSAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "fee"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees. Fare not shown; the list price is the lowest fare, probably Economy Light. Economy Light does not carry skis free: CHF 90 for each ski bag on each flight (skiingunlocked.com and transferbnb.com, 2026/27; check on swiss.com). For 4 ski bags: CHF 360 for each direction, not in the price.",
+     "stars": 1.4,
+     "reviews": 129860,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 848,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAhpAEgoyMDI3LTAyLTIwIiAKA0dWQRIKMjAyNy0wMi0yMBoDWlJIKgJMWDIEMjgxOWoHCAESA0dWQXIHCAESA1pSSEABQAFAAkACSAFwAYIBCwj___________8BmAEC&tfu=CmxDalJJZEdZME0wSm5RbDlQVUc5QlNVcHBXVUZDUnkwdExTMHRMUzB0ZDJaaVpYWXlPRUZCUVVGQlIzSnhMVzUzUzFkdVlVOUJFZ1pNV0RJNE1Ua2FDd2llbFFNUUFob0RRMGhHT0J4d3RQQUQSAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "fee"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees. Fare not shown; the list price is the lowest fare, probably Economy Light. Economy Light does not carry skis free: CHF 90 for each ski bag on each flight (skiingunlocked.com and transferbnb.com, 2026/27; check on swiss.com). For 4 ski bags: CHF 360 for each direction, not in the price.",
+     "stars": 2.4,
+     "reviews": 151946,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "Tripado",
+     "kind": "agency",
+     "price": 907,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAhpAEgoyMDI3LTAyLTIwIiAKA0dWQRIKMjAyNy0wMi0yMBoDWlJIKgJMWDIEMjgxOWoHCAESA0dWQXIHCAESA1pSSEABQAFAAkACSAFwAYIBCwj___________8BmAEC&tfu=CmxDalJJZEdZME0wSm5RbDlQVUc5QlNVcHBXVUZDUnkwdExTMHRMUzB0ZDJaaVpYWXlPRUZCUVVGQlIzSnhMVzUzUzFkdVlVOUJFZ1pNV0RJNE1Ua2FDd2llbFFNUUFob0RRMGhHT0J4d3RQQUQSAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "fee"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees. Fare not shown; the list price is the lowest fare, probably Economy Light. Economy Light does not carry skis free: CHF 90 for each ski bag on each flight (skiingunlocked.com and transferbnb.com, 2026/27; check on swiss.com). For 4 ski bags: CHF 360 for each direction, not in the price."
+    }
+   ],
+   "warning": {
+    "short": "Transfer not priced",
+    "text": "The price does not include REGION - cars Région Savoie lignes touristiques + SNCF VOYAGEURS + FlixBus-eu 07:54-13:38. Separate tickets: a late first part does not protect the next one."
+   },
+   "group": "back"
+  },
+  {
+   "id": "r5",
+   "mode": "mixed",
+   "from": "VAL-THORENS-PLAC",
+   "to": "ZUERICH-HB",
+   "dep": "2027-02-20T08:39",
+   "arr": "2027-02-20T17:28",
+   "carrier": "REGION - cars Région Savoie lignes touristiques + SNCF VOYAGEURS + Schweizerische Bundesbahnen SBB",
+   "numbers": "S63 + TGV INOUI 6422 + TER 96613 + IC1",
+   "transfers": 3,
+   "segments": [
+    {
+     "mode": "walk",
+     "from": "VAL-THORENS-PLAC",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-20T08:39",
+     "arr": "2027-02-20T08:45"
+    },
+    {
+     "mode": "bus",
+     "from": "VAL-THORENS-PLAC",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-20T08:45",
+     "arr": "2027-02-20T10:00",
+     "carrier": "REGION - cars Région Savoie lignes touristiques",
+     "number": "S63",
+     "headsign": "Gare routiere - Moûtiers",
+     "path": "paths/s63-val-thorens-gare-routiere.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "MOUTIERS-SALINS",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-20T10:00",
+     "arr": "2027-02-20T10:02"
+    },
+    {
+     "mode": "train",
+     "from": "MOUTIERS-SALINS",
+     "to": "CHAMBERY-CHALLES",
+     "dep": "2027-02-20T10:28",
+     "arr": "2027-02-20T11:49",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TGV INOUI 6422",
+     "path": "paths/tgv-inoui-64-gare-routiere-chambery-challes.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "CHAMBERY-CHALLES",
+     "to": "GENEVE",
+     "dep": "2027-02-20T12:42",
+     "arr": "2027-02-20T14:12",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TER 96613",
+     "path": "paths/ter-96613-chambery-challes-geneva-central-b.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "GENEVE",
+     "to": "GENEVE",
+     "dep": "2027-02-20T14:12",
+     "arr": "2027-02-20T14:14"
+    },
+    {
+     "mode": "train",
+     "from": "GENEVE",
+     "to": "ZUERICH-HB",
+     "dep": "2027-02-20T14:35",
+     "arr": "2027-02-20T17:28",
+     "carrier": "Schweizerische Bundesbahnen SBB",
+     "number": "IC1",
+     "headsign": "St. Gallen",
+     "path": "paths/ic1-geneva-central-b-zuerich-hb.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "back",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. sbb.ch stayed blank and SNCF Connect was not proven in the automated browser on 2026-11-04. Read the price on sbb.ch or sncf-connect.com."
+   }
+  },
+  {
+   "id": "c2",
+   "group": "back",
+   "mode": "car",
+   "from": "VAL-THORENS-PLAC",
+   "to": "ZUERICH-HB",
+   "dep": "2027-02-20T09:00",
+   "arr": "2027-02-20T15:21",
+   "carrier": "Own car",
+   "numbers": "",
+   "segments": [
+    {
+     "mode": "car",
+     "from": "VAL-THORENS-PLAC",
+     "to": "ZUERICH-HB",
+     "dep": "2027-02-20T09:00",
+     "arr": "2027-02-20T15:21",
+     "carrier": "Own car",
+     "number": "",
+     "path": "paths/car-val-thorens-zurich.geojson"
+    }
+   ],
+   "transfers": 0,
+   "self_transfer": false,
+   "km": 427.9,
+   "drive_minutes": 336,
+   "warning": {
+    "short": "Estimate, Saturday traffic",
+    "text": "OSRM gives 5 h 36 min without traffic. The arrival adds 45 min for breaks. Saturdays in February are the busiest days on the roads to the Tarentaise valley; expect queues after Albertville. Parking in Val Thorens is not included. Snow chains or winter tyres are required."
+   },
+   "offers": [
+    {
+     "seller": "Own car",
+     "kind": "self",
+     "price": 75.42,
+     "basis": "estimate",
+     "fare": "Fuel and tolls for the car, one way",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "4 pairs of skis need a roof box or a ski rack.",
+     "price_note": "427.9 km x 7.5 l/100 km x CHF 2.11 + tolls CHF 7.70. Tolls: A41 Saint-Julien-en-Genevois to Villy-le-Pelloux, class 1, EUR 8.40 (ADELAC 2026 tariff), CHF 7.70 at the ECB rate of 2026-11-03. The short AREA section to Annecy was not read. The Swiss vignette (CHF 40) is not counted: a Swiss car has it.",
+     "source": "OSRM distance; TCS fuel price 2026-10-31 (CHF 2.11/l); ADELAC toll tariff 2026",
+     "seen": "2026-11-04"
+    }
+   ]
+  },
+  {
+   "id": "r7",
+   "mode": "mixed",
+   "from": "VAL-THORENS-PLAC",
+   "to": "ZUERICH-HB",
+   "dep": "2027-02-20T12:24",
+   "arr": "2027-02-20T20:28",
+   "carrier": "REGION - cars Région Savoie lignes touristiques + SNCF VOYAGEURS + Schweizerische Bundesbahnen SBB",
+   "numbers": "S63 + TGV INOUI 6426 + TER 96614 + IC1",
+   "transfers": 3,
+   "segments": [
+    {
+     "mode": "walk",
+     "from": "VAL-THORENS-PLAC",
+     "to": "VAL-THORENS-PLAC",
+     "dep": "2027-02-20T12:24",
+     "arr": "2027-02-20T12:30"
+    },
+    {
+     "mode": "bus",
+     "from": "VAL-THORENS-PLAC",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-20T12:30",
+     "arr": "2027-02-20T13:45",
+     "carrier": "REGION - cars Région Savoie lignes touristiques",
+     "number": "S63",
+     "headsign": "Gare routiere - Moûtiers",
+     "path": "paths/s63-val-thorens-gare-routiere.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "MOUTIERS-SALINS",
+     "to": "MOUTIERS-SALINS",
+     "dep": "2027-02-20T13:45",
+     "arr": "2027-02-20T13:47"
+    },
+    {
+     "mode": "train",
+     "from": "MOUTIERS-SALINS",
+     "to": "CHAMBERY-CHALLES",
+     "dep": "2027-02-20T14:10",
+     "arr": "2027-02-20T15:32",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TGV INOUI 6426",
+     "path": "paths/tgv-inoui-64-gare-routiere-chambery-challes.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "CHAMBERY-CHALLES",
+     "to": "GENEVE",
+     "dep": "2027-02-20T15:42",
+     "arr": "2027-02-20T17:10",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TER 96614",
+     "path": "paths/ter-96614-chambery-challes-geneva-central-b.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "GENEVE",
+     "to": "GENEVE",
+     "dep": "2027-02-20T17:10",
+     "arr": "2027-02-20T17:12"
+    },
+    {
+     "mode": "train",
+     "from": "GENEVE",
+     "to": "ZUERICH-HB",
+     "dep": "2027-02-20T17:35",
+     "arr": "2027-02-20T20:28",
+     "carrier": "Schweizerische Bundesbahnen SBB",
+     "number": "IC1",
+     "headsign": "St. Gallen",
+     "path": "paths/ic1-geneva-central-b-zuerich-hb.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "back",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. sbb.ch stayed blank and SNCF Connect was not proven in the automated browser on 2026-11-04. Read the price on sbb.ch or sncf-connect.com."
+   }
+  }
+ ],
+ "deals": []
+}

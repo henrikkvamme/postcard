@@ -1,0 +1,1310 @@
+{
+ "id": "winter-sun",
+ "title": "A warm week in January",
+ "currency": "CHF",
+ "passengers": {
+  "adults": 1,
+  "children": 0
+ },
+ "clock": "Europe/Zurich",
+ "window": {
+  "start": "2027-01-01",
+  "end": "2027-01-31"
+ },
+ "places": {
+  "BSL": {
+   "name": "EuroAirport Basel–Mulhouse–Freiburg",
+   "city": "Bâle / Mulhouse",
+   "kind": "airport",
+   "coord": [
+    7.5211,
+    47.6007
+   ],
+   "tz": "Europe/Paris"
+  },
+  "HRG": {
+   "name": "Hurghada International Airport",
+   "city": "Hurghada",
+   "kind": "airport",
+   "coord": [
+    33.7967,
+    27.1768
+   ],
+   "tz": "Africa/Cairo"
+  },
+  "SAW": {
+   "name": "Istanbul Sabiha Gökçen International Airport",
+   "city": "Pendik, Istanbul",
+   "kind": "airport",
+   "coord": [
+    29.3092,
+    40.8986
+   ],
+   "tz": "Europe/Istanbul"
+  },
+  "FRA": {
+   "name": "Frankfurt Main Airport",
+   "city": "Frankfurt am Main",
+   "kind": "airport",
+   "coord": [
+    8.5584,
+    50.0267
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "ZRH": {
+   "name": "Zürich Airport",
+   "city": "Zurich",
+   "kind": "airport",
+   "coord": [
+    8.5481,
+    47.4581
+   ],
+   "tz": "Europe/Zurich"
+  },
+  "AMS": {
+   "name": "Amsterdam Airport Schiphol",
+   "city": "Amsterdam",
+   "kind": "airport",
+   "coord": [
+    4.7639,
+    52.3086
+   ],
+   "tz": "Europe/Amsterdam"
+  },
+  "MAD": {
+   "name": "Adolfo Suárez Madrid–Barajas Airport",
+   "city": "Madrid",
+   "kind": "airport",
+   "coord": [
+    -3.5722,
+    40.4934
+   ],
+   "tz": "Europe/Madrid"
+  },
+  "TFS": {
+   "name": "Tenerife Sur Airport",
+   "city": "Tenerife",
+   "kind": "airport",
+   "coord": [
+    -16.5725,
+    28.0445
+   ],
+   "tz": "Atlantic/Canary"
+  },
+  "ACE": {
+   "name": "César Manrique-Lanzarote Airport",
+   "city": "San Bartolomé",
+   "kind": "airport",
+   "coord": [
+    -13.6052,
+    28.9455
+   ],
+   "tz": "Atlantic/Canary"
+  },
+  "ZUERICH-HB": {
+   "name": "Zürich HB",
+   "city": "Zürich HB",
+   "kind": "station",
+   "coord": [
+    8.53653,
+    47.37883
+   ],
+   "tz": "Europe/Zurich"
+  },
+  "BASEL-SBB": {
+   "name": "Basel SBB",
+   "city": "Basel SBB",
+   "kind": "station",
+   "coord": [
+    7.59005,
+    47.54681
+   ],
+   "tz": "Europe/Zurich"
+  },
+  "BASEL-EUROAIRPOR": {
+   "name": "Basel Euroairport FR",
+   "city": "Basel Euroairport FR",
+   "kind": "station",
+   "coord": [
+    7.53287,
+    47.59922
+   ],
+   "tz": "Europe/Paris"
+  },
+  "BASEL-BAHNHOF-SB": {
+   "name": "Basel, Bahnhof SBB",
+   "city": "Basel",
+   "kind": "station",
+   "coord": [
+    7.58957,
+    47.54789
+   ],
+   "tz": "Europe/Zurich"
+  }
+ },
+ "context": {
+  "weather": [
+   {
+    "place": "HRG",
+    "name": "Hurghada",
+    "coord": [
+     33.81,
+     27.26
+    ],
+    "kind": "climate",
+    "days": "01-05 to 01-26",
+    "years": "2016-2025",
+    "day_max_c": 21.1,
+    "night_min_c": 13.7,
+    "sun_h": 9.8,
+    "rain_days": 0.2,
+    "of_days": 22,
+    "wind_kmh": 27.0,
+    "sea_c": 22.5,
+    "source": "Open-Meteo ERA5 archive + marine"
+   },
+   {
+    "place": "TFS",
+    "name": "Tenerife south",
+    "coord": [
+     -16.71,
+     28.05
+    ],
+    "kind": "climate",
+    "days": "01-05 to 01-26",
+    "years": "2016-2025",
+    "day_max_c": 20.8,
+    "night_min_c": 15.2,
+    "sun_h": 9.8,
+    "rain_days": 1.0,
+    "of_days": 22,
+    "wind_kmh": 19.0,
+    "sea_c": 21.0,
+    "source": "Open-Meteo ERA5 archive + marine"
+   },
+   {
+    "place": "ACE",
+    "name": "Lanzarote (Puerto del Carmen)",
+    "coord": [
+     -13.66,
+     28.92
+    ],
+    "kind": "climate",
+    "days": "01-05 to 01-26",
+    "years": "2016-2025",
+    "day_max_c": 20.6,
+    "night_min_c": 15.1,
+    "sun_h": 9.5,
+    "rain_days": 1.1,
+    "of_days": 22,
+    "wind_kmh": 23.0,
+    "sea_c": 20.0,
+    "source": "Open-Meteo ERA5 archive + marine"
+   }
+  ],
+  "dates": [
+   {
+    "from": "BSL",
+    "to": "HRG",
+    "nights": 7,
+    "cheapest": [
+     {
+      "dep": "2027-01-20",
+      "ret": "2027-01-27",
+      "nights": 7,
+      "price": 85
+     },
+     {
+      "dep": "2027-01-24",
+      "ret": "2027-01-31",
+      "nights": 7,
+      "price": 89
+     },
+     {
+      "dep": "2027-01-23",
+      "ret": "2027-01-30",
+      "nights": 7,
+      "price": 108
+     },
+     {
+      "dep": "2027-01-11",
+      "ret": "2027-01-18",
+      "nights": 7,
+      "price": 109
+     }
+    ],
+    "note": "Round-trip price for 1 adult, easyJet. Both nights in January.",
+    "source": "Google Flights date grid",
+    "seen": "2026-11-04"
+   },
+   {
+    "from": "BSL",
+    "to": "TFS",
+    "nights": 7,
+    "cheapest": [
+     {
+      "dep": "2027-01-12",
+      "ret": "2027-01-19",
+      "nights": 7,
+      "price": 108
+     },
+     {
+      "dep": "2027-01-24",
+      "ret": "2027-01-31",
+      "nights": 7,
+      "price": 118
+     },
+     {
+      "dep": "2027-01-10",
+      "ret": "2027-01-17",
+      "nights": 7,
+      "price": 120
+     },
+     {
+      "dep": "2027-01-21",
+      "ret": "2027-01-28",
+      "nights": 7,
+      "price": 149
+     }
+    ],
+    "note": "Round-trip price for 1 adult, easyJet. Both nights in January.",
+    "source": "Google Flights date grid",
+    "seen": "2026-11-04"
+   },
+   {
+    "from": "BSL",
+    "to": "ACE",
+    "nights": 7,
+    "cheapest": [
+     {
+      "dep": "2027-01-12",
+      "ret": "2027-01-19",
+      "nights": 7,
+      "price": 75
+     },
+     {
+      "dep": "2027-01-09",
+      "ret": "2027-01-16",
+      "nights": 7,
+      "price": 110
+     },
+     {
+      "dep": "2027-01-23",
+      "ret": "2027-01-30",
+      "nights": 7,
+      "price": 134
+     },
+     {
+      "dep": "2027-01-22",
+      "ret": "2027-01-29",
+      "nights": 7,
+      "price": 142
+     }
+    ],
+    "note": "Round-trip price for 1 adult, easyJet. Both nights in January.",
+    "source": "Google Flights date grid",
+    "seen": "2026-11-04"
+   }
+  ],
+  "luggage": "One cabin bag, maybe one checked bag",
+  "stays": [
+   {
+    "city": "Hurghada",
+    "from": "2027-01-20",
+    "to": "2027-01-27"
+   },
+   {
+    "city": "Tenerife",
+    "from": "2027-01-12",
+    "to": "2027-01-19"
+   },
+   {
+    "city": "Lanzarote",
+    "from": "2027-01-12",
+    "to": "2027-01-19"
+   }
+  ]
+ },
+ "journeys": [
+  {
+   "id": "ho1",
+   "mode": "plane",
+   "group": "hrg-out",
+   "from": "BSL",
+   "to": "HRG",
+   "dep": "2027-01-20T06:45",
+   "arr": "2027-01-20T12:15",
+   "carrier": "easyJet",
+   "numbers": "U2 1267",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "easyJet",
+     "kind": "operator",
+     "price": 41,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAhpGEgoyMDI3LTAxLTIwIiAKA0JTTBIKMjAyNy0wMS0yMBoDSFJHKgJVMjIEMTI2N2oNCAMSCS9tLzAxNzFkMHIHCAESA0hSR0ABSAFwAYIBCwj___________8BmAEC&tfu=CmxDalJJTm5sTmVVOXROMnRXV1hkQlNrTm1aMEZDUnkwdExTMHRMUzB0TFdWcVpuTXlNMEZCUVVGQlIzSnhYMUpCUlhabWNGTkJFZ1pWTWpFeU5qY2FDZ2pLSHhBQ0dnTkRTRVk0SEhEWEpnPT0SAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "checked": "fee",
+      "cabin": "fee"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees. easyJet sells the overhead-bin cabin bag and the 23 kg hold bag per flight. A guide for Geneva (gvaairport.com, 2026) gives about CHF 25 for a 23 kg bag booked online, CHF 70 at the airport. Read the price for this flight on easyjet.com.",
+     "stars": 3.5,
+     "reviews": 82570,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "flags": [
+    "No overhead bin"
+   ],
+   "warning": {
+    "short": "No early train",
+    "text": "No train or bus from Zürich reaches the airport in time: the first one (IR37 at 05:08 from Zürich HB, then bus 50) arrives at 06:38. Sleep near the airport the night before, or drive."
+   }
+  },
+  {
+   "id": "hz4",
+   "mode": "plane",
+   "group": "hrg-out",
+   "from": "ZRH",
+   "to": "HRG",
+   "dep": "2027-01-20T09:35",
+   "arr": "2027-01-20T15:00",
+   "carrier": "Edelweiss Air",
+   "numbers": "WK 130",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "Edelweiss Air",
+     "kind": "operator",
+     "price": 616,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAho_EgoyMDI3LTAxLTIwIh8KA1pSSBIKMjAyNy0wMS0yMBoDSFJHKgJXSzIDMTMwagcIARIDWlJIcgcIARIDSFJHQAFIAXABggELCP___________wGYAQI&tfu=CmxDalJJWlhOaVprOWhhVlJqY1hkQlNYVkhZMEZDUnkwdExTMHRMV1ZtZFhVeE15MXVNVUZCUVVGQlIzSnhYMlJKU1hZNGFrVkJFZ1ZYU3pFek1Cb0xDTUhnQXhBQ0dnTkRTRVk0SEhEUHpBUT0SAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees.",
+     "stars": 1.9,
+     "reviews": 213,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "SWISS",
+     "kind": "operator",
+     "price": 626,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAho_EgoyMDI3LTAxLTIwIh8KA1pSSBIKMjAyNy0wMS0yMBoDSFJHKgJXSzIDMTMwagcIARIDWlJIcgcIARIDSFJHQAFIAXABggELCP___________wGYAQI&tfu=CmxDalJJWlhOaVprOWhhVlJqY1hkQlNYVkhZMEZDUnkwdExTMHRMV1ZtZFhVeE15MXVNVUZCUVVGQlIzSnhYMlJKU1hZNGFrVkJFZ1ZYU3pFek1Cb0xDTUhnQXhBQ0dnTkRTRVk0SEhEUHpBUT0SAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees.",
+     "stars": 1.3,
+     "reviews": 3295,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 634,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAho_EgoyMDI3LTAxLTIwIh8KA1pSSBIKMjAyNy0wMS0yMBoDSFJHKgJXSzIDMTMwagcIARIDWlJIcgcIARIDSFJHQAFIAXABggELCP___________wGYAQI&tfu=CmxDalJJWlhOaVprOWhhVlJqY1hkQlNYVkhZMEZDUnkwdExTMHRMV1ZtZFhVeE15MXVNVUZCUVVGQlIzSnhYMlJKU1hZNGFrVkJFZ1ZYU3pFek1Cb0xDTUhnQXhBQ0dnTkRTRVk0SEhEUHpBUT0SAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees.",
+     "stars": 2.4,
+     "reviews": 151946,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "Tripado",
+     "kind": "agency",
+     "price": 667,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAho_EgoyMDI3LTAxLTIwIh8KA1pSSBIKMjAyNy0wMS0yMBoDSFJHKgJXSzIDMTMwagcIARIDWlJIcgcIARIDSFJHQAFIAXABggELCP___________wGYAQI&tfu=CmxDalJJWlhOaVprOWhhVlJqY1hkQlNYVkhZMEZDUnkwdExTMHRMV1ZtZFhVeE15MXVNVUZCUVVGQlIzSnhYMlJKU1hZNGFrVkJFZ1ZYU3pFek1Cb0xDTUhnQXhBQ0dnTkRTRVk0SEhEUHpBUT0SAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees."
+    }
+   ]
+  },
+  {
+   "id": "hz1",
+   "mode": "plane",
+   "group": "hrg-out",
+   "from": "ZRH",
+   "to": "HRG",
+   "dep": "2027-01-20T14:50",
+   "arr": "2027-01-21T00:30",
+   "carrier": "Pegasus",
+   "numbers": "PC 950 + PC 620",
+   "stops": 1,
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "dep": "2027-01-20T14:50",
+     "to": "SAW",
+     "arr": "2027-01-20T19:45",
+     "carrier": "Pegasus",
+     "number": "PC 950",
+     "aircraft": "Airbus A321"
+    },
+    {
+     "mode": "plane",
+     "from": "SAW",
+     "dep": "2027-01-20T22:50",
+     "to": "HRG",
+     "arr": "2027-01-21T00:30",
+     "carrier": "Pegasus",
+     "number": "PC 620",
+     "aircraft": "Airbus A320"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "Pegasus",
+     "kind": "operator",
+     "price": 92,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI3LTAxLTIwagcIARIDWlJIcgcIARIDSFJHQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "fee"
+     },
+     "bags_note": "Fare includes one small bag under the seat. A cabin bag for the overhead bin and a checked bag cost extra.",
+     "stars": 1.4,
+     "reviews": 4594,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "layovers_min": [
+    185
+   ],
+   "flags": [
+    "No overhead bin"
+   ]
+  },
+  {
+   "id": "hy2",
+   "mode": "plane",
+   "group": "hrg-back",
+   "from": "HRG",
+   "to": "ZRH",
+   "dep": "2027-01-27T01:35",
+   "arr": "2027-01-27T09:50",
+   "carrier": "Pegasus",
+   "numbers": "PC 621 + PC 947",
+   "stops": 1,
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HRG",
+     "dep": "2027-01-27T01:35",
+     "to": "SAW",
+     "arr": "2027-01-27T05:30",
+     "carrier": "Pegasus",
+     "number": "PC 621",
+     "aircraft": "Airbus A320"
+    },
+    {
+     "mode": "plane",
+     "from": "SAW",
+     "dep": "2027-01-27T08:45",
+     "to": "ZRH",
+     "arr": "2027-01-27T09:50",
+     "carrier": "Pegasus",
+     "number": "PC 947",
+     "aircraft": "Airbus A321"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "Pegasus",
+     "kind": "operator",
+     "price": 92,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI3LTAxLTI3agcIARIDSFJHcgcIARIDWlJIQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "fee"
+     },
+     "bags_note": "Fare includes one small bag under the seat. A cabin bag for the overhead bin and a checked bag cost extra.",
+     "stars": 1.4,
+     "reviews": 4594,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "layovers_min": [
+    195
+   ],
+   "flags": [
+    "Overnight",
+    "No overhead bin"
+   ]
+  },
+  {
+   "id": "hb1-rail",
+   "mode": "mixed",
+   "from": "HRG",
+   "to": "ZUERICH-HB",
+   "dep": "2027-01-27T13:10",
+   "arr": "2027-01-27T20:00",
+   "carrier": "easyJet + Basler Verkehrsbetriebe + Schweizerische Bundesbahnen SBB",
+   "numbers": "U2 1268 + 50 + ICE 109",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HRG",
+     "to": "BSL",
+     "dep": "2027-01-27T13:10",
+     "arr": "2027-01-27T17:20",
+     "carrier": "easyJet",
+     "number": "U2 1268"
+    },
+    {
+     "mode": "bus",
+     "from": "BASEL-EUROAIRPOR",
+     "to": "BASEL-BAHNHOF-SB",
+     "dep": "2027-01-27T18:46",
+     "arr": "2027-01-27T19:03",
+     "carrier": "Basler Verkehrsbetriebe",
+     "number": "50",
+     "headsign": "Basel, Bahnhof SBB",
+     "path": "paths/50-basel-euroairpor-basel-bahnhof-sb.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "BASEL-BAHNHOF-SB",
+     "to": "BASEL-BAHNHOF-SB",
+     "dep": "2027-01-27T19:03",
+     "arr": "2027-01-27T19:07"
+    },
+    {
+     "mode": "train",
+     "from": "BASEL-BAHNHOF-SB",
+     "to": "ZUERICH-HB",
+     "dep": "2027-01-27T19:07",
+     "arr": "2027-01-27T20:00",
+     "carrier": "Schweizerische Bundesbahnen SBB",
+     "number": "ICE 109",
+     "headsign": "Zürich HB",
+     "path": "paths/ice-109-basel-bahnhof-sb-zuerich-hb.geojson"
+    }
+   ],
+   "transfers": 3,
+   "self_transfer": true,
+   "flags": [
+    "No overhead bin"
+   ],
+   "offers": [
+    {
+     "seller": "easyJet",
+     "kind": "operator",
+     "price": 45,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhokEgoyMDI3LTAxLTI3agcIARIDSFJHcg0IAxIJL20vMDE3MWQwQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "fee",
+      "checked": "fee"
+     },
+     "bags_note": "Fare includes one small bag under the seat. A cabin bag for the overhead bin and a checked bag cost extra. easyJet sells the overhead-bin cabin bag and the 23 kg hold bag per flight. A guide for Geneva (gvaairport.com, 2026) gives about CHF 25 for a 23 kg bag booked online, CHF 70 at the airport. Read the price for this flight on easyjet.com.",
+     "stars": 3.5,
+     "reviews": 82570,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "warning": {
+    "short": "Transfer not priced",
+    "text": "The price does not include Basler Verkehrsbetriebe + Schweizerische Bundesbahnen SBB 18:46-20:00. Separate tickets: a late first part does not protect the next one."
+   },
+   "group": "hrg-back"
+  },
+  {
+   "id": "hy3",
+   "mode": "plane",
+   "group": "hrg-back",
+   "from": "HRG",
+   "to": "ZRH",
+   "dep": "2027-01-27T14:50",
+   "arr": "2027-01-27T20:55",
+   "carrier": "Condor",
+   "numbers": "DE 31 + DE 4410",
+   "stops": 1,
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HRG",
+     "dep": "2027-01-27T14:50",
+     "to": "FRA",
+     "arr": "2027-01-27T18:55",
+     "carrier": "Condor",
+     "number": "DE 31",
+     "aircraft": "Airbus A321neo"
+    },
+    {
+     "mode": "plane",
+     "from": "FRA",
+     "dep": "2027-01-27T20:05",
+     "to": "ZRH",
+     "arr": "2027-01-27T20:55",
+     "carrier": "Condor",
+     "number": "DE 4410",
+     "aircraft": "Airbus A320neo"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "Condor",
+     "kind": "operator",
+     "price": 263,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI3LTAxLTI3agcIARIDSFJHcgcIARIDWlJIQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "fee"
+     },
+     "bags_note": "Fare includes one small bag under the seat. A cabin bag for the overhead bin and a checked bag cost extra.",
+     "stars": 1.6,
+     "reviews": 6075,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "layovers_min": [
+    70
+   ],
+   "flags": [
+    "No overhead bin"
+   ]
+  },
+  {
+   "id": "tz5",
+   "mode": "plane",
+   "group": "tfs-out",
+   "from": "ZRH",
+   "to": "TFS",
+   "dep": "2027-01-12T07:30",
+   "arr": "2027-01-12T14:15",
+   "carrier": "Iberia",
+   "numbers": "IB 634 + IB 1545",
+   "stops": 1,
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "dep": "2027-01-12T07:30",
+     "to": "MAD",
+     "arr": "2027-01-12T09:55",
+     "carrier": "Iberia",
+     "number": "IB 634",
+     "aircraft": "Airbus A320"
+    },
+    {
+     "mode": "plane",
+     "from": "MAD",
+     "dep": "2027-01-12T12:10",
+     "to": "TFS",
+     "arr": "2027-01-12T14:15",
+     "carrier": "Iberia",
+     "number": "IB 1545",
+     "aircraft": "Airbus A321neo",
+     "operated_by": "Iberia Express"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "Iberia",
+     "kind": "operator",
+     "price": 177,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI3LTAxLTEyagcIARIDWlJIcgcIARIDVEZTQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.2,
+     "reviews": 713,
+     "rating_source": "trustpilot",
+     "bags_note": "Bags not read: this is the list price. Open the booking options for the bag rules."
+    }
+   ],
+   "layovers_min": [
+    135
+   ]
+  },
+  {
+   "id": "tz2",
+   "mode": "plane",
+   "group": "tfs-out",
+   "from": "ZRH",
+   "to": "TFS",
+   "dep": "2027-01-12T09:10",
+   "arr": "2027-01-12T18:30",
+   "carrier": "KLM + Transavia",
+   "numbers": "KL 1918 + HV 6671",
+   "stops": 1,
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ZRH",
+     "dep": "2027-01-12T09:10",
+     "to": "AMS",
+     "arr": "2027-01-12T10:55",
+     "carrier": "KLM",
+     "number": "KL 1918",
+     "aircraft": "Boeing 737"
+    },
+    {
+     "mode": "plane",
+     "from": "AMS",
+     "dep": "2027-01-12T14:45",
+     "to": "TFS",
+     "arr": "2027-01-12T18:30",
+     "carrier": "Transavia",
+     "number": "HV 6671",
+     "aircraft": "Airbus A321neo"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "KLM",
+     "kind": "operator",
+     "price": 117,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI3LTAxLTEyagcIARIDWlJIcgcIARIDVEZTQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.3,
+     "reviews": 9262,
+     "rating_source": "trustpilot",
+     "bags_note": "Bags not read: this is the list price. Open the booking options for the bag rules."
+    }
+   ],
+   "layovers_min": [
+    230
+   ]
+  },
+  {
+   "id": "tz3",
+   "mode": "plane",
+   "group": "tfs-out",
+   "from": "ZRH",
+   "to": "TFS",
+   "dep": "2027-01-12T09:25",
+   "arr": "2027-01-12T13:05",
+   "carrier": "Edelweiss Air",
+   "numbers": "WK 214",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "Edelweiss Air",
+     "kind": "operator",
+     "price": 255,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAho_EgoyMDI3LTAxLTEyIh8KA1pSSBIKMjAyNy0wMS0xMhoDVEZTKgJXSzIDMjE0agcIARIDWlJIcgcIARIDVEZTQAFIAXABggELCP___________wGYAQI&tfu=CmxDalJJTjNrdE5Fd3diMjVoTVVGQlNVWjJaV2RDUnkwdExTMHRMUzB0TFdWcVkyeGpPRUZCUVVGQlIzSnhYMkZOU0dGNldTMUJFZ1ZYU3pJeE5Cb0xDT0RHQVJBQ0dnTkRTRVk0SEhDODh3RT0SAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees.",
+     "stars": 1.9,
+     "reviews": 213,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "SWISS",
+     "kind": "operator",
+     "price": 409,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAho_EgoyMDI3LTAxLTEyIh8KA1pSSBIKMjAyNy0wMS0xMhoDVEZTKgJXSzIDMjE0agcIARIDWlJIcgcIARIDVEZTQAFIAXABggELCP___________wGYAQI&tfu=CmxDalJJTjNrdE5Fd3diMjVoTVVGQlNVWjJaV2RDUnkwdExTMHRMUzB0TFdWcVkyeGpPRUZCUVVGQlIzSnhYMkZOU0dGNldTMUJFZ1ZYU3pJeE5Cb0xDT0RHQVJBQ0dnTkRTRVk0SEhDODh3RT0SAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees.",
+     "stars": 1.3,
+     "reviews": 3295,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "Gotogate",
+     "kind": "agency",
+     "price": 273,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAho_EgoyMDI3LTAxLTEyIh8KA1pSSBIKMjAyNy0wMS0xMhoDVEZTKgJXSzIDMjE0agcIARIDWlJIcgcIARIDVEZTQAFIAXABggELCP___________wGYAQI&tfu=CmxDalJJTjNrdE5Fd3diMjVoTVVGQlNVWjJaV2RDUnkwdExTMHRMUzB0TFdWcVkyeGpPRUZCUVVGQlIzSnhYMkZOU0dGNldTMUJFZ1ZYU3pJeE5Cb0xDT0RHQVJBQ0dnTkRTRVk0SEhDODh3RT0SAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees.",
+     "stars": 2.4,
+     "reviews": 151946,
+     "rating_source": "trustpilot"
+    },
+    {
+     "seller": "Tripado",
+     "kind": "agency",
+     "price": 455,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAho_EgoyMDI3LTAxLTEyIh8KA1pSSBIKMjAyNy0wMS0xMhoDVEZTKgJXSzIDMjE0agcIARIDWlJIcgcIARIDVEZTQAFIAXABggELCP___________wGYAQI&tfu=CmxDalJJTjNrdE5Fd3diMjVoTVVGQlNVWjJaV2RDUnkwdExTMHRMUzB0TFdWcVkyeGpPRUZCUVVGQlIzSnhYMkZOU0dGNldTMUJFZ1ZYU3pJeE5Cb0xDT0RHQVJBQ0dnTkRTRVk0SEhDODh3RT0SAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees."
+    }
+   ]
+  },
+  {
+   "id": "to-rail",
+   "mode": "mixed",
+   "from": "ZUERICH-HB",
+   "to": "TFS",
+   "dep": "2027-01-12T09:25",
+   "arr": "2027-01-12T16:15",
+   "carrier": "SNCF VOYAGEURS + Basler Verkehrsbetriebe + easyJet",
+   "numbers": "TGV Lyria 9210 + 50 + U2 1025",
+   "segments": [
+    {
+     "mode": "walk",
+     "from": "ZUERICH-HB",
+     "to": "ZUERICH-HB",
+     "dep": "2027-01-12T09:25",
+     "arr": "2027-01-12T09:34"
+    },
+    {
+     "mode": "train",
+     "from": "ZUERICH-HB",
+     "to": "BASEL-SBB",
+     "dep": "2027-01-12T09:34",
+     "arr": "2027-01-12T10:26",
+     "carrier": "SNCF VOYAGEURS",
+     "number": "TGV Lyria 9210",
+     "path": "paths/tgv-lyria-92-zuerich-hb-basel-sbb.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "BASEL-SBB",
+     "to": "BASEL-SBB",
+     "dep": "2027-01-12T10:26",
+     "arr": "2027-01-12T10:28"
+    },
+    {
+     "mode": "bus",
+     "from": "BASEL-SBB",
+     "to": "BASEL-EUROAIRPOR",
+     "dep": "2027-01-12T10:28",
+     "arr": "2027-01-12T10:45",
+     "carrier": "Basler Verkehrsbetriebe",
+     "number": "50",
+     "headsign": "Basel EuroAirport, Verwaltung",
+     "path": "paths/50-basel-sbb-basel-euroairpor.geojson"
+    },
+    {
+     "mode": "plane",
+     "from": "BSL",
+     "to": "TFS",
+     "dep": "2027-01-12T12:30",
+     "arr": "2027-01-12T16:15",
+     "carrier": "easyJet",
+     "number": "U2 1025"
+    }
+   ],
+   "transfers": 4,
+   "self_transfer": true,
+   "flags": [
+    "No overhead bin"
+   ],
+   "offers": [
+    {
+     "seller": "easyJet",
+     "kind": "operator",
+     "price": 56,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAhpGEgoyMDI3LTAxLTEyIiAKA0JTTBIKMjAyNy0wMS0xMhoDVEZTKgJVMjIEMTAyNWoNCAMSCS9tLzAxNzFkMHIHCAESA1RGU0ABSAFwAYIBCwj___________8BmAEC&tfu=CmxDalJJV2xwc1MzaG1PVTR5VTFWQlMyeHFhWGRDUnkwdExTMHRMUzB0TFhkbVpuTXhNMEZCUVVGQlIzSnhYMVZGU1hFMlpIbEJFZ1pWTWpFd01qVWFDZ2ltS3hBQ0dnTkRTRVk0SEhDRk5RPT0SAggAIgMKATA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "checked": "fee",
+      "cabin": "fee"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees. easyJet sells the overhead-bin cabin bag and the 23 kg hold bag per flight. A guide for Geneva (gvaairport.com, 2026) gives about CHF 25 for a 23 kg bag booked online, CHF 70 at the airport. Read the price for this flight on easyjet.com.",
+     "stars": 3.5,
+     "reviews": 82570,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "warning": {
+    "short": "Transfer not priced",
+    "text": "The price does not include SNCF VOYAGEURS + Basler Verkehrsbetriebe 09:25-10:45. Separate tickets: a late first part does not protect the next one."
+   },
+   "group": "tfs-out"
+  },
+  {
+   "id": "ty1",
+   "mode": "plane",
+   "group": "tfs-back",
+   "from": "TFS",
+   "to": "ZRH",
+   "dep": "2027-01-19T06:25",
+   "arr": "2027-01-19T13:35",
+   "carrier": "Iberia",
+   "numbers": "IB 1554 + IB 629",
+   "stops": 1,
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "TFS",
+     "dep": "2027-01-19T06:25",
+     "to": "MAD",
+     "arr": "2027-01-19T10:15",
+     "carrier": "Iberia",
+     "number": "IB 1554",
+     "aircraft": "Airbus A320",
+     "operated_by": "Iberia Express"
+    },
+    {
+     "mode": "plane",
+     "from": "MAD",
+     "dep": "2027-01-19T11:15",
+     "to": "ZRH",
+     "arr": "2027-01-19T13:35",
+     "carrier": "Iberia",
+     "number": "IB 629",
+     "aircraft": "Airbus A320"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "Iberia",
+     "kind": "operator",
+     "price": 86,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI3LTAxLTE5agcIARIDVEZTcgcIARIDWlJIQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.2,
+     "reviews": 713,
+     "rating_source": "trustpilot",
+     "bags_note": "Bags not read: this is the list price. Open the booking options for the bag rules."
+    }
+   ],
+   "layovers_min": [
+    60
+   ]
+  },
+  {
+   "id": "ty2",
+   "mode": "plane",
+   "group": "tfs-back",
+   "from": "TFS",
+   "to": "ZRH",
+   "dep": "2027-01-19T15:00",
+   "arr": "2027-01-19T22:30",
+   "carrier": "Iberia",
+   "numbers": "IB 1546 + IB 633",
+   "stops": 1,
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "TFS",
+     "dep": "2027-01-19T15:00",
+     "to": "MAD",
+     "arr": "2027-01-19T18:55",
+     "carrier": "Iberia",
+     "number": "IB 1546",
+     "aircraft": "Airbus A321neo",
+     "operated_by": "Iberia Express"
+    },
+    {
+     "mode": "plane",
+     "from": "MAD",
+     "dep": "2027-01-19T20:10",
+     "to": "ZRH",
+     "arr": "2027-01-19T22:30",
+     "carrier": "Iberia",
+     "number": "IB 633",
+     "aircraft": "Airbus A320"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "Iberia",
+     "kind": "operator",
+     "price": 121,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI3LTAxLTE5agcIARIDVEZTcgcIARIDWlJIQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.2,
+     "reviews": 713,
+     "rating_source": "trustpilot",
+     "bags_note": "Bags not read: this is the list price. Open the booking options for the bag rules."
+    }
+   ],
+   "layovers_min": [
+    75
+   ]
+  },
+  {
+   "id": "tb1-rail",
+   "mode": "mixed",
+   "from": "TFS",
+   "to": "ZUERICH-HB",
+   "dep": "2027-01-19T16:50",
+   "arr": "2027-01-20T01:24",
+   "carrier": "easyJet + Basler Verkehrsbetriebe + Schweizerische Bundesbahnen SBB",
+   "numbers": "U2 1026 + 50 + IR36",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "TFS",
+     "to": "BSL",
+     "dep": "2027-01-19T16:50",
+     "arr": "2027-01-19T22:15",
+     "carrier": "easyJet",
+     "number": "U2 1026"
+    },
+    {
+     "mode": "bus",
+     "from": "BASEL-EUROAIRPOR",
+     "to": "BASEL-BAHNHOF-SB",
+     "dep": "2027-01-19T23:32",
+     "arr": "2027-01-19T23:47",
+     "carrier": "Basler Verkehrsbetriebe",
+     "number": "50",
+     "headsign": "Basel, Bahnhof SBB",
+     "path": "paths/50-basel-euroairpor-basel-bahnhof-sb.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "BASEL-BAHNHOF-SB",
+     "to": "BASEL-BAHNHOF-SB",
+     "dep": "2027-01-19T23:47",
+     "arr": "2027-01-19T23:51"
+    },
+    {
+     "mode": "train",
+     "from": "BASEL-BAHNHOF-SB",
+     "to": "ZUERICH-HB",
+     "dep": "2027-01-20T00:07",
+     "arr": "2027-01-20T01:24",
+     "carrier": "Schweizerische Bundesbahnen SBB",
+     "number": "IR36",
+     "headsign": "Zürich HB",
+     "path": "paths/ir36-basel-bahnhof-sb-zuerich-hb.geojson"
+    }
+   ],
+   "transfers": 3,
+   "self_transfer": true,
+   "flags": [
+    "No overhead bin"
+   ],
+   "offers": [
+    {
+     "seller": "easyJet",
+     "kind": "operator",
+     "price": 52,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhokEgoyMDI3LTAxLTE5agcIARIDVEZTcg0IAxIJL20vMDE3MWQwQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "fee",
+      "checked": "fee"
+     },
+     "bags_note": "Fare includes one small bag under the seat. A cabin bag for the overhead bin and a checked bag cost extra. easyJet sells the overhead-bin cabin bag and the 23 kg hold bag per flight. A guide for Geneva (gvaairport.com, 2026) gives about CHF 25 for a 23 kg bag booked online, CHF 70 at the airport. Read the price for this flight on easyjet.com.",
+     "stars": 3.5,
+     "reviews": 82570,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "warning": {
+    "short": "Transfer not priced",
+    "text": "The price does not include Basler Verkehrsbetriebe + Schweizerische Bundesbahnen SBB 23:32-01:24. Separate tickets: a late first part does not protect the next one."
+   },
+   "group": "tfs-back"
+  },
+  {
+   "id": "ao1",
+   "mode": "plane",
+   "group": "ace-out",
+   "from": "BSL",
+   "to": "ACE",
+   "dep": "2027-01-12T07:25",
+   "arr": "2027-01-12T10:45",
+   "carrier": "easyJet",
+   "numbers": "U2 1027",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "easyJet",
+     "kind": "operator",
+     "price": 40,
+     "currency": "CHF",
+     "basis": "booking",
+     "source": "Google Flights booking options",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/booking?tfs=CBwQAhpGEgoyMDI3LTAxLTEyIiAKA0JTTBIKMjAyNy0wMS0xMhoDQUNFKgJVMjIEMTAyN2oNCAMSCS9tLzAxNzFkMHIHCAESA0FDRUABSAFwAYIBCwj___________8BmAEC&tfu=CmxDalJJU1hSaWVEUlVVRjlCYjNkQlNWRlRZMEZDUnkwdExTMHRMUzEzWW1zeU1TMXVNa0ZCUVVGQlIzSnhYMWhSVEUxbFJVdEJFZ1pWTWpFd01qY2FDZ2ptSGhBQ0dnTkRTRVk0SEhEZEpRPT0SAggAIgA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "checked": "fee",
+      "cabin": "fee"
+     },
+     "bags_note": "From the itinerary summary. Agencies can add their own bag fees. easyJet sells the overhead-bin cabin bag and the 23 kg hold bag per flight. A guide for Geneva (gvaairport.com, 2026) gives about CHF 25 for a 23 kg bag booked online, CHF 70 at the airport. Read the price for this flight on easyjet.com.",
+     "stars": 3.5,
+     "reviews": 82570,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "flags": [
+    "No overhead bin"
+   ],
+   "warning": {
+    "short": "No early train",
+    "text": "No train or bus from Zürich reaches the airport with time to spare: the first one (IR37 at 05:08 from Zürich HB, then bus 50) arrives at 06:38. Sleep near the airport the night before, or drive. That is 47 min before departure."
+   }
+  },
+  {
+   "id": "ab1-rail",
+   "mode": "mixed",
+   "from": "ACE",
+   "to": "ZUERICH-HB",
+   "dep": "2027-01-19T11:25",
+   "arr": "2027-01-19T19:00",
+   "carrier": "easyJet + Basler Verkehrsbetriebe + Schweizerische Bundesbahnen SBB",
+   "numbers": "U2 1028 + 50 + ICE 373",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ACE",
+     "to": "BSL",
+     "dep": "2027-01-19T11:25",
+     "arr": "2027-01-19T16:30",
+     "carrier": "easyJet",
+     "number": "U2 1028"
+    },
+    {
+     "mode": "bus",
+     "from": "BASEL-EUROAIRPOR",
+     "to": "BASEL-BAHNHOF-SB",
+     "dep": "2027-01-19T17:43",
+     "arr": "2027-01-19T18:03",
+     "carrier": "Basler Verkehrsbetriebe",
+     "number": "50",
+     "headsign": "Basel, Bahnhof SBB",
+     "path": "paths/50-basel-euroairpor-basel-bahnhof-sb.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "BASEL-BAHNHOF-SB",
+     "to": "BASEL-BAHNHOF-SB",
+     "dep": "2027-01-19T18:03",
+     "arr": "2027-01-19T18:07"
+    },
+    {
+     "mode": "train",
+     "from": "BASEL-BAHNHOF-SB",
+     "to": "ZUERICH-HB",
+     "dep": "2027-01-19T18:07",
+     "arr": "2027-01-19T19:00",
+     "carrier": "Schweizerische Bundesbahnen SBB",
+     "number": "ICE 373",
+     "headsign": "Chur",
+     "path": "paths/ice-373-basel-bahnhof-sb-zuerich-hb.geojson"
+    }
+   ],
+   "transfers": 3,
+   "self_transfer": true,
+   "flags": [
+    "No overhead bin"
+   ],
+   "offers": [
+    {
+     "seller": "easyJet",
+     "kind": "operator",
+     "price": 35,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhokEgoyMDI3LTAxLTE5agcIARIDQUNFcg0IAxIJL20vMDE3MWQwQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "bags": {
+      "cabin": "fee",
+      "checked": "fee"
+     },
+     "bags_note": "Fare includes one small bag under the seat. A cabin bag for the overhead bin and a checked bag cost extra. easyJet sells the overhead-bin cabin bag and the 23 kg hold bag per flight. A guide for Geneva (gvaairport.com, 2026) gives about CHF 25 for a 23 kg bag booked online, CHF 70 at the airport. Read the price for this flight on easyjet.com.",
+     "stars": 3.5,
+     "reviews": 82570,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "warning": {
+    "short": "Transfer not priced",
+    "text": "The price does not include Basler Verkehrsbetriebe + Schweizerische Bundesbahnen SBB 17:43-19:00. Separate tickets: a late first part does not protect the next one."
+   },
+   "group": "ace-back"
+  }
+ ],
+ "deals": []
+}

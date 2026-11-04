@@ -1,0 +1,878 @@
+{
+ "id": "rail-vs-air",
+ "title": "Zürich to Amsterdam for a Friday meeting",
+ "currency": "CHF",
+ "passengers": {
+  "adults": 1,
+  "children": 0
+ },
+ "clock": "Europe/Zurich",
+ "window": {
+  "start": "2026-12-03",
+  "end": "2026-12-06"
+ },
+ "places": {
+  "ZUERICH-HB": {
+   "name": "Zürich HB",
+   "city": "Zürich HB",
+   "kind": "station",
+   "coord": [
+    8.53746,
+    47.37814
+   ],
+   "tz": "Europe/Zurich"
+  },
+  "BASEL-SBB": {
+   "name": "Basel SBB",
+   "city": "Basel SBB",
+   "kind": "station",
+   "coord": [
+    7.58882,
+    47.54593
+   ],
+   "tz": "Europe/Zurich"
+  },
+  "DUESSELDORF-HBF": {
+   "name": "Düsseldorf Hbf",
+   "city": "Düsseldorf Hbf",
+   "kind": "station",
+   "coord": [
+    6.79487,
+    51.21951
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "AMSTERDAM-CENTRA": {
+   "name": "Amsterdam Centraal",
+   "city": "Amsterdam Centraal",
+   "kind": "station",
+   "coord": [
+    4.89944,
+    52.37913
+   ],
+   "tz": "Europe/Brussels"
+  },
+  "FRANKFURT-MAIN-H": {
+   "name": "Frankfurt (Main) Hauptbahnhof",
+   "city": "Frankfurt",
+   "kind": "station",
+   "coord": [
+    8.66283,
+    50.10668
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "HAUPTBAHNHOF": {
+   "name": "Hauptbahnhof",
+   "city": "Hauptbahnhof",
+   "kind": "station",
+   "coord": [
+    9.18239,
+    48.78559
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "AMSTERDAM-SLOTER": {
+   "name": "Amsterdam Sloterdijk",
+   "city": "Amsterdam Sloterdijk",
+   "kind": "station",
+   "coord": [
+    4.8385,
+    52.38976
+   ],
+   "tz": "Europe/Brussels"
+  },
+  "ZURICH": {
+   "name": "Zurich",
+   "city": "Zurich",
+   "kind": "stop",
+   "coord": [
+    8.53744,
+    47.38085
+   ],
+   "tz": "Europe/Zurich"
+  },
+  "FRANKFURT-CENTRA": {
+   "name": "Frankfurt central station",
+   "city": "Frankfurt",
+   "kind": "stop",
+   "coord": [
+    8.66258,
+    50.10439
+   ],
+   "tz": "Europe/Berlin"
+  },
+  "AMS": {
+   "name": "Amsterdam Airport Schiphol",
+   "city": "Amsterdam",
+   "kind": "airport",
+   "coord": [
+    4.7639,
+    52.3086
+   ],
+   "tz": "Europe/Amsterdam"
+  },
+  "ZRH": {
+   "name": "Zürich Airport",
+   "city": "Zurich",
+   "kind": "airport",
+   "coord": [
+    8.5481,
+    47.4581
+   ],
+   "tz": "Europe/Zurich"
+  },
+  "BASEL-EUROAIRPOR": {
+   "name": "Basel Euroairport FR",
+   "city": "Basel Euroairport FR",
+   "kind": "station",
+   "coord": [
+    7.53267,
+    47.59939
+   ],
+   "tz": "Europe/Paris"
+  },
+  "BSL": {
+   "name": "EuroAirport Basel–Mulhouse–Freiburg",
+   "city": "Bâle / Mulhouse",
+   "kind": "airport",
+   "coord": [
+    7.5211,
+    47.6007
+   ],
+   "tz": "Europe/Paris"
+  }
+ },
+ "context": {
+  "work": {
+   "what": "Meeting",
+   "city": "Amsterdam",
+   "start": "2026-12-04T10:00",
+   "end": "2026-12-04T16:00",
+   "tz": "Europe/Amsterdam"
+  }
+ },
+ "journeys": [
+  {
+   "id": "t5",
+   "mode": "train",
+   "from": "ZUERICH-HB",
+   "to": "AMSTERDAM-CENTRA",
+   "dep": "2026-12-03T07:59",
+   "arr": "2026-12-03T17:29",
+   "carrier": "SBB + DB Fernverkehr AG",
+   "numbers": "ICE 200 + ICE 124",
+   "transfers": 1,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "ZUERICH-HB",
+     "to": "DUESSELDORF-HBF",
+     "dep": "2026-12-03T07:59",
+     "arr": "2026-12-03T13:32",
+     "carrier": "SBB",
+     "number": "ICE 200",
+     "headsign": "Hamburg-Altona",
+     "path": "paths/ice-200-zuerich-hb-duesseldorf-hbf.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "DUESSELDORF-HBF",
+     "to": "AMSTERDAM-CENTRA",
+     "dep": "2026-12-03T15:11",
+     "arr": "2026-12-03T17:29",
+     "carrier": "DB Fernverkehr AG",
+     "number": "ICE 124",
+     "headsign": "Arnhem Centraal",
+     "path": "paths/ice-124-duesseldorf-hbf-amsterdam-centra.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "out",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the Nightjet and SBB shops did not give a price. Read it on bahn.de, nightjet.com or sbb.ch."
+   }
+  },
+  {
+   "id": "t14",
+   "mode": "train",
+   "from": "ZUERICH-HB",
+   "to": "AMSTERDAM-CENTRA",
+   "dep": "2026-12-03T10:59",
+   "arr": "2026-12-03T19:29",
+   "carrier": "SBB + DB Fernverkehr AG",
+   "numbers": "ICE 370 + ICE 122",
+   "transfers": 1,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "ZUERICH-HB",
+     "to": "FRANKFURT-MAIN-H",
+     "dep": "2026-12-03T10:59",
+     "arr": "2026-12-03T15:09",
+     "carrier": "SBB",
+     "number": "ICE 370",
+     "headsign": "S+U Berlin Hauptbahnhof",
+     "path": "paths/ice-370-zuerich-hb-frankfurt-main-h.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "FRANKFURT-MAIN-H",
+     "to": "AMSTERDAM-CENTRA",
+     "dep": "2026-12-03T15:34",
+     "arr": "2026-12-03T19:29",
+     "carrier": "DB Fernverkehr AG",
+     "number": "ICE 122",
+     "headsign": "Arnhem Centraal",
+     "path": "paths/ice-122-frankfurt-main-h-amsterdam-centra.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "out",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the Nightjet and SBB shops did not give a price. Read it on bahn.de, nightjet.com or sbb.ch."
+   }
+  },
+  {
+   "id": "t21",
+   "mode": "train",
+   "from": "ZUERICH-HB",
+   "to": "AMSTERDAM-CENTRA",
+   "dep": "2026-12-03T12:37",
+   "arr": "2026-12-03T21:29",
+   "carrier": "SBB + NS International",
+   "numbers": "IC 188 + ICE 224",
+   "transfers": 1,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "ZUERICH-HB",
+     "to": "HAUPTBAHNHOF",
+     "dep": "2026-12-03T12:37",
+     "arr": "2026-12-03T15:32",
+     "carrier": "SBB",
+     "number": "IC 188",
+     "headsign": "Hauptbahnhof",
+     "path": "paths/ic-188-zuerich-hb-hauptbahnhof.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "HAUPTBAHNHOF",
+     "to": "HAUPTBAHNHOF",
+     "dep": "2026-12-03T15:32",
+     "arr": "2026-12-03T15:34"
+    },
+    {
+     "mode": "train",
+     "from": "HAUPTBAHNHOF",
+     "to": "AMSTERDAM-CENTRA",
+     "dep": "2026-12-03T16:26",
+     "arr": "2026-12-03T21:29",
+     "carrier": "NS International",
+     "number": "ICE 224",
+     "headsign": "Amsterdam Centraal",
+     "path": "paths/ice-224-hauptbahnhof-amsterdam-centra.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "out",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the Nightjet and SBB shops did not give a price. Read it on bahn.de, nightjet.com or sbb.ch."
+   }
+  },
+  {
+   "id": "fq12",
+   "mode": "mixed",
+   "from": "ZUERICH-HB",
+   "to": "AMS",
+   "dep": "2026-12-03T14:59",
+   "arr": "2026-12-03T19:30",
+   "carrier": "Schweizerische Bundesbahnen SBB + Basler Verkehrsbetriebe + KLM",
+   "numbers": "IC3 + 50 + KL 1948",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "ZUERICH-HB",
+     "to": "BASEL-SBB",
+     "dep": "2026-12-03T14:59",
+     "arr": "2026-12-03T15:52",
+     "carrier": "Schweizerische Bundesbahnen SBB",
+     "number": "IC3",
+     "headsign": "Basel SBB",
+     "path": "paths/ic3-zuerich-hb-basel-sbb.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "BASEL-SBB",
+     "to": "BASEL-SBB",
+     "dep": "2026-12-03T15:52",
+     "arr": "2026-12-03T15:56"
+    },
+    {
+     "mode": "bus",
+     "from": "BASEL-SBB",
+     "to": "BASEL-EUROAIRPOR",
+     "dep": "2026-12-03T16:00",
+     "arr": "2026-12-03T16:17",
+     "carrier": "Basler Verkehrsbetriebe",
+     "number": "50",
+     "headsign": "Basel EuroAirport, Verwaltung",
+     "path": "paths/50-basel-sbb-basel-euroairpor.geojson"
+    },
+    {
+     "mode": "plane",
+     "from": "BSL",
+     "to": "AMS",
+     "dep": "2026-12-03T17:55",
+     "arr": "2026-12-03T19:30",
+     "carrier": "KLM",
+     "number": "KL 1948"
+    }
+   ],
+   "transfers": 3,
+   "self_transfer": true,
+   "flags": [],
+   "offers": [
+    {
+     "seller": "KLM",
+     "kind": "operator",
+     "price": 217,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhokEgoyMDI2LTEyLTAzag0IAxIJL20vMDE3MWQwcgcIARIDQU1TQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.3,
+     "reviews": 9262,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "warning": {
+    "short": "Transfer not priced",
+    "text": "The price does not include Schweizerische Bundesbahnen SBB + Basler Verkehrsbetriebe 14:59-16:17. Separate tickets: a late first part does not protect the next one."
+   },
+   "group": "out"
+  },
+  {
+   "id": "fx5",
+   "mode": "bus",
+   "from": "ZURICH",
+   "to": "AMSTERDAM-SLOTER",
+   "dep": "2026-12-03T16:00",
+   "arr": "2026-12-04T07:30",
+   "carrier": "FlixBus",
+   "numbers": "",
+   "transfers": 1,
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "ZURICH",
+     "to": "FRANKFURT-CENTRA",
+     "dep": "2026-12-03T16:00",
+     "arr": "2026-12-03T22:45",
+     "carrier": "FlixBus",
+     "number": "",
+     "path": "paths/bus-zurich-frankfurt-centra.geojson"
+    },
+    {
+     "mode": "bus",
+     "from": "FRANKFURT-CENTRA",
+     "to": "AMSTERDAM-SLOTER",
+     "dep": "2026-12-04T01:20",
+     "arr": "2026-12-04T07:30",
+     "carrier": "FlixBus",
+     "number": "",
+     "path": "paths/bus-frankfurt-centra-amsterdam-sloter.geojson"
+    }
+   ],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "FlixBus",
+     "kind": "operator",
+     "price": 44,
+     "fare": "Standard",
+     "bags": {
+      "cabin": "included",
+      "checked": "included"
+     },
+     "bags_note": "1 hand luggage up to 7 kg and 1 hold bag up to 20 kg are included",
+     "seats_left": 45,
+     "source": "flixbus.com search API",
+     "seen": "2026-11-04",
+     "url": "https://www.flixbus.com/",
+     "stars": 2.4,
+     "reviews": 18361,
+     "rating_source": "trustpilot"
+    }
+   ],
+   "group": "out"
+  },
+  {
+   "id": "fo15",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "AMS",
+   "dep": "2026-12-03T17:25",
+   "arr": "2026-12-03T19:05",
+   "carrier": "SWISS",
+   "numbers": "LX 734",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "SWISS",
+     "kind": "operator",
+     "price": 227,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDWlJIcgcIARIDQU1TQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.3,
+     "reviews": 3295,
+     "rating_source": "trustpilot"
+    }
+   ]
+  },
+  {
+   "id": "fo20",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "AMS",
+   "dep": "2026-12-03T19:10",
+   "arr": "2026-12-03T20:50",
+   "carrier": "KLM",
+   "numbers": "KL 1926",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "KLM",
+     "kind": "operator",
+     "price": 234,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDWlJIcgcIARIDQU1TQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.3,
+     "reviews": 9262,
+     "rating_source": "trustpilot"
+    }
+   ]
+  },
+  {
+   "id": "t47",
+   "mode": "train",
+   "from": "ZUERICH-HB",
+   "to": "AMSTERDAM-CENTRA",
+   "dep": "2026-12-03T21:59",
+   "arr": "2026-12-04T08:59",
+   "carrier": "ÖBB Nightjet",
+   "numbers": "NJ 402",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "ZUERICH-HB",
+     "to": "AMSTERDAM-CENTRA",
+     "dep": "2026-12-03T21:59",
+     "arr": "2026-12-04T08:59",
+     "carrier": "ÖBB Nightjet",
+     "number": "NJ 402 (DB IC 60402)",
+     "headsign": "Amsterdam Centraal",
+     "path": "paths/ic-60402-zuerich-hb-amsterdam-centra.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "overnight": true,
+   "group": "out",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the Nightjet and SBB shops did not give a price. Read it on bahn.de, nightjet.com or sbb.ch."
+   }
+  },
+  {
+   "id": "fp12",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "AMS",
+   "dep": "2026-12-04T06:50",
+   "arr": "2026-12-04T08:25",
+   "carrier": "KLM",
+   "numbers": "KL 1916",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "KLM",
+     "kind": "operator",
+     "price": 214,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTA0agcIARIDWlJIcgcIARIDQU1TQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.3,
+     "reviews": 9262,
+     "rating_source": "trustpilot"
+    }
+   ]
+  },
+  {
+   "id": "fp17",
+   "mode": "plane",
+   "group": "out",
+   "from": "ZRH",
+   "to": "AMS",
+   "dep": "2026-12-04T07:15",
+   "arr": "2026-12-04T09:00",
+   "carrier": "SWISS",
+   "numbers": "LX 724",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "SWISS",
+     "kind": "operator",
+     "price": 222,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTA0agcIARIDWlJIcgcIARIDQU1TQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.3,
+     "reviews": 3295,
+     "rating_source": "trustpilot"
+    }
+   ]
+  },
+  {
+   "id": "fr1",
+   "mode": "plane",
+   "group": "back",
+   "from": "AMS",
+   "to": "ZRH",
+   "dep": "2026-12-04T20:00",
+   "arr": "2026-12-04T21:30",
+   "carrier": "SWISS",
+   "numbers": "LX 735",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "SWISS",
+     "kind": "operator",
+     "price": 153,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTA0agcIARIDQU1TcgcIARIDWlJIQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.3,
+     "reviews": 3295,
+     "rating_source": "trustpilot"
+    }
+   ]
+  },
+  {
+   "id": "r6",
+   "mode": "train",
+   "from": "AMSTERDAM-CENTRA",
+   "to": "ZUERICH-HB",
+   "dep": "2026-12-04T21:01",
+   "arr": "2026-12-05T08:05",
+   "carrier": "ÖBB Nightjet",
+   "numbers": "NJ 403",
+   "transfers": 0,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "AMSTERDAM-CENTRA",
+     "to": "ZUERICH-HB",
+     "dep": "2026-12-04T21:01",
+     "arr": "2026-12-05T08:05",
+     "carrier": "NS International",
+     "number": "NJ 403",
+     "headsign": "Zürich HB",
+     "path": "paths/nj-403-amsterdam-centra-zurich-bus-stati.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "overnight": true,
+   "group": "back",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the Nightjet and SBB shops did not give a price. Read it on bahn.de, nightjet.com or sbb.ch."
+   }
+  },
+  {
+   "id": "fr8",
+   "mode": "plane",
+   "group": "back",
+   "from": "AMS",
+   "to": "ZRH",
+   "dep": "2026-12-04T21:05",
+   "arr": "2026-12-04T22:25",
+   "carrier": "KLM",
+   "numbers": "KL 1927",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "KLM",
+     "kind": "operator",
+     "price": 154,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTA0agcIARIDQU1TcgcIARIDWlJIQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.3,
+     "reviews": 9262,
+     "rating_source": "trustpilot"
+    }
+   ]
+  },
+  {
+   "id": "s1",
+   "mode": "train",
+   "from": "AMSTERDAM-CENTRA",
+   "to": "ZUERICH-HB",
+   "dep": "2026-12-05T06:38",
+   "arr": "2026-12-05T15:00",
+   "carrier": "Nederlandse Spoorwegen + DB Fernverkehr AG",
+   "numbers": "ICE 121 + ICE 279",
+   "transfers": 1,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "AMSTERDAM-CENTRA",
+     "to": "FRANKFURT-MAIN-H",
+     "dep": "2026-12-05T06:38",
+     "arr": "2026-12-05T10:27",
+     "carrier": "Nederlandse Spoorwegen",
+     "number": "ICE 121",
+     "headsign": "Frankfurt (Main) Hauptbahnhof",
+     "path": "paths/ice-121-amsterdam-centra-frankfurt-main-h.geojson"
+    },
+    {
+     "mode": "train",
+     "from": "FRANKFURT-MAIN-H",
+     "to": "ZUERICH-HB",
+     "dep": "2026-12-05T10:50",
+     "arr": "2026-12-05T15:00",
+     "carrier": "DB Fernverkehr AG",
+     "number": "ICE 279",
+     "headsign": "Basel SBB",
+     "path": "paths/ice-279-frankfurt-main-h-zuerich-hb.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "back",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the Nightjet and SBB shops did not give a price. Read it on bahn.de, nightjet.com or sbb.ch."
+   }
+  },
+  {
+   "id": "fs2",
+   "mode": "plane",
+   "group": "back",
+   "from": "AMS",
+   "to": "ZRH",
+   "dep": "2026-12-05T09:40",
+   "arr": "2026-12-05T11:00",
+   "carrier": "KLM",
+   "numbers": "KL 1919",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "KLM",
+     "kind": "operator",
+     "price": 154,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTA1agcIARIDQU1TcgcIARIDWlJIQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.3,
+     "reviews": 9262,
+     "rating_source": "trustpilot"
+    }
+   ]
+  },
+  {
+   "id": "fs1",
+   "mode": "plane",
+   "group": "back",
+   "from": "AMS",
+   "to": "ZRH",
+   "dep": "2026-12-05T09:50",
+   "arr": "2026-12-05T11:15",
+   "carrier": "SWISS",
+   "numbers": "LX 725",
+   "stops": 0,
+   "segments": [],
+   "self_transfer": false,
+   "offers": [
+    {
+     "seller": "SWISS",
+     "kind": "operator",
+     "price": 153,
+     "currency": "CHF",
+     "basis": "list",
+     "source": "Google Flights",
+     "seen": "2026-11-04",
+     "url": "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTA1agcIARIDQU1TcgcIARIDWlJIQAFIAXABggELCP___________wGYAQI&tfu=EgYIABABGAA&hl=en&gl=CH&curr=CHF",
+     "stars": 1.3,
+     "reviews": 3295,
+     "rating_source": "trustpilot"
+    }
+   ]
+  },
+  {
+   "id": "s8",
+   "mode": "train",
+   "from": "AMSTERDAM-CENTRA",
+   "to": "ZUERICH-HB",
+   "dep": "2026-12-05T10:31",
+   "arr": "2026-12-05T19:00",
+   "carrier": "NS International + DB Fernverkehr AG",
+   "numbers": "ICE 123 + ICE 373",
+   "transfers": 1,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "AMSTERDAM-CENTRA",
+     "to": "FRANKFURT-MAIN-H",
+     "dep": "2026-12-05T10:31",
+     "arr": "2026-12-05T14:27",
+     "carrier": "NS International",
+     "number": "ICE 123",
+     "headsign": "Frankfurt (M) Hbf",
+     "path": "paths/ice-123-amsterdam-centra-frankfurt-main-h.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "FRANKFURT-MAIN-H",
+     "to": "FRANKFURT-MAIN-H",
+     "dep": "2026-12-05T14:27",
+     "arr": "2026-12-05T14:35"
+    },
+    {
+     "mode": "train",
+     "from": "FRANKFURT-MAIN-H",
+     "to": "ZUERICH-HB",
+     "dep": "2026-12-05T14:50",
+     "arr": "2026-12-05T19:00",
+     "carrier": "DB Fernverkehr AG",
+     "number": "ICE 373",
+     "headsign": "Basel SBB",
+     "path": "paths/ice-373-frankfurt-main-h-zuerich-hb.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "back",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the Nightjet and SBB shops did not give a price. Read it on bahn.de, nightjet.com or sbb.ch."
+   }
+  },
+  {
+   "id": "u8",
+   "mode": "train",
+   "from": "AMSTERDAM-CENTRA",
+   "to": "ZUERICH-HB",
+   "dep": "2026-12-06T10:31",
+   "arr": "2026-12-06T19:00",
+   "carrier": "NS International + DB Fernverkehr AG",
+   "numbers": "ICE 123 + ICE 373",
+   "transfers": 1,
+   "segments": [
+    {
+     "mode": "train",
+     "from": "AMSTERDAM-CENTRA",
+     "to": "FRANKFURT-MAIN-H",
+     "dep": "2026-12-06T10:31",
+     "arr": "2026-12-06T14:27",
+     "carrier": "NS International",
+     "number": "ICE 123",
+     "headsign": "Frankfurt (M) Hbf",
+     "path": "paths/ice-123-amsterdam-centra-frankfurt-main-h.geojson"
+    },
+    {
+     "mode": "walk",
+     "from": "FRANKFURT-MAIN-H",
+     "to": "FRANKFURT-MAIN-H",
+     "dep": "2026-12-06T14:27",
+     "arr": "2026-12-06T14:35"
+    },
+    {
+     "mode": "train",
+     "from": "FRANKFURT-MAIN-H",
+     "to": "ZUERICH-HB",
+     "dep": "2026-12-06T14:50",
+     "arr": "2026-12-06T19:00",
+     "carrier": "DB Fernverkehr AG",
+     "number": "ICE 373",
+     "headsign": "Basel SBB",
+     "path": "paths/ice-373-frankfurt-main-h-zuerich-hb.geojson"
+    }
+   ],
+   "offers": [],
+   "schedule_source": "transitous",
+   "seen": "2026-11-04",
+   "group": "back",
+   "warning": {
+    "short": "No price",
+    "text": "Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the Nightjet and SBB shops did not give a price. Read it on bahn.de, nightjet.com or sbb.ch."
+   }
+  }
+ ],
+ "deals": [
+  {
+   "journeys": [
+    "fo15",
+    "fs1"
+   ],
+   "price": 235,
+   "seller": "SWISS",
+   "kind": "operator",
+   "what": "Round trip: LX 734 on Thu 3 Dec and LX 725 on Sat 5 Dec on one SWISS ticket. Two one-way tickets cost CHF 380.",
+   "basis": "list",
+   "source": "Google Flights",
+   "seen": "2026-11-04",
+   "url": "https://www.google.com/travel/flights/search?tfs=CBwQAho_EgoyMDI2LTEyLTAzIh8KA1pSSBIKMjAyNi0xMi0wMxoDQU1TKgJMWDIDNzM0agcIARIDWlJIcgcIARIDQU1TGh4SCjIwMjYtMTItMDVqBwgBEgNBTVNyBwgBEgNaUkhAAUgBcAGCAQsI____________AZgBAQ&tfu=EgQIABABIgA&hl=en&gl=CH&curr=CHF"
+  }
+ ]
+}
