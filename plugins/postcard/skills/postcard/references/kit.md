@@ -214,7 +214,10 @@ classes, and SVG text classes `pc-caps`, `pc-tick`, `pc-note`, `pc-pill`, `pc-tr
 `label`, `lng`, `lat`. Vehicles ride the route by segment mode or `segment.vehicle` (trip-schema.md). A train leg of four hours or more that runs through 03:00 gets `train-night` by itself.
 Landmarks go in `map.models`. Place a landmark only at its own city, for the places on the trip and at
 most two or three famous ones the route passes near; more makes the chart busy. A place without a
-model gets none; do not use another city's model.
+model gets none; do not use another city's model. Give each one `lng` and `lat` beside its place, as for
+`map.art`: about 40 to 80 km off at a country view, on the side away from the route and from the place's
+label (labels sit to the right of the dot). A model on the dot covers the route end. Map labels and the
+route card draw above the models.
 
 The models are generated, not drawn: `models/` at the repository root has the generator, the parts
 and a gallery (`models/gallery/`). A new model is a new file there, built with `node models/build.mjs`.

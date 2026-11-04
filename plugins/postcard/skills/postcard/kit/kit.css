@@ -27,6 +27,9 @@ button { font: inherit; color: inherit; }
 .pc-lbl.hub { font: 600 9px var(--sans); letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
 .pc-vehicle { height: 34px; width: auto; pointer-events: none; }
 /* The route card beside the vehicle on a hovered route: the time there, the leg, how far along. Fixed width, so it never jumps as the pointer moves. */
+/* The 3D layer (deck.gl) sits under the map's labels, dots and the route card: a model never hides a name. */
+.deck-widget-container { z-index: 1; }
+.maplibregl-canvas-container .maplibregl-marker { z-index: 2; }
 .pc-where { position: absolute; left: 0; top: 0; z-index: 3; width: 236px; pointer-events: none; background: var(--card); color: var(--ink); border: 1px solid var(--rule);
   border-radius: var(--r); padding: 9px 11px 8px; box-shadow: 0 1px 0 var(--rule2); font: 12px/1.35 var(--sans); font-variant-numeric: tabular-nums; }
 .pc-where[hidden] { display: none; }

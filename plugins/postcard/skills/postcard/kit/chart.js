@@ -230,6 +230,8 @@ export function createChart(opts) {
   // at a constant size on screen. A mode with no model yet falls back to the engraved cut-out in a MapLibre
   // marker. (A deck.gl IconLayer drew nothing in this overlay, deck.gl 9.4.)
   // 4x4 column-major matrices for the vehicle pose: rotations in degrees about x and z, a uniform scale.
+  // deck.gl's meter frame under MapboxOverlay comes out turned a half-turn about z against east-north-up
+  // (tested on the map with four planes at 0, 90, 180 and 270 degrees), so headings add 180.
   const mat = {
     rx: (d) => { const c = Math.cos(d * rad), n = Math.sin(d * rad); return [1, 0, 0, 0, 0, c, n, 0, 0, -n, c, 0, 0, 0, 0, 1]; },
     rz: (d) => { const c = Math.cos(d * rad), n = Math.sin(d * rad); return [c, n, 0, 0, -n, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]; },
@@ -260,6 +262,14 @@ export function createChart(opts) {
     if (air) {
       const pts = arc(w.seg), f = w.s * (pts.length - 1), i = Math.min(pts.length - 2, Math.floor(f)), t = f - i;
       const pt = pts[i].map((v, k) => v + (pts[i + 1][k] - v) * t), head = geo.heading(pts[i], pts[i + 1]);
+      const P = MODELS.plane;
+      if (P) {
+        // The paper plane, flat from above with a small lean toward the camera, so its wings read as a plan.
+        const tilt = Math.max(0, 30 - map.getPitch() / 2), bb = map.getBearing(), k = (P.px || 96) * .45 * mpp / Math.max(...P.size); // It flies high, nearer the camera, so it reads larger.
+        const m = mat.mul(mat.rz(-bb), mat.rx(tilt), mat.rz(bb), mat.rz(270 - head), mat.rx(90), mat.s(k));
+        return [new deck.ScenegraphLayer({ id: 'plane', data: [{ pt }], scenegraph: KIT + 'art/3d/plane.glb', getPosition: (d) => d.pt,
+          getTransformMatrix: m, _lighting: 'pbr', visible: map.getZoom() >= FAR, getColor: [255, 255, 255, 255] })];
+      }
       return [new deck.ScenegraphLayer({ id: 'plane', data: [{ pt, head }], scenegraph: KIT + 'art/airplane.glb', getPosition: (d) => d.pt, sizeScale: mpp * .45, _lighting: 'pbr',
         visible: map.getZoom() >= FAR, getOrientation: (d) => [0, 180 - d.head, 90], getColor: [250, 246, 236, 255] })];
     }
@@ -271,7 +281,7 @@ export function createChart(opts) {
       // Seen from straight above, a train is a roof. The model leans toward the camera until the view
       // is about 60 degrees from overhead, so it always reads as a three-quarter paper model.
       const tilt = Math.max(0, 60 - map.getPitch()), b = map.getBearing();
-      const m = mat.mul(mat.rz(-b), mat.rx(tilt), mat.rz(b), mat.rz(90 - head), mat.rx(90), mat.s(k));
+      const m = mat.mul(mat.rz(-b), mat.rx(tilt), mat.rz(b), mat.rz(270 - head), mat.rx(90), mat.s(k));
       return [new deck.ScenegraphLayer({ id: 'vehicle', data: [{ pt: [...pt, z] }], scenegraph: KIT + 'art/3d/' + model + '.glb', getPosition: (d) => d.pt,
         getTransformMatrix: m, _lighting: 'pbr', visible: map.getZoom() >= FAR, getColor: [255, 255, 255, 255] })];
     }
@@ -336,7 +346,7 @@ export function createChart(opts) {
     return LANDMARKS.map((L, i) => {
       const m = MODELS[L.model]; if (!m) return null;
       const lng = L.lng ?? m.lng, lat = L.lat ?? m.lat, place = L.place ?? null; if (lng == null || lat == null) return null;
-      const k = (L.px || m.px || 80) * grow * mpp / Math.max(...m.size), on = !place || t.has(place) || S.ends.includes(place);
+      const k = (L.px || .55 * (m.px || 80)) * grow * mpp / Math.max(...m.size), on = !place || t.has(place) || S.ends.includes(place);
       const pose = mat.mul(mat.rz(-b), mat.rx(tilt), mat.rz(-30), mat.rx(90), mat.s(k));
       return new deck.ScenegraphLayer({ id: 'lm-' + i, data: [{ pt: [lng, lat, map.queryTerrainElevation?.([lng, lat]) || 0] }], scenegraph: KIT + 'art/3d/' + L.model + '.glb',
         getPosition: (d) => d.pt, getTransformMatrix: pose, _lighting: 'pbr', getColor: [255, 255, 255, 255], opacity: fade * (on ? 1 : .45) });
