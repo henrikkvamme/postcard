@@ -46,6 +46,12 @@ the views only draw.
 - A fixed limit (a 10:00 meeting, the last lift) is a risk, not only a yes or no. Give an option
   with little spare time a cost in the score (for example under 60 min before a fixed start), say
   that cost in the weights line, and show the spare time for every option, on a phone too.
+- Measure spare time against the real cut-off, not the departure: a flight with a bag to drop closes
+  about 40 min before departure (the airline's own rule; read it), and the person needs time to get
+  from the train to the desk. A start the data warns about ("sleep near the airport the night
+  before") follows the warning, with its hotel night in the bill, unless a source says otherwise.
+- A best-option label counts what the main view shows: "2nd of 3 places", never "option 5 of 19"
+  when the 19 are combinations the person never sees.
 - Every word the person used for what matters ("least stressful", "a drive in snow", "not crazy
   expensive") is in the score or next to the answer. Say what it costs in one line.
 - A pick label that rests on an estimate names it: "Least stress with a ≈ 1 h queue". When the
@@ -83,7 +89,7 @@ The person acts on the page. A number that looks more certain than it is will co
   when the berth is known (`berth`); otherwise it is unknown, and the page says "couchette or seat?".
   Offer a bed only on a night segment that is a train or a ferry; a night bus is a seat. Say which
   driver: "one adult drives" is an assumption. So is "the car has a vignette"; say it beside the
-  total.
+  total. A `warning` in the data is a fact you were given: never replace it with a rule of your own.
 - **Other dates.** A price read for one day is an estimate on another day. When a pick moves a
   journey (`T.shift`), mark its price in the row, on the postcard and in the checkout.
 - **Labels match the measure.** "Door to door" means from the door to the door, at both ends. When

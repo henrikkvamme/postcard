@@ -108,7 +108,8 @@ the page can style modes in CSS. A change of place between segments is a heavier
 one place is a dotted line. The hover cursor and its pill are ink.
 
 A timeline that is wider than a phone scrolls sideways inside a box with the class `pc-scroll-x`
-(the probe allows that box to scroll). Start it scrolled to the chosen journey, and keep the box tall
+(the probe allows that box to scroll). Put the class on the box that scrolls (the one with
+`overflow-x: auto`), not on its child or parent. Start it scrolled to the chosen journey, and keep the box tall
 enough for every row, or the rows below are hidden.
 
 ## parts.js
