@@ -61,6 +61,19 @@ class CheckTrip(unittest.TestCase):
                      "bags.checked", "same group", "Mars/Olympus"):
             self.assertIn(want, r.stdout)
 
+    def test_map_models_are_checked(self):
+        r = self.run_broken(lambda t: t.setdefault("map", {}).update(models={"paris": {}}))
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("map.models: a list", r.stdout)
+        def change(t):
+            t.setdefault("map", {})["models"] = [["paris"], {"model": "paris", "lng": 300, "lat": "x", "px": -4}, "paris"]
+            next(j for j in t["journeys"] if j.get("segments"))["segments"][0]["vehicle"] = ["tram"]
+        r = self.run_broken(change)
+        self.assertEqual(r.returncode, 1, r.stdout)
+        for want in ("map.models[0]: a model name", "map.models[1].lng", "map.models[1].lat", "map.models[1].px", "segment vehicle is a model name"):
+            self.assertIn(want, r.stdout)
+        self.assertNotIn("map.models[2]", r.stdout)
+
     def test_warnings_are_found(self):
         def change(t):
             j = {x["id"]: x for x in t["journeys"]}

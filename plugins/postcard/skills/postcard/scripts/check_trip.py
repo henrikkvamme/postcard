@@ -398,12 +398,25 @@ def main():
             models = {x["name"]: x for x in json.load(fh)}
     except (OSError, ValueError):
         models = {}
-    for k, x in enumerate(m.get("models", [])):
+    lms = m.get("models", [])
+    if not isinstance(lms, list):
+        err("map.models: a list of model names or { model, lng, lat, place, px }")
+        lms = []
+    num = lambda v: isinstance(v, (int, float)) and not isinstance(v, bool)
+    for k, x in enumerate(lms):
         x = {"model": x} if isinstance(x, str) else x
-        if not isinstance(x, dict) or not x.get("model"):
+        if not isinstance(x, dict) or not isinstance(x.get("model"), str) or not x["model"]:
             err(f"map.models[{k}]: a model name or {{ model, lng, lat, place, px }}")
             continue
         unknown(x, MODEL, f"map.models[{k}]")
+        for f, lo, hi in (("lng", -180, 180), ("lat", -90, 90)):
+            if f in x and not (num(x[f]) and lo <= x[f] <= hi):
+                err(f"map.models[{k}].{f}: a number from {lo} to {hi}")
+        if "px" in x and not (num(x["px"]) and x["px"] > 0):
+            err(f"map.models[{k}].px: a number above 0")
+        if "place" in x and not isinstance(x["place"], str):
+            err(f"map.models[{k}].place: a place id")
+            x = {**x, "place": None}
         md = models.get(x["model"])
         if not md or md.get("kind") != "landmark":
             warn(f"map.models[{k}]: '{x['model']}' is not a landmark in kit/art/3d")
@@ -412,6 +425,9 @@ def main():
     for j in t.get("journeys", []):
         for s in j.get("segments", []):
             v = s.get("vehicle")
+            if v is not None and not isinstance(v, str):
+                err(f"journey {j.get('id')}: segment vehicle is a model name")
+                continue
             if v and models and models.get(v, {}).get("kind") != "vehicle":
                 warn(f"journey {j.get('id')}: vehicle '{v}' is not a vehicle in kit/art/3d")
     src = t.get("sources")

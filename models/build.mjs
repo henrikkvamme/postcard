@@ -1,6 +1,6 @@
 // Build every model in models/vehicles and models/landmarks into the kit's art/3d folder.
 // node models/build.mjs [name ...]
-import { readdirSync, mkdirSync, writeFileSync, readFileSync, renameSync } from 'node:fs';
+import { readdirSync, mkdirSync, writeFileSync, readFileSync, renameSync, rmdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { writeGlb } from './lib/glb.mjs';
@@ -11,23 +11,32 @@ const out = process.env.MODEL_OUT || join(here, '../plugins/postcard/skills/post
 mkdirSync(out, { recursive: true });
 const only = process.argv.slice(2);
 // With names, only those are built and their entries merged into the index; parallel builders each build their own.
-let old = []; try { old = JSON.parse(readFileSync(join(out, 'index.json'), 'utf8')); } catch {}
-const index = [];
+const readIndex = () => { try { return JSON.parse(readFileSync(join(out, 'index.json'), 'utf8')); } catch { return []; } };
+const order = [], built = new Map();
 for (const dir of ['vehicles', 'landmarks']) {
   for (const f of readdirSync(join(here, dir)).filter((f) => f.endsWith('.mjs') && !f.startsWith('_')).sort()) {
     const mod = await import(join(here, dir, f));
     const meta = { ...mod.meta, name: mod.meta?.name || f.replace('.mjs', '') };
     if (meta.kind === 'test' && !only.includes(meta.name)) continue;
-    if (only.length && !only.includes(meta.name)) { index.push(old.find((m) => m.name === meta.name) || meta); continue; }
+    order.push(meta);
+    if (only.length && !only.includes(meta.name)) continue;
     // Every model stands on z = 0, centred on its footprint, so the map anchor is its middle.
     const raw = mod.default(), b0 = raw.bounds();
     const mesh = raw.move(-(b0.lo[0] + b0.hi[0]) / 2, -(b0.lo[1] + b0.hi[1]) / 2, -b0.lo[2]);
     const { lo, hi } = mesh.bounds();
     const r = writeGlb(join(out, meta.name + '.glb'), mesh);
     Object.assign(meta, { size: hi.map((v, k) => +(v - lo[k]).toFixed(2)), tris: r.tris });
-    index.push(meta);
+    built.set(meta.name, meta);
     console.log(meta.name.padEnd(18), String(r.tris).padStart(6), 'tris', String(r.lines).padStart(5), 'lines', meta.size.join(' x '), 'm');
   }
 }
-const tmp = join(out, `.index.${process.pid}.json`);
-writeFileSync(tmp, JSON.stringify(index.filter((m) => m.kind !== 'test' && !m.name.startsWith('_')), null, 1) + '\n'); renameSync(tmp, join(out, 'index.json'));
+// Merge under a lock: read the index as it is now and replace only the entries this run built, so builds
+// of other names at the same time keep theirs.
+const lock = join(out, '.index.lock'), until = Date.now() + 30000;
+for (;;) { try { mkdirSync(lock); break; } catch (e) { if (e.code !== 'EEXIST' || Date.now() > until) throw e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 50); } }
+try {
+  const now = new Map(readIndex().map((m) => [m.name, m]));
+  const index = order.map((m) => built.get(m.name) || now.get(m.name) || m).filter((m) => m.kind !== 'test' && !m.name.startsWith('_'));
+  const tmp = join(out, `.index.${process.pid}.json`);
+  writeFileSync(tmp, JSON.stringify(index, null, 1) + '\n'); renameSync(tmp, join(out, 'index.json'));
+} finally { rmdirSync(lock); }

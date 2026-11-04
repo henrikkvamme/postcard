@@ -243,11 +243,25 @@ export function createChart(opts) {
   fetch(KIT + 'art/3d/index.json').then((r) => r.ok ? r.json() : []).then((list) => { for (const m of list) MODELS[m.name] = m; refresh(); }).catch(() => {});
   // A segment may name its vehicle (trip-schema: segment.vehicle, such as 'night-train' or 'tram'); else the mode picks one.
   const BY_MODE = { train: 'train-hs', bus: 'coach', coach: 'coach', car: 'car', taxi: 'taxi', ferry: 'ferry', walk: 'walker' };
-  // A train leg of four hours or more that runs through 03:00 (trip clock) is a night train.
-  const night = (seg) => seg.mode === 'train' && seg.b - seg.a >= 4 && Math.floor((seg.b - 3) / 24) > Math.floor((seg.a - 3) / 24);
+  // A train leg of four hours or more that runs through 03:00 local time where it leaves is a night train.
+  // Each 03:00 comes from the clock, so a change to or from summer time counts right.
+  const night = (seg) => {
+    if (seg.mode !== 'train' || seg.b - seg.a < 4) return false;
+    const tz = T.places[seg.from]?.tz || T.clock.tz, d0 = Date.parse(T.clock.local(seg.a, tz).date + 'T12:00Z');
+    for (let i = 0; i < 4; i++) { const t = T.clock.H(new Date(d0 + i * 864e5).toISOString().slice(0, 10) + 'T03:00', tz);
+      if (t >= seg.a && t <= seg.b) return true; if (t > seg.b) break; }
+    return false;
+  };
   const modelFor = (seg) => [seg.vehicle, night(seg) && 'train-night', BY_MODE[seg.mode]].find((n) => n && MODELS[n]);
   const ground = (() => { const e = document.createElement('img'); e.className = 'pc-vehicle'; e.alt = ''; e.setAttribute('aria-hidden', 'true');
     const m = new maplibregl.Marker({ element: e, anchor: 'bottom', offset: [0, 4] }); quiet(e, true); return { e, m, on: false }; })();
+  // A point on a flight's arc, with its altitude: where the plane is drawn and where its card points.
+  const onArc = (seg, s) => { const pts = arc(seg), f = s * (pts.length - 1), i = Math.max(0, Math.min(pts.length - 2, Math.floor(f))), t = f - i;
+    return { pt: pts[i].map((v, k) => v + (pts[i + 1][k] - v) * t), head: geo.heading(pts[i], pts[i + 1]) }; };
+  // The view deck.gl draws with, built from the map's camera as MapboxOverlay builds it, to project points with altitude.
+  const deckView = () => { const c = map.getCenter(), cv = map.getCanvas();
+    return new deck.WebMercatorViewport({ width: cv.clientWidth, height: cv.clientHeight, longitude: c.lng, latitude: c.lat, zoom: map.getZoom(),
+      bearing: map.getBearing(), pitch: map.getPitch(), padding: map.getPadding() }); };
   function vehicle() {
     const w = S.where, mpp = 156543 * Math.cos(map.getCenter().lat * rad) / Math.pow(2, map.getZoom());
     const air = w?.moving && MODES[w.seg.mode]?.air, model = w?.moving && !air && modelFor(w.seg);
@@ -260,8 +274,7 @@ export function createChart(opts) {
     } else if (ground.on) { ground.m.remove(); ground.on = false; }
     if (!w) return [];
     if (air) {
-      const pts = arc(w.seg), f = w.s * (pts.length - 1), i = Math.min(pts.length - 2, Math.floor(f)), t = f - i;
-      const pt = pts[i].map((v, k) => v + (pts[i + 1][k] - v) * t), head = geo.heading(pts[i], pts[i + 1]);
+      const { pt, head } = onArc(w.seg, w.s);
       const P = MODELS.plane;
       if (P) {
         // The paper plane, flat from above with a small lean toward the camera, so its wings read as a plan.
@@ -295,19 +308,21 @@ export function createChart(opts) {
   const card = (() => { const e = document.createElement('div'); e.className = 'pc-where'; e.hidden = true; e.setAttribute('aria-hidden', 'true'); el.appendChild(e); return e; })();
   const cardOn = opts.routeCard !== false;
   let cardAt = null, cardSide = null;
-  // The chosen route on screen, to keep the card off it: ground legs by the map, flight arcs by deck.
-  let arcVp = null;
-  const routeXY = () => segs(S.chosen).flatMap((x) => {
-    if (air(x)) return arcVp ? arc(x.seg).map((p) => arcVp.project(p)) : [];
-    return x.seg.path.map((p) => { const q = map.project(p); return [q.x, q.y]; });
+  // The chosen route on screen, ground legs and flight arcs (with altitude), as points about 8 px apart,
+  // so a long straight leg counts along its whole length, not only at its ends.
+  const routeXY = (vp) => segs(S.chosen).flatMap((x) => {
+    const xy = (air(x) ? arc(x.seg) : x.seg.path).map((p) => vp.project(air(x) ? p : [p[0], p[1], 0]).slice(0, 2)), out = [];
+    for (let i = 1; i < xy.length; i++) { const [ax, ay] = xy[i - 1], [bx, by] = xy[i], n = Math.max(1, Math.ceil(Math.hypot(bx - ax, by - ay) / 8));
+      for (let k = 0; k < n; k++) out.push([ax + (bx - ax) * k / n, ay + (by - ay) * k / n]); }
+    return out;
   });
   function placeCard(pick = false) {
     if (!cardAt || card.hidden) return;
-    const q = map.project(cardAt), W = el.clientWidth, H = el.clientHeight, w = card.offsetWidth, h = card.offsetHeight;
+    const vp = deckView(), [qx, qy] = vp.project(cardAt), W = el.clientWidth, H = el.clientHeight, w = card.offsetWidth, h = card.offsetHeight;
     // Beside the vehicle, never on it: the corner (right and up first) that covers least of the route and stays in view.
-    const at = ([sx, sy]) => [sx > 0 ? q.x + 34 : q.x - 34 - w, sy < 0 ? q.y - h - 18 : q.y + 22];
+    const at = ([sx, sy]) => [sx > 0 ? qx + 34 : qx - 34 - w, sy < 0 ? qy - h - 18 : qy + 22];
     if (pick) {
-      const pts = routeXY(), cost = (side) => { const [x, y] = at(side);
+      const pts = routeXY(vp), cost = (side) => { const [x, y] = at(side);
         const out = (x < 8 || y < 8 || x + w > W - 8 || y + h > H - 8) ? 1e6 : 0;
         return out + pts.filter(([px, py]) => px > x - 6 && px < x + w + 6 && py > y - 6 && py < y + h + 6).length; };
       const best = [[1, -1], [-1, -1], [1, 1], [-1, 1]].reduce((a, b) => cost(b) < cost(a) ? b : a);
@@ -330,7 +345,8 @@ export function createChart(opts) {
       + `<div class="pcw-bar"><i style="width:${(k * 100).toFixed(1)}%"></i></div>`
       + `<div class="pcw-row"><span>${fmtDur(gone)} gone</span><span>${fmtDur(left)} to go</span></div>`;
     if (card.hidden) cardSide = null;
-    card.hidden = false; cardAt = h.pt; placeCard(true);
+    // A flight's card points at the plane, up on its arc; a ground leg's at the ground.
+    card.hidden = false; cardAt = MODES[seg.mode]?.air ? onArc(seg, k).pt : [h.pt[0], h.pt[1], map.queryTerrainElevation?.(h.pt) || 0]; placeCard(true);
   }
 
   // ---- Landmarks: 3D paper models (art/3d, kind 'landmark') from trip.json map.models. ----
@@ -369,7 +385,7 @@ export function createChart(opts) {
       new deck.PathLayer({ id: 'halo', data: ch, getPath: (d) => d.path, getColor: [...LANDA, 235], getWidth: 6, widthUnits: 'pixels', capRounded: true }),
       new deck.PathLayer({ id: 'sel', data: ch, getPath: (d) => d.path, getColor: [...REDA, 255], getWidth: 2.4, widthUnits: 'pixels', capRounded: true }),
       new deck.PathLayer({ id: 'hit', data: ch, getPath: (d) => d.path, getColor: [0, 0, 0, 0], getWidth: 18, widthUnits: 'pixels', pickable: true,
-        onHover: (info) => (arcVp = info.viewport, hoverAt(info.object, info.object?.path, info.x, info.y, info.srcEvent, (p) => info.viewport.project(p))) }),
+        onHover: (info) => (hoverAt(info.object, info.object?.path, info.x, info.y, info.srcEvent, (p) => info.viewport.project(p))) }),
       ...vehicle(),
     ];
   }
@@ -450,7 +466,7 @@ export function createChart(opts) {
     S.chosen = chosen; S.others = others.filter((j) => !chosen.includes(j)); if (ends) S.ends = ends; S.legNumbers = legNumbers;
     const key = chosen.map((j) => j.id).join('|');
     // A new pick ends a route hover: its vehicle and card belong to the old route.
-    if (hovering && key !== S.shownKey) { hovering = false; card.hidden = true; cardAt = null; S.where = null; } S.shownKey = key;
+    if (hovering && key !== S.shownKey) unhover(); S.shownKey = key;
     if (S.introDone && refit && lastKey && key !== lastKey) C.frame(chosen);
     lastKey = key;
     if (map.getSource('routes')) map.getSource('routes').setData(routesFC());
