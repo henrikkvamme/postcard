@@ -14,7 +14,9 @@ export function probe() {
   // 1. Each end of the chosen route is on screen and not under the HUD.
   out.chosen = st?.chosen || [];
   out.hiddenEnds = [];
-  if (C && st && !st.far) {
+  // An open sheet (the checkout, an "i" sheet) is a dialog over the map: the ends may sit under it.
+  out.sheet = !!document.querySelector('.pc-sheetbg:not([hidden])');
+  if (C && st && !st.far && !out.sheet) {
     const seen = new Set();
     for (const { id, ll } of st.points) { if (seen.has(id)) continue; seen.add(id);
       const p = C.map.project(ll), off = p.x < 8 || p.y < 8 || p.x > W - 8 || p.y > H - 8;
@@ -69,7 +71,7 @@ export function probe() {
       if (!out2) continue;
       const lbl = `${name(el)} "${(el.textContent || '').trim().slice(0, 24)}"`;
       if (a && a !== root) { const ao = getComputedStyle(a); if (['hidden', 'clip'].includes(ao.overflowY) || ['hidden', 'clip'].includes(ao.overflowX)) out.cutOff.push(`${lbl} cut by ${name(a)}`); }
-      else if (clips(root)) out.cutOff.push(`${lbl} cut by ${name(root)}`);
+      else if (clips(root)) { const ro = getComputedStyle(root); if (!['auto', 'scroll'].includes(ro.overflowY)) out.cutOff.push(`${lbl} cut by ${name(root)}`); }
       else out.spill.push(`${lbl} hangs ${Math.round(Math.max(r.bottom - R.bottom, R.top - r.top, r.right - R.right, R.left - r.left))}px out of ${name(root)}`);
       if (out.spill.length + out.cutOff.length > 12) break;
     }

@@ -135,3 +135,5 @@ body.far .pc-hud { opacity: 0; translate: 0 18px; pointer-events: none; transiti
 body.far .pc-map { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { .pc-hud, .pc-stripes { transition: none !important; } }
 .reduced .pc-hud, .reduced .pc-stripes, .reduced * { transition: none !important; animation: none !important; }
+/* A phone checkout: the direction sits on its own line, so a ticket name gets the full width. */
+@media (max-width: 600px) { .pc-sheet { padding: 20px 16px 16px; } .pc-ticket { grid-template-columns: 1fr auto; } .pc-ticket .dir { grid-row: auto; grid-column: 1 / -1; } }

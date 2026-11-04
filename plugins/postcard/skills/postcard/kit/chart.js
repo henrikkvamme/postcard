@@ -155,7 +155,7 @@ export function createChart(opts) {
     const ids = [...used].sort((a, b) => (ends.includes(b) - ends.includes(a)) || (on.has(b) - on.has(a)));
     for (const id of ids) { const P = T.places[id], end = ends.includes(id);
       const east = P.coord[0] >= d3.mean(ends.map((e) => T.places[e].coord[0])) ;
-      const text = end ? P.label : P.code || P.label, same = !end && (near(id, text) || near(id, P.label) || byEnd(id));
+      const text = end ? P.name || P.label : P.code || P.label, same = !end && (near(id, text) || near(id, P.label) || byEnd(id) || mine.size > 0 && !mine.has(id) && !on.has(id));
       const dot = pin('', end ? 'pc-dot' : 'pc-hub' + (on.has(id) ? ' on' : ''), P.coord, { prio: end ? 10 : 6 });
       const lbl = end ? pin(text, 'pc-lbl city', P.coord, { anchor: east ? 'left' : 'right', offset: east ? [12, -12] : [-12, -12], prio: 9 })
         : pin(same ? '' : text, 'pc-lbl hub' + (on.has(id) ? ' on' : ''), P.coord, { anchor: 'left', offset: [7, 0], prio: on.has(id) ? 5 : 3 });

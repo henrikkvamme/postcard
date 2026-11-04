@@ -35,7 +35,7 @@ emulation, not by resizing the window: a headless window does not resize. With
    import('/kit/probe.js').then((m) => m.probe())
    ```
 
-   It returns lists that must be empty: `hiddenEnds` (a route end off screen or under the HUD),
+   It returns lists that must be empty: `hiddenEnds` (a route end off screen or under the HUD; not checked while a sheet is open, `sheet: true`),
    `pageOverflow`, `smallText`, `clipped`, `hudOverlap`, `hudOff`, `unnamed` (buttons without
    a name), `manySizes` (more than six text sizes in the HUD), `spill` (content out of its card),
    `cutOff` (content cut by a box that hides overflow), `sideScroll` (a box that scrolls

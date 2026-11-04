@@ -102,7 +102,7 @@ export function bill(T, parts) {
         const bags = t.bags && !told.has(t.seller + t.bags) ? t.bags : '';
         if (bags) told.add(t.seller + t.bags);
         return { label: t.seller || 'Ticket', main: esc(t.what),
-          price: esc(!t.fareRead ? 'fare not read' : t.figure() + (t.known ? '' : ` + ${t.unknown.length} not read`)),
+          price: esc(!t.fareRead ? 'fare not read' : t.figure() + (t.known ? '' : ' + ' + t.missing().join(' + '))),
           // A ticket of more than one vehicle shows each leg (the connection and the arrival), not only the start.
           meta: esc([t.legs?.includes('; ') ? t.legs : t.when, ...t.parts.slice(1).map((p) => `${p.what} ${amt(p)}`), ...t.limits, bags].filter(Boolean).join(' · ')) };
       }),
@@ -154,7 +154,7 @@ export function fare(T, j, offer, need = {}, opts = {}) {
   }).join('; ');
   const parts = [{ ...base, kind: 'fare', what: label, when, legs, amount: offer?.price ?? null,
     state: offer?.price == null ? 'unknown' : offer.basis === 'estimate' || offer.basis === 'other-date' ? 'estimate' : 'read',
-    basis: offer ? [`${offer.source || offer.seller}, seen ${offer.seen || '?'}`, offer.price_note].filter(Boolean).join('; ') : 'fare not read',
+    basis: offer?.price != null ? [`${offer.source || offer.seller}${offer.seen ? `, seen ${offer.seen}` : ''}`, offer.price_note].filter(Boolean).join('; ') : 'fare not read',
     limit: offer?.limit, bags: offer?.bags_note }];
   // A night train whose class was not read: the price may buy a seat or a bed. Say so wherever it goes.
   // (A ferry's cabin is the offer's limit: "cabin type not read".)
