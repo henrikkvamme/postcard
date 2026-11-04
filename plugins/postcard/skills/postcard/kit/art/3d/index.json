@@ -1,0 +1,903 @@
+[
+ {
+  "name": "bike",
+  "kind": "vehicle",
+  "modes": [
+   "bike"
+  ],
+  "label": "Bike",
+  "px": 36,
+  "size": [
+   1.76,
+   0.55,
+   1.67
+  ],
+  "tris": 758
+ },
+ {
+  "name": "car",
+  "kind": "vehicle",
+  "modes": [
+   "car"
+  ],
+  "label": "Car",
+  "px": 48,
+  "size": [
+   3.78,
+   1.83,
+   1.58
+  ],
+  "tris": 836
+ },
+ {
+  "name": "coach",
+  "kind": "vehicle",
+  "modes": [
+   "bus",
+   "coach"
+  ],
+  "label": "Coach",
+  "px": 64,
+  "size": [
+   10.54,
+   2.86,
+   4.01
+  ],
+  "tris": 1124
+ },
+ {
+  "name": "ferry",
+  "kind": "vehicle",
+  "modes": [
+   "ferry"
+  ],
+  "label": "Ferry",
+  "px": 92,
+  "size": [
+   46.5,
+   12.4,
+   16.8
+  ],
+  "tris": 1688
+ },
+ {
+  "name": "funicular",
+  "kind": "vehicle",
+  "modes": [
+   "train"
+  ],
+  "label": "Funicular",
+  "px": 58,
+  "size": [
+   10,
+   2.3,
+   8.29
+  ],
+  "tris": 1328
+ },
+ {
+  "name": "gondola",
+  "kind": "vehicle",
+  "modes": [
+   "gondola"
+  ],
+  "label": "Gondola",
+  "px": 50,
+  "size": [
+   5.81,
+   1.9,
+   5.71
+  ],
+  "tris": 320
+ },
+ {
+  "name": "metro",
+  "kind": "vehicle",
+  "modes": [
+   "train"
+  ],
+  "label": "Metro",
+  "px": 66,
+  "size": [
+   19.5,
+   2.96,
+   3.83
+  ],
+  "tris": 1232
+ },
+ {
+  "name": "plane",
+  "kind": "vehicle",
+  "modes": [
+   "plane"
+  ],
+  "label": "Plane",
+  "px": 96,
+  "size": [
+   32.6,
+   30.4,
+   11.03
+  ],
+  "tris": 528
+ },
+ {
+  "name": "taxi",
+  "kind": "vehicle",
+  "modes": [
+   "taxi"
+  ],
+  "label": "Taxi",
+  "px": 48,
+  "size": [
+   3.78,
+   1.83,
+   1.98
+  ],
+  "tris": 876
+ },
+ {
+  "name": "train-hs",
+  "kind": "vehicle",
+  "modes": [
+   "train"
+  ],
+  "label": "High-speed train",
+  "px": 84,
+  "size": [
+   33.1,
+   2.96,
+   5.46
+  ],
+  "tris": 1468
+ },
+ {
+  "name": "train-night",
+  "kind": "vehicle",
+  "modes": [
+   "train"
+  ],
+  "label": "Night train",
+  "px": 84,
+  "size": [
+   26.2,
+   2.96,
+   5.56
+  ],
+  "tris": 1376
+ },
+ {
+  "name": "train-regional",
+  "kind": "vehicle",
+  "modes": [
+   "train"
+  ],
+  "label": "Regional train",
+  "px": 80,
+  "size": [
+   27.25,
+   2.86,
+   6.26
+  ],
+  "tris": 1692
+ },
+ {
+  "name": "tram",
+  "kind": "vehicle",
+  "modes": [
+   "train"
+  ],
+  "label": "Tram",
+  "px": 62,
+  "size": [
+   18.4,
+   2.46,
+   4.96
+  ],
+  "tris": 948
+ },
+ {
+  "name": "walker",
+  "kind": "vehicle",
+  "modes": [
+   "walk"
+  ],
+  "label": "Walk",
+  "px": 30,
+  "size": [
+   0.9,
+   0.65,
+   1.8
+  ],
+  "tris": 322
+ },
+ {
+  "name": "amsterdam",
+  "kind": "landmark",
+  "place": "Amsterdam",
+  "lng": 4.8916,
+  "lat": 52.3664,
+  "label": "Canal houses",
+  "px": 84,
+  "size": [
+   23.8,
+   15.5,
+   20.4
+  ],
+  "tris": 820
+ },
+ {
+  "name": "athens",
+  "kind": "landmark",
+  "place": "Athens",
+  "lng": 23.7267,
+  "lat": 37.9715,
+  "label": "Parthenon",
+  "px": 100,
+  "size": [
+   91.5,
+   48.9,
+   21.15
+  ],
+  "tris": 3038
+ },
+ {
+  "name": "barcelona",
+  "kind": "landmark",
+  "place": "Barcelona",
+  "lng": 2.1744,
+  "lat": 41.4036,
+  "label": "Sagrada Família",
+  "px": 110,
+  "size": [
+   116,
+   86,
+   171
+  ],
+  "tris": 3292
+ },
+ {
+  "name": "basel",
+  "kind": "landmark",
+  "place": "Basel",
+  "lng": 7.5925,
+  "lat": 47.5565,
+  "label": "Basel Minster",
+  "px": 98,
+  "size": [
+   30,
+   70,
+   67.6
+  ],
+  "tris": 628
+ },
+ {
+  "name": "bergen",
+  "kind": "landmark",
+  "place": "Bergen",
+  "lng": 5.3245,
+  "lat": 60.3975,
+  "label": "Bryggen",
+  "px": 80,
+  "size": [
+   28,
+   34.9,
+   17.5
+  ],
+  "tris": 520
+ },
+ {
+  "name": "berlin",
+  "kind": "landmark",
+  "place": "Berlin",
+  "lng": 13.3777,
+  "lat": 52.5163,
+  "label": "Brandenburg Gate",
+  "px": 100,
+  "size": [
+   60,
+   18,
+   28.81
+  ],
+  "tris": 1468
+ },
+ {
+  "name": "brussels",
+  "kind": "landmark",
+  "place": "Brussels",
+  "lng": 4.3415,
+  "lat": 50.8949,
+  "label": "Atomium",
+  "px": 95,
+  "size": [
+   96,
+   96,
+   114.21
+  ],
+  "tris": 3440
+ },
+ {
+  "name": "budapest",
+  "kind": "landmark",
+  "place": "Budapest",
+  "lng": 19.0457,
+  "lat": 47.507,
+  "label": "Parliament",
+  "px": 110,
+  "size": [
+   280,
+   58,
+   96
+  ],
+  "tris": 1718
+ },
+ {
+  "name": "copenhagen",
+  "kind": "landmark",
+  "place": "Copenhagen",
+  "lng": 12.5911,
+  "lat": 55.6798,
+  "label": "Nyhavn",
+  "px": 88,
+  "size": [
+   43.2,
+   25,
+   19
+  ],
+  "tris": 1112
+ },
+ {
+  "name": "dublin",
+  "kind": "landmark",
+  "place": "Dublin",
+  "lng": -6.2632,
+  "lat": 53.3464,
+  "label": "Ha'penny Bridge",
+  "px": 90,
+  "size": [
+   56.2,
+   12,
+   11.61
+  ],
+  "tris": 928
+ },
+ {
+  "name": "dubrovnik",
+  "kind": "landmark",
+  "place": "Dubrovnik",
+  "lng": 18.1086,
+  "lat": 42.642,
+  "label": "Walls of Dubrovnik",
+  "px": 90,
+  "size": [
+   100,
+   78,
+   49.4
+  ],
+  "tris": 1468
+ },
+ {
+  "name": "edinburgh",
+  "kind": "landmark",
+  "place": "Edinburgh",
+  "lng": -3.1999,
+  "lat": 55.9486,
+  "label": "Edinburgh Castle",
+  "px": 105,
+  "size": [
+   206,
+   112,
+   95.9
+  ],
+  "tris": 1022
+ },
+ {
+  "name": "florence",
+  "kind": "landmark",
+  "place": "Florence",
+  "lng": 11.256,
+  "lat": 43.7731,
+  "label": "Florence Cathedral",
+  "px": 105,
+  "size": [
+   170,
+   104,
+   111.97
+  ],
+  "tris": 1991
+ },
+ {
+  "name": "frankfurt",
+  "kind": "landmark",
+  "place": "Frankfurt",
+  "lng": 8.6822,
+  "lat": 50.1107,
+  "label": "Römer",
+  "px": 84,
+  "size": [
+   28.2,
+   21,
+   22.2
+  ],
+  "tris": 1172
+ },
+ {
+  "name": "geneva",
+  "kind": "landmark",
+  "place": "Geneva",
+  "lng": 6.1557,
+  "lat": 46.2074,
+  "label": "Jet d'Eau",
+  "px": 104,
+  "size": [
+   70,
+   24,
+   141.5
+  ],
+  "tris": 564
+ },
+ {
+  "name": "hamburg",
+  "kind": "landmark",
+  "place": "Hamburg",
+  "lng": 9.9842,
+  "lat": 53.5413,
+  "label": "Elbphilharmonie",
+  "px": 104,
+  "size": [
+   132,
+   48,
+   108
+  ],
+  "tris": 752
+ },
+ {
+  "name": "helsinki",
+  "kind": "landmark",
+  "place": "Helsinki",
+  "lng": 24.9522,
+  "lat": 60.1704,
+  "label": "Helsinki Cathedral",
+  "px": 104,
+  "size": [
+   66,
+   80,
+   58.1
+  ],
+  "tris": 3406
+ },
+ {
+  "name": "hurghada",
+  "kind": "landmark",
+  "place": "Hurghada",
+  "lng": 33.8116,
+  "lat": 27.2579,
+  "label": "Red Sea diving",
+  "px": 80,
+  "size": [
+   40,
+   22,
+   10.6
+  ],
+  "tris": 834
+ },
+ {
+  "name": "istanbul",
+  "kind": "landmark",
+  "place": "Istanbul",
+  "lng": 28.9802,
+  "lat": 41.0086,
+  "label": "Hagia Sophia",
+  "px": 100,
+  "size": [
+   114,
+   98,
+   65.9
+  ],
+  "tris": 2784
+ },
+ {
+  "name": "krakow",
+  "kind": "landmark",
+  "place": "Kraków",
+  "lng": 19.9394,
+  "lat": 50.0616,
+  "label": "St Mary's Basilica",
+  "px": 104,
+  "size": [
+   106,
+   36,
+   81.5
+  ],
+  "tris": 2062
+ },
+ {
+  "name": "lanzarote",
+  "kind": "landmark",
+  "place": "Lanzarote",
+  "lng": -13.75,
+  "lat": 29.0167,
+  "label": "Timanfaya",
+  "px": 80,
+  "size": [
+   52,
+   42,
+   12.82
+  ],
+  "tris": 706
+ },
+ {
+  "name": "lisbon",
+  "kind": "landmark",
+  "place": "Lisbon",
+  "lng": -9.216,
+  "lat": 38.6916,
+  "label": "Belém Tower",
+  "px": 86,
+  "size": [
+   30,
+   36,
+   41
+  ],
+  "tris": 2274
+ },
+ {
+  "name": "london",
+  "kind": "landmark",
+  "place": "London",
+  "lng": -0.1246,
+  "lat": 51.5007,
+  "label": "Big Ben",
+  "px": 104,
+  "size": [
+   22,
+   22,
+   97.6
+  ],
+  "tris": 906
+ },
+ {
+  "name": "madrid",
+  "kind": "landmark",
+  "place": "Madrid",
+  "lng": -3.6889,
+  "lat": 40.42,
+  "label": "Puerta de Alcalá",
+  "px": 88,
+  "size": [
+   56,
+   38,
+   24.8
+  ],
+  "tris": 1252
+ },
+ {
+  "name": "malaga",
+  "kind": "landmark",
+  "place": "Málaga",
+  "lng": -4.4157,
+  "lat": 36.7212,
+  "label": "Alcazaba of Málaga",
+  "px": 92,
+  "size": [
+   84,
+   76,
+   47
+  ],
+  "tris": 2784
+ },
+ {
+  "name": "marrakech",
+  "kind": "landmark",
+  "place": "Marrakech",
+  "lng": -7.9937,
+  "lat": 31.6237,
+  "label": "Koutoubia Mosque",
+  "px": 96,
+  "size": [
+   20,
+   20,
+   78.5
+  ],
+  "tris": 1558
+ },
+ {
+  "name": "milan",
+  "kind": "landmark",
+  "place": "Milan",
+  "lng": 9.1916,
+  "lat": 45.4642,
+  "label": "Milan Cathedral",
+  "px": 105,
+  "size": [
+   159,
+   104,
+   109.6
+  ],
+  "tris": 1958
+ },
+ {
+  "name": "munich",
+  "kind": "landmark",
+  "place": "Munich",
+  "lng": 11.5736,
+  "lat": 48.1386,
+  "label": "Frauenkirche",
+  "px": 100,
+  "size": [
+   126,
+   56,
+   100.8
+  ],
+  "tris": 1917
+ },
+ {
+  "name": "nice",
+  "kind": "landmark",
+  "place": "Nice",
+  "lng": 7.258,
+  "lat": 43.6947,
+  "label": "Hotel Negresco",
+  "px": 88,
+  "size": [
+   38,
+   68,
+   43.42
+  ],
+  "tris": 1336
+ },
+ {
+  "name": "oslo",
+  "kind": "landmark",
+  "place": "Oslo",
+  "lng": 10.7531,
+  "lat": 59.9075,
+  "label": "Oslo Opera House",
+  "px": 108,
+  "size": [
+   148,
+   104,
+   36
+  ],
+  "tris": 156
+ },
+ {
+  "name": "palma",
+  "kind": "landmark",
+  "place": "Palma",
+  "lng": 2.6484,
+  "lat": 39.5675,
+  "label": "Palma Cathedral",
+  "px": 108,
+  "size": [
+   142,
+   92,
+   62
+  ],
+  "tris": 2112
+ },
+ {
+  "name": "paris",
+  "kind": "landmark",
+  "place": "Paris",
+  "lng": 2.2945,
+  "lat": 48.8584,
+  "label": "Eiffel Tower",
+  "px": 112,
+  "size": [
+   142,
+   142,
+   331
+  ],
+  "tris": 884
+ },
+ {
+  "name": "porto",
+  "kind": "landmark",
+  "place": "Porto",
+  "lng": -8.6094,
+  "lat": 41.14,
+  "label": "Dom Luís I Bridge",
+  "px": 112,
+  "size": [
+   240,
+   26,
+   50.4
+  ],
+  "tris": 1404
+ },
+ {
+  "name": "prague",
+  "kind": "landmark",
+  "place": "Prague",
+  "lng": 14.4135,
+  "lat": 50.0863,
+  "label": "Charles Bridge",
+  "px": 96,
+  "size": [
+   80,
+   22,
+   61
+  ],
+  "tris": 820
+ },
+ {
+  "name": "reykjavik",
+  "kind": "landmark",
+  "place": "Reykjavík",
+  "lng": -21.9266,
+  "lat": 64.1417,
+  "label": "Hallgrímskirkja",
+  "px": 100,
+  "size": [
+   80,
+   60,
+   75
+  ],
+  "tris": 1418
+ },
+ {
+  "name": "riga",
+  "kind": "landmark",
+  "place": "Riga",
+  "lng": 24.1069,
+  "lat": 56.9474,
+  "label": "House of the Blackheads",
+  "px": 88,
+  "size": [
+   25,
+   20,
+   32.9
+  ],
+  "tris": 818
+ },
+ {
+  "name": "rome",
+  "kind": "landmark",
+  "place": "Rome",
+  "lng": 12.4922,
+  "lat": 41.8902,
+  "label": "Colosseum",
+  "px": 108,
+  "size": [
+   202,
+   170,
+   48
+  ],
+  "tris": 3023
+ },
+ {
+  "name": "salzburg",
+  "kind": "landmark",
+  "place": "Salzburg",
+  "lng": 13.0476,
+  "lat": 47.7949,
+  "label": "Hohensalzburg Fortress",
+  "px": 104,
+  "size": [
+   72,
+   132,
+   73
+  ],
+  "tris": 580
+ },
+ {
+  "name": "santorini",
+  "kind": "landmark",
+  "place": "Santorini",
+  "lng": 25.3753,
+  "lat": 36.4618,
+  "label": "Oia blue-domed chapel",
+  "px": 78,
+  "size": [
+   22,
+   22,
+   17.55
+  ],
+  "tris": 770
+ },
+ {
+  "name": "seville",
+  "kind": "landmark",
+  "place": "Seville",
+  "lng": -5.9926,
+  "lat": 37.3862,
+  "label": "La Giralda",
+  "px": 104,
+  "size": [
+   21,
+   21,
+   105.6
+  ],
+  "tris": 2306
+ },
+ {
+  "name": "stockholm",
+  "kind": "landmark",
+  "place": "Stockholm",
+  "lng": 18.0543,
+  "lat": 59.3275,
+  "label": "Stockholm City Hall",
+  "px": 100,
+  "size": [
+   138,
+   52,
+   107
+  ],
+  "tris": 1492
+ },
+ {
+  "name": "tenerife",
+  "kind": "landmark",
+  "place": "Tenerife",
+  "lng": -16.6425,
+  "lat": 28.2724,
+  "label": "Mount Teide",
+  "px": 84,
+  "size": [
+   74,
+   74,
+   32.1
+  ],
+  "tris": 594
+ },
+ {
+  "name": "val-thorens",
+  "kind": "landmark",
+  "place": "Val Thorens",
+  "lng": 6.58,
+  "lat": 45.298,
+  "label": "Val Thorens",
+  "px": 84,
+  "size": [
+   58.4,
+   48,
+   38.2
+  ],
+  "tris": 452
+ },
+ {
+  "name": "venice",
+  "kind": "landmark",
+  "place": "Venice",
+  "lng": 12.339,
+  "lat": 45.434,
+  "label": "St Mark's Campanile",
+  "px": 110,
+  "size": [
+   26,
+   30,
+   99.7
+  ],
+  "tris": 926
+ },
+ {
+  "name": "vienna",
+  "kind": "landmark",
+  "place": "Vienna",
+  "lng": 16.3958,
+  "lat": 48.2166,
+  "label": "Riesenrad",
+  "px": 96,
+  "size": [
+   65.27,
+   26.5,
+   65.65
+  ],
+  "tris": 1756
+ },
+ {
+  "name": "zurich",
+  "kind": "landmark",
+  "place": "Zurich",
+  "lng": 8.544,
+  "lat": 47.37,
+  "label": "Grossmünster",
+  "px": 96,
+  "size": [
+   30,
+   58,
+   62.2
+  ],
+  "tris": 1032
+ }
+]
