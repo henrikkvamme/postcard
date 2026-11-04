@@ -211,7 +211,7 @@ classes, and SVG text classes `pc-caps`, `pc-tick`, `pc-note`, `pc-pill`, `pc-tr
 
 `kit/art/3d/` has paper models as glTF (`*.glb`) with `index.json` listing each one: `name`, `kind`
 (`vehicle` or `landmark`), `size` in metres, `px` (its size on screen), and for a landmark `place`,
-`label`, `lng`, `lat`. Vehicles ride the route by segment mode or `segment.vehicle` (trip-schema.md).
+`label`, `lng`, `lat`. Vehicles ride the route by segment mode or `segment.vehicle` (trip-schema.md). A train leg of four hours or more that runs through 03:00 gets `train-night` by itself.
 Landmarks go in `map.models`. Place a landmark only at its own city, for the places on the trip and at
 most two or three famous ones the route passes near; more makes the chart busy. A place without a
 model gets none; do not use another city's model.

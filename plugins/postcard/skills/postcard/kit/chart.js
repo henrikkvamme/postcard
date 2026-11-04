@@ -241,7 +241,9 @@ export function createChart(opts) {
   fetch(KIT + 'art/3d/index.json').then((r) => r.ok ? r.json() : []).then((list) => { for (const m of list) MODELS[m.name] = m; refresh(); }).catch(() => {});
   // A segment may name its vehicle (trip-schema: segment.vehicle, such as 'night-train' or 'tram'); else the mode picks one.
   const BY_MODE = { train: 'train-hs', bus: 'coach', coach: 'coach', car: 'car', taxi: 'taxi', ferry: 'ferry', walk: 'walker' };
-  const modelFor = (seg) => [seg.vehicle, BY_MODE[seg.mode]].find((n) => n && MODELS[n]);
+  // A train leg of four hours or more that runs through 03:00 (trip clock) is a night train.
+  const night = (seg) => seg.mode === 'train' && seg.b - seg.a >= 4 && Math.floor((seg.b - 3) / 24) > Math.floor((seg.a - 3) / 24);
+  const modelFor = (seg) => [seg.vehicle, night(seg) && 'train-night', BY_MODE[seg.mode]].find((n) => n && MODELS[n]);
   const ground = (() => { const e = document.createElement('img'); e.className = 'pc-vehicle'; e.alt = ''; e.setAttribute('aria-hidden', 'true');
     const m = new maplibregl.Marker({ element: e, anchor: 'bottom', offset: [0, 4] }); quiet(e, true); return { e, m, on: false }; })();
   function vehicle() {
