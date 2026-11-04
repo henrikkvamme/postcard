@@ -338,7 +338,6 @@ export function createChart(opts) {
     const [x, y] = at(cardSide);
     card.style.transform = `translate(${Math.round(Math.max(8, Math.min(W - w - 8, x)))}px, ${Math.round(Math.max(8, Math.min(H - h - 8, y)))}px)`;
   }
-  map.on('move', () => placeCard());
   function showCard(h) {
     const seg = h.seg, P = T.places, tzA = P[seg.from].tz, tzB = P[seg.to].tz, here = T.clock.local(h.T, tzA === tzB ? tzA : T.clock.tz);
     const name = (id) => P[id].code || P[id].label, who = [T.carriers?.[seg.carrier] || seg.carrier, seg.number].filter(Boolean).join(' ');
@@ -395,7 +394,8 @@ export function createChart(opts) {
       ...vehicle(),
     ];
   }
-  const overlay = new deck.MapboxOverlay({ interleaved: false, layers: [], getCursor: ({ isHovering, isDragging }) => isHovering ? 'crosshair' : isDragging ? 'grabbing' : 'grab' });
+  // The card follows the camera after deck.gl draws: its viewport is current only then.
+  const overlay = new deck.MapboxOverlay({ interleaved: false, layers: [], onAfterRender: () => placeCard(), getCursor: ({ isHovering, isDragging }) => isHovering ? 'crosshair' : isDragging ? 'grabbing' : 'grab' });
   map.addControl(overlay);
   // deck.gl's canvas takes a Tab stop with no name; the map canvas already has one.
   const deckQuiet = () => document.querySelectorAll('#deckgl-overlay, .deckgl-overlay').forEach((c) => { c.removeAttribute('tabindex'); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; });
