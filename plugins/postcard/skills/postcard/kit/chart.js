@@ -244,12 +244,14 @@ export function createChart(opts) {
   // A segment may name its vehicle (trip-schema: segment.vehicle, such as 'night-train' or 'tram'); else the mode picks one.
   const BY_MODE = { train: 'train-hs', bus: 'coach', coach: 'coach', car: 'car', taxi: 'taxi', ferry: 'ferry', walk: 'walker' };
   // A train leg of four hours or more that runs through 03:00 local time where it leaves is a night train.
-  // Each 03:00 comes from the clock, so a change to or from summer time counts right.
+  // Each 03:00 comes from the clock, so a change to or from summer time counts right. In the night the
+  // clocks go back, 03:00 can come twice; the clock gives one of them, and the other is an hour away.
   const night = (seg) => {
     if (seg.mode !== 'train' || seg.b - seg.a < 4) return false;
     const tz = T.places[seg.from]?.tz || T.clock.tz, d0 = Date.parse(T.clock.local(seg.a, tz).date + 'T12:00Z');
-    for (let i = 0; i < 4; i++) { const t = T.clock.H(new Date(d0 + i * 864e5).toISOString().slice(0, 10) + 'T03:00', tz);
-      if (t >= seg.a && t <= seg.b) return true; if (t > seg.b) break; }
+    for (let i = 0; i < 4; i++) { const t0 = T.clock.H(new Date(d0 + i * 864e5).toISOString().slice(0, 10) + 'T03:00', tz);
+      if ([t0 - 1, t0, t0 + 1].some((t) => t >= seg.a && t <= seg.b && T.clock.local(t, tz).hm === '03:00')) return true;
+      if (t0 - 1 > seg.b) break; }
     return false;
   };
   const modelFor = (seg) => [seg.vehicle, night(seg) && 'train-night', BY_MODE[seg.mode]].find((n) => n && MODELS[n]);
@@ -258,8 +260,10 @@ export function createChart(opts) {
   // A point on a flight's arc, with its altitude: where the plane is drawn and where its card points.
   const onArc = (seg, s) => { const pts = arc(seg), f = s * (pts.length - 1), i = Math.max(0, Math.min(pts.length - 2, Math.floor(f))), t = f - i;
     return { pt: pts[i].map((v, k) => v + (pts[i + 1][k] - v) * t), head: geo.heading(pts[i], pts[i + 1]) }; };
-  // The view deck.gl draws with, built from the map's camera as MapboxOverlay builds it, to project points with altitude.
-  const deckView = () => { const c = map.getCenter(), cv = map.getCanvas();
+  // The view deck.gl draws with, to project points with altitude: the overlay's own viewport (a globe view
+  // on this map, with the terrain's camera), else one built from the map's camera.
+  const deckView = () => { const v = overlay._deck?.getViewports?.()[0]; if (v) return v;
+    const c = map.getCenter(), cv = map.getCanvas();
     return new deck.WebMercatorViewport({ width: cv.clientWidth, height: cv.clientHeight, longitude: c.lng, latitude: c.lat, zoom: map.getZoom(),
       bearing: map.getBearing(), pitch: map.getPitch(), padding: map.getPadding() }); };
   function vehicle() {
@@ -308,12 +312,14 @@ export function createChart(opts) {
   const card = (() => { const e = document.createElement('div'); e.className = 'pc-where'; e.hidden = true; e.setAttribute('aria-hidden', 'true'); el.appendChild(e); return e; })();
   const cardOn = opts.routeCard !== false;
   let cardAt = null, cardSide = null;
-  // The chosen route on screen, ground legs and flight arcs (with altitude), as points about 8 px apart,
-  // so a long straight leg counts along its whole length, not only at its ends.
+  // The chosen route on screen, ground legs and flight arcs (with altitude), as points every 8 px along the
+  // line, across vertices: each point stands for the same length, however many vertices a leg has.
   const routeXY = (vp) => segs(S.chosen).flatMap((x) => {
     const xy = (air(x) ? arc(x.seg) : x.seg.path).map((p) => vp.project(air(x) ? p : [p[0], p[1], 0]).slice(0, 2)), out = [];
-    for (let i = 1; i < xy.length; i++) { const [ax, ay] = xy[i - 1], [bx, by] = xy[i], n = Math.max(1, Math.ceil(Math.hypot(bx - ax, by - ay) / 8));
-      for (let k = 0; k < n; k++) out.push([ax + (bx - ax) * k / n, ay + (by - ay) * k / n]); }
+    let next = 0; // distance into the current edge of the next point
+    for (let i = 1; i < xy.length; i++) { const [ax, ay] = xy[i - 1], [bx, by] = xy[i], L = Math.hypot(bx - ax, by - ay);
+      for (; next < L; next += 8) out.push([ax + (bx - ax) * next / L, ay + (by - ay) * next / L]);
+      next -= L; }
     return out;
   });
   function placeCard(pick = false) {
@@ -398,8 +404,9 @@ export function createChart(opts) {
   map.on('zoom', refresh); map.on('rotate', refresh); map.on('pitch', refresh);
 
   // Hover on a chosen route: the nearest point gives the time there.
-  let hovering = false;
-  const unhover = () => { if (hovering) { hovering = false; card.hidden = true; cardAt = null; S.where = null; refresh(); } opts.onRouteHover?.(null); };
+  // hovering: the kit draws the vehicle and card; hovered: the page was told of a hover (also with routeCard: false).
+  let hovering = false, hovered = false;
+  const unhover = () => { if (hovering) { hovering = false; card.hidden = true; cardAt = null; S.where = null; refresh(); } hovered = false; opts.onRouteHover?.(null); };
   function hoverAt(x, path, px, py, ev, project) {
     if (!x) { unhover(); return; }
     // The nearest point on the line, not the nearest vertex: a two-point leg reads its time all along.
@@ -418,7 +425,7 @@ export function createChart(opts) {
     const pt = path.length > 1 ? along(path, s).pt : path[0];
     const h = { j: x.j, seg: x.seg, s, T: x.seg.a + s * (x.seg.b - x.seg.a), pt, event: ev };
     if (cardOn) { hovering = true; S.where = { pt, moving: true, mode: x.seg.mode, seg: x.seg, s, j: x.j }; refresh(); showCard(h); }
-    opts.onRouteHover?.(h);
+    hovered = true; opts.onRouteHover?.(h);
   }
   map.on('mousemove', 'r-hit', (e) => { const f = e.features[0]; if (!f) return; const x = segs(S.chosen).find((y) => y.j.id + ':' + y.i === f.properties.key); if (!x) return;
     hoverAt(x, x.seg.path, e.point.x, e.point.y, e.originalEvent, (p) => { const q = map.project(p); return [q.x, q.y]; }); });
@@ -466,7 +473,7 @@ export function createChart(opts) {
     S.chosen = chosen; S.others = others.filter((j) => !chosen.includes(j)); if (ends) S.ends = ends; S.legNumbers = legNumbers;
     const key = chosen.map((j) => j.id).join('|');
     // A new pick ends a route hover: its vehicle and card belong to the old route.
-    if (hovering && key !== S.shownKey) unhover(); S.shownKey = key;
+    if (hovered && key !== S.shownKey) unhover(); S.shownKey = key;
     if (S.introDone && refit && lastKey && key !== lastKey) C.frame(chosen);
     lastKey = key;
     if (map.getSource('routes')) map.getSource('routes').setData(routesFC());
