@@ -27,17 +27,18 @@ button { font: inherit; color: inherit; }
 .pc-lbl.hub { font: 600 9px var(--sans); letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
 .pc-vehicle { height: 34px; width: auto; pointer-events: none; }
 /* The route card beside the vehicle on a hovered route: the time there, the leg, how far along. Fixed width, so it never jumps as the pointer moves. */
-.pc-where { position: absolute; left: 0; top: 0; z-index: 3; width: 212px; pointer-events: none; background: var(--card); color: var(--ink); border: 1px solid var(--rule);
+.pc-where { position: absolute; left: 0; top: 0; z-index: 3; width: 236px; pointer-events: none; background: var(--card); color: var(--ink); border: 1px solid var(--rule);
   border-radius: var(--r); padding: 9px 11px 8px; box-shadow: 0 1px 0 var(--rule2); font: 12px/1.35 var(--sans); font-variant-numeric: tabular-nums; }
 .pc-where[hidden] { display: none; }
-.pc-where .t { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
-.pc-where .t b { font: 600 21px/1 var(--serif); }
-.pc-where .t span { color: var(--ink2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pc-where .leg { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); margin-top: 6px; }
-.pc-where .leg + .bar { margin-top: 5px; }
-.pc-where .bar { height: 3px; background: var(--rule2); border-radius: 2px; overflow: hidden; }
-.pc-where .bar i { display: block; height: 100%; background: var(--red); }
-.pc-where .bar + .leg { margin-top: 4px; }
+.pc-where .pcw-t { display: flex; align-items: baseline; gap: 8px; }
+.pc-where .pcw-t b { font: 600 21px/1 var(--serif); }
+.pc-where .pcw-t span { color: var(--ink); }
+.pc-where .pcw-who { color: var(--ink2); margin-top: 3px; }
+.pc-where .pcw-row { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); margin-top: 6px; }
+.pc-where .pcw-row + .pcw-bar { margin-top: 5px; }
+.pc-where .pcw-bar { height: 3px; background: var(--rule2); border-radius: 2px; overflow: hidden; }
+.pc-where .pcw-bar i { display: block; height: 100%; background: var(--red); }
+.pc-where .pcw-bar + .pcw-row { margin-top: 4px; }
 .pc-lbl.hub.on { opacity: 1; color: var(--red); }
 .pc-leg { pointer-events: none; width: 17px; height: 17px; border-radius: 50%; display: grid; place-items: center; background: var(--paper); color: var(--red);
   box-shadow: inset 0 0 0 1.5px var(--red); font: 700 10px/1 var(--sans); font-variant-numeric: tabular-nums; }

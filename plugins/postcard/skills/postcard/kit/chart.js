@@ -282,27 +282,43 @@ export function createChart(opts) {
   // with the time there, the leg and how far along it is. opts.routeCard: false leaves it to the page.
   const card = (() => { const e = document.createElement('div'); e.className = 'pc-where'; e.hidden = true; e.setAttribute('aria-hidden', 'true'); el.appendChild(e); return e; })();
   const cardOn = opts.routeCard !== false;
-  let cardAt = null;
-  function placeCard() {
+  let cardAt = null, cardSide = null;
+  // The chosen route on screen, to keep the card off it: ground legs by the map, flight arcs by deck.
+  let arcVp = null;
+  const routeXY = () => segs(S.chosen).flatMap((x) => {
+    if (air(x)) return arcVp ? arc(x.seg).map((p) => arcVp.project(p)) : [];
+    return x.seg.path.map((p) => { const q = map.project(p); return [q.x, q.y]; });
+  });
+  function placeCard(pick = false) {
     if (!cardAt || card.hidden) return;
-    const q = map.project(cardAt), W = el.clientWidth, H = el.clientHeight, r = card.getBoundingClientRect();
-    // Beside the vehicle, never on it: right and up, flipped at the edges.
-    let x = q.x + 34, y = q.y - r.height - 18;
-    if (x + r.width > W - 8) x = q.x - 34 - r.width;
-    if (y < 8) y = q.y + 22;
-    card.style.transform = `translate(${Math.round(Math.max(8, x))}px, ${Math.round(Math.min(H - r.height - 8, y))}px)`;
+    const q = map.project(cardAt), W = el.clientWidth, H = el.clientHeight, w = card.offsetWidth, h = card.offsetHeight;
+    // Beside the vehicle, never on it: the corner (right and up first) that covers least of the route and stays in view.
+    const at = ([sx, sy]) => [sx > 0 ? q.x + 34 : q.x - 34 - w, sy < 0 ? q.y - h - 18 : q.y + 22];
+    if (pick) {
+      const pts = routeXY(), cost = (side) => { const [x, y] = at(side);
+        const out = (x < 8 || y < 8 || x + w > W - 8 || y + h > H - 8) ? 1e6 : 0;
+        return out + pts.filter(([px, py]) => px > x - 6 && px < x + w + 6 && py > y - 6 && py < y + h + 6).length; };
+      const best = [[1, -1], [-1, -1], [1, 1], [-1, 1]].reduce((a, b) => cost(b) < cost(a) ? b : a);
+      // Keep the side while it is nearly as good, so the card does not jump at each step of the pointer.
+      if (!cardSide || cost(best) + 3 < cost(cardSide)) cardSide = best;
+    }
+    const [x, y] = at(cardSide);
+    card.style.transform = `translate(${Math.round(Math.max(8, Math.min(W - w - 8, x)))}px, ${Math.round(Math.max(8, Math.min(H - h - 8, y)))}px)`;
   }
-  map.on('move', placeCard);
+  map.on('move', () => placeCard());
   function showCard(h) {
     const seg = h.seg, P = T.places, tzA = P[seg.from].tz, tzB = P[seg.to].tz, here = T.clock.local(h.T, tzA === tzB ? tzA : T.clock.tz);
     const name = (id) => P[id].code || P[id].label, who = [T.carriers?.[seg.carrier] || seg.carrier, seg.number].filter(Boolean).join(' ');
     const gone = h.T - seg.a, left = seg.b - h.T, k = Math.max(0, Math.min(1, h.s));
-    card.innerHTML = `<div class="t"><b>${here.hm}</b><span>${esc(MODES[seg.mode]?.verb || 'Travelling')}${who ? ' · ' + esc(who) : ''}</span></div>`
-      + `<div class="leg"><span>${esc(name(seg.from))} ${T.clock.local(seg.a, tzA).hm}</span><span>${esc(name(seg.to))} ${T.clock.local(seg.b, tzB).hm}</span></div>`
-      + `<div class="bar"><i style="width:${(k * 100).toFixed(1)}%"></i></div>`
-      + `<div class="leg"><span>${fmtDur(gone)} gone</span><span>${fmtDur(left)} to go</span></div>`
-      + (MODES[seg.mode]?.air ? `<div class="leg"><span>${esc(C.over(h.pt))}</span></div>` : '');
-    card.hidden = false; cardAt = h.pt; placeCard();
+    const over = MODES[seg.mode]?.air ? ' ' + C.over(h.pt) : '';
+    // Own class names: a page's .leg or .bar must not restyle the card.
+    card.innerHTML = `<div class="pcw-t"><b>${here.hm}</b><span>${esc((MODES[seg.mode]?.verb || 'Travelling') + over)}</span></div>`
+      + (who ? `<div class="pcw-who">${esc(who)}</div>` : '')
+      + `<div class="pcw-row"><span>${esc(name(seg.from))} ${T.clock.local(seg.a, tzA).hm}</span><span>${esc(name(seg.to))} ${T.clock.local(seg.b, tzB).hm}</span></div>`
+      + `<div class="pcw-bar"><i style="width:${(k * 100).toFixed(1)}%"></i></div>`
+      + `<div class="pcw-row"><span>${fmtDur(gone)} gone</span><span>${fmtDur(left)} to go</span></div>`;
+    if (card.hidden) cardSide = null;
+    card.hidden = false; cardAt = h.pt; placeCard(true);
   }
 
   // ---- Landmarks: 3D paper models (art/3d, kind 'landmark') from trip.json map.models. ----
@@ -341,7 +357,7 @@ export function createChart(opts) {
       new deck.PathLayer({ id: 'halo', data: ch, getPath: (d) => d.path, getColor: [...LANDA, 235], getWidth: 6, widthUnits: 'pixels', capRounded: true }),
       new deck.PathLayer({ id: 'sel', data: ch, getPath: (d) => d.path, getColor: [...REDA, 255], getWidth: 2.4, widthUnits: 'pixels', capRounded: true }),
       new deck.PathLayer({ id: 'hit', data: ch, getPath: (d) => d.path, getColor: [0, 0, 0, 0], getWidth: 18, widthUnits: 'pixels', pickable: true,
-        onHover: (info) => hoverAt(info.object, info.object?.path, info.x, info.y, info.srcEvent, (p) => info.viewport.project(p)) }),
+        onHover: (info) => (arcVp = info.viewport, hoverAt(info.object, info.object?.path, info.x, info.y, info.srcEvent, (p) => info.viewport.project(p))) }),
       ...vehicle(),
     ];
   }
