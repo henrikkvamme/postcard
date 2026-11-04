@@ -12,7 +12,7 @@ show) go in the page's `app.js`.
   "title": "Somewhere warm",
   "subtitle": "Seven nights in January 2027 · from Zürich or Basel",
   "currency": "CHF",                        // every price is in this currency, for all passengers together
-  "passengers": { "adults": 1, "children": 0 },
+  "passengers": { "adults": 1, "children": 0, "children_ages": [] },
   "clock": "Europe/Zurich",                 // the zone of the page's timeline
   "clock_label": "Zürich time",
   "window": { "start": "2027-01-08T00:00", "end": "2027-02-01T00:00" },   // in the clock zone
@@ -63,6 +63,10 @@ for: `out` and `back` for a return trip, or names like `zrh-cph`, `cph-sto` for 
 - `mode`: `plane`, `train`, `bus`, `coach`, `ferry`, `car`, `taxi`, `walk`, or `mixed` when the
   segments use different modes.
 - Times are local wall times. Never convert them yourself; the kit does it with the place's zone.
+- Optional: `seen` and `schedule_source` (where the times come from, when that is not the seller),
+  `km`, `drive_minutes`, `flags`. A journey may have no offers when its `warning` says why, for
+  example "No price: sbb.ch did not load". The page shows it, but cannot price it.
+- Segments may add `operated_by`, `aircraft` and `headsign`.
 - `warning` is for a fact the person must see before buying: a self-transfer, a short change, a
   fare without a cabin bag, an overnight wait. `short` is a few words for a chip; `text` is one
   sentence.
@@ -105,8 +109,13 @@ Each place you saw the journey for sale.
 
 - `operator` is the airline, rail or ferry company itself. `agency` is any reseller. `self` is a
   ticket you build from parts (two one-ways on different carriers).
-- `bags` keys: `small` (under the seat), `cabin` (overhead bin) and `checked`. Leave a key out when
-  you did not check it; the page says "bag fee not checked" instead of guessing.
+- `bags` keys: `small` (under the seat), `cabin` (overhead bin) and `checked`. A value is
+  `"included"`, `"none"` (this fare cannot take it), a price for one bag on this journey, or `"fee"`
+  (it costs extra, but you did not see the price). Leave a key out when you did not check it. The
+  page says "bag fee not checked" for `"fee"` and for a missing key, instead of guessing.
+- Optional provenance: `basis` (`list` when read from a result list, `booking` when read on the
+  seller's own booking page, `estimate`), `currency` and `original: { price, currency }` when you
+  converted the price, `price_note`, `rules`, `bags_note`.
 - Give every offer a `source` and a `seen` date. Give an agency a rating when you can find one, and
   say where it comes from. Without a rating, the "good agencies" filter drops it.
 

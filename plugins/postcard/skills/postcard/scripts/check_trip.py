@@ -33,12 +33,14 @@ TOP = {"version", "id", "title", "subtitle", "currency", "passengers", "clock", 
        "journeys", "deals", "carriers", "map", "sources", "context"}
 PLACE = {"name", "city", "kind", "coord", "tz", "code", "country", "note"}
 JOURNEY = {"id", "mode", "group", "from", "to", "dep", "arr", "carrier", "numbers", "segments", "self_transfer",
-           "warning", "offers", "bags", "notes", "path", "tags", "co2_kg"}
-SEGMENT = {"mode", "from", "to", "dep", "arr", "carrier", "number", "path", "self_transfer", "note"}
+           "warning", "offers", "bags", "notes", "path", "tags", "co2_kg",
+           "seen", "schedule_source", "stops", "transfers", "layovers_min", "flags", "km", "drive_minutes"}
+SEGMENT = {"mode", "from", "to", "dep", "arr", "carrier", "number", "path", "self_transfer", "note",
+           "operated_by", "aircraft", "headsign"}
 OFFER = {"seller", "kind", "price", "fare", "bags", "source", "seen", "url", "stars", "reviews", "rating_source",
-         "note", "refundable", "changeable", "per"}
+         "note", "refundable", "changeable", "per", "basis", "currency", "original", "price_note", "rules", "bags_note"}
 DEAL = {"journeys", "price", "seller", "kind", "what", "source", "seen", "url", "bags", "fare", "stars", "reviews",
-        "rating_source", "note"}
+        "rating_source", "note", "basis", "currency", "original", "price_note", "bags_note"}
 MAP = {"view", "labels", "seas", "art", "far"}
 ART = {"img", "lng", "lat", "km", "place", "rot", "note"}
 
@@ -159,8 +161,8 @@ def check_offer(o, where, today, kinds=OFFER_KINDS):
             for bk, bv in b.items():
                 if bk not in BAG_KEYS:
                     warn(f"{where}: bags.{bk} is not one of {sorted(BAG_KEYS)}")
-                if not (bv in ("included", "none") or isinstance(bv, (int, float))):
-                    err(f"{where}: bags.{bk} must be \"included\", \"none\" or a price, not {bv!r}")
+                if not (bv in ("included", "none", "fee") or isinstance(bv, (int, float))):
+                    err(f"{where}: bags.{bk} must be \"included\", \"fee\", \"none\" or a price, not {bv!r}")
     if o.get("stars") is not None:
         if not isinstance(o["stars"], (int, float)) or not 0 <= o["stars"] <= 5:
             err(f"{where}: stars is a number from 0 to 5")
@@ -312,8 +314,8 @@ def main():
         offers = j.get("offers") or []
         if offers:
             priced += 1
-        else:
-            warn(f"{w}: no offers, so the page cannot price it")
+        elif not j.get("warning"):
+            warn(f"{w}: no offers and no warning; say why it has no price")
         for k, o in enumerate(offers):
             check_offer(o, f"{w}.offers[{k}]", today)
         if j.get("carrier") and j["carrier"] not in t.get("carriers", {}):
