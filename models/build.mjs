@@ -13,7 +13,7 @@ const only = process.argv.slice(2);
 let old = []; try { old = JSON.parse(readFileSync(join(out, 'index.json'), 'utf8')); } catch {}
 const index = [];
 for (const dir of ['vehicles', 'landmarks']) {
-  for (const f of readdirSync(join(here, dir)).filter((f) => f.endsWith('.mjs')).sort()) {
+  for (const f of readdirSync(join(here, dir)).filter((f) => f.endsWith('.mjs') && !f.startsWith('_')).sort()) {
     const mod = await import(join(here, dir, f));
     const meta = { ...mod.meta, name: mod.meta?.name || f.replace('.mjs', '') };
     if (meta.kind === 'test' && !only.includes(meta.name)) continue;
@@ -29,4 +29,4 @@ for (const dir of ['vehicles', 'landmarks']) {
   }
 }
 const tmp = join(out, `.index.${process.pid}.json`);
-writeFileSync(tmp, JSON.stringify(index.filter((m) => m.kind !== 'test'), null, 1) + '\n'); renameSync(tmp, join(out, 'index.json'));
+writeFileSync(tmp, JSON.stringify(index.filter((m) => m.kind !== 'test' && !m.name.startsWith('_')), null, 1) + '\n'); renameSync(tmp, join(out, 'index.json'));
