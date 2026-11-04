@@ -7,7 +7,7 @@
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
-body { background: var(--paper); color: var(--ink); font: 13px/1.35 var(--sans); font-variant-numeric: tabular-nums; overflow: hidden; }
+body { background: var(--paper); color: var(--ink); font: 12px/1.35 var(--sans); font-variant-numeric: tabular-nums; overflow: hidden; }
 button { font: inherit; color: inherit; }
 
 /* Frame: the map fills the page; the airmail border folds away at globe zoom. */

@@ -146,7 +146,8 @@ export function fare(T, j, offer, need = {}, opts = {}) {
   const when = opts.when || (dl ? `${dl.wd} ${dl.day} ${dl.mon} ${dl.hm}` : undefined);
   // Each vehicle of the journey, with its number, stops, full local date and times, for the prompt.
   const stopName = (id) => P[id]?.code || name(id);
-  const legs = (j.segments || []).filter((sg) => !['walk', 'taxi'].includes(sg.mode)).map((sg) => {
+  // A flight ticket on a train-then-flight journey lists only the flights; the trains are their own purchase.
+  const legs = (j.segments || []).filter((sg) => !['walk', 'taxi'].includes(sg.mode) && (!fl || sg.mode === 'plane')).map((sg) => {
     const d = T.clock.local(sg.a, P[sg.from]?.tz), a = T.clock.local(sg.b, P[sg.to]?.tz);
     return `${sg.number || sg.carrier || sg.mode} ${stopName(sg.from)} ${d.wd} ${d.day} ${d.mon} ${d.year} ${d.hm} → ${stopName(sg.to)} ${a.hm}${a.date !== d.date ? ` (${a.wd} ${a.day} ${a.mon})` : ''}`;
   }).join('; ');

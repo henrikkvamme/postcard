@@ -40,7 +40,8 @@ the views only draw.
   read for another date.
 - Rank by one score in the trip currency when you can: price, plus a price per hour of travel, plus
   costs the person named (a lost work hour, a night flight, a 1 h 20 m train to another airport).
-  Say the weights on the page in one line.
+  Say the weights on the page in one line. A value used only to rank (an unread bag fee counted as
+  CHF 25, a hotel night not read) lives in `context.rank` and in that line; it never shows as a price.
 - Priorities as chips (Balanced, Cheapest, Fastest) are fine when the person has more than one
   goal. Show a priority chip only when the data can change its result.
 - A fixed limit (a 10:00 meeting, the last lift) is a risk, not only a yes or no. Give an option
