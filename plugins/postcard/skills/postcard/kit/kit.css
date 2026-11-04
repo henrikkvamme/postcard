@@ -27,6 +27,9 @@ button { font: inherit; color: inherit; }
 .pc-lbl.hub { font: 600 9px var(--sans); letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
 .pc-vehicle { height: 34px; width: auto; pointer-events: none; }
 .pc-lbl.hub.on { opacity: 1; color: var(--red); }
+.pc-leg { pointer-events: none; width: 17px; height: 17px; border-radius: 50%; display: grid; place-items: center; background: var(--paper); color: var(--red);
+  box-shadow: inset 0 0 0 1.5px var(--red); font: 700 10px/1 var(--sans); font-variant-numeric: tabular-nums; }
+.z-far .pc-leg { visibility: hidden; }
 .pc-dot { width: 15px; height: 15px; border-radius: 50%; background: var(--land); border: 1.5px solid var(--ink); display: grid; place-items: center; pointer-events: none; }
 .pc-dot::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--ink); }
 .pc-hub { width: 7px; height: 7px; border-radius: 50%; background: var(--land); border: 1.1px solid var(--ink); pointer-events: none; }

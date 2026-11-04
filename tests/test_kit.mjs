@@ -117,6 +117,7 @@ test('a bill never shows an unread fare as 0, and names unread fees of one kind 
   assert.match(b.promptLines()[0], /Expected price: not known\. Bags: Two bags free\. The fare was not read/);
   assert.match(b.book.tail({ max: 3 }), /\+ 2 cabin bag fees not read/);
   assert.match(b.book.tail(), /\+ 2 more$/);
+  assert.equal(bill(T, [{ what: 'Ferry', amount: 80, limit: 'from price; cabin type not read' }]).figure(), 'from EUR 80');
   const none = bill(T, [{ what: 'Couchette', amount: null }]);
   assert.equal(none.figure(), 'not read');
   assert.equal(none.text(), 'not read');

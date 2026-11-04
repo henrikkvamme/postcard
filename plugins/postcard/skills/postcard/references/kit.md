@@ -126,6 +126,9 @@ value)`, `switchHTML(name, label, on, help)`, `wireChips(root, { name: (value) =
   card (left of it, over the map, or above it), so it never covers the next row's figures
   (craft.md, rule 7). Use it on hover and on keyboard focus.
 - `tip.show(event, html)` for a point on the map or a bar: below and right of the pointer.
+- `chart.routeBox()` is the screen box of the chosen route: pass `{ avoid: [card, chart.routeBox()] }`
+  to `tip.beside` so a row's tip does not cover the route where the vehicle moves.
+- A pick of three or more legs gets numbered legs on the map (`chart.show({ legNumbers })` forces it on or off).
 - `tip.hide()`. `tip.canHover` is false on a touch screen: there a tap picks and opens no tip. Put
   what a tip says on the postcard or behind a small "i" button instead (craft.md, rule 9).
 

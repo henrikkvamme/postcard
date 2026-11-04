@@ -137,7 +137,7 @@ export function createChart(opts) {
     const m = new maplibregl.Marker({ element: e, anchor, offset }).setLngLat(lnglat).addTo(map); quiet(e, !html); const p = { m, e, prio }; pins.push(p); return p; };
   for (const [n, lo, la] of M.labels || []) pin(n, 'pc-lbl', [lo, la], { prio: 1 });
   for (const [n, lo, la] of M.seas || []) pin(n, 'pc-lbl sea', [lo, la], { prio: 2 });
-  const placePins = {};
+  const placePins = {}, legPins = [];
   function placeMarks() {
     for (const p of Object.values(placePins)) { p.dot.m.remove(); p.lbl.m.remove(); pins.splice(pins.indexOf(p.dot), 1); pins.splice(pins.indexOf(p.lbl), 1); }
     for (const k of Object.keys(placePins)) delete placePins[k];
@@ -154,6 +154,12 @@ export function createChart(opts) {
         : pin(same ? '' : text, 'pc-lbl hub' + (on.has(id) ? ' on' : ''), P.coord, { anchor: 'left', offset: [7, 0], prio: on.has(id) ? 5 : 3 });
       if (!same) named.push({ text, ll: P.coord }, { text: P.label, ll: P.coord });
       placePins[id] = { dot, lbl }; }
+    // A trip of three or more legs (a loop) numbers each chosen leg at its middle, so legs that share a
+    // corridor still read in order.
+    for (const p of legPins.splice(0)) { p.m.remove(); pins.splice(pins.indexOf(p), 1); }
+    if (S.legNumbers ?? S.chosen.length >= 3) S.chosen.forEach((j, i) => {
+      const sg = d3.greatest(j.segments, (x) => x.km || 0); if (!sg?.path?.length) return;
+      legPins.push(pin(String(i + 1), 'pc-leg', sg.path[Math.floor(sg.path.length / 2)], { prio: 8 })); });
     cull();
   }
   // Hide the labels that collide, keeping the higher priority one. Dots of places always stay.
@@ -306,8 +312,9 @@ export function createChart(opts) {
   // ---- State from the page ----
   // chosen: the journeys of the picked option, in time order. others: the rest worth seeing. ends: big labelled places.
   let lastKey = null;
-  C.show = ({ chosen = [], others = [], ends, refit = true } = {}) => {
-    S.chosen = chosen; S.others = others.filter((j) => !chosen.includes(j)); if (ends) S.ends = ends;
+  // legNumbers: true or false to force the numbered legs; by default a pick of three or more legs has them.
+  C.show = ({ chosen = [], others = [], ends, refit = true, legNumbers } = {}) => {
+    S.chosen = chosen; S.others = others.filter((j) => !chosen.includes(j)); if (ends) S.ends = ends; S.legNumbers = legNumbers;
     const key = chosen.map((j) => j.id).join('|');
     if (S.introDone && refit && lastKey && key !== lastKey) C.frame(chosen);
     lastKey = key;
@@ -315,6 +322,10 @@ export function createChart(opts) {
     map.getSource('art')?.setData(artFC());
     placeMarks(); refresh();
   };
+  // The screen box of the chosen route, for tip.beside(..., { avoid: [card, chart.routeBox()] }).
+  C.routeBox = () => { const pts = pointsOf(S.chosen); if (!pts.length) return null; const o = el.getBoundingClientRect();
+    const xy = pts.map((p) => map.project(p)); const xs = xy.map((q) => q.x + o.left), ys = xy.map((q) => q.y + o.top);
+    return { left: d3.min(xs) - 12, right: d3.max(xs) + 12, top: d3.min(ys) - 12, bottom: d3.max(ys) + 12 }; };
   // Put the vehicle where whereAt() says, or back at rest with null.
   C.where = (w) => { S.where = w; refresh(); };
   // 'over France', 'over the North Sea', or 'over the sea'.

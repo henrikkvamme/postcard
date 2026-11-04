@@ -62,7 +62,9 @@ export function bill(T, parts) {
     r.missing = () => groups();
     // The figure: "≈ CHF 234", or "not read" when no part of it was read. Its tail lists what it leaves
     // out, next to it, never in a footer.
-    r.figure = () => r.none ? 'not read' : `${r.approx ? '≈ ' : ''}${T.money(r.total)}`;
+    // A part read as a "from" price (its limit says "from") makes the whole figure "from EUR 80".
+    r.from = known.some((p) => /\bfrom\b/i.test(p.limit || ''));
+    r.figure = () => r.none ? 'not read' : `${r.from ? 'from ' : ''}${r.approx ? '≈ ' : ''}${T.money(r.total)}`;
     r.all = () => [...groups(), ...r.limits, ...r.left.map((w) => `${w} not counted`)];
     r.tail = ({ max = 2 } = {}) => {
       const xs = r.none ? [...r.limits, ...r.left.map((w) => `${w} not counted`)] : r.all();
@@ -147,9 +149,11 @@ export function fare(T, j, offer, need = {}, opts = {}) {
     state: offer?.price == null ? 'unknown' : offer.basis === 'estimate' || offer.basis === 'other-date' ? 'estimate' : 'read',
     basis: offer ? [`${offer.source || offer.seller}, seen ${offer.seen || '?'}`, offer.price_note].filter(Boolean).join('; ') : 'fare not read',
     limit: offer?.limit, bags: offer?.bags_note }];
-  // A night train or ferry whose class was not read: the price may buy a seat or a bed. Say so wherever it goes.
-  if (j.raw?.overnight && (!j.raw.berth || j.raw.berth === 'unknown') && ['train', 'ferry', 'mixed'].includes(j.mode))
-    parts.push({ ...base, kind: 'berth', what: `Night class (seat, couchette or sleeper) on ${label}`, amount: null, basis: 'class not read' });
+  // A night train whose class was not read: the price may buy a seat or a bed. Say so wherever it goes.
+  // (A ferry's cabin is the offer's limit: "cabin type not read".)
+  const nightTrain = (j.segments || []).some((sg) => sg.mode === 'train' && sg.b - sg.a > 5 && T.clock.local(sg.a).h >= 18);
+  if (j.raw?.overnight && (!j.raw.berth || j.raw.berth === 'unknown') && nightTrain)
+    parts.push({ ...base, kind: 'berth', what: `night class (seat, couchette or sleeper), ${[j.carrierName, j.numbers].filter(Boolean).join(' ')}`, amount: null, basis: 'class not read' });
   const flights = (j.segments || []).filter((s) => s.mode === 'plane');
   const ends = flights.length ? `${name(flights[0].from)} → ${name(flights[flights.length - 1].to)}` : `${name(j.from)} → ${name(j.to)}`;
   const bags = offer?.bags || {};

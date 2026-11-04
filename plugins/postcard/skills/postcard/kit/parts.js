@@ -25,13 +25,15 @@ export function tooltip() {
     show(e, html) { el.innerHTML = html; el.style.opacity = 1; put(e.clientX + 14, e.clientY + 16); },
     // Beside an element (a row, a cell): outside the box `avoid` (usually the card), so the tip never
     // covers the next row's figures. Tries left of avoid, above it, then right and left of el.
+    // avoid may be a list: [card, chart.routeBox()] also keeps the tip off the chosen route.
     beside(target, html, { avoid } = {}) {
       el.innerHTML = html; el.style.opacity = 1;
-      const r = target.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight, A = avoid?.getBoundingClientRect?.() || avoid;
+      const As = [].concat(avoid || []).map((a) => a?.getBoundingClientRect?.() || a).filter(Boolean);
+      const r = target.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight, A = As[0];
       const tries = [];
       if (A) tries.push({ x: A.left - w - 12, y: r.top }, { x: r.left, y: A.top - h - 12 }, { x: A.right + 12, y: r.top });
       tries.push({ x: r.right + 10, y: r.top }, { x: r.left - w - 10, y: r.top }, { x: r.left, y: r.bottom + 8 });
-      const fits = (t) => t.x >= 8 && t.y >= 8 && t.x + w <= innerWidth - 8 && t.y + h <= innerHeight - 8 && !(A && hits({ ...t, w, h }, A));
+      const fits = (t) => t.x >= 8 && t.y >= 8 && t.x + w <= innerWidth - 8 && t.y + h <= innerHeight - 8 && !As.some((B) => hits({ ...t, w, h }, B));
       const t = tries.find(fits) || tries[tries.length - 1]; put(t.x, t.y);
     },
     hide() { el.style.opacity = 0; },

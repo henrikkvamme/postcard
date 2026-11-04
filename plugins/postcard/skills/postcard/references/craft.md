@@ -14,7 +14,7 @@ Write the question in one line before you write code. The question decides the m
 | "Which flights for this event?" | Ranked choices against the event and work hours on an hour-scale timeline | `junction-2026` |
 | "Where and which week?" | One row per place, ranked, with its climate and its source as a visible caption; columns are shared weeks, each cell the place's best start in that week | `winter-sun` |
 | "Train or plane?" | One row per way (fly both ways, night train, mixed), door-to-door bars on one window per direction, with the door-to-door hours and the spare time as figures | |
-| "In what order, on what days?" | The legs in order, each leg's ways under it, and the nights at each stop, set on the stay ("Copenhagen ‹ 2 ›") | |
+| "In what order, on what days?" | The legs in order, each leg's ways under it, and the nights at each stop, set on the stay ("Copenhagen ‹ 2 ›"); say in one line why the default nights are what they are. The map numbers the legs | |
 | "Which way for the family?" | One row per way (train, car, fly), both days at one hour scale, with changes, waits, hours at the wheel and the stress the person named | |
 
 An example shows a layout, not a model to reuse: its `app.js` reads `context` keys of its own. Write
@@ -84,7 +84,9 @@ The person acts on the page. A number that looks more certain than it is will co
   and show the price question as a number the person can test: the break-even fare ("the night train
   wins if both tickets cost under CHF 410"). Name what the break-even leaves out, and its scope:
   tickets only, or tickets plus the hotel night they add. Use the same scope in the row, the tip and
-  the booking stop rule. A break-even is ≈ when its inputs are.
+  the booking stop rule. A break-even is ≈ when its inputs are. When the pick's total is mostly
+  unread, also show the cheapest option that is fully read, with its total and a button that picks it
+  ("All buses and the ferry: EUR 294, every fare read").
 - **Assumptions.** Do not assume a fact that the ranking depends on. A night train is a bed only
   when the berth is known (`berth`); otherwise it is unknown, and the page says "couchette or seat?".
   Offer a bed only on a night segment that is a train or a ferry; a night bus is a seat. Say which
@@ -191,6 +193,9 @@ rest, and the postcard and the book band stay visible.
   row.
 - The limits beside a total (a "from" price, fees not read, hotels not counted) stay beside it on a
   phone, on the postcard and on the band. Shorten them; never hide them.
+- In rows with a bar, give the figure column a fixed width, so every bar has the same width and
+  the rows share one time axis. A phone list that opens one section at a time keeps one card height
+  for every section.
 - Keep on a phone what the answer needs: the measure's name and unit ("stress hours"), the top-pick
   mark, the weights line (one line, or behind an "i"), and the figure the question turns on for every
   row (the spare time before a meeting). Hide decoration first.
