@@ -160,7 +160,7 @@ export function fare(T, j, offer, need = {}, opts = {}) {
   // (A ferry's cabin is the offer's limit: "cabin type not read".)
   const nightTrain = (j.segments || []).some((sg) => sg.mode === 'train' && sg.b - sg.a > 5 && T.clock.local(sg.a).h >= 18);
   if (j.raw?.overnight && (!j.raw.berth || j.raw.berth === 'unknown') && nightTrain)
-    parts.push({ ...base, kind: 'berth', what: `night class (seat, couchette or sleeper), ${[j.carrierName, j.numbers].filter(Boolean).join(' ')}`, amount: null, basis: 'class not read' });
+    parts.push({ ...base, kind: 'berth', what: 'night class (seat or bed)', amount: null, basis: `class not read on ${[j.carrierName, j.numbers].filter(Boolean).join(' ')}` });
   const flights = (j.segments || []).filter((s) => s.mode === 'plane');
   const ends = flights.length ? `${name(flights[0].from)} → ${name(flights[flights.length - 1].to)}` : `${name(j.from)} → ${name(j.to)}`;
   const bags = offer?.bags || {};

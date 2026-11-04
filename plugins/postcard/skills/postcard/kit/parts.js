@@ -59,6 +59,8 @@ export function stampSVG({ img, code, value, x = 96, y = 8, rot = 3 }) {
     ${value ? `<text x="33" y="67" text-anchor="middle" style="font:700 9.5px var(--sans);letter-spacing:.06em" fill="var(--ink)">${esc(value)}</text>` : ''}</g>`;
 }
 // A round postmark: two rings, a small top line and a big middle line, with wavy cancel lines.
+// (x, y) is its centre; the ring has a 27 px radius and the cancel lines run 78 px to the right, so keep
+// the centre at least 28 px inside its frame on every side, or the mark hangs out.
 export function postmarkSVG({ top, mid, x, y, rot = 0, ink = 'var(--ink)' }) {
   return `<g transform="translate(${x},${y}) rotate(${rot})" fill="none" stroke="${ink}" stroke-width="1.3" opacity=".85">
     <circle r="27"/><circle r="21"/><text y="-5" text-anchor="middle" fill="${ink}" stroke="none" style="font:600 8px var(--sans);letter-spacing:.16em"${String(top).length > 7 ? ' textLength="32" lengthAdjust="spacingAndGlyphs"' : ''}>${esc(top)}</text>
