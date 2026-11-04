@@ -101,6 +101,7 @@ test('a bill keeps unread fees beside the total and splits what the agent books'
   assert.equal(b.items().length, 4);
   assert.match(b.promptLines()[1], /^2\. .*\. Cabin bag fee, .* was not read: read it before you fill anything/);
   assert.doesNotMatch(b.promptLines().join('\n'), /\.\./);
+  assert.match(b.promptLines()[0], /Legs: .*20[0-9][0-9] [0-9][0-9]:[0-9][0-9] → /);
 });
 
 test('a bill never shows an unread fare as 0, and names unread fees of one kind together', async () => {

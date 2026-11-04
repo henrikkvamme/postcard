@@ -26,6 +26,7 @@
 //            'none' (paid on the way: fuel, tolls), or 'out' (named but not counted: hotels on a loop)
 //   when     the local date and time, as the ticket shows it ("Tue 12 Jan 12:30")
 //   bags     the bag terms for the prompt ("cabin bag included, 7 kg")
+//   legs     each vehicle with its number, stops, date with year and times (fare() fills it)
 // }
 // An 'out' part is never in a total; it is listed beside it ("+ 8 hotel nights not counted").
 
@@ -82,7 +83,7 @@ export function bill(T, parts) {
   });
   b.tickets = [...byTicket.entries()].map(([ticket, ps]) => {
     const s = sum(ps), head = ps[0];
-    return { ticket, seller: head.seller, shop: head.shop, when: head.when, what: head.what, fareRead: head.amount != null,
+    return { ticket, seller: head.seller, shop: head.shop, when: head.when, what: head.what, legs: head.legs, fareRead: head.amount != null,
       bags: [...new Set(ps.map((p) => p.bags).filter(Boolean))].join('; '), ...s };
   });
   // The rest: what the person buys and what is paid on the way, for the checkout and the prompt.
@@ -111,6 +112,7 @@ export function bill(T, parts) {
     for (const p of t.parts.slice(1)) if (p.amount == null) steps.push(`${cap(p.what)} was not read: read it before you fill anything, and report it`);
     const price = !t.fareRead ? 'not known' : `${t.figure()}${t.approx ? ' (includes an estimate)' : ''}${t.known ? '' : ' plus the fees below'}`;
     return [`${i + 1}. ${stop(t.what)}${t.when ? `, ${t.when}` : ''}.`,
+      t.legs ? `Legs: ${t.legs}.` : '',
       `Seller: ${t.seller || 'not known'}${t.shop ? ` (${t.shop})` : ''}.`,
       `Expected price: ${price}.`,
       t.bags ? `Bags: ${stop(t.bags)}.` : '',
@@ -135,7 +137,13 @@ export function fare(T, j, offer, need = {}, opts = {}) {
   const label = opts.label || `${[j.carrierName, j.numbers].filter(Boolean).join(' ')}, ${name(j.from)} → ${name(j.to)}`;
   const ticket = opts.ticket ?? j.id, base = { ticket, who: opts.who || 'agent', seller: offer?.seller, shop: opts.shop };
   const when = opts.when || (j.depL ? `${j.depL.wd} ${j.depL.day} ${j.depL.mon} ${j.depL.hm}` : undefined);
-  const parts = [{ ...base, kind: 'fare', what: label, when, amount: offer?.price ?? null,
+  // Each vehicle of the journey, with its number, stops, full local date and times, for the prompt.
+  const stopName = (id) => P[id]?.code || name(id);
+  const legs = (j.segments || []).filter((sg) => !['walk', 'taxi'].includes(sg.mode)).map((sg) => {
+    const d = T.clock.local(sg.a, P[sg.from]?.tz), a = T.clock.local(sg.b, P[sg.to]?.tz);
+    return `${sg.number || sg.carrier || sg.mode} ${stopName(sg.from)} ${d.wd} ${d.day} ${d.mon} ${d.year} ${d.hm} → ${stopName(sg.to)} ${a.hm}${a.date !== d.date ? ` (${a.wd} ${a.day} ${a.mon})` : ''}`;
+  }).join('; ');
+  const parts = [{ ...base, kind: 'fare', what: label, when, legs, amount: offer?.price ?? null,
     state: offer?.price == null ? 'unknown' : offer.basis === 'estimate' || offer.basis === 'other-date' ? 'estimate' : 'read',
     basis: offer ? [`${offer.source || offer.seller}, seen ${offer.seen || '?'}`, offer.price_note].filter(Boolean).join('; ') : 'fare not read',
     limit: offer?.limit, bags: offer?.bags_note }];
