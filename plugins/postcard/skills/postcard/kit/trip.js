@@ -62,6 +62,9 @@ async function readPath(p, base) {
   return out.map(([x, y]) => [x, y]);
 }
 
+// 'YYYY-MM-DDTHH:MM' plus whole days, as a wall time (no zone).
+const addDays = (iso, n) => { const d = new Date(Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10) + n));
+  return d.toISOString().slice(0, 10) + iso.slice(10); };
 const pathKm = (path) => { let k = 0; for (let i = 1; i < path.length; i++) k += geo.km(path[i - 1], path[i]); return k; };
 
 // Point and heading at fraction s (0-1) of the distance along a path.
@@ -76,13 +79,15 @@ export function along(path, s) {
 
 export async function openTrip({ raw, base }) {
   const clock = makeClock(raw.clock, raw.window.start);
-  const T0 = clock.H(raw.window.start), T1 = clock.H(raw.window.end);
+  // window.end is exclusive. A date alone ("2027-05-25") means the end of that day.
+  const endIso = /T/.test(raw.window.end) ? raw.window.end : addDays(raw.window.end + 'T00:00', 1);
+  const T0 = clock.H(raw.window.start), T1 = clock.H(endIso);
   const places = Object.fromEntries(Object.entries(raw.places).map(([id, p]) => [id, { ...p, id, label: p.city || p.name || id }]));
   const carriers = raw.carriers || {};
   const tzOf = (id) => places[id].tz;
   const offerOf = (s) => ({ ...s, kind: s.kind === 'airline' ? 'operator' : s.kind });
 
-  const journeys = await Promise.all(raw.journeys.map(async (x) => {
+  const norm = async (x) => {
     const segsRaw = x.segments?.length ? x.segments : [{ mode: x.mode, from: x.from, to: x.to, dep: x.dep, arr: x.arr, carrier: x.carrier, number: x.numbers, path: x.path }];
     const segments = await Promise.all(segsRaw.map(async (s) => {
       const mode = s.mode || x.mode, a = clock.H(s.dep, tzOf(s.from)), b = clock.H(s.arr, tzOf(s.to));
@@ -102,7 +107,21 @@ export async function openTrip({ raw, base }) {
     j.stops = [...new Set(segments.flatMap((s) => [s.from, s.to]))];
     j.moving = segments.reduce((h, s) => h + s.b - s.a, 0);
     return j;
-  }));
+  };
+  const journeys = await Promise.all(raw.journeys.map(norm));
+  // The same journey some whole days later or earlier, for a plan that moves a leg (more nights in a city).
+  // Times move by wall clock, so a clock change between the days keeps 08:34 at 08:34. The result is marked:
+  // shifted (days), base (the searched journey's id), and every offer gets basis "other-date", because a price
+  // read for one day is an estimate on another. Timetables can also differ on the new day; say so on the page.
+  const shift = async (j, days) => {
+    if (!days) return j;
+    const x = j.raw, mv = (iso) => iso && addDays(iso, days);
+    const moved = await norm({ ...x, id: `${x.id}@${days > 0 ? '+' : ''}${days}`, dep: mv(x.dep), arr: mv(x.arr),
+      segments: j.segments.map((s, i) => ({ ...(x.segments?.[i] || { mode: s.mode, from: s.from, to: s.to, carrier: s.carrier, number: s.number }),
+        dep: mv(x.segments?.[i]?.dep || x.dep), arr: mv(x.segments?.[i]?.arr || x.arr), path: s.guessed ? undefined : s.path })),
+      offers: (x.offers || []).map((o) => ({ ...o, basis: 'other-date', read_for: x.dep.slice(0, 10) })) });
+    return Object.assign(moved, { shifted: days, base: j.id });
+  };
   const byId = Object.fromEntries(journeys.map((j) => [j.id, j]));
   const groups = {};
   for (const j of journeys) (groups[j.group] ||= []).push(j);
@@ -181,6 +200,6 @@ export async function openTrip({ raw, base }) {
     return { pt: places[at].coord, place: at, status: `In ${name(at)}` };
   };
 
-  return { raw, base, clock, T0, T1, places, carriers, journeys, byId, groups, deals, best, bagCost, bagExtra, dealFor, price, combos, nights, whereAt,
+  return { raw, base, clock, T0, T1, places, carriers, journeys, byId, groups, deals, best, bagCost, bagExtra, dealFor, price, combos, nights, whereAt, shift,
     currency: raw.currency || 'EUR', money: (n) => n == null ? '–' : `${raw.currency || 'EUR'} ${Math.round(n).toLocaleString('en')}` };
 }

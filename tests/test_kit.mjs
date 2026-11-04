@@ -59,3 +59,21 @@ test('whereAt does not fail in a gap the data leaves', async () => {
   const o2 = T.byId.o2, mid = (o2.segments[0].b + o2.segments[1].a) / 2;
   assert.equal(T.whereAt([o2], mid).place, 'AMS');
 });
+
+test('shift() moves a journey by wall-clock days and marks its prices as read for another day', async () => {
+  const T = await open(fixture());
+  const j = T.journeys[0], m = await T.shift(j, 2);
+  assert.equal(m.base, j.id); assert.equal(m.shifted, 2);
+  assert.equal(m.depL.hm, j.depL.hm);
+  assert.equal(Date.parse(m.depL.date) - Date.parse(j.depL.date), 2 * 86400000);
+  assert.ok(m.offers.every((o) => o.basis === 'other-date' && o.read_for === j.raw.dep.slice(0, 10)));
+  assert.equal(await T.shift(j, 0), j);
+});
+
+test('a window end without a time means the end of that day', async () => {
+  const a = fixture(), b = fixture();
+  a.window.end = a.window.end.slice(0, 10);
+  const day = new Date(Date.parse(a.window.end) + 86400000).toISOString().slice(0, 10);
+  b.window.end = day + 'T00:00';
+  assert.equal((await open(a)).T1, (await open(b)).T1);
+});

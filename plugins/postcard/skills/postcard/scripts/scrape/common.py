@@ -232,3 +232,40 @@ if __name__ == "__main__":
         dump(fx(float(sys.argv[2]), sys.argv[3].upper(), sys.argv[4].upper()))
     else:
         print("usage: python3 common.py fx AMOUNT FROM TO   # such as: fx 823 NOK EUR")
+
+
+# --- town names and zones -------------------------------------------------------------------
+
+_STATION_WORDS = {"hbf", "hauptbahnhof", "hb", "centraal", "centralstation", "central", "station",
+                  "bahnhof", "sbb", "gare", "aéroport", "aeroport", "flughafen", "airport", "zob",
+                  "place", "hall", "bus", "busstation", "flixbus", "terminal", "ferry", "stop"}
+_LAST_ONLY = {"h", "s"}
+_LEAD = {"s+u", "s", "u", "s-bahn", "bahnhof"}
+TOWN_ALIAS = {"københavn": "Copenhagen", "köpenhamn": "Copenhagen", "koebenhavn": "Copenhagen",
+              "kopenhagen": "Copenhagen", "genève": "Geneva", "genf": "Geneva"}
+
+
+def town(name):
+    """The town a person knows, from a station or stop name: "Zürich HB" -> "Zürich",
+    "S+U Berlin Hauptbahnhof" -> "Berlin", "Paris Gare de Lyon Hall 1 - 2" -> "Paris".
+    A name that is only a station word ("Hauptbahnhof") comes back unchanged: the caller must
+    name the town."""
+    s = re.split(r"\s+\(|,|\s+[-–]\s+", name.strip())[0].strip()
+    toks = [(m.group(0), m.start()) for m in re.finditer(r"[^\s\-–/]+", s)]
+    while toks and toks[0][0].lower() in _LEAD and len(toks) > 1:
+        s, toks = s[toks[1][1]:], [(t, p - toks[1][1]) for t, p in toks[1:]]
+    for i, (t, pos) in enumerate(toks):
+        low = t.lower()
+        if i and (low in _STATION_WORDS or (low in _LAST_ONLY and i == len(toks) - 1)):
+            s = s[:pos].rstrip(" -–/")
+            break
+    if s.isupper():
+        s = s.title()
+    return TOWN_ALIAS.get(s.lower(), s) or name
+
+
+# One zone for the whole country, for the countries where the feed or airport table can be wrong.
+COUNTRY_TZ = {"CH": "Europe/Zurich", "NL": "Europe/Amsterdam", "BE": "Europe/Brussels",
+              "DE": "Europe/Berlin", "AT": "Europe/Vienna", "DK": "Europe/Copenhagen",
+              "NO": "Europe/Oslo", "SE": "Europe/Stockholm", "FR": "Europe/Paris",
+              "IT": "Europe/Rome", "CZ": "Europe/Prague", "PL": "Europe/Warsaw"}

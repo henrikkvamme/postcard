@@ -17,11 +17,15 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import dump, haversine_km, http_text, slug  # noqa: E402
+from common import COUNTRY_TZ, dump, haversine_km, http_text, slug, town  # noqa: E402
 
 OURAIRPORTS = "https://davidmegginson.github.io/ourairports-data/airports.csv"
 MWGG = "https://raw.githubusercontent.com/mwgg/Airports/master/airports.json"
 _AIRPORTS = None
+# OurAirports names the municipality, not the town a person knows.
+CITY = {"BSL": "Basel", "MLH": "Basel", "EAP": "Basel", "ACE": "Lanzarote", "SAW": "Istanbul",
+        "TFS": "Tenerife", "TFN": "Tenerife", "ZRH": "Zürich", "GVA": "Geneva", "AMS": "Amsterdam",
+        "FRA": "Frankfurt", "CPH": "Copenhagen"}
 
 
 def airports():
@@ -38,9 +42,14 @@ def airports():
         code = r.get("iata_code")
         if not code or r["type"] == "closed":
             continue
-        out[code] = {"name": r["name"], "city": r["municipality"], "country": r["iso_country"],
+        # The tz table gives Geneva Europe/Paris; the country decides. Basel-Mulhouse is in France.
+        zone = tz.get(code)
+        if (zone or "").startswith("Europe/") and r["iso_country"] in COUNTRY_TZ:
+            zone = COUNTRY_TZ[r["iso_country"]]
+        out[code] = {"name": r["name"], "city": CITY.get(code) or r["municipality"],
+                     "country": r["iso_country"],
                      "coord": [round(float(r["longitude_deg"]), 4), round(float(r["latitude_deg"]), 4)],
-                     "tz": tz.get(code), "type": r["type"], "scheduled": r["scheduled_service"] == "yes"}
+                     "tz": zone, "type": r["type"], "scheduled": r["scheduled_service"] == "yes"}
     _AIRPORTS = out
     return out
 
@@ -49,7 +58,8 @@ def airport(code):
     a = airports().get(code.upper())
     if not a:
         raise SystemExit(f"unknown airport code {code}")
-    return {"name": a["name"], "city": a["city"], "kind": "airport", "coord": a["coord"], "tz": a["tz"]}
+    return {"name": a["name"], "city": a["city"], "kind": "airport", "coord": a["coord"], "tz": a["tz"],
+            "code": code.upper()}
 
 
 def near(lnglat, km=150, kinds=("large_airport", "medium_airport")):
@@ -86,7 +96,7 @@ def main(argv=None):
                 print(f"no stop for {n}", file=sys.stderr)
                 continue
             h = hits[0]
-            out[slug(h["name"], 16)] = {"name": h["name"], "city": h["name"].split(" (")[0], "kind": "station",
+            out[slug(h["name"], 16)] = {"name": h["name"], "city": town(h["name"]), "kind": "station",
                                          "coord": h["coord"], "tz": h["tz"], "transitous_id": h["id"]}
         dump(out)
     else:

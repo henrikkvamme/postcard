@@ -15,13 +15,15 @@ import math
 import os
 import re
 import sys
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 SKILL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KIT = os.path.join(SKILL, "kit")
 
 ISO = re.compile(r"^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$")
+DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+STATION_WORDS = re.compile(r"\b(HB|Hbf|Hauptbahnhof|Bahnhof|Gare|Station|Stazione|Estaci[oó]n|Place|Platz|ZOB|Busbahnhof|Terminal|Airport|Flughafen|A[eé]roport|Centraal)\b|\bH$|\+", re.I)
 DAY = re.compile(r"^\d{4}-\d{2}-\d{2}")
 MODES = {"plane", "train", "bus", "coach", "ferry", "car", "taxi", "walk", "mixed"}
 GROUND = MODES - {"plane"}
@@ -34,11 +36,13 @@ TOP = {"version", "id", "title", "subtitle", "currency", "passengers", "clock", 
 PLACE = {"name", "city", "kind", "coord", "tz", "code", "country", "note"}
 JOURNEY = {"id", "mode", "group", "from", "to", "dep", "arr", "carrier", "numbers", "segments", "self_transfer",
            "warning", "offers", "bags", "notes", "path", "tags", "co2_kg",
-           "seen", "schedule_source", "stops", "transfers", "layovers_min", "flags", "km", "drive_minutes"}
+           "seen", "schedule_source", "stops", "transfers", "layovers_min", "flags", "km", "drive_minutes",
+           "overnight", "berth"}
 SEGMENT = {"mode", "from", "to", "dep", "arr", "carrier", "number", "path", "self_transfer", "note",
            "operated_by", "aircraft", "headsign"}
 OFFER = {"seller", "kind", "price", "fare", "bags", "source", "seen", "url", "stars", "reviews", "rating_source",
-         "note", "refundable", "changeable", "per", "basis", "currency", "original", "price_note", "rules", "bags_note"}
+         "note", "refundable", "changeable", "per", "basis", "currency", "original", "price_note", "rules", "bags_note",
+         "seats_left", "read_for"}
 DEAL = {"journeys", "price", "seller", "kind", "what", "source", "seen", "url", "bags", "fare", "stars", "reviews",
         "rating_source", "note", "basis", "currency", "original", "price_note", "bags_note"}
 MAP = {"view", "labels", "seas", "art", "far"}
@@ -219,9 +223,27 @@ def main():
         if p.get("kind") and p["kind"] not in PLACE_KINDS:
             warn(f"{w}: kind '{p['kind']}' is not one of {sorted(PLACE_KINDS)}")
     good = {pid for pid, p in places.items() if zone_ok(p.get("tz")) and coords_ok(p.get("coord"))}
+    # city is the name a person knows ("Copenhagen"); a station or stop name there becomes the big map label.
+    for pid, p in places.items():
+        c = p.get("city") or ""
+        if STATION_WORDS.search(c):
+            warn(f"places.{pid}: city '{c}' looks like a station or stop name; put that in name and the town in city")
+    # Two ids for one place split its routes and labels (Basel SBB as BASEL-SBB and BASEL-BAHNHOF-SB).
+    gl = sorted(good)
+    for i, a in enumerate(gl):
+        for b in gl[i + 1:]:
+            pa, pb = places[a], places[b]
+            if pa.get("kind") == pb.get("kind") and km(pa["coord"], pb["coord"]) < .3:
+                warn(f"places.{a} and places.{b}: {pa.get('kind') or 'places'} {km(pa['coord'], pb['coord']) * 1000:.0f} m apart; are they one place?")
 
-    w0 = when(t["window"].get("start"), t["clock"], "window.start")
-    w1 = when(t["window"].get("end"), t["clock"], "window.end")
+    # window.end is exclusive. A date alone means the end of that day; a start date alone means its 00:00.
+    ws, we = t["window"].get("start"), t["window"].get("end")
+    if isinstance(ws, str) and DATE.match(ws):
+        ws += "T00:00"
+    if isinstance(we, str) and DATE.match(we):
+        we = (datetime.fromisoformat(we) + timedelta(days=1)).strftime("%Y-%m-%dT00:00")
+    w0 = when(ws, t["clock"], "window.start")
+    w1 = when(we, t["clock"], "window.end")
     if w0 and w1 and w1 <= w0:
         err("window: ends before it starts")
 
@@ -261,7 +283,7 @@ def main():
         if not segs:
             if j.get("mode") == "mixed":
                 err(f"{w}: a mixed journey needs segments")
-            if j.get("mode") in GROUND and not j.get("path"):
+            if j.get("mode") in GROUND and not j.get("path") and a != b:
                 warn(f"{w}: {j.get('mode')} without a path is drawn as a faint straight line; add a path for a real route")
             elif j.get("path"):
                 read_path(j["path"], base, w + ".path")
@@ -308,9 +330,11 @@ def main():
                         warn(f"{sw}.path: the line runs from {sb} to {sa}; reverse it")
                     elif max(fwd) > 30:
                         warn(f"{sw}.path: its ends are {fwd[0]:.0f} km from {sa} and {fwd[1]:.0f} km from {sb}; is it the right line?")
-            elif mode in GROUND:
+            elif mode in GROUND and sa != sb:
                 warn(f"{sw}: {mode} without a path is drawn as a faint straight line; add a path for a real route")
 
+        if "berth" in j and j["berth"] not in ("sleeper", "couchette", "seat", "unknown"):
+            err(f"{w}: berth '{j['berth']}' is not sleeper, couchette, seat or unknown")
         offers = j.get("offers") or []
         if offers:
             priced += 1
@@ -318,8 +342,10 @@ def main():
             warn(f"{w}: no offers and no warning; say why it has no price")
         for k, o in enumerate(offers):
             check_offer(o, f"{w}.offers[{k}]", today)
-        if j.get("carrier") and j["carrier"] not in t.get("carriers", {}):
-            warn(f"{w}: carrier '{j['carrier']}' has no name in carriers")
+        # A short code (LX, SBB) needs a name; a carrier written out in full (easyJet) does not.
+        cr = j.get("carrier")
+        if cr and cr not in t.get("carriers", {}) and re.fullmatch(r"[A-Z0-9]{2,4}", cr):
+            warn(f"{w}: carrier '{cr}' has no name in carriers")
 
     if not t["journeys"]:
         err("journeys: the list is empty")

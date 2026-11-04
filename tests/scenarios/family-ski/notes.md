@@ -24,6 +24,11 @@ Two adults and two children (8 and 11), Zürich to Val Thorens, Sat 13 to Sat 20
   price for all 4.
 - The booking page shows no fare families for this route. The bags come from the itinerary
   summary: 1 free carry-on, checked bag for a fee (`checked: "fee"`).
+- The return chain b1 leaves Val Thorens at 07:54 and reaches Geneva Airport at 13:38. The
+  flight leaves at 20:15, a wait of 6 h 37 min. b1 is the only ground chain from Val Thorens to the
+  airport that was searched. A later bus likely exists, but it was not searched, and no later
+  chain is in the saved data. The journey has a warning that says so.
+- The window ends Sun 21 Feb 00:00 (exclusive), so the Saturday evening arrival is inside.
 - a1 and b1 start and end at the airport. No journey includes the train from Zürich HB to ZRH.
 - The car cost is fuel and tolls for one car, not per person. Parking in Val Thorens is extra.
   Saturdays in February are the busiest days on the roads to the Tarentaise valley.

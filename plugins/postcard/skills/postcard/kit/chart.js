@@ -1,14 +1,16 @@
 // The chart: an engraved navy sea chart on a MapLibre globe, with terrain, cut-out drawings, place labels,
 // a route line drawn the way each mode travels, and a vehicle that rides the chosen route.
 // Needs the globals maplibregl, deck, d3 and topojson (index.html loads them).
-import { geo, MODES } from './trip.js';
+import { geo, MODES, along } from './trip.js';
 import { vehicleIcon } from './vehicles.js';
 
 export const INK = '#1d2a4a', PAPER = '#f4f2ea', LAND = '#f8f6ef', RED = '#b8322a';
 const INKA = [29, 42, 74], REDA = [184, 50, 42], LANDA = [248, 246, 239];
 const rad = Math.PI / 180;
 const KIT = new URL('.', import.meta.url).href;
-const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// ?reduced=1 in the URL acts as prefers-reduced-motion, for checks in a browser that cannot emulate it.
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches || new URLSearchParams(location.search).get('reduced') === '1';
+if (REDUCED) document.documentElement.classList.add('reduced');
 
 function tile(w, h, paint) { const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d'); paint(g);
   return { width: w, height: h, data: new Uint8Array(g.getImageData(0, 0, w, h).data.buffer) }; }
@@ -126,9 +128,12 @@ export function createChart(opts) {
   }
 
   // ---- Labels: DOM pins in the engraved type. Lower-priority labels hide when they would overlap. ----
+  // MapLibre makes every marker a "Map marker" button. Pins are text, not controls: a dot is hidden from
+  // screen readers, a label is read as its text.
+  const quiet = (e, decorative) => { for (const a of ['role', 'tabindex', 'aria-label']) e.removeAttribute(a); if (decorative) e.setAttribute('aria-hidden', 'true'); };
   const pins = [];
   const pin = (html, cls, lnglat, { anchor = 'center', offset = [0, 0], prio = 0 } = {}) => { const e = document.createElement('div'); e.className = cls; e.innerHTML = html;
-    const m = new maplibregl.Marker({ element: e, anchor, offset }).setLngLat(lnglat).addTo(map); const p = { m, e, prio }; pins.push(p); return p; };
+    const m = new maplibregl.Marker({ element: e, anchor, offset }).setLngLat(lnglat).addTo(map); quiet(e, !html); const p = { m, e, prio }; pins.push(p); return p; };
   for (const [n, lo, la] of M.labels || []) pin(n, 'pc-lbl', [lo, la], { prio: 1 });
   for (const [n, lo, la] of M.seas || []) pin(n, 'pc-lbl sea', [lo, la], { prio: 2 });
   const placePins = {};
@@ -136,11 +141,17 @@ export function createChart(opts) {
     for (const p of Object.values(placePins)) { p.dot.m.remove(); p.lbl.m.remove(); pins.splice(pins.indexOf(p.dot), 1); pins.splice(pins.indexOf(p.lbl), 1); }
     for (const k of Object.keys(placePins)) delete placePins[k];
     const used = new Set([...S.chosen, ...S.others].flatMap((j) => j.stops)), on = touched();
-    for (const id of used) { const P = T.places[id], end = S.ends.includes(id);
+    // A stop next to a labelled place of the same name (Copenhagen H beside Copenhagen) adds no label of its own.
+    const named = [];
+    const near = (id, text) => named.some((n) => n.text === text && geo.km(n.ll, T.places[id].coord) < 4);
+    const ids = [...used].sort((a, b) => (S.ends.includes(b) - S.ends.includes(a)) || (on.has(b) - on.has(a)));
+    for (const id of ids) { const P = T.places[id], end = S.ends.includes(id);
       const east = P.coord[0] >= d3.mean(S.ends.map((e) => T.places[e].coord[0])) ;
+      const text = end ? P.label : P.code || P.label, same = !end && near(id, text) || !end && near(id, P.label);
       const dot = pin('', end ? 'pc-dot' : 'pc-hub' + (on.has(id) ? ' on' : ''), P.coord, { prio: end ? 10 : 6 });
-      const lbl = end ? pin(P.label, 'pc-lbl city', P.coord, { anchor: east ? 'left' : 'right', offset: east ? [12, -12] : [-12, -12], prio: 9 })
-        : pin(P.code || id, 'pc-lbl hub' + (on.has(id) ? ' on' : ''), P.coord, { anchor: 'left', offset: [7, 0], prio: on.has(id) ? 5 : 3 });
+      const lbl = end ? pin(text, 'pc-lbl city', P.coord, { anchor: east ? 'left' : 'right', offset: east ? [12, -12] : [-12, -12], prio: 9 })
+        : pin(same ? '' : text, 'pc-lbl hub' + (on.has(id) ? ' on' : ''), P.coord, { anchor: 'left', offset: [7, 0], prio: on.has(id) ? 5 : 3 });
+      if (!same) named.push({ text, ll: P.coord }, { text: P.label, ll: P.coord });
       placePins[id] = { dot, lbl }; }
     cull();
   }
@@ -152,13 +163,19 @@ export function createChart(opts) {
       // The title and the cards are taken space: a map label under them is hidden. Dots and end labels still show.
       const hud = [...document.querySelectorAll('.pc-title, .pc-card')].map((h) => h.getBoundingClientRect()).filter((r) => r.width);
       const kept = [...hud];
+      // A country or sea name that lies on the chosen route hides, so the route reads as one clean line.
+      const box = el.getBoundingClientRect(), line = [];
+      for (const x of segs(S.chosen)) { const pts = (air(x) ? arc(x.seg) : x.seg.path).map((q) => { const s = map.project([q[0], q[1]]); return [s.x + box.left, s.y + box.top]; });
+        pts.forEach((q, i) => { const r = pts[i - 1]; if (r) { const n = Math.ceil(Math.hypot(q[0] - r[0], q[1] - r[1]) / 8); for (let k = 1; k < n; k++) line.push([r[0] + (q[0] - r[0]) * k / n, r[1] + (q[1] - r[1]) * k / n]); } line.push(q); }); }
+      const onRoute = (r) => line.some(([x, y]) => x > r.left - 3 && x < r.right + 3 && y > r.top - 3 && y < r.bottom + 3);
       for (const p of [...pins].sort((a, b) => b.prio - a.prio)) {
         if (p.e.classList.contains('pc-dot') || p.e.classList.contains('pc-hub')) continue;
         p.e.style.visibility = ''; let r = p.e.getBoundingClientRect();
         // An end label points away from the route; when that runs off the screen, put it on the other side of its dot.
         if (p.e.classList.contains('city')) { p.e.style.translate = ''; r = p.e.getBoundingClientRect(); const W = el.clientWidth;
           if (r.width && (r.left < 8 || r.right > W - 8)) { p.e.style.translate = `${r.left < 8 ? r.width + 24 : -(r.width + 24)}px 0`; r = p.e.getBoundingClientRect(); } }
-        const hit = r.width && kept.slice(p.prio >= 9 ? hud.length : 0).some((q) => r.left < q.right + 4 && r.right > q.left - 4 && r.top < q.bottom + 2 && r.bottom > q.top - 2);
+        const hit = r.width && (kept.slice(p.prio >= 9 ? hud.length : 0).some((q) => r.left < q.right + 4 && r.right > q.left - 4 && r.top < q.bottom + 2 && r.bottom > q.top - 2)
+          || p.prio <= 2 && onRoute(r));
         if (hit) p.e.style.visibility = 'hidden'; else if (r.width) kept.push(r); } });
   }
   map.on('move', cull);
@@ -172,41 +189,42 @@ export function createChart(opts) {
   const air = (x) => MODES[x.seg.mode]?.air;
   // A flight is an arc whose height grows with its length.
   const peak = (seg) => Math.min(220000, 30000 + geo.ang(seg.path[0], seg.path[seg.path.length - 1]) * 6371000 * .1);
-  const arc = (seg) => seg.path.map((p, i, a) => [...p, Math.sin(Math.PI * i / (a.length - 1)) * peak(seg)]);
+  // It also bows a little to the left of its direction, so it reads as an arc from straight above (a phone
+  // has little pitch), and an out and a back flight between the same places do not lie on one line.
+  const arc = (seg) => { const p = seg.path, n = p.length - 1, a = p[0], b = p[n], c = Math.cos((a[1] + b[1]) / 2 * rad) || 1;
+    const dx = (b[0] - a[0]) * c, dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1, k = .07 * L, h = peak(seg);
+    return p.map((q, i) => { const t = Math.sin(Math.PI * i / n); return [q[0] - dy / L * k * t / c, q[1] + dx / L * k * t, t * h]; }); };
   const routesFC = () => ({ type: 'FeatureCollection', features: [...segs(S.others).map((x) => [x, false]), ...segs(S.chosen).map((x) => [x, true])].filter(([x]) => !air(x))
     .map(([x, chosen]) => ({ type: 'Feature', properties: { mode: x.seg.mode, chosen, guessed: x.seg.guessed, key: x.j.id + ':' + x.i },
       geometry: { type: 'LineString', coordinates: x.seg.path } })) });
   const chosenKeys = () => new Set(segs(S.chosen).map((x) => x.j.id + ':' + x.i));
 
+  // The vehicle shows only while the person points at a time (timeline or route hover). At rest the map
+  // shows the route alone, so no vehicle hides a stop.
+  // Planes are a 3D model in deck.gl. Ground vehicles are an engraved cut-out in a MapLibre marker,
+  // which sits on the terrain. (A deck.gl IconLayer drew nothing in this overlay, deck.gl 9.4.)
+  const ground = (() => { const e = document.createElement('img'); e.className = 'pc-vehicle'; e.alt = ''; e.setAttribute('aria-hidden', 'true');
+    const m = new maplibregl.Marker({ element: e, anchor: 'bottom', offset: [0, 4] }); quiet(e, true); return { e, m, on: false }; })();
   function vehicle() {
     const w = S.where, mpp = 156543 * Math.cos(map.getCenter().lat * rad) / Math.pow(2, map.getZoom());
-    if (!w) { // At rest the vehicle sits halfway along the longest chosen segment.
-      const all = segs(S.chosen); if (!all.length) return [];
-      const x = all.reduce((a, b) => (b.seg.km > a.seg.km ? b : a));
-      return vehicleAt(x.seg, .5, mpp);
-    }
-    if (w.moving) return vehicleAt(w.seg, w.s, mpp);
-    return [new deck.ScatterplotLayer({ id: 'you', data: [w], getPosition: (d) => [...d.pt, (map.queryTerrainElevation?.(d.pt) || 0) + 30], getRadius: 8, radiusUnits: 'pixels',
-      getFillColor: [...REDA, 255], getLineColor: [...LANDA, 255], lineWidthUnits: 'pixels', getLineWidth: 2.5, stroked: true })];
-  }
-  function vehicleAt(seg, s, mpp) {
-    if (MODES[seg.mode]?.air) {
-      const pts = arc(seg), f = s * (pts.length - 1), i = Math.min(pts.length - 2, Math.floor(f)), t = f - i;
+    const groundAt = w?.moving && !MODES[w.seg.mode]?.air && map.getZoom() >= FAR;
+    if (groundAt) {
+      const { pt } = along(w.seg.path, w.s), ahead = along(w.seg.path, Math.min(1, w.s + .01)).pt;
+      const a = map.project(pt), b = map.project(ahead), icon = vehicleIcon(w.seg.mode, b.x < a.x - .01);
+      if (ground.e.src !== icon.url) ground.e.src = icon.url;
+      ground.m.setLngLat(pt); if (!ground.on) { ground.m.addTo(map); quiet(ground.e, true); ground.on = true; }
+    } else if (ground.on) { ground.m.remove(); ground.on = false; }
+    if (!w) return [];
+    if (w.moving && MODES[w.seg.mode]?.air) {
+      const pts = arc(w.seg), f = w.s * (pts.length - 1), i = Math.min(pts.length - 2, Math.floor(f)), t = f - i;
       const pt = pts[i].map((v, k) => v + (pts[i + 1][k] - v) * t), head = geo.heading(pts[i], pts[i + 1]);
       return [new deck.ScenegraphLayer({ id: 'plane', data: [{ pt, head }], scenegraph: KIT + 'art/airplane.glb', getPosition: (d) => d.pt, sizeScale: mpp * .45, _lighting: 'pbr',
         visible: map.getZoom() >= FAR, getOrientation: (d) => [0, 180 - d.head, 90], getColor: [250, 246, 236, 255] })];
     }
-    // Ground vehicles are engraved cut-outs that face the way they travel on screen.
-    const { pt } = alongPath(seg.path, s), ahead = alongPath(seg.path, Math.min(1, s + .01)).pt;
-    const a = map.project(pt), b = map.project(ahead), left = b.x < a.x - .01;
-    const icon = vehicleIcon(seg.mode, left);
-    return [new deck.IconLayer({ id: 'vehicle', data: [{ pt }], getPosition: (d) => [...d.pt, (map.queryTerrainElevation?.(d.pt) || 0) + 20],
-      getIcon: () => icon, getSize: 34, sizeUnits: 'pixels', billboard: true, visible: map.getZoom() >= FAR })];
+    if (w.moving) return [];
+    return [new deck.ScatterplotLayer({ id: 'you', data: [w], getPosition: (d) => [...d.pt, (map.queryTerrainElevation?.(d.pt) || 0) + 30], getRadius: 8, radiusUnits: 'pixels',
+      getFillColor: [...REDA, 255], getLineColor: [...LANDA, 255], lineWidthUnits: 'pixels', getLineWidth: 2.5, stroked: true })];
   }
-  const alongPath = (path, s) => { const n = path.length - 1; if (n < 1) return { pt: path[0] };
-    let tot = 0; const d = path.slice(1).map((p, i) => { const k = geo.km(path[i], p); tot += k; return k; });
-    let want = s * tot; for (let i = 0; i < n; i++) { if (want <= d[i] || i === n - 1) { const f = d[i] ? Math.min(1, want / d[i]) : 0; return { pt: geo.slerp(path[i], path[i + 1], f) }; } want -= d[i]; }
-    return { pt: path[n] }; };
 
   function deckLayers() {
     const ch = segs(S.chosen).filter(air).map((x) => ({ ...x, path: arc(x.seg) }));
@@ -235,7 +253,10 @@ export function createChart(opts) {
     if (!x) { opts.onRouteHover?.(null); return; }
     let best = 0, bd = Infinity;
     path.forEach((p, i) => { const [sx, sy] = project(p); const d = (sx - px) ** 2 + (sy - py) ** 2; if (d < bd) { bd = d; best = i; } });
-    const s = best / (path.length - 1);
+    // s is a share of the distance, as along() and whereAt() read it. Path points are not evenly spaced.
+    let done = 0, total = 0;
+    for (let i = 1; i < path.length; i++) { const k = geo.km(path[i - 1], path[i]); total += k; if (i <= best) done += k; }
+    const s = total ? done / total : 0;
     opts.onRouteHover?.({ j: x.j, seg: x.seg, s, T: x.seg.a + s * (x.seg.b - x.seg.a), pt: path[best], event: ev });
   }
   map.on('mousemove', 'r-hit', (e) => { const f = e.features[0]; if (!f) return; const x = segs(S.chosen).find((y) => y.j.id + ':' + y.i === f.properties.key); if (!x) return;
@@ -255,14 +276,25 @@ export function createChart(opts) {
       pitch: Math.min(small ? 12 : 70, M.view?.pitch ?? 26), bearing: M.view?.bearing ?? -6 };
   };
   const pointsOf = (js) => js.flatMap((j) => j.segments.flatMap((s) => [s.path[0], s.path[Math.floor(s.path.length / 2)], s.path[s.path.length - 1]]));
+  // viewOf() guesses; pitch and terrain make the guess miss. After a move, zoom out until every point of the
+  // chosen route is inside the padded area.
+  const fitCheck = (pts) => map.once('moveend', () => {
+    if (!pts?.length || map.getZoom() < FAR) return;
+    const W = el.clientWidth, H = el.clientHeight, cx = PAD.left + (W - PAD.left - PAD.right) / 2, cy = PAD.top + (H - PAD.top - PAD.bottom) / 2;
+    const hw = Math.max(40, (W - PAD.left - PAD.right) / 2 - 16), hh = Math.max(40, (H - PAD.top - PAD.bottom) / 2 - 16);
+    const need = d3.max(pts, (p) => { const s = map.project(p); return Math.max(Math.abs(s.x - cx) / hw, Math.abs(s.y - cy) / hh); });
+    if (need > 1) map.easeTo({ zoom: Math.max(FAR + .1, map.getZoom() - Math.log2(need) - .05), padding: { ...PAD }, duration: REDUCED ? 0 : 300 }); });
   C.frame = (what, { duration = 900 } = {}) => { const pts = Array.isArray(what) && what[0]?.segments ? pointsOf(what) : what; if (!pts?.length) return;
-    map.flyTo({ ...C.viewOf(pts), padding: { ...PAD }, duration: REDUCED ? 0 : duration, curve: 1.2, essential: true }); };
-  // A view fixed in trip.json is made for a desktop window; a small screen fits the route instead.
-  C.home = () => (el.clientWidth >= 760 && M.view) || C.viewOf(pointsOf(S.chosen.length ? S.chosen : T.journeys));
-  C.reset = () => map.flyTo({ ...C.home(), padding: { ...PAD }, duration: REDUCED ? 0 : 900 });
+    fitCheck(pts); map.flyTo({ ...C.viewOf(pts), padding: { ...PAD }, duration: REDUCED ? 0 : duration, curve: 1.2, essential: true }); };
+  // A view in trip.json is made for a desktop window, and may set only some fields (a pitch, a bearing).
+  // A small screen always fits the route.
+  const homePts = () => pointsOf(S.chosen.length ? S.chosen : T.journeys);
+  C.home = () => ({ ...C.viewOf(homePts()), ...(el.clientWidth >= 760 ? M.view || {} : {}) });
+  C.reset = () => { fitCheck(homePts()); map.flyTo({ ...C.home(), padding: { ...PAD }, duration: REDUCED ? 0 : 900 }); };
   C.setPad = (p, { duration = 520, refit = true } = {}) => { Object.assign(PAD, p);
     if (!S.introDone) return;
-    map.easeTo({ ...(refit && S.chosen.length && map.getZoom() >= FAR ? C.viewOf(pointsOf(S.chosen)) : {}), padding: { ...PAD }, duration: REDUCED ? 0 : duration, easing: (t) => 1 - Math.pow(1 - t, 3) }); };
+    const fit = refit && S.chosen.length && map.getZoom() >= FAR; if (fit) fitCheck(pointsOf(S.chosen));
+    map.easeTo({ ...(fit ? C.viewOf(pointsOf(S.chosen)) : {}), padding: { ...PAD }, duration: REDUCED ? 0 : duration, easing: (t) => 1 - Math.pow(1 - t, 3) }); };
   map.on('click', () => { if (map.getZoom() < FAR && S.chosen.length) C.frame(S.chosen, { duration: 1800 }); });
 
   // ---- State from the page ----
@@ -291,6 +323,7 @@ export function createChart(opts) {
   function intro() {
     if (S.introDone) return; S.introDone = true;
     const done = () => { document.body.classList.remove('intro'); opts.onReady?.(); };
+    if (!M.view?.center) fitCheck(homePts());
     if (REDUCED || opts.intro === false) { map.jumpTo({ ...C.home(), padding: { ...PAD } }); done(); return; }
     map.flyTo({ ...C.home(), padding: { ...PAD }, duration: 3400, curve: 1.1, essential: true, easing: (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2 });
     setTimeout(done, 1900);

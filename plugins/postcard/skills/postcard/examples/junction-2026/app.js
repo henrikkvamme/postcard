@@ -24,7 +24,7 @@ const WK = X.work, WTZ = WK?.tz || T.places[HOME].tz;
 const WORK = (WK?.days || []).map((d) => ({ day: d, s: H(`${d}T${WK.start || '09:00'}`, WTZ), e: H(`${d}T${WK.end || '17:00'}`, WTZ) }));
 const TO_VENUE = X.destination.transfer_h ?? 1, BEFORE = X.buffers?.before_departure_h ?? 2, AFTER = X.buffers?.after_arrival_h ?? 1;
 const overlap = (a, b, c, d) => Math.max(0, Math.min(b, d) - Math.max(a, c));
-const state = { preset: db.get('preset', 'balanced'), remote: db.get('remote', false), buy: db.get('buy', 'operator'), out: db.get('out', null), ret: db.get('ret', null), view: db.get('view', 'timeline') };
+const state = { preset: db.get('preset', 'balanced'), remote: db.get('remote', false), buy: db.get('buy', 'operator', (v) => v in ACCEPT), out: db.get('out', null), ret: db.get('ret', null), view: db.get('view', 'timeline', ['timeline', 'trade', 'sellers', 'story']) };
 if (!ACCEPT[state.buy]) state.buy = 'operator';
 const priceOf = (j) => T.best(j, { accept: state.buy })?.total ?? null;
 
@@ -229,7 +229,7 @@ function drawSellers() {
   }
   const deals = T.deals.filter((d) => d.journeys.includes(sel.o.id) && d.journeys.includes(sel.r.id));
   if (deals.length) { const row = document.createElement('div'); row.className = 'srow';
-    row.innerHTML = `<div class="who"><b>BOTH</b><em>Bought together</em></div><div style="font:italic 400 14px var(--serif)">${deals.map((z) => `${esc(z.what)}: <b>${money(z.price)}</b>`).join(' · ')}</div>
+    row.innerHTML = `<div class="who"><b>BOTH</b><em>Bought together</em></div><div style="font:italic 400 15px var(--serif)">${deals.map((z) => `${esc(z.what)}: <b>${money(z.price)}</b>`).join(' · ')}</div>
       <div class="why">${sel.p.deal ? `<b>Using the deal.</b> It is ${money(sel.p.split - sel.price)} less than two one-way tickets.` : `Two one-way tickets cost <b>${money(sel.p.split)}</b> here, which beats the deal or the deal's seller is not allowed.`}</div>`;
     box.append(row); }
 }

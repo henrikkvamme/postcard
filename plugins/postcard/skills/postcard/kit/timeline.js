@@ -23,7 +23,7 @@ export function timeline(svgEl, T, opts) {
     g = svg.append('g');
     g.append('defs').html(`<pattern id="pc-night" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width=".6" height="4" fill="var(--ink)" opacity=".07"/></pattern>
       <pattern id="pc-hatch-red" width="3.2" height="3.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width=".8" height="3.2" fill="var(--red)"/></pattern>`);
-    g.append('text').attr('x', 0).attr('y', 29).attr('class', 'pc-caps muted').text((opts.clockLabel || T.raw.clock_label || T.clock.abbr()).toUpperCase());
+    g.append('text').attr('x', 0).attr('y', 29).attr('class', 'pc-caps muted').text((opts.title ? opts.title + ' · ' : '') + (opts.clockLabel || T.raw.clock_label || T.clock.abbr()).toUpperCase());
     // Axis: days on top; hours under them on the hour scale, dates on the day scale.
     const D = T.clock.days(from, to);
     const every = days ? Math.ceil(D.length / Math.max(1, (right - left) / 46)) : 1;
@@ -80,7 +80,13 @@ export function timeline(svgEl, T, opts) {
     const fl = g.append('g').selectAll('g').data(data).join('g').attr('class', 'pc-trow')
       .on('mousemove', (e, d) => { opts.onHover?.(d.j, e); if (S.hover !== d.j.id) { S.hover = d.j.id; paint(); } })
       .on('mouseleave', () => { opts.onHover?.(null); S.hover = null; paint(); })
-      .on('click', (e, d) => opts.onPick?.(d.j));
+      .on('click', (e, d) => { focusId = null; opts.onPick?.(d.j); })
+      // Rows work from the keyboard: Tab to a row, Enter or Space picks it. Focus survives the redraw a pick causes.
+      .attr('tabindex', opts.onPick ? 0 : null).attr('role', opts.onPick ? 'button' : null)
+      .attr('aria-label', (d) => `${d.j.carrierName || d.j.carrier || d.j.mode} ${wall(d.j, 'dep')} to ${wall(d.j, 'arr')}`)
+      .on('focus', (e, d) => { opts.onHover?.(d.j, e); S.hover = d.j.id; paint(); })
+      .on('blur', () => { opts.onHover?.(null); S.hover = null; paint(); })
+      .on('keydown', (e, d) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); focusId = d.j.id; opts.onPick?.(d.j); } });
     fl.each(function (d) {
       const r = d3.select(this), j = d.j;
       for (const t of j.transfers) r.append('line').attr('x1', x(t.a) + 1).attr('x2', x(t.b) - 1).attr('y1', d.y).attr('y2', d.y)
@@ -96,6 +102,7 @@ export function timeline(svgEl, T, opts) {
       opts.onTime?.(Math.round(x.invert(px) * 12) / 12); }).on('pointerleave', () => opts.onTime?.(null));
     Object.assign(api, { x, g, fl, width, height, bottom, left, right });
     paint();
+    if (focusId) fl.filter((d) => d.j.id === focusId).node()?.focus({ preventScroll: true });
   }
   function paint(next) {
     if (next) Object.assign(S, next);
@@ -105,9 +112,9 @@ export function timeline(svgEl, T, opts) {
     api.fl.selectAll('.seg').attr('fill', (d) => S.chosen.has(d.j.id) ? 'var(--red)' : 'var(--ink)').attr('opacity', (d) => S.chosen.has(d.j.id) ? 1 : S.hover === d.j.id ? .7 : .3);
     if (!days || true) {
       api.fl.select('.lead').attr('fill', (d) => on(d) ? 'var(--ink)' : 'var(--muted)').style('font-weight', (d) => S.chosen.has(d.j.id) ? 600 : 400)
-        .text((d) => days && !on(d) ? '' : opts.lead ? opts.lead(d.j) : `${d.j.carrierName || ''} ${d.j.depL.hm}`);
+        .text((d) => days && !on(d) ? '' : opts.lead ? opts.lead(d.j) : `${d.j.carrierName || ''} ${wall(d.j, 'dep')}`);
       api.fl.select('.side').attr('fill', (d) => S.chosen.has(d.j.id) ? 'var(--red)' : on(d) ? 'var(--ink)' : 'var(--muted)').style('font-weight', (d) => S.chosen.has(d.j.id) ? 600 : 400)
-        .text((d) => days && !on(d) ? '' : opts.side ? opts.side(d.j) : `${d.j.arrL.hm}`);
+        .text((d) => days && !on(d) ? '' : opts.side ? opts.side(d.j) : wall(d.j, 'arr'));
     }
   }
   // A red line at T with a label pill at the bottom; null clears it.
@@ -130,7 +137,12 @@ export function timeline(svgEl, T, opts) {
   }
   function marks(bandIndex, on) { const band = (opts.bands || [])[bandIndex]; if (!band) return;
     g?.selectAll('.pc-marks').filter((_, i) => i === bandIndex).selectAll('g').select('rect').attr('fill', (m, i) => on[i] ? 'var(--card)' : 'var(--red)'); }
-  const api = { draw, paint, cursor, overlay, marks, days, fmtDur };
+  // A time as the ticket shows it: local at the place. When that zone is not the axis zone, its name follows,
+  // so a 06:25 label on a bar that starts at 07:25 on the axis does not look wrong.
+  function wall(j, k) { const L = k === 'dep' ? j.depL : j.arrL, tz = T.places[k === 'dep' ? j.from : j.to]?.tz;
+    return T.clock.local(j[k]).hm === L.hm ? L.hm : `${L.hm} ${T.clock.abbr(tz, j[k])}`; }
+  let focusId = null;
+  const api = { draw, paint, cursor, overlay, marks, days, fmtDur, wall };
   draw();
   return api;
 }

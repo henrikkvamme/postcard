@@ -1,7 +1,7 @@
 # Verify
 
-Look at the page before you send the link. A page that renders is not a page that works. Do each
-step and fix what it finds.
+Look at the page before you send the link. A page that renders is not a page that works, and a page
+that works can still tell the person something false. Do each step and fix what it finds.
 
 ## 1. The data
 
@@ -23,7 +23,9 @@ prints. It listens on all interfaces; give the person the machine's host name, n
 
 ## 3. Load it in a browser
 
-Use any browser tool you have (Chrome DevTools, Playwright). At 1440 x 900:
+Use any browser tool you have (Chrome DevTools, Playwright). Set the size with the tool's device
+emulation, not by resizing the window: a headless window does not resize. With
+`chrome-devtools-axi`, run `emulate --viewport "1440x900x1"` before you open the page.
 
 1. Open the page and wait until the intro ends (about 4 s).
 2. Read the console. No errors. Map library debug warnings are fine.
@@ -34,32 +36,49 @@ Use any browser tool you have (Chrome DevTools, Playwright). At 1440 x 900:
    ```
 
    It returns lists that must be empty: `hiddenEnds` (a route end off screen or under the HUD),
-   `pageOverflow`, `smallText`, `clipped`, `hudOverlap`, `hudOff` and `unnamed` (buttons without
-   a name). `ok` is true when they are all empty.
+   `pageOverflow`, `smallText`, `clipped`, `hudOverlap`, `hudOff`, `unnamed` (buttons without
+   a name) and `manySizes` (more than six text sizes in the HUD). `ok` is true when they are all
+   empty. Also read `redText`: every red text outside the book band must be the pick or the one
+   failing fact on the postcard (craft.md, rule 6).
 4. Take a screenshot and look at it as the person would. Does the main view answer the question in
    five seconds? Is the best option obvious? Does the postcard match the pick?
 
-## 4. Use it
+## 4. Read it as the person
+
+For the default pick and one other pick, read every number and claim on the postcard, the book
+band and the checkout against `trip.json`:
+
+- Each price is a sum you can repeat from the offers, deals, bag fees and estimates.
+- What the total leaves out is written next to it (craft.md, rule 3).
+- Each estimate has ≈ and a basis. No assumption is shown as a fact.
+- Times are the times on the ticket, with +1 for the next day. The postcard and the checkout show
+  the same times.
+- "Door to door", "nights", "best" mean what they say.
+
+## 5. Use it
 
 - Click every control once. Each must change something you can see: the pick, a price, the map.
-  If one changes nothing for this data, remove it (see craft.md, rule 3).
-- Pick another option. The map reframes, the postcard and the book band follow.
-- Hover the timeline. The vehicle moves along the route and the status line reads well.
-- Open the checkout sheet and close it with Esc.
+  If one changes nothing for this data, remove it (craft.md, rule 4).
+- Pick another option. The map reframes, the postcard and the book band follow, and nothing else
+  moves (craft.md, rule 7).
+- Hover the timeline or a row. The vehicle moves along the route and the status line reads well.
+- Tab through the HUD. Each control and each option is reachable, Enter picks, and focus stays on
+  what you used.
+- Open the checkout sheet, Tab through it (focus stays inside), and close it with Esc.
 - Reload. Saved choices come back.
 
-## 5. Phone
+## 6. Phone
 
-Emulate a phone of 390 x 844 (a desktop window cannot shrink that far; use the tool's device
-emulation, for example `emulate --viewport "390x844x3,mobile,touch"`). Reload, run the probe again,
-and take a screenshot. Both ends of the chosen route must be on screen above the card.
+Emulate a phone of 390 x 844 (`emulate --viewport "390x844x2,mobile,touch"`). Reload, run the probe
+again, and take a screenshot. Both ends of the chosen route must be on screen above the card, and
+every option of the main view must be visible without a sideways scroll (craft.md, rule 9).
 
-## 6. Reduced motion
+## 7. Reduced motion
 
-Emulate `prefers-reduced-motion: reduce` and reload. The map must not fly; the page must still
-work.
+Open the page with `?reduced=1` (or emulate `prefers-reduced-motion: reduce` when your tool can).
+The map must not fly; the page must still work.
 
-## 7. Send
+## 8. Send
 
 Send the link with one or two lines: what the page answers, the best option and its price, and
 what you could not check. Stop the server when the person is done.

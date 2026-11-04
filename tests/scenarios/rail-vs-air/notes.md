@@ -23,7 +23,15 @@ One adult, Zürich to Amsterdam for a meeting on Fri 4 Dec 2026, 10:00 to 16:00.
   (`chain.py`). The train and bus are not in the price, and the tickets are separate.
 - Round trip: SWISS LX 734 (Thu 3 Dec) plus LX 725 (Sat 5 Dec) costs CHF 235 on one ticket. The
   two one-way tickets cost CHF 227 + 153 = CHF 380. The other SWISS returns on Sat 5 Dec also
-  cost CHF 235; LX 735 costs CHF 249.
+  cost CHF 235. Only the LX 734 + LX 725 pair is a deal in `data.json`.
+- Unknown: the first notes also had the words "LX 735 costs CHF 249". The page and the raw
+  list for that number were not saved. LX 735 is the Fri 4 Dec 20:00 flight (journey fr1), and the
+  round-trip link in the deal has a return date of Sat 5 Dec, so the price cannot be tied to a
+  pair. It could be a round trip with LX 734, but this is not proven. The one-way price of
+  LX 735 is CHF 153. The CHF 249 is not in `data.json`. There is no LX 734 + LX 735 deal.
 - The flights leave from the airport. No journey includes the train from Zürich HB to ZRH
   (about 12 minutes).
+- The window is Thu 3 Dec to Mon 7 Dec 00:00 (exclusive), so the Sunday trains are inside.
+- Night journeys (fx5, NJ 402, NJ 403) have `overnight: true`. The Nightjet class (sleeper,
+  couchette or seat) was not read, so `berth` is `"unknown"`.
 - The overnight FlixBus fx5 arrives at 07:30 on Fri 4 Dec. That is in time for the meeting.

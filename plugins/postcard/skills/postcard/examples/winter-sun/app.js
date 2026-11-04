@@ -19,7 +19,7 @@ const DESTS = X.destinations, HOME = X.home.places[0];
 // ---------- Model ----------
 // A holiday is one flight out and one flight back to the same place, exactly NIGHTS nights apart.
 // Its cost is the price with the chosen bags, plus the time it costs you: travel and the way to the airport.
-const state = { accept: db.get('accept', 'operator'), bags: db.get('bags', 'small'), airports: db.get('airports', 'both'), pick: db.get('pick', null), view: db.get('view', 'weeks') };
+const state = { accept: db.get('accept', 'operator'), bags: db.get('bags', 'small', ['small', 'cabin', 'checked']), airports: db.get('airports', 'both', ['zrh', 'both']), pick: db.get('pick', null), view: db.get('view', 'weeks', ['weeks', 'flights']) };
 if (!ACCEPT[state.accept]) state.accept = 'operator';
 const BAGS = { small: { label: 'Small bag only', need: null }, cabin: { label: 'Cabin bag', need: { cabin: true } }, checked: { label: 'Checked bag', need: { checked: 1 } } };
 const AIRPORTS = { zrh: { label: 'Zürich only', ok: (id) => id === 'ZRH' }, both: { label: '+ Basel', ok: (id) => X.home.places.includes(id) } };

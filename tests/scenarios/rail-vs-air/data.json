@@ -1,20 +1,22 @@
 {
  "id": "rail-vs-air",
  "title": "Zürich to Amsterdam for a Friday meeting",
+ "subtitle": "Friday 10:00 to 16:00 meeting · back by Sunday 6 December",
  "currency": "CHF",
  "passengers": {
   "adults": 1,
   "children": 0
  },
  "clock": "Europe/Zurich",
+ "clock_label": "Zürich time",
  "window": {
-  "start": "2026-12-03",
-  "end": "2026-12-06"
+  "start": "2026-12-03T00:00",
+  "end": "2026-12-07T00:00"
  },
  "places": {
   "ZUERICH-HB": {
    "name": "Zürich HB",
-   "city": "Zürich HB",
+   "city": "Zürich",
    "kind": "station",
    "coord": [
     8.53746,
@@ -24,7 +26,7 @@
   },
   "BASEL-SBB": {
    "name": "Basel SBB",
-   "city": "Basel SBB",
+   "city": "Basel",
    "kind": "station",
    "coord": [
     7.58882,
@@ -34,7 +36,7 @@
   },
   "DUESSELDORF-HBF": {
    "name": "Düsseldorf Hbf",
-   "city": "Düsseldorf Hbf",
+   "city": "Düsseldorf",
    "kind": "station",
    "coord": [
     6.79487,
@@ -44,13 +46,13 @@
   },
   "AMSTERDAM-CENTRA": {
    "name": "Amsterdam Centraal",
-   "city": "Amsterdam Centraal",
+   "city": "Amsterdam",
    "kind": "station",
    "coord": [
     4.89944,
     52.37913
    ],
-   "tz": "Europe/Brussels"
+   "tz": "Europe/Amsterdam"
   },
   "FRANKFURT-MAIN-H": {
    "name": "Frankfurt (Main) Hauptbahnhof",
@@ -62,9 +64,9 @@
    ],
    "tz": "Europe/Berlin"
   },
-  "HAUPTBAHNHOF": {
-   "name": "Hauptbahnhof",
-   "city": "Hauptbahnhof",
+  "STUTTGART-HBF": {
+   "name": "Stuttgart Hbf",
+   "city": "Stuttgart",
    "kind": "station",
    "coord": [
     9.18239,
@@ -80,11 +82,11 @@
     4.8385,
     52.38976
    ],
-   "tz": "Europe/Brussels"
+   "tz": "Europe/Amsterdam"
   },
   "ZURICH": {
-   "name": "Zurich",
-   "city": "Zurich",
+   "name": "Zürich",
+   "city": "Zürich",
    "kind": "stop",
    "coord": [
     8.53744,
@@ -110,21 +112,23 @@
     4.7639,
     52.3086
    ],
-   "tz": "Europe/Amsterdam"
+   "tz": "Europe/Amsterdam",
+   "code": "AMS"
   },
   "ZRH": {
    "name": "Zürich Airport",
-   "city": "Zurich",
+   "city": "Zürich",
    "kind": "airport",
    "coord": [
     8.5481,
     47.4581
    ],
-   "tz": "Europe/Zurich"
+   "tz": "Europe/Zurich",
+   "code": "ZRH"
   },
   "BASEL-EUROAIRPOR": {
    "name": "Basel Euroairport FR",
-   "city": "Basel Euroairport FR",
+   "city": "Basel",
    "kind": "station",
    "coord": [
     7.53267,
@@ -134,22 +138,14 @@
   },
   "BSL": {
    "name": "EuroAirport Basel–Mulhouse–Freiburg",
-   "city": "Bâle / Mulhouse",
+   "city": "Basel",
    "kind": "airport",
    "coord": [
     7.5211,
     47.6007
    ],
-   "tz": "Europe/Paris"
-  }
- },
- "context": {
-  "work": {
-   "what": "Meeting",
-   "city": "Amsterdam",
-   "start": "2026-12-04T10:00",
-   "end": "2026-12-04T16:00",
-   "tz": "Europe/Amsterdam"
+   "tz": "Europe/Paris",
+   "code": "BSL"
   }
  },
  "journeys": [
@@ -253,7 +249,7 @@
     {
      "mode": "train",
      "from": "ZUERICH-HB",
-     "to": "HAUPTBAHNHOF",
+     "to": "STUTTGART-HBF",
      "dep": "2026-12-03T12:37",
      "arr": "2026-12-03T15:32",
      "carrier": "SBB",
@@ -263,14 +259,14 @@
     },
     {
      "mode": "walk",
-     "from": "HAUPTBAHNHOF",
-     "to": "HAUPTBAHNHOF",
+     "from": "STUTTGART-HBF",
+     "to": "STUTTGART-HBF",
      "dep": "2026-12-03T15:32",
      "arr": "2026-12-03T15:34"
     },
     {
      "mode": "train",
-     "from": "HAUPTBAHNHOF",
+     "from": "STUTTGART-HBF",
      "to": "AMSTERDAM-CENTRA",
      "dep": "2026-12-03T16:26",
      "arr": "2026-12-03T21:29",
@@ -415,7 +411,8 @@
      "rating_source": "trustpilot"
     }
    ],
-   "group": "out"
+   "group": "out",
+   "overnight": true
   },
   {
    "id": "fo15",
@@ -506,7 +503,8 @@
    "warning": {
     "short": "No price",
     "text": "Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the Nightjet and SBB shops did not give a price. Read it on bahn.de, nightjet.com or sbb.ch."
-   }
+   },
+   "berth": "unknown"
   },
   {
    "id": "fp12",
@@ -626,7 +624,8 @@
    "warning": {
     "short": "No price",
     "text": "Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the Nightjet and SBB shops did not give a price. Read it on bahn.de, nightjet.com or sbb.ch."
-   }
+   },
+   "berth": "unknown"
   },
   {
    "id": "fr8",
@@ -874,5 +873,36 @@
    "seen": "2026-11-04",
    "url": "https://www.google.com/travel/flights/search?tfs=CBwQAho_EgoyMDI2LTEyLTAzIh8KA1pSSBIKMjAyNi0xMi0wMxoDQU1TKgJMWDIDNzM0agcIARIDWlJIcgcIARIDQU1TGh4SCjIwMjYtMTItMDVqBwgBEgNBTVNyBwgBEgNaUkhAAUgBcAGCAQsI____________AZgBAQ&tfu=EgQIABABIgA&hl=en&gl=CH&curr=CHF"
   }
- ]
+ ],
+ "carriers": {
+  "LX": "SWISS",
+  "KL": "KLM",
+  "KLM": "KLM",
+  "SWISS": "SWISS",
+  "SBB": "SBB",
+  "DB": "Deutsche Bahn",
+  "NS": "Nederlandse Spoorwegen",
+  "NJ": "ÖBB Nightjet",
+  "ICE": "DB ICE",
+  "IC": "Intercity"
+ },
+ "sources": {
+  "note": "Read on 2026-11-04. Train and bus schedules from Transitous; FlixBus API; flights from Google Flights (ZRH, BSL); seller ratings from Trustpilot. Train prices were not read: bahn.de, Omio, sbb.ch, Trainline and NS International did not load.",
+  "seen": "2026-11-04"
+ },
+ "context": {
+  "work": {
+   "what": "Meeting",
+   "city": "Amsterdam",
+   "start": "2026-12-04T10:00",
+   "end": "2026-12-04T16:00",
+   "tz": "Europe/Amsterdam"
+  },
+  "not_searched": [
+   "Train fares (bahn.de, nightjet.com, sbb.ch, Omio, Trainline and NS International did not load)",
+   "Train from Zürich HB to ZRH (about 12 minutes) in the flight journeys",
+   "Round-trip prices other than LX 734 + LX 725",
+   "Sleeper class and bed price on the Nightjet"
+  ]
+ }
 }

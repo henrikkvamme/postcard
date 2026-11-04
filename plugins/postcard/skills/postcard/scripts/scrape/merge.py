@@ -36,6 +36,17 @@ def parse_spec(spec):
     return path, group or None, [i for i in ids.split(",") if i] or None
 
 
+def _twin(p, places, km=0.2):
+    """Key of a station or stop in places within km of p, or None. Two feeds name one station
+    twice, and journeys that use both ids make the page draw two dots on one spot."""
+    if p.get("kind") not in ("station", "stop") or not p.get("coord"):
+        return None
+    near = [(haversine_km(p["coord"], q["coord"]), k) for k, q in places.items()
+            if q.get("kind") in ("station", "stop") and q.get("coord")]
+    near = [x for x in near if x[0] <= km]
+    return min(near)[1] if near else None
+
+
 def merge(base, parts, unpriced=None):
     """parts: [(data, group, ids)]. Returns the trip and a list of warnings."""
     trip = dict(base)
@@ -51,7 +62,11 @@ def merge(base, parts, unpriced=None):
             raise SystemExit(f"journeys not found: {', '.join(missing)}")
         rename = {}
         for k, p in data.get("places", {}).items():
-            if k not in places:
+            twin = k not in places and _twin(p, places)
+            if twin:  # the same station under another name, such as "Köpenhamn H" and "Koebenhavn H"
+                rename[k] = twin
+                notes.append(f"place {k} is the same station as {twin}; joined them")
+            elif k not in places:
                 places[k] = p
             elif p.get("coord") and places[k].get("coord") and haversine_km(p["coord"], places[k]["coord"]) > 1:
                 n = 2

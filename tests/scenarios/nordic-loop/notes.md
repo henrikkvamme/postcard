@@ -26,6 +26,14 @@ Data read on 2026-11-04. 19 journeys in 4 legs (groups `oslo-copenhagen`, `copen
 - Go Nordic sells up to about 20 May 2027 on 2026-11-04. Later days are greyed out.
 - The ferry price is the lowest "from" price. The page did not show the cabin type for that price.
 
+## Places
+
+Copenhagen H came from two feeds (87 m apart) and Malmö C from FlixBus and Transitous (158 m
+apart). Each is now one place, and the journeys use that id. `city` is the town ("Copenhagen",
+"Malmö", "Berlin"); the station name is in `name`. Stops in Norway, Sweden and Denmark use their
+own zones, not Europe/Berlin. Overnight journeys have `overnight: true`. The ferry and the night
+train have `berth: "unknown"`: the cabin or berth class was not read.
+
 ## Proxy dates
 
 The European timetable changes on 13 December 2026. The 2027 timetable was not in the Transitous

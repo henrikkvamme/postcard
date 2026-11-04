@@ -62,7 +62,9 @@ which one blocked you in `sources.note`.
 ### 3. Write trip.json
 
 Read `references/trip-schema.md`. Facts only: places, journeys, offers, deals, and in `context` the
-other facts the page needs (event, work hours, climate) with their sources. Then:
+other facts the page needs (event, work hours, climate) with their sources. Values you add without
+reading them go in `context.estimates`, and what you could not search goes in
+`context.not_searched`. Then:
 
 ```sh
 python3 <skill>/scripts/check_trip.py ~/trips/<name>
@@ -79,13 +81,17 @@ Fix every error. Read every warning.
 4. Then the HUD: the one main view that answers the question, the postcard of the pick, the
    controls that change it, the book band. Remove every part of the example that this question does
    not need.
+5. Read the page's claims against the data (craft.md, rule 3): every estimate marked, every unknown
+   next to its total, no assumption shown as a fact. Most faults judges found in real pages were
+   here, not in the layout.
 
 Do not edit `kit/` for one trip. Write what the kit lacks in the page.
 
 ### 5. Verify
 
 Follow `references/verify.md`: the check, the console, the probe at desktop and phone width,
-every control, reduced motion, and a screenshot you look at as the person would. Then send the
+reading the numbers as the person, every control and the keyboard, reduced motion, and a
+screenshot you look at as the person would. Then send the
 link with the host name, not `localhost`.
 
 ### 6. Book
@@ -99,7 +105,8 @@ work after booking: the calendar, the ticket check and the check-in reminders.
 ## Rules
 
 - Real data only. Every price has a seller, a source and the date you saw it. When you did not
-  check something, such as a bag fee, the page says so.
+  check something, such as a bag fee, the page says so, next to the figure it changes.
+- An estimate is marked as one everywhere it goes: in the row, in the total, and in the booking.
 - One trip, one folder. Keep personal data (names, booking references) out of `trip.json`.
 - Stop at the payment page, every time.
 - Stop the server and the waiter when the person is done.

@@ -15,7 +15,7 @@ show) go in the page's `app.js`.
   "passengers": { "adults": 1, "children": 0, "children_ages": [] },
   "clock": "Europe/Zurich",                 // the zone of the page's timeline
   "clock_label": "Zürich time",
-  "window": { "start": "2027-01-08T00:00", "end": "2027-02-01T00:00" },   // in the clock zone
+  "window": { "start": "2027-01-08T00:00", "end": "2027-02-01T00:00" },   // clock zone; end is exclusive
   "places": { "ZRH": { ... } },
   "journeys": [ { ... } ],
   "deals": [ { ... } ],
@@ -35,8 +35,15 @@ The key is the id that journeys use: an IATA code for an airport, any short id f
 "ZUE_HB": { "name": "Zürich HB", "city": "Zürich", "kind": "station", "coord": [8.5402, 47.3779], "tz": "Europe/Zurich" }
 ```
 
+- `city` is the town a person knows ("Copenhagen", "Basel", "Val Thorens"). The station or stop
+  name goes in `name` ("Copenhagen H", "Place des Arolles"). The city is the big map label.
+- `code` is the short map label for a stop: the IATA code for an airport, or a short name for a
+  station ("Basel SBB"). Without it the map uses the city. Never let a raw id reach the page.
+- One place has one id. Two ids 100 m apart (a scraper's two spellings) split its routes and labels.
 - `coord` is `[lng, lat]`, longitude first.
-- `tz` is an IANA zone. A wrong zone moves every time at that place by hours.
+- `tz` is an IANA zone of the country the place is in. A wrong zone moves every time at that place
+  by hours; a neighbour's zone with the same offset (Geneva as Europe/Paris) hides until a clock
+  change.
 - `kind`: `airport`, `station`, `stop`, `port`, `city`, `venue` or `home`. The chart uses it for the
   label weight.
 
@@ -44,7 +51,8 @@ The key is the id that journeys use: an IATA code for an airport, any short id f
 
 A journey is one thing a person can buy and take from A to B: a flight with its stops, a train
 with its changes, a ferry, or a drive. Each journey belongs to a `group`, the leg it is one choice
-for: `out` and `back` for a return trip, or names like `zrh-cph`, `cph-sto` for a loop.
+for: `out` and `back` for a return trip, names like `zrh-cph`, `cph-sto` for a loop, and
+`<place>-out`, `<place>-back` (`tfs-out`, `tfs-back`) when the person picks between places.
 
 ```jsonc
 {
@@ -63,6 +71,9 @@ for: `out` and `back` for a return trip, or names like `zrh-cph`, `cph-sto` for 
 - `mode`: `plane`, `train`, `bus`, `coach`, `ferry`, `car`, `taxi`, `walk`, or `mixed` when the
   segments use different modes.
 - Times are local wall times. Never convert them yourself; the kit does it with the place's zone.
+- Night journeys: `overnight: true`, and `berth` (`"sleeper"`, `"couchette"`, `"seat"` or
+  `"unknown"`) when the class matters. Leave `berth` `"unknown"` unless you read it; the page must
+  not count a bed it has not seen.
 - Optional: `seen` and `schedule_source` (where the times come from, when that is not the seller),
   `km`, `drive_minutes`, `flags`. A journey may have no offers when its `warning` says why, for
   example "No price: sbb.ch did not load". The page shows it, but cannot price it.
@@ -114,7 +125,7 @@ Each place you saw the journey for sale.
   (it costs extra, but you did not see the price). Leave a key out when you did not check it. The
   page says "bag fee not checked" for `"fee"` and for a missing key, instead of guessing.
 - Optional provenance: `basis` (`list` when read from a result list, `booking` when read on the
-  seller's own booking page, `estimate`), `currency` and `original: { price, currency }` when you
+  seller's own booking page, `estimate`, `other-date` when `T.shift` moved it, with `read_for`), `currency` and `original: { price, currency }` when you
   converted the price, `price_note`, `rules`, `bags_note`.
 - Give every offer a `source` and a `seen` date. Give an agency a rating when you can find one, and
   say where it comes from. Without a rating, the "good agencies" filter drops it.
@@ -151,6 +162,20 @@ One journey per group. The kit's `price()` uses a deal when it is cheaper than t
 Free-form data for this page only: the event schedule, work hours, the climate of each
 destination, how long it takes to get to each airport. The kit does not read it; the page's
 `app.js` does. Say where each fact comes from, as for prices.
+
+Two keys have a fixed shape, so pages and checks can share code:
+
+```jsonc
+"context": {
+  // Values you did not read. The page marks each with ≈ and shows the basis on hover and tap.
+  "estimates": {
+    "zrh_access": { "value": 7, "unit": "CHF", "range": [5, 9], "basis": "SBB fare Zürich HB to Zürich Airport, 2nd class, public price list" },
+    "airport_buffer": { "value": 75, "unit": "min", "basis": "Swiss advice for a cabin bag only" }
+  },
+  // What the person asked for that you did not search or could not read. The page says it next to the answer.
+  "not_searched": ["Munich (MUC) flights", "train fares (sbb.ch did not load)"]
+}
+```
 
 ## From v1
 

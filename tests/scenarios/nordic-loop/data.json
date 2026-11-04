@@ -1,76 +1,58 @@
 {
  "id": "nordic-loop",
  "title": "Oslo, Copenhagen, Hamburg, Berlin",
+ "subtitle": "Two adults · 15 to 25 May 2027 · Oslo, Copenhagen, Hamburg, Berlin and back",
  "currency": "EUR",
  "passengers": {
   "adults": 2,
   "children": 0
  },
  "clock": "Europe/Oslo",
+ "clock_label": "Oslo time",
  "window": {
-  "start": "2027-05-15",
-  "end": "2027-05-25"
+  "start": "2027-05-15T00:00",
+  "end": "2027-05-26T00:00"
  },
  "places": {
   "OSLO-S": {
    "name": "Oslo S",
-   "city": "Oslo S",
+   "city": "Oslo",
    "kind": "station",
    "coord": [
     10.75328,
     59.91093
    ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Oslo"
   },
   "GOETEBORG-CENTRA": {
    "name": "Göteborg Centralstation",
-   "city": "Göteborg Centralstation",
+   "city": "Göteborg",
    "kind": "station",
    "coord": [
     11.97185,
     57.71027
    ],
-   "tz": "Europe/Berlin"
-  },
-  "KOEPENHAMN-H": {
-   "name": "Köpenhamn H",
-   "city": "Köpenhamn H",
-   "kind": "station",
-   "coord": [
-    12.56589,
-    55.6724
-   ],
-   "tz": "Europe/Berlin"
-  },
-  "MALMOE-CENTRAL-T": {
-   "name": "Malmö central train station FlixBus stop",
-   "city": "Malmö central train station FlixBus stop",
-   "kind": "station",
-   "coord": [
-    13.00031,
-    55.60792
-   ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Stockholm"
   },
   "HAESSLEHOLM-CENT": {
    "name": "Hässleholm Centralstation",
-   "city": "Hässleholm Centralstation",
+   "city": "Hässleholm",
    "kind": "station",
    "coord": [
     13.76314,
     56.15776
    ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Stockholm"
   },
   "HELSINGBORG-CENT": {
    "name": "Helsingborg Centralstation",
-   "city": "Helsingborg Centralstation",
+   "city": "Helsingborg",
    "kind": "station",
    "coord": [
     12.69453,
     56.04389
    ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Stockholm"
   },
   "OSLO-FERRY": {
    "name": "Oslo ferry terminal (Akershusstranda)",
@@ -112,19 +94,19 @@
    ],
    "tz": "Europe/Copenhagen"
   },
-  "KOEBENHAVN-H": {
-   "name": "Koebenhavn H",
-   "city": "Koebenhavn H",
+  "COPENHAGEN-H": {
+   "name": "Copenhagen H",
+   "city": "Copenhagen",
    "kind": "station",
    "coord": [
     12.56462,
     55.67272
    ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Copenhagen"
   },
   "HAMBURG-HBF": {
    "name": "Hamburg Hbf",
-   "city": "Hamburg Hbf",
+   "city": "Hamburg",
    "kind": "station",
    "coord": [
     10.00691,
@@ -142,9 +124,9 @@
    ],
    "tz": "Europe/Berlin"
   },
-  "S-U-BERLIN-HAUPT": {
-   "name": "S+U Berlin Hauptbahnhof",
-   "city": "S+U Berlin Hauptbahnhof",
+  "BERLIN-HBF": {
+   "name": "Berlin Hbf",
+   "city": "Berlin",
    "kind": "station",
    "coord": [
     13.36917,
@@ -182,42 +164,23 @@
    ],
    "tz": "Europe/Berlin"
   },
-  "MALMOE-CENTRALST": {
-   "name": "Malmö Centralstation",
-   "city": "Malmö Centralstation",
+  "MALMOE-C": {
+   "name": "Malmö C",
+   "city": "Malmö",
    "kind": "station",
    "coord": [
     13.00143,
     55.60919
    ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Stockholm"
   }
- },
- "context": {
-  "stays": [
-   {
-    "city": "Copenhagen",
-    "from": "2027-05-16",
-    "to": "2027-05-18"
-   },
-   {
-    "city": "Hamburg",
-    "from": "2027-05-18",
-    "to": "2027-05-21"
-   },
-   {
-    "city": "Berlin",
-    "from": "2027-05-21",
-    "to": "2027-05-24"
-   }
-  ]
  },
  "journeys": [
   {
    "id": "a3",
    "mode": "mixed",
    "from": "OSLO-S",
-   "to": "KOEPENHAMN-H",
+   "to": "COPENHAGEN-H",
    "dep": "2027-05-15T08:24",
    "arr": "2027-05-15T16:28",
    "carrier": "Vy bus4you + Öresundståg",
@@ -252,7 +215,7 @@
     {
      "mode": "train",
      "from": "GOETEBORG-CENTRA",
-     "to": "KOEPENHAMN-H",
+     "to": "COPENHAGEN-H",
      "dep": "2027-05-15T12:55",
      "arr": "2027-05-15T16:28",
      "carrier": "Öresundståg",
@@ -274,7 +237,7 @@
    "id": "a7",
    "mode": "train",
    "from": "OSLO-S",
-   "to": "KOEPENHAMN-H",
+   "to": "COPENHAGEN-H",
    "dep": "2027-05-15T12:14",
    "arr": "2027-05-15T20:13",
    "carrier": "Vy Norge + SJ + Öresundståg",
@@ -306,7 +269,7 @@
     {
      "mode": "train",
      "from": "HAESSLEHOLM-CENT",
-     "to": "KOEPENHAMN-H",
+     "to": "COPENHAGEN-H",
      "dep": "2027-05-15T18:46",
      "arr": "2027-05-15T20:13",
      "carrier": "Öresundståg",
@@ -328,7 +291,7 @@
    "id": "a9",
    "mode": "train",
    "from": "OSLO-S",
-   "to": "KOEPENHAMN-H",
+   "to": "COPENHAGEN-H",
    "dep": "2027-05-15T14:48",
    "arr": "2027-05-15T22:13",
    "carrier": "Snälltåget + Öresundståg",
@@ -338,7 +301,7 @@
     {
      "mode": "train",
      "from": "OSLO-S",
-     "to": "MALMOE-CENTRAL-T",
+     "to": "MALMOE-C",
      "dep": "2027-05-15T14:48",
      "arr": "2027-05-15T21:25",
      "carrier": "Snälltåget",
@@ -348,8 +311,8 @@
     },
     {
      "mode": "train",
-     "from": "MALMOE-CENTRAL-T",
-     "to": "KOEPENHAMN-H",
+     "from": "MALMOE-C",
+     "to": "COPENHAGEN-H",
      "dep": "2027-05-15T21:35",
      "arr": "2027-05-15T22:13",
      "carrier": "Öresundståg",
@@ -418,7 +381,8 @@
      "url": "https://www.gonordiccruiseline.no/booking/"
     }
    ],
-   "group": "oslo-copenhagen"
+   "group": "oslo-copenhagen",
+   "berth": "unknown"
   },
   {
    "id": "fa1",
@@ -463,12 +427,13 @@
      "rating_source": "trustpilot"
     }
    ],
-   "group": "oslo-copenhagen"
+   "group": "oslo-copenhagen",
+   "overnight": true
   },
   {
    "id": "b1",
    "mode": "train",
-   "from": "KOEBENHAVN-H",
+   "from": "COPENHAGEN-H",
    "to": "HAMBURG-HBF",
    "dep": "2027-05-18T06:22",
    "arr": "2027-05-18T11:28",
@@ -478,7 +443,7 @@
    "segments": [
     {
      "mode": "train",
-     "from": "KOEBENHAVN-H",
+     "from": "COPENHAGEN-H",
      "to": "HAMBURG-HBF",
      "dep": "2027-05-18T06:22",
      "arr": "2027-05-18T11:28",
@@ -500,7 +465,7 @@
   {
    "id": "b3",
    "mode": "train",
-   "from": "KOEBENHAVN-H",
+   "from": "COPENHAGEN-H",
    "to": "HAMBURG-HBF",
    "dep": "2027-05-18T08:22",
    "arr": "2027-05-18T13:06",
@@ -510,7 +475,7 @@
    "segments": [
     {
      "mode": "train",
-     "from": "KOEBENHAVN-H",
+     "from": "COPENHAGEN-H",
      "to": "HAMBURG-HBF",
      "dep": "2027-05-18T08:22",
      "arr": "2027-05-18T13:06",
@@ -577,7 +542,7 @@
   {
    "id": "b10",
    "mode": "train",
-   "from": "KOEBENHAVN-H",
+   "from": "COPENHAGEN-H",
    "to": "HAMBURG-HBF",
    "dep": "2027-05-18T12:22",
    "arr": "2027-05-18T17:04",
@@ -587,7 +552,7 @@
    "segments": [
     {
      "mode": "train",
-     "from": "KOEBENHAVN-H",
+     "from": "COPENHAGEN-H",
      "to": "HAMBURG-HBF",
      "dep": "2027-05-18T12:22",
      "arr": "2027-05-18T17:04",
@@ -700,7 +665,7 @@
    "id": "c1",
    "mode": "train",
    "from": "HAMBURG-HBF",
-   "to": "S-U-BERLIN-HAUPT",
+   "to": "BERLIN-HBF",
    "dep": "2027-05-21T08:34",
    "arr": "2027-05-21T10:22",
    "carrier": "DB Fernverkehr AG",
@@ -710,7 +675,7 @@
     {
      "mode": "train",
      "from": "HAMBURG-HBF",
-     "to": "S-U-BERLIN-HAUPT",
+     "to": "BERLIN-HBF",
      "dep": "2027-05-21T08:34",
      "arr": "2027-05-21T10:22",
      "carrier": "DB Fernverkehr AG",
@@ -732,7 +697,7 @@
    "id": "c2",
    "mode": "train",
    "from": "HAMBURG-HBF",
-   "to": "S-U-BERLIN-HAUPT",
+   "to": "BERLIN-HBF",
    "dep": "2027-05-21T09:34",
    "arr": "2027-05-21T11:23",
    "carrier": "DB Fernverkehr AG",
@@ -742,7 +707,7 @@
     {
      "mode": "train",
      "from": "HAMBURG-HBF",
-     "to": "S-U-BERLIN-HAUPT",
+     "to": "BERLIN-HBF",
      "dep": "2027-05-21T09:34",
      "arr": "2027-05-21T11:23",
      "carrier": "DB Fernverkehr AG",
@@ -764,7 +729,7 @@
    "id": "c3",
    "mode": "train",
    "from": "HAMBURG-HBF",
-   "to": "S-U-BERLIN-HAUPT",
+   "to": "BERLIN-HBF",
    "dep": "2027-05-21T09:39",
    "arr": "2027-05-21T11:38",
    "carrier": "FlixTrain-eu",
@@ -774,7 +739,7 @@
     {
      "mode": "train",
      "from": "HAMBURG-HBF",
-     "to": "S-U-BERLIN-HAUPT",
+     "to": "BERLIN-HBF",
      "dep": "2027-05-21T09:39",
      "arr": "2027-05-21T11:38",
      "carrier": "FlixTrain-eu",
@@ -840,7 +805,7 @@
   {
    "id": "d1",
    "mode": "train",
-   "from": "S-U-BERLIN-HAUPT",
+   "from": "BERLIN-HBF",
    "to": "OSLO-S",
    "dep": "2027-05-24T07:37",
    "arr": "2027-05-24T23:47",
@@ -850,7 +815,7 @@
    "segments": [
     {
      "mode": "train",
-     "from": "S-U-BERLIN-HAUPT",
+     "from": "BERLIN-HBF",
      "to": "HAMBURG-HBF",
      "dep": "2027-05-24T07:37",
      "arr": "2027-05-24T09:24",
@@ -869,7 +834,7 @@
     {
      "mode": "train",
      "from": "HAMBURG-HBF",
-     "to": "MALMOE-CENTRALST",
+     "to": "MALMOE-C",
      "dep": "2027-05-24T09:51",
      "arr": "2027-05-24T15:35",
      "carrier": "Snälltåget",
@@ -879,7 +844,7 @@
     },
     {
      "mode": "train",
-     "from": "MALMOE-CENTRALST",
+     "from": "MALMOE-C",
      "to": "GOETEBORG-CENTRA",
      "dep": "2027-05-24T16:01",
      "arr": "2027-05-24T18:20",
@@ -912,7 +877,7 @@
   {
    "id": "d3",
    "mode": "mixed",
-   "from": "S-U-BERLIN-HAUPT",
+   "from": "BERLIN-HBF",
    "to": "OSLO-S",
    "dep": "2027-05-24T10:34",
    "arr": "2027-05-25T05:56",
@@ -922,8 +887,8 @@
    "segments": [
     {
      "mode": "train",
-     "from": "S-U-BERLIN-HAUPT",
-     "to": "KOEPENHAMN-H",
+     "from": "BERLIN-HBF",
+     "to": "COPENHAGEN-H",
      "dep": "2027-05-24T10:34",
      "arr": "2027-05-24T17:38",
      "carrier": "DSB",
@@ -933,7 +898,7 @@
     },
     {
      "mode": "train",
-     "from": "KOEPENHAMN-H",
+     "from": "COPENHAGEN-H",
      "to": "HELSINGBORG-CENT",
      "dep": "2027-05-24T17:53",
      "arr": "2027-05-24T19:20",
@@ -975,7 +940,9 @@
     "short": "Times not final, no price",
     "text": "The timetable for 2027-05-24 is not published yet. These times come from the same train on 2026-12-07. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
    },
-   "group": "berlin-oslo"
+   "group": "berlin-oslo",
+   "overnight": true,
+   "berth": "unknown"
   },
   {
    "id": "fd1",
@@ -1030,12 +997,13 @@
      "rating_source": "trustpilot"
     }
    ],
-   "group": "berlin-oslo"
+   "group": "berlin-oslo",
+   "overnight": true
   },
   {
    "id": "d8",
    "mode": "train",
-   "from": "S-U-BERLIN-HAUPT",
+   "from": "BERLIN-HBF",
    "to": "OSLO-S",
    "dep": "2027-05-24T21:06",
    "arr": "2027-05-25T13:16",
@@ -1045,8 +1013,8 @@
    "segments": [
     {
      "mode": "train",
-     "from": "S-U-BERLIN-HAUPT",
-     "to": "MALMOE-CENTRALST",
+     "from": "BERLIN-HBF",
+     "to": "MALMOE-C",
      "dep": "2027-05-24T21:06",
      "arr": "2027-05-25T06:30",
      "carrier": "Snälltåget",
@@ -1056,7 +1024,7 @@
     },
     {
      "mode": "train",
-     "from": "MALMOE-CENTRALST",
+     "from": "MALMOE-C",
      "to": "OSLO-S",
      "dep": "2027-05-25T06:38",
      "arr": "2027-05-25T13:16",
@@ -1074,8 +1042,47 @@
     "short": "Times not final, no price",
     "text": "The timetable for 2027-05-24 is not published yet. These times come from the same train on 2026-12-07. Check them before you book. Train price not read. bahn.de flagged the automated browser on 2026-11-04, and the DSB, SJ and Vy shops were not tried. Read the price on the operator's site before you choose."
    },
-   "group": "berlin-oslo"
+   "group": "berlin-oslo",
+   "berth": "unknown"
   }
  ],
- "deals": []
+ "deals": [],
+ "carriers": {
+  "SJ": "SJ",
+  "DSB": "DSB (Danish State Railways)",
+  "DB": "Deutsche Bahn",
+  "SNCF": "SNCF",
+  "FLIX": "FlixBus",
+  "VY": "Vy"
+ },
+ "sources": {
+  "note": "Read on 2026-11-04. Train and bus schedules from Transitous (rail times use proxy dates before the 13 Dec 2026 timetable change); FlixBus search API; Go Nordic Cruiseline booking page for the ferry. Train prices were not read: bahn.de flagged the browser as a bot and DSB, SJ and Vy were not tried.",
+  "seen": "2026-11-04"
+ },
+ "context": {
+  "stays": [
+   {
+    "city": "Copenhagen",
+    "from": "2027-05-16",
+    "to": "2027-05-18"
+   },
+   {
+    "city": "Hamburg",
+    "from": "2027-05-18",
+    "to": "2027-05-21"
+   },
+   {
+    "city": "Berlin",
+    "from": "2027-05-21",
+    "to": "2027-05-24"
+   }
+  ],
+  "not_searched": [
+   "Train fares (bahn.de, DSB, SJ and Vy)",
+   "The 2027 rail timetable (train times come from proxy dates in December 2026)",
+   "Go Nordic Cruiseline sailings after about 20 May 2027",
+   "Ferry cabin type for the lowest price",
+   "Rating for Go Nordic Cruiseline"
+  ]
+ }
 }

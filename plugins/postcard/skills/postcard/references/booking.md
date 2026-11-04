@@ -68,8 +68,27 @@ the chosen `trip` and a `prompt` in plain words.
 ## The page's side
 
 The page calls `checkout()` from `kit/checkout.js` (see kit.md). Its `prompt` is the request you
-get in the job, in plain words: what to book, from which seller, the expected price, the bags and
-the stop rule. Write it so that you could book from it alone.
+get in the job, in plain words. Write it so that you could book from it alone.
+
+Build the items and the prompt from tickets, not from journeys:
+
+- **One line per ticket.** A ticket is what one seller sells in one purchase. A mixed journey (a
+  train to Basel, a bus to the airport, an easyJet flight) is three tickets with three sellers, or
+  one flight ticket and two "buy at the station" lines. Each line names the seller (or the shop:
+  `nightjet.com`, `sbb.ch`), the segments with their numbers, the local times with their dates, the
+  expected price, and the bag terms you read (`bags_note`).
+- **A deal is one line** with the deal price. List the journeys inside it; do not give each part a
+  price of its own.
+- **Unknowns are instructions.** A fee or a fare you did not read becomes a step: "Read the cabin bag
+  fee before you fill; stop if it is over CHF 30." "Read the couchette fare and report before you
+  fill anything." Never write an unread fee into the expected price as if it were known.
+- **Moved dates.** When the page moved a journey to another day (`T.shift`), the job's journey has
+  the new times, and the prompt says that the price and the timetable were read for another day.
+- **Everything the trip needs.** Say what else the person must buy that this booking does not cover
+  (a hotel night before an early flight, the resort bus, parking), and whether you book it.
+- The expected price is the booking's own subtotal. The page shows it next to the trip total
+  (craft.md, rule 8).
+- Use place names, never ids, and the stop rule: "Stop on the payment page. Do not pay."
 
 ## Without a server
 

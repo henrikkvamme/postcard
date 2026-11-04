@@ -57,6 +57,12 @@ nights, the lowest prices were HRG 89 / 108, TFS 136 / 115 and ACE 153 / 115.
   Wed 27 Jan.
 - The ZRH flights start at the airport. No journey includes the train from Zürich HB to ZRH.
 
+## Places
+
+Basel SBB came from two feeds (125 m apart) and is now one place. `city` is "Basel" for BSL and
+the station, "Lanzarote" for ACE and "Tenerife" for TFS. `context.not_searched` lists what was not
+covered: MUC, the departure days outside the date grids, and the easyJet bag prices.
+
 ## Round trips
 
 The date-grid prices are easyJet round trips. They equal the sum of the two one-way prices

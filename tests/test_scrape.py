@@ -175,7 +175,8 @@ class Transitous(unittest.TestCase):
         its = json.loads(fixture("transitous_plan_zrh_ams.json"))["itineraries"]
         with tempfile.TemporaryDirectory() as d:
             places = {}
-            js = transitous.to_journeys(its, places, "t", os.path.join(d, "paths"))
+            with mock.patch.object(transitous, "reverse", return_value=None):  # offline: feed zones
+                js = transitous.to_journeys(its, places, "t", os.path.join(d, "paths"))
             places = transitous.rekey(places, js)
             self.assertEqual(len(js), 2)
             ice = js[1]
@@ -183,7 +184,9 @@ class Transitous(unittest.TestCase):
             self.assertEqual(ice["numbers"], "ICE 200 + ICE 124")
             self.assertEqual(ice["mode"], "train")
             self.assertEqual(places[ice["from"]]["name"], "Zürich HB")
-            self.assertEqual(places[ice["to"]]["tz"], "Europe/Brussels")
+            self.assertEqual(places[ice["to"]]["tz"], "Europe/Brussels")  # feed zone; _zone asks first
+            self.assertEqual(places[ice["to"]]["city"], "Amsterdam")  # not "Amsterdam Centraal"
+            self.assertEqual(places[ice["from"]]["city"], "Zürich")
             for s in ice["segments"]:
                 self.assertIn(s["from"], places)
                 with open(os.path.join(d, s["path"])) as f:
@@ -196,6 +199,35 @@ class Transitous(unittest.TestCase):
         b = {"dep": "2026-12-03T08:30", "arr": "2026-12-03T15:30", "transfers": 1}
         c = {"dep": "2026-12-03T22:00", "arr": "2026-12-04T09:00", "transfers": 0, "overnight": True}
         self.assertEqual(transitous.pareto([a, b, c]), [b, c])
+
+
+class Towns(unittest.TestCase):
+    def test_city_is_the_town_not_the_station(self):
+        for name, town in json.loads(fixture("stop_names.json")):
+            self.assertEqual(common.town(name), town, name)
+
+    def test_zone_comes_from_the_country_of_the_stop(self):
+        # A DB feed stop in Oslo carries Europe/Berlin; the nearest stop says Europe/Oslo.
+        with mock.patch.object(transitous, "http_json", fake_http({"reverse-geocode": "transitous_reverse_oslo.json"})):
+            places = {}
+            key = transitous._place({"name": "Oslo S", "lon": 10.75328, "lat": 59.91093, "tz": "Europe/Berlin"}, places)
+        self.assertEqual(places[key]["tz"], "Europe/Oslo")
+        self.assertEqual(places[key]["city"], "Oslo")
+        with mock.patch.object(transitous, "reverse", side_effect=RuntimeError("offline")):
+            self.assertEqual(transitous._zone([10.75, 59.91], "Europe/Berlin"), "Europe/Berlin")
+
+    def test_airport_city_and_zone(self):
+        mw = json.dumps({"x": {"iata": "GVA", "tz": "Europe/Paris"}, "y": {"iata": "BSL", "tz": "Europe/Paris"}})
+        csv_text = ("name,municipality,iso_country,longitude_deg,latitude_deg,type,scheduled_service,iata_code\n"
+                    "Geneva Airport,Geneva,CH,6.109,46.2381,large_airport,yes,GVA\n"
+                    "EuroAirport,Bâle / Mulhouse,FR,7.5211,47.6007,large_airport,yes,BSL\n")
+        import places as pl
+        with mock.patch.object(pl, "http_text", side_effect=lambda url, **kw: mw if "mwgg" in url else csv_text), \
+                mock.patch.object(pl, "_AIRPORTS", None):
+            self.assertEqual(pl.airport("GVA")["tz"], "Europe/Zurich")
+            self.assertEqual(pl.airport("BSL")["city"], "Basel")
+            self.assertEqual(pl.airport("BSL")["tz"], "Europe/Paris")
+            self.assertEqual(pl.airport("BSL")["code"], "BSL")
 
 
 class FlixBus(unittest.TestCase):
@@ -397,6 +429,19 @@ class Joining(unittest.TestCase):
         self.assertTrue(notes)
         with self.assertRaises(SystemExit):
             merge.merge({"places": {}}, [(a, None, ["nope"])])
+
+    def test_merge_joins_one_station_named_twice(self):
+        def part(key, name, coord, jid):
+            return {"places": {"OSLO-S": {"name": "Oslo S", "city": "Oslo", "kind": "station", "coord": [10.753, 59.911], "tz": "Europe/Oslo"},
+                               key: {"name": name, "city": "Copenhagen", "kind": "station", "coord": coord, "tz": "Europe/Copenhagen"}},
+                    "journeys": [{"id": jid, "mode": "train", "from": "OSLO-S", "to": key, "dep": "2027-05-15T08:00", "arr": "2027-05-15T16:00"}]}
+        # 87 m apart: the same station from two feeds
+        parts = [(part("KOEPENHAMN-H", "Köpenhamn H", [12.56589, 55.6724], "a"), "x", None),
+                 (part("KOEBENHAVN-H", "Koebenhavn H", [12.56462, 55.67272], "b"), "x", None)]
+        trip, notes = merge.merge({"id": "t"}, parts)
+        self.assertEqual([j["to"] for j in trip["journeys"]], ["KOEPENHAMN-H"] * 2)
+        self.assertEqual(sorted(trip["places"]), ["KOEPENHAMN-H", "OSLO-S"])
+        self.assertTrue(notes)
 
     def test_chain_adds_transfer_and_checks_connection(self):
         a = _part("t", "ZRH", "BSL", "2026-12-03T10:00", "2026-12-03T11:00", [8.54, 47.38], [7.53, 47.60])

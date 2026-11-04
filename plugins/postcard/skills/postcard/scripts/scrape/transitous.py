@@ -29,7 +29,7 @@ import urllib.parse
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import decode_polyline, dump, haversine_km, http_json, local_time, slug, to_utc, today, write_path  # noqa: E402
+from common import decode_polyline, dump, haversine_km, http_json, local_time, slug, to_utc, today, town, write_path  # noqa: E402
 
 API = os.environ.get("TRANSITOUS_API", "https://api.transitous.org/api")
 
@@ -98,6 +98,17 @@ def plan_raw(frm, to, time_utc, arrive_by=False, window_s=7200, n=10, modes=None
     return http_json(f"{API}/v5/plan?{urllib.parse.urlencode(q)}", ttl=6 * 3600, timeout=90)
 
 
+def _zone(coord, feed_tz):
+    """Zone of the country the stop is in. A feed from another country (a DB stop in Oslo) can
+    carry its own zone, so ask for the nearest stop's zone and use the feed zone only when the
+    lookup fails."""
+    try:
+        r = reverse(coord)
+    except (RuntimeError, OSError, KeyError, ValueError):
+        r = None
+    return (r and r.get("tz")) or feed_tz
+
+
 def _place(stop, places, merge_km=0.6):
     """Return the place key for a stop. Stops within merge_km of a known place share its key,
     so "Frankfurt (Main) Hbf" from two feeds becomes one place."""
@@ -106,14 +117,14 @@ def _place(stop, places, merge_km=0.6):
     for k, p in places.items():
         if p.get("kind") == "station" and haversine_km(coord, p["coord"]) <= merge_km:
             if imp > p.get("_importance", 0):  # name the place after its most important stop
-                p.update(name=stop["name"], city=stop["name"].split(" (")[0].split(",")[0], _importance=imp)
+                p.update(name=stop["name"], city=town(stop["name"]), _importance=imp)
             return k
     name = stop["name"]
     key, n = slug(name, 16), 2
     while key in places:
         key, n = f"{slug(name, 14)}-{n}", n + 1
-    places[key] = {"name": name, "city": name.split(" (")[0].split(",")[0], "kind": "station",
-                   "coord": coord, "tz": stop["tz"], "_importance": imp}
+    places[key] = {"name": name, "city": town(name), "kind": "station",
+                   "coord": coord, "tz": _zone(coord, stop["tz"]), "_importance": imp}
     return key
 
 

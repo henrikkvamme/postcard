@@ -1,6 +1,7 @@
 {
  "id": "family-ski",
  "title": "Ski week in Val Thorens",
+ "subtitle": "Two adults and two children · Saturday 13 to Saturday 20 February 2027 · with 4 pairs of skis",
  "currency": "CHF",
  "passengers": {
   "adults": 2,
@@ -11,14 +12,15 @@
   ]
  },
  "clock": "Europe/Zurich",
+ "clock_label": "Zürich time",
  "window": {
-  "start": "2027-02-13",
-  "end": "2027-02-20"
+  "start": "2027-02-13T00:00",
+  "end": "2027-02-21T00:00"
  },
  "places": {
   "ZUERICH-HB": {
    "name": "Zürich HB",
-   "city": "Zürich HB",
+   "city": "Zürich",
    "kind": "station",
    "coord": [
     8.53655,
@@ -28,7 +30,7 @@
   },
   "GENEVE": {
    "name": "Genève",
-   "city": "Genève",
+   "city": "Geneva",
    "kind": "station",
    "coord": [
     6.14242,
@@ -38,7 +40,7 @@
   },
   "MOUTIERS-SALINS": {
    "name": "Moûtiers-Salins-Brides-les-B.",
-   "city": "Moûtiers-Salins-Brides-les-B.",
+   "city": "Moûtiers",
    "kind": "station",
    "coord": [
     6.5314,
@@ -47,9 +49,9 @@
    "tz": "Europe/Paris"
   },
   "VAL-THORENS-PLAC": {
-   "name": "VAL THORENS Place des Arolles",
-   "city": "VAL THORENS Place des Arolles",
-   "kind": "station",
+   "name": "Val Thorens Place des Arolles",
+   "city": "Val Thorens",
+   "kind": "stop",
    "coord": [
     6.57959,
     45.2981
@@ -58,7 +60,7 @@
   },
   "CHAMBERY-CHALLES": {
    "name": "Chambéry - Challes-les-Eaux",
-   "city": "Chambéry - Challes-les-Eaux",
+   "city": "Chambéry",
    "kind": "station",
    "coord": [
     5.91955,
@@ -67,8 +69,8 @@
    "tz": "Europe/Paris"
   },
   "PARIS-GARE-DE-LY": {
-   "name": "Paris Gare de Lyon Hall 1 - 2",
-   "city": "Paris Gare de Lyon Hall 1 - 2",
+   "name": "Paris Gare de Lyon",
+   "city": "Paris",
    "kind": "station",
    "coord": [
     2.37348,
@@ -78,7 +80,7 @@
   },
   "GENEVE-AEROPORT": {
    "name": "Genève-Aéroport",
-   "city": "Genève-Aéroport",
+   "city": "Geneva",
    "kind": "station",
    "coord": [
     6.11231,
@@ -94,28 +96,20 @@
     6.109,
     46.2381
    ],
-   "tz": "Europe/Paris"
+   "tz": "Europe/Zurich",
+   "code": "GVA"
   },
   "ZRH": {
    "name": "Zürich Airport",
-   "city": "Zurich",
+   "city": "Zürich",
    "kind": "airport",
    "coord": [
     8.5481,
     47.4581
    ],
-   "tz": "Europe/Zurich"
+   "tz": "Europe/Zurich",
+   "code": "ZRH"
   }
- },
- "context": {
-  "stays": [
-   {
-    "city": "Val Thorens",
-    "from": "2027-02-13",
-    "to": "2027-02-20"
-   }
-  ],
-  "luggage": "4 pairs of skis in ski bags, 4 suitcases"
  },
  "journeys": [
   {
@@ -798,8 +792,8 @@
     }
    ],
    "warning": {
-    "short": "Transfer not priced",
-    "text": "The price does not include REGION - cars Région Savoie lignes touristiques + SNCF VOYAGEURS + FlixBus-eu 07:54-13:38. Separate tickets: a late first part does not protect the next one."
+    "short": "Transfer not priced, 6 h 37 min wait",
+    "text": "The price does not include REGION - cars Région Savoie lignes touristiques + SNCF VOYAGEURS + FlixBus-eu 07:54-13:38. Separate tickets: a late first part does not protect the next one. This is the only chain from Val Thorens to Geneva Airport that was searched: it reaches the airport at 13:38 for the 20:15 flight, a wait of 6 h 37 min. A later bus likely exists but was not searched."
    },
    "group": "back"
   },
@@ -1020,5 +1014,36 @@
    }
   }
  ],
- "deals": []
+ "deals": [],
+ "carriers": {
+  "LX": "SWISS",
+  "SBB": "SBB",
+  "SNCF": "SNCF",
+  "TER": "SNCF TER",
+  "TGV": "SNCF TGV",
+  "IR": "SBB InterRegio",
+  "IC": "SBB InterCity"
+ },
+ "sources": {
+  "note": "Read on 2026-11-04. Train and bus schedules from Transitous; car route from OSRM; fuel price from TCS; tolls from the ADELAC 2026 tariff; flights from Google Flights (4 passengers); seller ratings from Trustpilot. Train prices were not read: sbb.ch stayed blank and SNCF Connect did not load.",
+  "seen": "2026-11-04"
+ },
+ "context": {
+  "stays": [
+   {
+    "city": "Val Thorens",
+    "from": "2027-02-13",
+    "to": "2027-02-20"
+   }
+  ],
+  "luggage": "4 pairs of skis in ski bags, 4 suitcases",
+  "not_searched": [
+   "Train fares (sbb.ch and SNCF Connect did not load)",
+   "Later bus from Val Thorens to Geneva Airport (only the 07:54 chain was searched)",
+   "Ski bags on SWISS (about CHF 360 each way, not in the flight price)",
+   "Airport transfer price in the flight chains",
+   "Train from Zürich HB to ZRH",
+   "Toll on the short section to Annecy and parking in Val Thorens"
+  ]
+ }
 }

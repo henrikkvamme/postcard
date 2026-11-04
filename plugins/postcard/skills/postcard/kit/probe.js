@@ -49,11 +49,22 @@ export function probe() {
       const x = Math.min(a.right, b.right) - Math.max(a.left, b.left), y = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
       if (x > 4 && y > 4) out.hudOverlap.push(`${name(tops[i].el)} and ${name(tops[k].el)} (${Math.round(x)}x${Math.round(y)})`); } }
 
-  // 5. Buttons without a name, and the controls on the page.
+  // 5. Calm: the text sizes in the HUD (craft.md: five at most; more than six fails) and the text in red
+  // outside the book band (craft.md: red means "this one"; read the list and ask if each is the pick).
+  const RED = 'rgb(184, 50, 42)', sizes = new Set(); out.redText = [];
+  for (const { el: root } of tops) for (const el of [root, ...root.querySelectorAll('*')]) {
+    if (!visible(el) || el.closest('svg, .pc-book, .pc-sheetbg')) continue;
+    if (![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+    const cs = getComputedStyle(el); sizes.add(Math.round(parseFloat(cs.fontSize) * 2) / 2);
+    if (cs.color === RED && out.redText.length < 16) out.redText.push(`${name(el)} "${el.textContent.trim().slice(0, 24)}"`); }
+  out.textSizes = [...sizes].sort((a, b) => a - b);
+  out.manySizes = sizes.size > 6 ? [`${sizes.size} text sizes in the HUD: ${out.textSizes.join(', ')} px`] : [];
+
+  // 6. Buttons without a name, and the controls on the page.
   const buttons = [...document.querySelectorAll('button, [role=button], [role=switch]')].filter(visible);
   out.unnamed = buttons.filter((b) => !(b.textContent.trim() || b.getAttribute('aria-label') || b.title)).map(name);
   out.controls = buttons.length;
   out.labels = [...document.querySelectorAll('.pc-lbl, .pc-hub')].filter(visible).length;
-  out.ok = ['hiddenEnds', 'pageOverflow', 'smallText', 'clipped', 'hudOverlap', 'hudOff', 'unnamed'].every((k) => !out[k].length);
+  out.ok = ['hiddenEnds', 'pageOverflow', 'smallText', 'clipped', 'hudOverlap', 'hudOff', 'unnamed', 'manySizes'].every((k) => !out[k].length);
   return out;
 }

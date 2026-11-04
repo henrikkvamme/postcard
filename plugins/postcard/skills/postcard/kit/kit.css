@@ -24,7 +24,8 @@ button { font: inherit; color: inherit; }
 .pc-lbl { pointer-events: none; font: 600 9.5px var(--serif); letter-spacing: .34em; color: var(--ink); text-shadow: 0 0 3px var(--land), 0 0 6px var(--land); white-space: nowrap; }
 .pc-lbl.sea { font: italic 400 16px var(--serif); letter-spacing: .14em; text-shadow: 0 0 3px var(--paper), 0 0 6px var(--paper), 0 0 9px var(--paper); }
 .pc-lbl.city { font: 600 21px var(--serif); letter-spacing: 0; text-shadow: 0 0 3px var(--land), 0 0 5px var(--land), 0 0 9px var(--land); }
-.pc-lbl.hub { font: 600 9px var(--sans); letter-spacing: .12em; opacity: .7; }
+.pc-lbl.hub { font: 600 9px var(--sans); letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
+.pc-vehicle { height: 34px; width: auto; pointer-events: none; }
 .pc-lbl.hub.on { opacity: 1; color: var(--red); }
 .pc-dot { width: 15px; height: 15px; border-radius: 50%; background: var(--land); border: 1.5px solid var(--ink); display: grid; place-items: center; pointer-events: none; }
 .pc-dot::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--ink); }
@@ -38,14 +39,14 @@ button { font: inherit; color: inherit; }
 .pc-card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r); position: relative;
   box-shadow: 0 1px 0 rgba(0, 0, 0, .03), 0 12px 26px -18px rgba(20, 30, 50, .5); }
 .pc-card::after { content: ""; position: absolute; inset: 4px; border: 1px solid var(--rule2); border-radius: 2px; pointer-events: none; }
-.pc-eyebrow { font: 600 9.5px var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.pc-eyebrow { font: 600 10px var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
 .pc-halo { text-shadow: 0 0 3px var(--paper), 0 0 6px var(--paper), 0 0 10px var(--paper); }
 .pc-title { position: fixed; left: 36px; top: 28px; z-index: 10; pointer-events: none; }
 .pc-title h1 { margin: 0; font: 700 42px/1 var(--serif); letter-spacing: -.015em; }
 .pc-title .sub { margin-top: 10px; padding-top: 7px; border-top: 1px solid var(--ink); box-shadow: 0 -3px 0 -2px var(--ink);
   font: 600 10px var(--sans); letter-spacing: .26em; text-transform: uppercase; color: var(--ink2); display: inline-block; }
 .pc-price { font: 600 34px/1.1 var(--serif); }
-.pc-price small { display: block; font: 500 11px var(--sans); color: var(--ink2); margin-top: 2px; }
+.pc-price small { display: block; font: 500 12px var(--sans); color: var(--ink2); margin-top: 2px; }
 .pc-hand { font: 500 21px/1 var(--hand); }
 
 /* Chips and switches */
@@ -62,7 +63,7 @@ button { font: inherit; color: inherit; }
 
 /* The one action: a red airmail band. */
 .pc-book { all: unset; cursor: pointer; position: relative; display: flex; align-items: center; gap: 14px; padding: 12px 20px; background: var(--red); color: #fbf6ec;
-  font: 600 13.5px var(--sans); letter-spacing: .02em; }
+  font: 600 15px var(--sans); letter-spacing: .02em; }
 .pc-book::before { content: ""; position: absolute; left: 0; right: 0; top: -5px; height: 5px;
   background: repeating-linear-gradient(-45deg, var(--red) 0 8px, transparent 8px 12px, var(--ink) 12px 20px, transparent 20px 24px); opacity: .9; }
 .pc-book:hover { background: #a42b24; }
@@ -73,7 +74,7 @@ button { font: inherit; color: inherit; }
 .pc-book.pay { background: var(--green); } .pc-book.pay:hover { background: #255830; }
 
 /* Tooltip */
-.pc-tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--card); font-size: 11.5px; padding: 7px 10px; border-radius: var(--r);
+.pc-tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--card); font-size: 12px; padding: 7px 10px; border-radius: var(--r);
   max-width: 360px; opacity: 0; transition: opacity .12s; z-index: 40; line-height: 1.5; }
 .pc-tip b { font-weight: 600; }
 
@@ -91,26 +92,27 @@ button { font: inherit; color: inherit; }
 .pc-cells { display: inline-flex; gap: 1px; flex-wrap: wrap; }
 .pc-cells i { width: 6px; height: 7px; background: var(--rule2); border-radius: 1px; }
 .pc-cells i.on { background: var(--red); }
+.pc-cells.ink i.on { background: var(--ink); }
 
 /* Sheet: checkout and other dialogs */
 .pc-sheetbg { position: fixed; inset: 0; z-index: 30; background: rgba(29, 42, 74, .28); display: grid; place-items: center; padding: 16px; }
 .pc-sheetbg[hidden] { display: none; }
 .pc-sheet { width: min(560px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: 26px 28px 22px; }
 .pc-sheet h2 { margin: 2px 0 4px; font: 700 26px/1.15 var(--serif); }
-.pc-sheet .sub { color: var(--ink2); font-size: 12.5px; }
+.pc-sheet .sub { color: var(--ink2); font-size: 12px; }
 .pc-ticket { display: grid; grid-template-columns: 54px 1fr auto; gap: 2px 14px; align-items: center; padding: 14px 0; border-top: 1px dashed var(--rule); }
 .pc-ticket:first-of-type { margin-top: 16px; }
-.pc-ticket .dir { font: 600 9.5px var(--sans); letter-spacing: .16em; color: var(--red); grid-row: span 2; text-transform: uppercase; }
+.pc-ticket .dir { font: 600 10px var(--sans); letter-spacing: .16em; color: var(--red); grid-row: span 2; text-transform: uppercase; }
 .pc-ticket .main { font: italic 400 16px var(--serif); }
 .pc-ticket .meta { font-size: 12px; color: var(--ink2); }
-.pc-ticket .price { font: 600 17px var(--serif); text-align: right; grid-row: span 2; }
+.pc-ticket .price { font: 600 15px var(--serif); text-align: right; grid-row: span 2; }
 .pc-ticket a { color: var(--ink2); }
 .pc-total { display: flex; justify-content: space-between; padding: 12px 0 4px; border-top: 1px solid var(--ink); box-shadow: 0 -3px 0 -2px var(--ink); font: 600 15px var(--serif); }
 .pc-sheet .note { margin: 10px 0 16px; font-size: 12px; color: var(--ink2); line-height: 1.5; }
 .pc-sheet .acts { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
-.pc-sheet .acts button, .pc-agent .paid { all: unset; cursor: pointer; padding: 9px 14px; border-radius: var(--r); font: 600 12.5px var(--sans); text-align: center; }
-.pc-sheet .go { background: var(--ink); color: var(--card); } .pc-sheet .go:hover { background: #2a3a63; } .pc-sheet .go[disabled] { opacity: .55; cursor: default; }
-.pc-sheet .ghost { box-shadow: inset 0 0 0 1px var(--rule); color: var(--ink2); }
+.pc-sheet .acts button, .pc-agent .paid { all: unset; cursor: pointer; padding: 9px 14px; border-radius: var(--r); font: 600 12px var(--sans); text-align: center; }
+.pc-sheet .acts .go { background: var(--ink); color: var(--card); } .pc-sheet .acts .go:hover { background: #2a3a63; } .pc-sheet .acts .go[disabled] { opacity: .55; cursor: default; }
+.pc-sheet .acts .ghost { box-shadow: inset 0 0 0 1px var(--rule); color: var(--ink2); }
 .pc-agent { margin: 0 0 14px; padding: 10px 12px; border: 1px dashed var(--rule); border-radius: var(--r); display: grid; gap: 5px; font-size: 12px; }
 .pc-agent[hidden] { display: none; }
 .pc-agent div { display: grid; grid-template-columns: 130px 1fr auto; gap: 10px; color: var(--ink2); }
@@ -118,7 +120,7 @@ button { font: inherit; color: inherit; }
 .pc-agent div:last-of-type b { color: var(--red); }
 .pc-agent div:last-of-type b::before { content: "● "; animation: pc-blink 1.2s ease-in-out infinite; }
 .pc-agent div.done b::before, .pc-agent div.failed b::before { animation: none !important; }
-.pc-agent i { font-style: normal; color: var(--muted); font-size: 11px; }
+.pc-agent i { font-style: normal; color: var(--muted); font-size: 12px; }
 .pc-agent .paid { margin-top: 8px; background: var(--green); color: var(--card); }
 .pc-agent .paidnote { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
 @keyframes pc-blink { 50% { opacity: .25; } }
@@ -129,3 +131,4 @@ body.intro .pc-hud { opacity: 0; translate: 0 18px; }
 body.far .pc-hud { opacity: 0; translate: 0 18px; pointer-events: none; transition-delay: 0s; }
 body.far .pc-map { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { .pc-hud, .pc-stripes { transition: none !important; } }
+.reduced .pc-hud, .reduced .pc-stripes, .reduced * { transition: none !important; animation: none !important; }

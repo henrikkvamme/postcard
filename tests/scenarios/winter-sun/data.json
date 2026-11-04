@@ -1,26 +1,29 @@
 {
  "id": "winter-sun",
  "title": "A warm week in January",
+ "subtitle": "One adult from Zürich · seven nights in January 2027 · Hurghada, Tenerife or Lanzarote",
  "currency": "CHF",
  "passengers": {
   "adults": 1,
   "children": 0
  },
  "clock": "Europe/Zurich",
+ "clock_label": "Zürich time",
  "window": {
-  "start": "2027-01-01",
-  "end": "2027-01-31"
+  "start": "2027-01-01T00:00",
+  "end": "2027-02-01T00:00"
  },
  "places": {
   "BSL": {
    "name": "EuroAirport Basel–Mulhouse–Freiburg",
-   "city": "Bâle / Mulhouse",
+   "city": "Basel",
    "kind": "airport",
    "coord": [
     7.5211,
     47.6007
    ],
-   "tz": "Europe/Paris"
+   "tz": "Europe/Paris",
+   "code": "BSL"
   },
   "HRG": {
    "name": "Hurghada International Airport",
@@ -30,37 +33,41 @@
     33.7967,
     27.1768
    ],
-   "tz": "Africa/Cairo"
+   "tz": "Africa/Cairo",
+   "code": "HRG"
   },
   "SAW": {
    "name": "Istanbul Sabiha Gökçen International Airport",
-   "city": "Pendik, Istanbul",
+   "city": "Istanbul",
    "kind": "airport",
    "coord": [
     29.3092,
     40.8986
    ],
-   "tz": "Europe/Istanbul"
+   "tz": "Europe/Istanbul",
+   "code": "SAW"
   },
   "FRA": {
    "name": "Frankfurt Main Airport",
-   "city": "Frankfurt am Main",
+   "city": "Frankfurt",
    "kind": "airport",
    "coord": [
     8.5584,
     50.0267
    ],
-   "tz": "Europe/Berlin"
+   "tz": "Europe/Berlin",
+   "code": "FRA"
   },
   "ZRH": {
    "name": "Zürich Airport",
-   "city": "Zurich",
+   "city": "Zürich",
    "kind": "airport",
    "coord": [
     8.5481,
     47.4581
    ],
-   "tz": "Europe/Zurich"
+   "tz": "Europe/Zurich",
+   "code": "ZRH"
   },
   "AMS": {
    "name": "Amsterdam Airport Schiphol",
@@ -70,7 +77,8 @@
     4.7639,
     52.3086
    ],
-   "tz": "Europe/Amsterdam"
+   "tz": "Europe/Amsterdam",
+   "code": "AMS"
   },
   "MAD": {
    "name": "Adolfo Suárez Madrid–Barajas Airport",
@@ -80,7 +88,8 @@
     -3.5722,
     40.4934
    ],
-   "tz": "Europe/Madrid"
+   "tz": "Europe/Madrid",
+   "code": "MAD"
   },
   "TFS": {
    "name": "Tenerife Sur Airport",
@@ -90,21 +99,23 @@
     -16.5725,
     28.0445
    ],
-   "tz": "Atlantic/Canary"
+   "tz": "Atlantic/Canary",
+   "code": "TFS"
   },
   "ACE": {
    "name": "César Manrique-Lanzarote Airport",
-   "city": "San Bartolomé",
+   "city": "Lanzarote",
    "kind": "airport",
    "coord": [
     -13.6052,
     28.9455
    ],
-   "tz": "Atlantic/Canary"
+   "tz": "Atlantic/Canary",
+   "code": "ACE"
   },
   "ZUERICH-HB": {
    "name": "Zürich HB",
-   "city": "Zürich HB",
+   "city": "Zürich",
    "kind": "station",
    "coord": [
     8.53653,
@@ -114,7 +125,7 @@
   },
   "BASEL-SBB": {
    "name": "Basel SBB",
-   "city": "Basel SBB",
+   "city": "Basel",
    "kind": "station",
    "coord": [
     7.59005,
@@ -124,207 +135,14 @@
   },
   "BASEL-EUROAIRPOR": {
    "name": "Basel Euroairport FR",
-   "city": "Basel Euroairport FR",
+   "city": "Basel",
    "kind": "station",
    "coord": [
     7.53287,
     47.59922
    ],
    "tz": "Europe/Paris"
-  },
-  "BASEL-BAHNHOF-SB": {
-   "name": "Basel, Bahnhof SBB",
-   "city": "Basel",
-   "kind": "station",
-   "coord": [
-    7.58957,
-    47.54789
-   ],
-   "tz": "Europe/Zurich"
   }
- },
- "context": {
-  "weather": [
-   {
-    "place": "HRG",
-    "name": "Hurghada",
-    "coord": [
-     33.81,
-     27.26
-    ],
-    "kind": "climate",
-    "days": "01-05 to 01-26",
-    "years": "2016-2025",
-    "day_max_c": 21.1,
-    "night_min_c": 13.7,
-    "sun_h": 9.8,
-    "rain_days": 0.2,
-    "of_days": 22,
-    "wind_kmh": 27.0,
-    "sea_c": 22.5,
-    "source": "Open-Meteo ERA5 archive + marine"
-   },
-   {
-    "place": "TFS",
-    "name": "Tenerife south",
-    "coord": [
-     -16.71,
-     28.05
-    ],
-    "kind": "climate",
-    "days": "01-05 to 01-26",
-    "years": "2016-2025",
-    "day_max_c": 20.8,
-    "night_min_c": 15.2,
-    "sun_h": 9.8,
-    "rain_days": 1.0,
-    "of_days": 22,
-    "wind_kmh": 19.0,
-    "sea_c": 21.0,
-    "source": "Open-Meteo ERA5 archive + marine"
-   },
-   {
-    "place": "ACE",
-    "name": "Lanzarote (Puerto del Carmen)",
-    "coord": [
-     -13.66,
-     28.92
-    ],
-    "kind": "climate",
-    "days": "01-05 to 01-26",
-    "years": "2016-2025",
-    "day_max_c": 20.6,
-    "night_min_c": 15.1,
-    "sun_h": 9.5,
-    "rain_days": 1.1,
-    "of_days": 22,
-    "wind_kmh": 23.0,
-    "sea_c": 20.0,
-    "source": "Open-Meteo ERA5 archive + marine"
-   }
-  ],
-  "dates": [
-   {
-    "from": "BSL",
-    "to": "HRG",
-    "nights": 7,
-    "cheapest": [
-     {
-      "dep": "2027-01-20",
-      "ret": "2027-01-27",
-      "nights": 7,
-      "price": 85
-     },
-     {
-      "dep": "2027-01-24",
-      "ret": "2027-01-31",
-      "nights": 7,
-      "price": 89
-     },
-     {
-      "dep": "2027-01-23",
-      "ret": "2027-01-30",
-      "nights": 7,
-      "price": 108
-     },
-     {
-      "dep": "2027-01-11",
-      "ret": "2027-01-18",
-      "nights": 7,
-      "price": 109
-     }
-    ],
-    "note": "Round-trip price for 1 adult, easyJet. Both nights in January.",
-    "source": "Google Flights date grid",
-    "seen": "2026-11-04"
-   },
-   {
-    "from": "BSL",
-    "to": "TFS",
-    "nights": 7,
-    "cheapest": [
-     {
-      "dep": "2027-01-12",
-      "ret": "2027-01-19",
-      "nights": 7,
-      "price": 108
-     },
-     {
-      "dep": "2027-01-24",
-      "ret": "2027-01-31",
-      "nights": 7,
-      "price": 118
-     },
-     {
-      "dep": "2027-01-10",
-      "ret": "2027-01-17",
-      "nights": 7,
-      "price": 120
-     },
-     {
-      "dep": "2027-01-21",
-      "ret": "2027-01-28",
-      "nights": 7,
-      "price": 149
-     }
-    ],
-    "note": "Round-trip price for 1 adult, easyJet. Both nights in January.",
-    "source": "Google Flights date grid",
-    "seen": "2026-11-04"
-   },
-   {
-    "from": "BSL",
-    "to": "ACE",
-    "nights": 7,
-    "cheapest": [
-     {
-      "dep": "2027-01-12",
-      "ret": "2027-01-19",
-      "nights": 7,
-      "price": 75
-     },
-     {
-      "dep": "2027-01-09",
-      "ret": "2027-01-16",
-      "nights": 7,
-      "price": 110
-     },
-     {
-      "dep": "2027-01-23",
-      "ret": "2027-01-30",
-      "nights": 7,
-      "price": 134
-     },
-     {
-      "dep": "2027-01-22",
-      "ret": "2027-01-29",
-      "nights": 7,
-      "price": 142
-     }
-    ],
-    "note": "Round-trip price for 1 adult, easyJet. Both nights in January.",
-    "source": "Google Flights date grid",
-    "seen": "2026-11-04"
-   }
-  ],
-  "luggage": "One cabin bag, maybe one checked bag",
-  "stays": [
-   {
-    "city": "Hurghada",
-    "from": "2027-01-20",
-    "to": "2027-01-27"
-   },
-   {
-    "city": "Tenerife",
-    "from": "2027-01-12",
-    "to": "2027-01-19"
-   },
-   {
-    "city": "Lanzarote",
-    "from": "2027-01-12",
-    "to": "2027-01-19"
-   }
-  ]
  },
  "journeys": [
   {
@@ -596,7 +414,7 @@
     {
      "mode": "bus",
      "from": "BASEL-EUROAIRPOR",
-     "to": "BASEL-BAHNHOF-SB",
+     "to": "BASEL-SBB",
      "dep": "2027-01-27T18:46",
      "arr": "2027-01-27T19:03",
      "carrier": "Basler Verkehrsbetriebe",
@@ -606,14 +424,14 @@
     },
     {
      "mode": "walk",
-     "from": "BASEL-BAHNHOF-SB",
-     "to": "BASEL-BAHNHOF-SB",
+     "from": "BASEL-SBB",
+     "to": "BASEL-SBB",
      "dep": "2027-01-27T19:03",
      "arr": "2027-01-27T19:07"
     },
     {
      "mode": "train",
-     "from": "BASEL-BAHNHOF-SB",
+     "from": "BASEL-SBB",
      "to": "ZUERICH-HB",
      "dep": "2027-01-27T19:07",
      "arr": "2027-01-27T20:00",
@@ -1126,7 +944,7 @@
     {
      "mode": "bus",
      "from": "BASEL-EUROAIRPOR",
-     "to": "BASEL-BAHNHOF-SB",
+     "to": "BASEL-SBB",
      "dep": "2027-01-19T23:32",
      "arr": "2027-01-19T23:47",
      "carrier": "Basler Verkehrsbetriebe",
@@ -1136,14 +954,14 @@
     },
     {
      "mode": "walk",
-     "from": "BASEL-BAHNHOF-SB",
-     "to": "BASEL-BAHNHOF-SB",
+     "from": "BASEL-SBB",
+     "to": "BASEL-SBB",
      "dep": "2027-01-19T23:47",
      "arr": "2027-01-19T23:51"
     },
     {
      "mode": "train",
-     "from": "BASEL-BAHNHOF-SB",
+     "from": "BASEL-SBB",
      "to": "ZUERICH-HB",
      "dep": "2027-01-20T00:07",
      "arr": "2027-01-20T01:24",
@@ -1247,7 +1065,7 @@
     {
      "mode": "bus",
      "from": "BASEL-EUROAIRPOR",
-     "to": "BASEL-BAHNHOF-SB",
+     "to": "BASEL-SBB",
      "dep": "2027-01-19T17:43",
      "arr": "2027-01-19T18:03",
      "carrier": "Basler Verkehrsbetriebe",
@@ -1257,14 +1075,14 @@
     },
     {
      "mode": "walk",
-     "from": "BASEL-BAHNHOF-SB",
-     "to": "BASEL-BAHNHOF-SB",
+     "from": "BASEL-SBB",
+     "to": "BASEL-SBB",
      "dep": "2027-01-19T18:03",
      "arr": "2027-01-19T18:07"
     },
     {
      "mode": "train",
-     "from": "BASEL-BAHNHOF-SB",
+     "from": "BASEL-SBB",
      "to": "ZUERICH-HB",
      "dep": "2027-01-19T18:07",
      "arr": "2027-01-19T19:00",
@@ -1306,5 +1124,209 @@
    "group": "ace-back"
   }
  ],
- "deals": []
+ "deals": [],
+ "carriers": {
+  "KLM": "KLM",
+  "KL": "KLM",
+  "SBB": "SBB",
+  "SNCF": "SNCF",
+  "U2": "easyJet",
+  "EZY": "easyJet",
+  "LX": "SWISS",
+  "WK": "Edelweiss Air"
+ },
+ "sources": {
+  "note": "Read on 2026-11-04. Date grids and flight lists from Google Flights; train and bus transfers from Transitous; climate from Open-Meteo (ERA5, 2016 to 2025); seller ratings from Trustpilot. Munich (MUC) was not searched.",
+  "seen": "2026-11-04"
+ },
+ "context": {
+  "weather": [
+   {
+    "place": "HRG",
+    "name": "Hurghada",
+    "coord": [
+     33.81,
+     27.26
+    ],
+    "kind": "climate",
+    "days": "01-05 to 01-26",
+    "years": "2016-2025",
+    "day_max_c": 21.1,
+    "night_min_c": 13.7,
+    "sun_h": 9.8,
+    "rain_days": 0.2,
+    "of_days": 22,
+    "wind_kmh": 27.0,
+    "sea_c": 22.5,
+    "source": "Open-Meteo ERA5 archive + marine"
+   },
+   {
+    "place": "TFS",
+    "name": "Tenerife south",
+    "coord": [
+     -16.71,
+     28.05
+    ],
+    "kind": "climate",
+    "days": "01-05 to 01-26",
+    "years": "2016-2025",
+    "day_max_c": 20.8,
+    "night_min_c": 15.2,
+    "sun_h": 9.8,
+    "rain_days": 1.0,
+    "of_days": 22,
+    "wind_kmh": 19.0,
+    "sea_c": 21.0,
+    "source": "Open-Meteo ERA5 archive + marine"
+   },
+   {
+    "place": "ACE",
+    "name": "Lanzarote (Puerto del Carmen)",
+    "coord": [
+     -13.66,
+     28.92
+    ],
+    "kind": "climate",
+    "days": "01-05 to 01-26",
+    "years": "2016-2025",
+    "day_max_c": 20.6,
+    "night_min_c": 15.1,
+    "sun_h": 9.5,
+    "rain_days": 1.1,
+    "of_days": 22,
+    "wind_kmh": 23.0,
+    "sea_c": 20.0,
+    "source": "Open-Meteo ERA5 archive + marine"
+   }
+  ],
+  "dates": [
+   {
+    "from": "BSL",
+    "to": "HRG",
+    "nights": 7,
+    "cheapest": [
+     {
+      "dep": "2027-01-20",
+      "ret": "2027-01-27",
+      "nights": 7,
+      "price": 85
+     },
+     {
+      "dep": "2027-01-24",
+      "ret": "2027-01-31",
+      "nights": 7,
+      "price": 89
+     },
+     {
+      "dep": "2027-01-23",
+      "ret": "2027-01-30",
+      "nights": 7,
+      "price": 108
+     },
+     {
+      "dep": "2027-01-11",
+      "ret": "2027-01-18",
+      "nights": 7,
+      "price": 109
+     }
+    ],
+    "note": "Round-trip price for 1 adult, easyJet. Both nights in January.",
+    "source": "Google Flights date grid",
+    "seen": "2026-11-04"
+   },
+   {
+    "from": "BSL",
+    "to": "TFS",
+    "nights": 7,
+    "cheapest": [
+     {
+      "dep": "2027-01-12",
+      "ret": "2027-01-19",
+      "nights": 7,
+      "price": 108
+     },
+     {
+      "dep": "2027-01-24",
+      "ret": "2027-01-31",
+      "nights": 7,
+      "price": 118
+     },
+     {
+      "dep": "2027-01-10",
+      "ret": "2027-01-17",
+      "nights": 7,
+      "price": 120
+     },
+     {
+      "dep": "2027-01-21",
+      "ret": "2027-01-28",
+      "nights": 7,
+      "price": 149
+     }
+    ],
+    "note": "Round-trip price for 1 adult, easyJet. Both nights in January.",
+    "source": "Google Flights date grid",
+    "seen": "2026-11-04"
+   },
+   {
+    "from": "BSL",
+    "to": "ACE",
+    "nights": 7,
+    "cheapest": [
+     {
+      "dep": "2027-01-12",
+      "ret": "2027-01-19",
+      "nights": 7,
+      "price": 75
+     },
+     {
+      "dep": "2027-01-09",
+      "ret": "2027-01-16",
+      "nights": 7,
+      "price": 110
+     },
+     {
+      "dep": "2027-01-23",
+      "ret": "2027-01-30",
+      "nights": 7,
+      "price": 134
+     },
+     {
+      "dep": "2027-01-22",
+      "ret": "2027-01-29",
+      "nights": 7,
+      "price": 142
+     }
+    ],
+    "note": "Round-trip price for 1 adult, easyJet. Both nights in January.",
+    "source": "Google Flights date grid",
+    "seen": "2026-11-04"
+   }
+  ],
+  "luggage": "One cabin bag, maybe one checked bag",
+  "stays": [
+   {
+    "city": "Hurghada",
+    "from": "2027-01-20",
+    "to": "2027-01-27"
+   },
+   {
+    "city": "Tenerife",
+    "from": "2027-01-12",
+    "to": "2027-01-19"
+   },
+   {
+    "city": "Lanzarote",
+    "from": "2027-01-12",
+    "to": "2027-01-19"
+   }
+  ],
+  "not_searched": [
+   "Munich (MUC) flights",
+   "Departures 1-5 and 13-19 Jan (the date grids cover 6-12 and 20-26 Jan)",
+   "easyJet bag prices on easyjet.com",
+   "Train from Zürich HB to ZRH",
+   "Edelweiss nonstop back from TFS on 19 Jan and from HRG on 27 Jan"
+  ]
+ }
 }

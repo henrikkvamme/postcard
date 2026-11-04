@@ -18,7 +18,7 @@ import sys
 import urllib.parse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import dump, http_json, slug, today, write_path  # noqa: E402
+from common import dump, http_json, slug, today, town, write_path  # noqa: E402
 
 API = "https://global.api.flixbus.com"
 
@@ -95,7 +95,7 @@ def to_journeys(data, frm, to, prefix="f", paths_dir=None, rel="paths", start=1,
         st = stations_.get(sid, {"name": sid})
         key = slug(st["name"], 16)
         if key not in places:
-            cname = city.get(cid, {}).get("name") or names.get(cid) or st["name"]
+            cname = city.get(cid, {}).get("name") or names.get(cid) or town(st["name"])
             coord, ptz = _station_coord(sid, st["name"], cname)
             if not coord:
                 print(f"no position for stop {st['name']}; set it by hand", file=sys.stderr)
