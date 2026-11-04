@@ -1,11 +1,11 @@
 // Shared helpers for the l4 landmark set: plinths, arched openings on a wall face, merlons, hills, palms.
 // A leading underscore keeps this file out of the build.
 import { group } from '../lib/mesh.mjs';
-import { block, box, rect2, plate, loft, ringAt, bar, cyl, chamfer2, lathe } from '../lib/parts.mjs';
+import { block, box, rect2, plate, loft, ringAt, bar, cyl, chamfer2, lathe, base } from '../lib/parts.mjs';
 
 // A low base under a landmark, like the card a paper model stands on.
 export const plinth = (w, d, { h = 0.8, tone = 'stone', cx = 0, cy = 0, bevel } = {}) =>
-  block(chamfer2(w, d, Math.min(w, d) * 0.04, cx, cy), 0, h, tone, { bevel: bevel ?? h * 0.4 });
+  base(block(chamfer2(w, d, Math.min(w, d) * 0.04, cx, cy), 0, h, tone, { bevel: bevel ?? h * 0.4 }));
 
 // An arch outline in a plane, as [u, z] points (counter-clockwise): width w, springing at z1, sill at z0.
 export function arch2(w, z0, z1, { cu = 0, k = 6, pointed = false } = {}) {

@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url';
 import { writeGlb } from './lib/glb.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const out = join(here, '../plugins/postcard/skills/postcard/kit/art/3d');
+// MODEL_OUT (workshop) writes a variant set elsewhere, with its own index.
+const out = process.env.MODEL_OUT || join(here, '../plugins/postcard/skills/postcard/kit/art/3d');
 mkdirSync(out, { recursive: true });
 const only = process.argv.slice(2);
 // With names, only those are built and their entries merged into the index; parallel builders each build their own.

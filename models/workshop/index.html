@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model workshop</title>
+<script src="https://unpkg.com/deck.gl@9.4.0/dist.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --paper: #f4f2ea; --card: #fbfaf5; --ink: #1d2a4a; --ink2: #4f5a74; --muted: #7c8396; --rule: rgba(29,42,74,.18); --red: #b8322a; --r: 6px; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink); font: 13px/1.4 Inter, system-ui, sans-serif; }
+  body { display: grid; grid-template-rows: auto 1fr; }
+  header { display: flex; align-items: center; gap: 24px; padding: 14px 20px 12px; border-bottom: 1px solid var(--rule); flex-wrap: wrap; }
+  h1 { font: 600 22px/1 Fraunces, Georgia, serif; margin: 0; }
+  .ctl { display: flex; align-items: center; gap: 8px; color: var(--ink2); }
+  .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: var(--r); overflow: hidden; background: var(--card); }
+  .seg button { font: inherit; color: var(--ink2); background: none; border: 0; padding: 4px 10px; cursor: pointer; }
+  .seg button + button { border-left: 1px solid var(--rule); }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--card); }
+  input[type=range] { width: 140px; accent-color: var(--ink); }
+  main { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); min-height: 0; overflow: auto; align-items: start; }
+  .col { display: grid; grid-template-rows: auto auto; background: var(--paper); min-height: 100%; }
+  .col .bar { position: sticky; top: 0; z-index: 2; }
+  .col .bar { display: grid; gap: 6px; padding: 10px 14px 10px; background: var(--card); border-bottom: 1px solid var(--rule); }
+  .col .bar .top { display: flex; align-items: baseline; gap: 10px; }
+  .col .bar b { font: 600 18px/1 Fraunces, Georgia, serif; }
+  .col .bar .what { color: var(--muted); }
+  .col .bar .row { display: grid; grid-template-columns: 52px auto; align-items: center; gap: 8px; color: var(--muted); }
+  .stage { position: relative; overflow: hidden; background: var(--paper) url(map.png) center top / 1500px auto repeat; }
+  .stage .deck { position: absolute; inset: 0; }
+  .stage .names { position: absolute; inset: 0; pointer-events: none; }
+  .stage .names span { position: absolute; transform: translate(-50%, 0); white-space: nowrap; color: var(--ink2); font-size: 11px;
+    background: rgba(251,250,245,.8); padding: 0 4px; border-radius: 3px; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } .stage { min-height: 70vh; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Model workshop</h1>
+  <div class="ctl">Models <span class="seg" id="set"></span></div>
+  <div class="ctl">Size <span class="seg" id="size"></span></div>
+  <div class="ctl">Turn <input type="range" id="turn" min="0" max="360" step="5" value="30"><span id="deg">30°</span></div>
+</header>
+<main id="cols"></main>
+<script type="module">
+// Three variants side by side on the chart paper, drawn the way the map draws them (deck.gl ScenegraphLayer,
+// the kit's map sizes). Build the variant sets first: models/workshop/build.sh.
+const OPTS = {
+  style: [['shaded', 'Shaded'], ['ink', 'Two tones, more ink'], ['flat', 'Flat, ink only']],
+  palette: [['subject', 'Subject colours'], ['strict', 'Paper, navy, red']],
+  base: [['plinth', 'Plinth'], ['footprint', 'Footprint'], ['none', 'None']],
+};
+const LABEL = { style: 'Style', palette: 'Colour', base: 'Base' };
+const SETS = {
+  mix: ['paris', 'london', 'amsterdam', 'helsinki', 'salzburg', 'copenhagen', 'train-hs', 'plane'],
+  landmarks: null, vehicles: null,
+};
+const SIZES = [['map', 'Map', 0], ['2x', '2×', 1], ['close', 'Close', 2.2]];
+const q = new URLSearchParams(location.search);
+const cols = [
+  { id: 'a', name: 'A', what: 'Now', v: { style: 'shaded', palette: 'subject', base: 'plinth' } },
+  { id: 'b', name: 'B', what: 'Recommended', v: { style: 'ink', palette: 'subject', base: 'footprint' } },
+  { id: 'c', name: 'C', what: 'Review', v: { style: 'flat', palette: 'strict', base: 'none' } },
+];
+for (const c of cols) if (q.get(c.id)) { const [style, palette, base] = q.get(c.id).split('-'); c.v = { style, palette, base }; }
+let set = q.get('set') || 'mix', size = q.get('size') || '2x', angle = +(q.get('turn') || 30);
+
+const index = await fetch('out/shaded-subject-plinth/index.json').then((r) => r.json());
+const meta = Object.fromEntries(index.map((m) => [m.name, m]));
+SETS.landmarks = index.filter((m) => m.kind === 'landmark').map((m) => m.name);
+SETS.vehicles = index.filter((m) => m.kind === 'vehicle').map((m) => m.name);
+
+const save = () => { const u = new URLSearchParams({ set, size, turn: angle });
+  for (const c of cols) u.set(c.id, `${c.v.style}-${c.v.palette}-${c.v.base}`); history.replaceState(null, '', '?' + u); };
+
+function seg(el, items, cur, on) {
+  el.innerHTML = ''; for (const [k, label] of items) { const b = document.createElement('button'); b.textContent = label;
+    b.setAttribute('aria-pressed', k === cur); b.onclick = () => { on(k); seg(el, items, k, on); }; el.appendChild(b); }
+}
+seg(document.getElementById('set'), [['mix', 'Mix'], ['landmarks', 'All landmarks'], ['vehicles', 'Vehicles']], set, (k) => { set = k; redraw(); });
+seg(document.getElementById('size'), SIZES.map(([k, l]) => [k, l]), size, (k) => { size = k; redraw(); });
+const turn = document.getElementById('turn'); turn.value = angle;
+turn.oninput = () => { angle = +turn.value; document.getElementById('deg').textContent = angle + '°'; draw(); save(); };
+document.getElementById('deg').textContent = angle + '°';
+
+// The kit's on-screen sizes: a landmark at 0.55 of its px, a ground vehicle at 0.7, the plane at 0.4.
+const pxOf = (m) => (m.px || 80) * (m.kind === 'landmark' ? .55 : m.name === 'plane' ? .4 : .7);
+const root = document.getElementById('cols');
+for (const c of cols) {
+  const el = document.createElement('section'); el.className = 'col';
+  el.innerHTML = `<div class="bar"><div class="top"><b>${c.name}</b><span class="what"></span></div>
+    ${Object.keys(OPTS).map((k) => `<div class="row">${LABEL[k]}<span class="seg" data-k="${k}"></span></div>`).join('')}</div>
+    <div class="stage"><div class="deck"></div><div class="names"></div></div>`;
+  root.appendChild(el); c.el = el;
+  const what = () => { el.querySelector('.what').textContent = c.what; };
+  what();
+  for (const k of Object.keys(OPTS)) seg(el.querySelector(`[data-k=${k}]`), OPTS[k], c.v[k], (v) => { c.v[k] = v; c.what = 'Your mix'; what(); draw(); save(); });
+  const stage = el.querySelector('.stage');
+  c.deck = new deck.Deck({ parent: el.querySelector('.deck'), views: new deck.OrbitView({ orbitAxis: 'Z', fovy: 20 }),
+    initialViewState: { target: [0, 0, 0], rotationX: 30, rotationOrbit: 0, zoom: 0 }, controller: { dragRotate: false, scrollZoom: false, dragPan: true },
+    width: stage.clientWidth, height: stage.clientHeight, onAfterRender: () => names(c), layers: [] });
+  stage.style.height = '400px';
+  new ResizeObserver(() => redraw()).observe(c.el);
+}
+
+// A grid that fits the column's width; the stage grows to the grid's height and the page scrolls.
+function cells(c) {
+  const list = (SETS[set] || SETS.mix).map((n) => meta[n]).filter(Boolean), z = 2 ** SIZES.find(([k]) => k === size)[2];
+  const stage = c.el.querySelector('.stage'), W = stage.clientWidth / z;
+  const cell = Math.max(...list.map(pxOf)) * 1.35, ncol = Math.max(1, Math.floor((W - 16) / cell)), nrow = Math.ceil(list.length / ncol);
+  const ch = cell * 1.1, h = Math.round(nrow * ch * z + 60);
+  if (stage.clientHeight !== h) { stage.style.height = h + 'px'; c.deck.setProps({ width: stage.clientWidth, height: h }); }
+  return list.map((m, i) => ({ m, x: (i % ncol - (ncol - 1) / 2) * cell, y: -(Math.floor(i / ncol) - (nrow - 1) / 2) * ch - ch * .25, k: pxOf(m) / Math.max(...m.size) }));
+}
+function draw() {
+  for (const c of cols) {
+    const dir = `out/${c.v.style}-${c.v.palette}-${c.v.base}/`;
+    c.cells = cells(c);
+    c.deck.setProps({ layers: c.cells.map((d) => new deck.ScenegraphLayer({ id: d.m.name, data: [d], scenegraph: dir + d.m.name + '.glb',
+      coordinateSystem: deck.COORDINATE_SYSTEM.CARTESIAN, getPosition: (e) => [e.x, e.y, 0], sizeScale: d.k, getOrientation: [0, angle, 90],
+      _lighting: 'pbr', getColor: [255, 255, 255, 255], updateTriggers: { getOrientation: angle } })) });
+  }
+}
+function names(c) {
+  const vp = c.deck.getViewports()[0]; if (!vp || !c.cells) return;
+  c.el.querySelector('.names').innerHTML = c.cells.map((d) => { const [x, y] = vp.project([d.x, d.y - pxOf(d.m) * .35, 0]);
+    return `<span style="left:${x}px;top:${y}px">${d.m.label || d.m.name}</span>`; }).join('');
+}
+function redraw() {
+  const zoom = SIZES.find(([k]) => k === size)[2];
+  for (const c of cols) c.deck.setProps({ initialViewState: { target: [0, 0, 0], rotationX: 30, rotationOrbit: 0, zoom } });
+  draw(); save();
+}
+redraw();
+window.__ws = { cols, draw };
+</script>
+</body>
+</html>

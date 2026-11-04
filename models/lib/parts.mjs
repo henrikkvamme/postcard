@@ -133,3 +133,14 @@ export function hull(sections, tone, opts = {}) {
 }
 // A cross-section: a rounded rectangle w wide and h tall, sitting on z0, with roof radius r, in the y-z plane.
 export const section = (w, h, r, z0 = 0, k = 3) => round2(w, h, r, k).map(([y, z]) => [y, z + z0 + h / 2]);
+
+// The base under a landmark. MODEL_BASE (workshop): 'plinth' keeps the part; 'footprint' keeps only its
+// top face, a flat sheet with an ink edge; 'none' drops it.
+export function base(m) {
+  const how = process.env.MODEL_BASE || 'plinth';
+  if (how === 'plinth') return m;
+  const out = new Mesh(); if (how === 'none') return out;
+  const top = Math.max(...m.faces.flatMap((f) => f.pts.map((p) => p[2])));
+  out.faces = m.faces.filter((f) => f.pts.every((p) => Math.abs(p[2] - top) < 1e-6)).map((f) => ({ ...f, tone: 'cream' }));
+  return out;
+}

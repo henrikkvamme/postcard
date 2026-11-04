@@ -1,6 +1,6 @@
 // Helpers for the landmark set l1: facades, gables, arches, plinths, flags.
 import { group } from '../lib/mesh.mjs';
-import { block, box, gable, loft, ringAt, bar } from '../lib/parts.mjs';
+import { block, box, gable, loft, ringAt, bar, base } from '../lib/parts.mjs';
 
 // build.mjs reads every .mjs file, underscore or not; kind 'test' keeps this one out of the build and the index.
 export const meta = { name: '_l1', kind: 'test' };
@@ -21,7 +21,7 @@ export const gableY = (w, d, z0, z1, tone, { o = 0, end = 'paper', cx = 0, cy = 
 
 // The low base every landmark stands on, like a paper model on its card.
 export const plinth = (w, d, { h = 0.6, tone = 'stone', cx = 0, cy = 0, bevel } = {}) =>
-  box(w, d, 0, h, tone, { cx, cy, bevel: bevel ?? h * 0.45 });
+  base(box(w, d, 0, h, tone, { cx, cy, bevel: bevel ?? h * 0.45 }));
 
 // A solid over a plan polygon whose top follows z = f(x, y). f must be planar over the plan
 // (a ramp or a flat top); where f is 0 the wall folds away.

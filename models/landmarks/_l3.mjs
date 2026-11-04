@@ -1,13 +1,13 @@
 // Shared parts for the l3 landmark set (venice, florence, milan, munich, brussels, stockholm, dublin,
 // edinburgh, athens, istanbul, dubrovnik). A leading underscore: build.mjs does not build this file.
 import { Mesh, group } from '../lib/mesh.mjs';
-import { loft, block, box, cyl, lathe, plate, spire, bar, ringAt, rect2, chamfer2, circle2, hull, dome, gable, inset, round2 } from '../lib/parts.mjs';
+import { loft, block, box, cyl, lathe, plate, spire, bar, ringAt, rect2, chamfer2, circle2, hull, dome, gable, inset, round2, base } from '../lib/parts.mjs';
 
 const TAU = Math.PI * 2;
 
 // The base every landmark stands on: a low bevelled plate, stone sides and a cream top.
 export const plinth = (plan, h = 1.5, { tone = 'stone', top = 'cream', bevel = 0.4 } = {}) =>
-  block(plan, -h, 0, tone, { bevel: Math.min(bevel, h / 2), top });
+  base(block(plan, -h, 0, tone, { bevel: Math.min(bevel, h / 2), top }));
 
 // An arched opening as a plan polygon [u, z], counter-clockwise: w wide, h tall to the crown, k points on the arch.
 export function arch2(w, h, { cu = 0, z0 = 0, k = 5, pointed = 0 } = {}) {

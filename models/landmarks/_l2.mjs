@@ -1,13 +1,13 @@
 // Shared parts for the l2 landmark set: plinths, arch outlines, ribbons along a path, palms, jittered
 // lathes for mountains. A leading underscore keeps this file out of the build.
 import { Mesh, group, cross, norm, sub, add, mul, dot } from '../lib/mesh.mjs';
-import { loft, block, chamfer2, circle2, plate, box, cyl, bar, ringAt } from '../lib/parts.mjs';
+import { loft, block, chamfer2, circle2, plate, box, cyl, bar, ringAt, base } from '../lib/parts.mjs';
 
 const TAU = Math.PI * 2;
 
 // A low base with a folded top edge, as a paper model stands on its card.
 export const plinth = (w, d, h = 1, { tone = 'stone', top = 'cream', c } = {}) =>
-  block(chamfer2(w, d, c ?? Math.min(w, d) * 0.08), 0, h, tone, { bevel: h * 0.45, top });
+  base(block(chamfer2(w, d, c ?? Math.min(w, d) * 0.08), 0, h, tone, { bevel: h * 0.45, top }));
 export const disc = (rx, h = 1, { ry = rx, tone = 'stone', top = 'cream', n = 28 } = {}) =>
   block(circle2(1, n).map(([x, y]) => [x * rx, y * ry]), 0, h, tone, { bevel: h * 0.45, top });
 

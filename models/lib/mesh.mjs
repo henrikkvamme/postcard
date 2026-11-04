@@ -21,6 +21,12 @@ export const TONES = {
   brass: [0.74, 0.62, 0.38],
 };
 
+const STYLE = process.env.MODEL_STYLE || 'shaded';
+// MODEL_PALETTE=strict (workshop): paper, navy and red only. Stone, sand, brass and cream become paper;
+// green copper becomes the second navy.
+const STRICT = { cream: 'paper', stone: 'paper', sand: 'paper', brass: 'paper', green: 'ink2' };
+const toneOf = (t) => process.env.MODEL_PALETTE === 'strict' && STRICT[t] ? STRICT[t] : t;
+
 // One light, from the north-west and high, as on a printed chart. Tops are lightest.
 const L = norm([-0.45, 0.55, 0.70]);
 const shade = (n) => {
@@ -28,7 +34,9 @@ const shade = (n) => {
   const up = Math.max(0, n[2]);
   const k = 0.60 + 0.30 * d + 0.12 * up - (n[2] < -0.5 ? 0.12 : 0);
   // Four steps, as in anatomy's four tones: top, lit side, side, shade.
-  if (process.env.NOSHADE) return 1;
+  // MODEL_STYLE (workshop): 'ink' is two steps (top, sides) with more ink; 'flat' is one tone, ink only.
+  if (process.env.NOSHADE || STYLE === 'flat') return 1;
+  if (STYLE === 'ink') return n[2] > 0.7 ? 1.0 : 0.88;
   return n[2] > 0.7 ? 1.0 : k > 0.86 ? 0.95 : k > 0.72 ? 0.88 : 0.80;
 };
 
@@ -79,13 +87,13 @@ export const group = (...ms) => ms.flat().reduce((a, m) => a.merge(m), new Mesh(
 
 // Faces to triangles with baked tones; ink lines at creases sharper than `crease` degrees and at part
 // outlines. Returns typed arrays for glb.mjs.
-export function bake(mesh, { crease = 40, minEdge = 0.025 } = {}) {
+export function bake(mesh, { crease = STYLE === 'shaded' ? 40 : 25, minEdge = STYLE === 'shaded' ? 0.025 : 0.012 } = {}) {
   // One group of triangles per baked colour: deck.gl's glTF shader reads material colours, not COLOR_0.
   const groups = new Map();
   for (const f of mesh.faces) {
     const tris = triangulate(f.pts);
     const n = faceNormal(f.pts);
-    const base = TONES[f.tone] || f.tone;
+    const base = TONES[toneOf(f.tone)] || f.tone;
     const c = base.map((v) => Math.min(1, v * shade(n)));
     const key = c.map((v) => v.toFixed(4)).join(',');
     const g = groups.get(key) || { color: [...c, 1], pos: [], nor: [] }; groups.set(key, g);
