@@ -84,6 +84,10 @@ export function probe() {
     }
   }
 
+  // 4b3. The book band is on screen, whole (a long postcard can push it below a phone screen).
+  const bk = [...document.querySelectorAll('.pc-book')].find(visible);
+  if (bk) { const r = bk.getBoundingClientRect(); if (r.bottom > H + 1 || r.top < -1) out.hudOff.push(`${name(bk)} is ${Math.round(r.bottom - H)}px below the screen`); }
+
   // 4b2. An element the page hid with the hidden attribute that still shows, because a page rule sets its
   // display (".key { display: flex }" beats [hidden]). Add "[hidden] { display: none }" for that class.
   out.hiddenShown = [...document.querySelectorAll('.pc-card [hidden], .pc-hud [hidden], .pc-title[hidden]')]

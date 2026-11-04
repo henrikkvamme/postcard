@@ -43,7 +43,7 @@ emulation, not by resizing the window: a headless window does not resize. With
    with the hidden attribute that a page rule still displays; add `[hidden] { display: none }` for it). `ok` is true when they are all empty. Run it again after you change the pick and
    after each tab or view: a card can fit the default and spill on another pick. To make that repeatable, set
    `window.__states = { 'Fly on the day': () => pick('day'), 'Times tab': () => view('times'), ... }` in
-   app.js, one entry per pick, view and phone tab; the eval capture script probes after each one. Also read `redText`: every red text outside the book band must be the pick or the one
+   app.js, one entry per pick, view and phone tab, plus the pick with the longest postcard tail and a stepper change; the eval capture script probes after each one. Also read `redText`: every red text outside the book band must be the pick or the one
    failing fact on the postcard (craft.md, rule 6). Read `truncated` too: each is text cut with "…".
    A fact that answers the question must not be in it; shorten its words or let it wrap.
 4. Take a screenshot and look at it as the person would. Does the main view answer the question in

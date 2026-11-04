@@ -34,7 +34,9 @@ export function tooltip() {
       if (A) tries.push({ x: A.left - w - 12, y: r.top }, { x: r.left, y: A.top - h - 12 }, { x: A.right + 12, y: r.top });
       tries.push({ x: r.right + 10, y: r.top }, { x: r.left - w - 10, y: r.top }, { x: r.left, y: r.bottom + 8 });
       const fits = (t) => t.x >= 8 && t.y >= 8 && t.x + w <= innerWidth - 8 && t.y + h <= innerHeight - 8 && !As.some((B) => hits({ ...t, w, h }, B));
-      const t = tries.find(fits) || tries[tries.length - 1]; put(t.x, t.y);
+      // No clean place: stay off the card (A) and accept the route; only then fall back to the row's side.
+      const offCard = (t) => t.x >= 8 && t.y >= 8 && t.x + w <= innerWidth - 8 && t.y + h <= innerHeight - 8 && !(A && hits({ ...t, w, h }, A));
+      const t = tries.find(fits) || tries.find(offCard) || tries[0] || tries[tries.length - 1]; put(t.x, t.y);
     },
     hide() { el.style.opacity = 0; },
   };

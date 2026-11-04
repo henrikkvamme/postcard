@@ -67,9 +67,11 @@ export function bill(T, parts) {
     // A part read as a "from" price (its limit says "from") makes the whole figure "from EUR 80".
     r.from = known.some((p) => /\bfrom\b/i.test(p.limit || ''));
     r.figure = () => r.none ? 'not read' : `${r.from ? 'from ' : ''}${r.approx ? '≈ ' : ''}${T.money(r.total)}`;
-    r.all = () => [...groups(), ...r.limits, ...r.left.map((w) => `${w} not counted`)];
+    // A 'from' the figure already says is not said again in the tail: "from EUR 289 + cabin type not read".
+    const lim = () => r.limits.map((l) => r.from ? l.replace(/^from price[;,]?\s*/i, '') : l).filter(Boolean);
+    r.all = () => [...groups(), ...lim(), ...r.left.map((w) => `${w} not counted`)];
     r.tail = ({ max = 2 } = {}) => {
-      const xs = r.none ? [...r.limits, ...r.left.map((w) => `${w} not counted`)] : r.all();
+      const xs = r.none ? [...lim(), ...r.left.map((w) => `${w} not counted`)] : r.all();
       if (xs.length <= max) return xs.map((x) => '+ ' + x).join(' ');
       return [...xs.slice(0, max - 1).map((x) => '+ ' + x), `+ ${xs.length - max + 1} more`].join(' ');
     };
