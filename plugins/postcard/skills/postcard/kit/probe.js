@@ -74,6 +74,9 @@ export function probe() {
       const out2 = r.bottom > box.bottom + 2 || r.top < box.top - 2 || r.right > box.right + 2 || r.left < box.left - 2;
       if (!out2) continue;
       const lbl = `${name(el)} "${(el.textContent || '').trim().slice(0, 24)}"`;
+      // Inside a sideways scroller, a part that is out only to the side is scrolled to, not cut.
+      const sideOnly = r.bottom <= box.bottom + 2 && r.top >= box.top - 2;
+      if (a && a !== root && a.closest('.pc-scroll-x') && sideOnly) continue;
       if (a && a !== root) { const ao = getComputedStyle(a); if (['hidden', 'clip'].includes(ao.overflowY) || ['hidden', 'clip'].includes(ao.overflowX)) out.cutOff.push(`${lbl} cut by ${name(a)}`); }
       else if (clips(root)) { const ro = getComputedStyle(root); if (!['auto', 'scroll'].includes(ro.overflowY)) out.cutOff.push(`${lbl} cut by ${name(root)}`); }
       else out.spill.push(`${lbl} hangs ${Math.round(Math.max(r.bottom - R.bottom, R.top - r.top, r.right - R.right, R.left - r.left))}px out of ${name(root)}`);

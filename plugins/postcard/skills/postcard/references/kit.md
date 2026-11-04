@@ -97,6 +97,8 @@ tl.paint({ chosen: new Set(ids), hover: id, dim: (j) => bool });
 tl.cursor(hour, 'Over the Baltic Sea');
 tl.wall(j, 'dep');   // '06:25', or '06:25 WET' when the place's zone is not the axis zone
 ```
+On a phone the clock label left of the axis has about `left - 14` px. Pass a short `clockLabel` there
+("CET", or `title` left out), or a smaller `left` with a short one; a long label is cut with an ellipsis.
 
 The scale picks itself: hours for up to 5 days, days for longer. Band kinds: `event` (red hatch),
 `work`, `stay`, `plain`. All journeys of a row share one line, so they must not overlap in time:
