@@ -74,12 +74,14 @@ class Handler(SimpleHTTPRequestHandler):
         if rel == "favicon.ico":
             roots.append((KIT, "favicon.svg"))
         for root, r in roots:
-            full = os.path.realpath(os.path.join(root, r))
-            if not full.startswith(os.path.realpath(root)):
+            base = os.path.realpath(root)
+            full = os.path.realpath(os.path.join(base, r))
+            # Serve only what lies inside the root after links are resolved.
+            if os.path.commonpath([base, full]) != base:
                 continue
             if os.path.isfile(full) or os.path.isfile(os.path.join(full, "index.html")):
                 return full
-        return os.path.join(TRIP_DIR, rel)
+        return os.path.join(os.path.realpath(TRIP_DIR), "__postcard_missing__")
 
     def guess_type(self, path):
         if path.endswith(".js") or path.endswith(".mjs"):

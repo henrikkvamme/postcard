@@ -35,7 +35,7 @@ function holidays() {
       if (r.from !== o.to || !AIRPORTS[state.airports].ok(r.to) || T.nights(o, r) !== NIGHTS) continue;
       const p = T.price([o, r], opts); if (!p) continue;
       const travel = o.arr - o.dep + r.arr - r.dep + access(o.from) + access(r.to);
-      const bagsKnown = !BAGS[state.bags].need || p.deal || p.each.every((e) => e.bagsKnown);
+      const bagsKnown = p.bagsKnown;
       // Leaving or landing between midnight and 05:00 costs a night's sleep; count it as three hours.
       const night = [o.depL.h, o.arrL.h, r.depL.h, r.arrL.h].filter((h) => h < 5).length ? 3 : 0;
       out.push({ id: o.id + '+' + r.id, o, r, p, price: p.total, travel, bagsKnown, night, dest: o.to, start: o.depL.date, score: p.total + HOUR * (travel + night) });
@@ -160,7 +160,7 @@ function openCheckout() {
     items: [item('Out', sel.o, sel.p.each[0]), item('Back', sel.r, sel.p.each[1])], total: money(sel.price) + (sel.bagsKnown ? '' : ' + bag'),
     note: `${sel.bagsKnown ? '' : 'The bag fee was not checked; your agent adds it at booking and stops if the total is more than 15% above. '}Prices seen ${esc(T.raw.sources.seen)}.`,
     prompt: `Book my holiday: ${d.name}, ${NIGHTS} nights, 1 adult, ${bag.label.toLowerCase()}. Use my browser and stop on the payment page; do not pay.\n${line(sel.o, sel.p.each[0])}\n${line(sel.r, sel.p.each[1])}` +
-      (sel.p.deal ? `\nBook both as: ${sel.p.deal.what}, expected ${money(sel.p.deal.price)}.` : '') + `\nIf the total with bags is more than 15% above ${money(sel.price)}, stop and tell me.`,
+      (sel.p.deal ? `\nBook both as: ${sel.p.deal.what}, expected ${money(sel.p.deal.total)}.` : '') + `\nIf the total with bags is more than 15% above ${money(sel.price)}, stop and tell me.`,
     trip: { title: T.raw.title, destination: d.name, journeys: [sel.o.raw, sel.r.raw], offers: sel.p.each, deal: sel.p.deal, price: sel.price, bags: state.bags } });
 }
 

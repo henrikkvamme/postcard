@@ -66,10 +66,18 @@ def when(s, tz, where):
         err(f"{where}: '{s}' is not a local wall time like 2026-11-12T19:05")
         return None
     try:
-        return datetime.fromisoformat(s).replace(tzinfo=ZoneInfo(tz))
+        dt = datetime.fromisoformat(s).replace(tzinfo=ZoneInfo(tz))
     except Exception as e:
         err(f"{where}: {e}")
         return None
+    # The kit reads a time like Python with fold=0 (kit/time.js wallMs). Say when that choice matters.
+    if dt.utcoffset() != dt.replace(fold=1).utcoffset():
+        a, b = dt.astimezone(ZoneInfo("UTC")), dt.replace(fold=1).astimezone(ZoneInfo("UTC"))
+        if a.astimezone(ZoneInfo(tz)).replace(tzinfo=None) != dt.replace(tzinfo=None):
+            warn(f"{where}: {s} does not exist in {tz} (the clocks go forward); the page reads it as {a.astimezone(ZoneInfo(tz)):%H:%M}")
+        else:
+            warn(f"{where}: {s} happens twice in {tz} (the clocks go back); the page reads it as the first one")
+    return dt
 
 
 def km(p, q):
@@ -276,9 +284,9 @@ def main():
             if k == len(segs) - 1 and sb != b:
                 err(f"{sw}: ends at {sb}, but the journey ends at {b}")
             if k == 0 and sd and d and sd != d:
-                warn(f"{sw}: departs {s.get('dep')}, but the journey departs {j.get('dep')}")
+                err(f"{sw}: departs {s.get('dep')}, but the journey departs {j.get('dep')}")
             if k == len(segs) - 1 and sr and r and sr != r:
-                warn(f"{sw}: arrives {s.get('arr')}, but the journey arrives {j.get('arr')}")
+                err(f"{sw}: arrives {s.get('arr')}, but the journey arrives {j.get('arr')}")
             if prev:
                 pto, parr = prev
                 if pto != sa:

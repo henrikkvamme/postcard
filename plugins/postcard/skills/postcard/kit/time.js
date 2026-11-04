@@ -12,11 +12,14 @@ const MON = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Se
 export const offsetMin = (ms, tz) => { const p = parts(ms, tz);
   return (Date.UTC(+p.year, MON[p.month], +p.day, +p.hour, +p.minute) - Math.floor(ms / 60000) * 60000) / 60000; };
 
-// 'YYYY-MM-DD' or 'YYYY-MM-DDTHH:MM', read as a wall clock in tz -> epoch ms. Two passes settle the offset across a DST change.
+// 'YYYY-MM-DD' or 'YYYY-MM-DDTHH:MM', read as a wall clock in tz -> epoch ms.
+// Same rule as Python's zoneinfo with fold=0 (check_trip.py uses it): a time that happens twice when the clocks go
+// back is the first one; a time that does not happen when the clocks go forward uses the offset from before the change.
 export function wallMs(iso, tz) {
   const [d, tm = '00:00'] = iso.split('T'), [y, mo, da] = d.split('-').map(Number), [h, mi] = tm.split(':').map(Number);
-  const guess = Date.UTC(y, mo - 1, da, h, mi);
-  return guess - offsetMin(guess - offsetMin(guess, tz) * 60000, tz) * 60000;
+  const guess = Date.UTC(y, mo - 1, da, h, mi), before = offsetMin(guess - 43200000, tz), after = offsetMin(guess + 43200000, tz);
+  const real = [before, after].map((o) => guess - o * 60000).filter((ms, i) => offsetMin(ms, tz) === [before, after][i]);
+  return real.length ? Math.min(...real) : guess - before * 60000;
 }
 
 // A clock for one trip. tz is the zone of the page's timeline; start is the window's first day.

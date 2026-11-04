@@ -109,34 +109,47 @@ export async function openTrip({ raw, base }) {
   const deals = (raw.deals || []).map((d) => ({ ...offerOf(d), journeys: d.journeys || [d.out, d.back].filter(Boolean) }));
 
   // Offers --------------------------------------------------------------
-  // The extra a fare costs for the bags you bring: { cabin: true, checked: 1 }. null when that fare cannot carry them.
-  const bagExtra = (o, need) => {
-    if (!need) return 0;
-    const b = o.bags || {}; let extra = 0;
-    const one = (v, n) => { if (!n) return 0; if (v === 'included') return 0; if (typeof v === 'number') return v * n; return v === 'none' ? null : undefined; };
+  // What the bags you bring cost on one fare: need is { cabin: true, checked: 1 }.
+  // Returns { extra, known } with the sum of the known fees, or null when the fare cannot carry a bag ("none").
+  const bagCost = (o, need) => {
+    if (!need) return { extra: 0, known: true };
+    const b = o.bags || {}; let extra = 0, known = true;
     for (const [k, n] of [['cabin', need.cabin ? 1 : 0], ['checked', need.checked || 0]]) {
-      const c = one(b[k], n); if (c === null) return null; if (c === undefined) return undefined; extra += c; }
-    return extra;
+      if (!n) continue; const v = b[k];
+      if (v === 'none') return null;
+      if (v === 'included') continue;
+      if (typeof v === 'number') extra += v * n; else known = false; }
+    return { extra, known };
   };
-  // The cheapest accepted offer for a journey, with bags priced in when they are known.
+  // The old form: a number, undefined when a fee was not checked, null when not possible.
+  const bagExtra = (o, need) => { const c = bagCost(o, need); return c === null ? null : c.known ? c.extra : undefined; };
+  // The cheapest accepted offer for a journey, with known bag fees priced in. bagsKnown is false when a fee was not checked.
   const best = (j, { accept = 'any', bags = null } = {}) => {
     let pick = null;
     for (const o of j.offers) { if (!ACCEPT[accept].ok(o)) continue;
-      const extra = bagExtra(o, bags); if (extra === null) continue;
-      const total = o.price + (extra || 0);
-      if (!pick || total < pick.total) pick = { ...o, total, bagsKnown: extra !== undefined }; }
+      const c = bagCost(o, bags); if (!c) continue;
+      const total = o.price + c.extra;
+      if (!pick || total < pick.total) pick = { ...o, total, bagsKnown: c.known }; }
     return pick;
   };
-  const dealFor = (ids, { accept = 'any' } = {}) => {
+  // The cheapest accepted deal for exactly these journeys. Its bag terms count once per journey.
+  const dealFor = (ids, { accept = 'any', bags = null } = {}) => {
     const key = [...ids].sort().join('|');
-    return deals.filter((d) => [...d.journeys].sort().join('|') === key && ACCEPT[accept].ok(d)).sort((a, b) => a.price - b.price)[0] || null;
+    let pick = null;
+    for (const d of deals) { if ([...d.journeys].sort().join('|') !== key || !ACCEPT[accept].ok(d)) continue;
+      const c = bagCost(d, bags); if (!c) continue;
+      const total = d.price + c.extra * d.journeys.length;
+      if (!pick || total < pick.total) pick = { ...d, total, bagsKnown: c.known }; }
+    return pick;
   };
   // A set of journeys bought together: one per group, in order. A deal wins when it is cheaper.
+  // bagsKnown is false when any bag fee in the chosen way to buy was not checked.
   const price = (js, opts = {}) => {
     const each = js.map((j) => best(j, opts));
     if (each.some((o) => !o)) return null;
     const split = each.reduce((s, o) => s + o.total, 0), deal = dealFor(js.map((j) => j.id), opts);
-    return deal && deal.price < split ? { total: deal.price, split, deal, each } : { total: split, split, deal: null, each };
+    return deal && deal.total < split ? { total: deal.total, split, deal, each, bagsKnown: deal.bagsKnown }
+      : { total: split, split, deal: null, each, bagsKnown: each.every((o) => o.bagsKnown) };
   };
   // Every combination of one journey per listed group, kept when keep(js) is true.
   const combos = (groupNames, keep = () => true) => {
@@ -162,10 +175,12 @@ export async function openTrip({ raw, base }) {
     const first = chain[0], last = chain[chain.length - 1];
     if (T < first.dep) return { pt: places[first.from].coord, place: first.from, status: `In ${name(first.from)}` };
     if (T > last.arr) return { pt: places[last.to].coord, place: last.to, status: `In ${name(last.to)}` };
-    const prev = [...chain].reverse().find((j) => j.arr <= T);
-    return { pt: places[prev.to].coord, place: prev.to, status: `In ${name(prev.to)}` };
+    // Between journeys, or in a gap the data leaves inside one: at the place the last segment reached.
+    const segs = chain.flatMap((j) => j.segments), prev = [...segs].reverse().find((s) => s.b <= T);
+    const at = prev ? prev.to : first.from;
+    return { pt: places[at].coord, place: at, status: `In ${name(at)}` };
   };
 
-  return { raw, base, clock, T0, T1, places, carriers, journeys, byId, groups, deals, best, bagExtra, dealFor, price, combos, nights, whereAt,
+  return { raw, base, clock, T0, T1, places, carriers, journeys, byId, groups, deals, best, bagCost, bagExtra, dealFor, price, combos, nights, whereAt,
     currency: raw.currency || 'EUR', money: (n) => n == null ? '–' : `${raw.currency || 'EUR'} ${Math.round(n).toLocaleString('en')}` };
 }

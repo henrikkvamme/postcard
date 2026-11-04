@@ -75,6 +75,17 @@ class CheckTrip(unittest.TestCase):
                      "back returns to", "more than a week ago"):
             self.assertIn(want, r.stdout)
 
+    def test_segment_bounds_and_clock_changes(self):
+        def change(t):
+            j = {x["id"]: x for x in t["journeys"]}
+            j["o2"]["segments"][0]["dep"] = "2027-03-04T07:40"         # starts after the journey starts
+            j["r1"]["from"], j["r1"]["to"] = "OSL", "LIS"              # 02:30 does not exist in Oslo on 28 Mar 2027
+            j["r1"]["dep"], j["r1"]["arr"] = "2027-03-28T02:30", "2027-03-28T05:20"
+        r = self.run_broken(change)
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("but the journey departs", r.stdout)
+        self.assertIn("does not exist in Europe/Oslo", r.stdout)
+
     def test_v1_is_named(self):
         with tempfile.TemporaryDirectory() as d:
             json.dump({"title": "x", "flights": []}, open(os.path.join(d, "trip.json"), "w"))
@@ -90,6 +101,7 @@ class Serve(unittest.TestCase):
         shutil.copy(os.path.join(MINIMAL, "trip.json"), self.trip)
         os.makedirs(os.path.join(self.trip, "art"))
         open(os.path.join(self.trip, "art", "mine.png"), "wb").write(b"PNG")
+        open(os.path.join(self.trip, "index.html"), "w").write("<!doctype html><title>t</title>")
         s = socket.socket(); s.bind(("127.0.0.1", 0)); self.port = s.getsockname()[1]; s.close()
         env = dict(os.environ, POSTCARD_QUEUE=self.queue)
         self.p = subprocess.Popen([sys.executable, SERVE, self.trip, "--port", str(self.port), "--host", "127.0.0.1"],
@@ -131,6 +143,19 @@ class Serve(unittest.TestCase):
         self.assertEqual(self.get("/../scripts/serve.py")[0], 404)
         self.assertEqual(self.get("/kit/../scripts/serve.py")[0], 404)
 
+    def test_links_out_of_the_trip_are_refused(self):
+        outside = tempfile.mkdtemp()
+        sibling = self.trip + "-x"
+        os.makedirs(sibling)
+        try:
+            open(os.path.join(outside, "secret.txt"), "w").write("secret")
+            open(os.path.join(sibling, "s.txt"), "w").write("sibling")
+            os.symlink(os.path.join(outside, "secret.txt"), os.path.join(self.trip, "link.txt"))
+            self.assertEqual(self.get("/link.txt")[0], 404)
+            self.assertEqual(self.get("/../" + os.path.basename(sibling) + "/s.txt")[0], 404)
+        finally:
+            shutil.rmtree(outside); shutil.rmtree(sibling)
+
     def test_busy_port_moves_on(self):
         p = subprocess.Popen([sys.executable, SERVE, self.trip, "--port", str(self.port), "--host", "127.0.0.1"],
                              env=dict(os.environ, POSTCARD_QUEUE=self.queue), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
@@ -155,6 +180,13 @@ class Serve(unittest.TestCase):
         w = subprocess.run([sys.executable, WAIT, "5"], env=env, capture_output=True, text=True)
         self.assertEqual(json.loads(w.stdout)["wake"], "after-booking")
         self.assertEqual(json.loads(self.get("/api/checkout/latest")[1])["status"], "working")
+
+
+class Kit(unittest.TestCase):
+    @unittest.skipUnless(shutil.which("node"), "node is not installed")
+    def test_kit_modules(self):
+        r = subprocess.run(["node", "--test", os.path.join(ROOT, "tests", "test_kit.mjs")], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout[-2000:] + r.stderr[-2000:])
 
 
 if __name__ == "__main__":

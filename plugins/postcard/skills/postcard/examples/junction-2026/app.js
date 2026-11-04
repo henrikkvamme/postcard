@@ -272,7 +272,7 @@ function openCheckout() {
     items: [item('Out', sel.o, sel.p.each[0]), item('Back', sel.r, sel.p.each[1])], totalLabel: `Total, ${paxText}`, total: money(sel.price),
     note: `${sel.p.deal ? `One booking: ${esc(sel.p.deal.what)}.` : 'Two one-way tickets.'} ${[sel.o, sel.r].filter((j) => j.warning).map((j) => esc(j.warning.text)).join(' ')} Prices are from ${esc(T.raw.sources?.seen || 'the dates shown')} and can change.`,
     prompt: `Book my trip: ${T.raw.title} (${EVENT_NAME}), ${paxText}. Use my browser and stop on the payment page; do not pay.\n${line(sel.o, sel.p.each[0])}\n${line(sel.r, sel.p.each[1])}` +
-      (sel.p.deal ? `\nBook both together as: ${sel.p.deal.what}, expected ${money(sel.p.deal.price)}.` : '') + `\nIf a price is more than 15% above the expected price, stop and tell me.`,
+      (sel.p.deal ? `\nBook both together as: ${sel.p.deal.what}, expected ${money(sel.p.deal.total)}.` : '') + `\nIf a price is more than 15% above the expected price, stop and tell me.`,
     trip: { title: T.raw.title, currency: CUR, journeys: [sel.o.raw, sel.r.raw], offers: sel.p.each, deal: sel.p.deal, price: sel.price, accept: state.buy } });
 }
 
