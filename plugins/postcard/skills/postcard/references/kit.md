@@ -128,9 +128,12 @@ value)`, `switchHTML(name, label, on, help)`, `wireChips(root, { name: (value) =
 `cellsHTML(n, lit, { tone })` (red cells for a cost; `tone: 'ink'` for a neutral count such as hotel nights). `sheet` keeps Tab inside and gives focus back to the opener on close; several
 `sheet()` calls share one element, and the one shown last owns Esc and focus.
 
-`tooltip()` has three calls:
+`tooltip()` is a small paper card, like the route card. Use it only for a mark whose facts are
+nowhere else on the page, such as a dot in a trade-off chart or a seller in a list. A row, a leg or a
+route that already shows its facts (the open row's detail line, the postcard, the route card) gets no
+tip: a tip that repeats the page is a second popup over the map. It has three calls:
 
-- `tip.beside(el, html, { avoid: card })` for a row, a cell or a chip. It puts the tip outside the
+- `tip.beside(el, html, { avoid: card })` for a cell or a chip. It puts the tip outside the
   card (left of it, over the map, or above it), so it never covers the next row's figures
   (craft.md, rule 7). Use it on hover and on keyboard focus.
 - `tip.show(event, html)` for a point on the map or a bar: below and right of the pointer.
@@ -219,10 +222,10 @@ model gets none; do not use another city's model. Give each one `lng` and `lat` 
 label (labels sit to the right of the dot). A model on the dot covers the route end. Map labels and the
 route card draw above the models.
 
-The overview shows the route alone. A landmark rises out of the map when the person zooms in a little
-past the overview, and sinks when they zoom out. It grows with the map, at a slower rate than the
-ground, and a tall subject stands taller than a low one. `px` on an entry sets its screen size at the
-zoom where it appears; leave it out unless one model must stand out.
+Landmarks rise out of the map as the camera lands on the trip's view, small there, and sink when the
+person zooms out to a wider view. Each grows with the map, at a slower rate than the ground, and a
+tall subject stands taller than a low one. `px` on an entry sets its screen size on the landing view;
+leave it out unless one model must stand out.
 
 The models are generated, not drawn: `models/` at the repository root has the generator, the parts
 and a gallery (`models/gallery/`). A new model is a new file there, built with `node models/build.mjs`.

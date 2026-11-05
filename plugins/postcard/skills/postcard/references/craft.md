@@ -181,8 +181,10 @@ Nothing moves when you hover, pick or switch a view, except what that action cha
   cut. Shorten its words, or give it two lines.
 - A price that was not read is not a price: set "Fares not read" at body size in ink, never in the
   big price style. Everything in the card fits it at 1280 x 720 too.
-- A tooltip sits beside what it describes, outside the card (`tip.beside`), and never covers the
-  next row's figures. A tap that picks opens no tip.
+- A tooltip only adds a fact the page does not show. A row whose facts are in its detail line or on
+  the postcard gets none, and the route hover has only the kit's route card. A tip sits beside what it
+  describes, outside the card (`tip.beside`), and never covers the next row's figures. A tap that picks
+  opens no tip.
 - A control that redraws keeps keyboard focus (update it in place, or focus the new node).
 - Esc backs out one level: it closes a tip or a sheet. It never resets the person's picks. Offer a
   reset as a quiet text button that shows only when the picks differ from the top picks.

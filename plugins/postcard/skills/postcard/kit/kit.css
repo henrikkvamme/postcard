@@ -93,9 +93,10 @@ button { font: inherit; color: inherit; }
 .pc-book.pay { background: var(--green); } .pc-book.pay:hover { background: #255830; }
 
 /* Tooltip */
-.pc-tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--card); font-size: 12px; padding: 7px 10px; border-radius: var(--r);
-  max-width: 360px; opacity: 0; transition: opacity .12s; z-index: 40; line-height: 1.5; }
-.pc-tip b { font-weight: 600; }
+.pc-tip { position: fixed; pointer-events: none; background: var(--card); color: var(--ink2); border: 1px solid var(--rule); box-shadow: 0 1px 0 var(--rule2);
+  font: 12px/1.45 var(--sans); font-variant-numeric: tabular-nums; padding: 8px 11px; border-radius: var(--r);
+  max-width: 300px; opacity: 0; transition: opacity .12s; z-index: 40; }
+.pc-tip b { font-weight: 600; color: var(--ink); }
 
 /* Text in SVG views */
 .pc-caps { font: 600 9.5px var(--sans); letter-spacing: .16em; fill: var(--ink); }
