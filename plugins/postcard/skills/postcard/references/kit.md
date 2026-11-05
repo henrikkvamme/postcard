@@ -219,6 +219,11 @@ model gets none; do not use another city's model. Give each one `lng` and `lat` 
 label (labels sit to the right of the dot). A model on the dot covers the route end. Map labels and the
 route card draw above the models.
 
+The overview shows the route alone. A landmark rises out of the map when the person zooms in a little
+past the overview, and sinks when they zoom out. It grows with the map, at a slower rate than the
+ground, and a tall subject stands taller than a low one. `px` on an entry sets its screen size at the
+zoom where it appears; leave it out unless one model must stand out.
+
 The models are generated, not drawn: `models/` at the repository root has the generator, the parts
 and a gallery (`models/gallery/`). A new model is a new file there, built with `node models/build.mjs`.
 

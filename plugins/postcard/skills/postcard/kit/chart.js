@@ -356,22 +356,49 @@ export function createChart(opts) {
 
   // ---- Landmarks: 3D paper models (art/3d, kind 'landmark') from trip.json map.models. ----
   // An entry is a model name ('paris') or { model, lng, lat, place, px }; lng and lat default to the model's own.
-  // Each stands at a constant size on screen, a little smaller when zoomed out, turned a third toward the viewer
-  // and leaning like the vehicles, and dims when its place is not on the chosen way (as the drawings do).
+  // The overview shows the route alone. A landmark rises out of the map when you zoom in past the overview,
+  // and sinks back when you zoom out. It belongs to the map: it grows as you zoom in (at a slower rate than the
+  // ground, so a close view does not fill with it), and a tall subject stands taller than a low one. It is
+  // turned a third toward the viewer, leans like the vehicles, and dims when its place is not on the chosen way.
   const LANDMARKS = (M.models || []).map((x) => typeof x === 'string' ? { model: x } : x);
+  const RISE = 900, SINK = 350; // ms
+  const lmAnim = LANDMARKS.map(() => ({ up: false, p: 0, from: 0, t0: 0 }));
+  let lmFrame = 0;
+  // Zoom at which landmarks appear: a little past the trip's overview, but never on a continent view.
+  const showZoom = () => Math.max(4.6, Math.min(7.2, (C.viewOf?.(homePts()).zoom ?? 5) + .55));
+  // Ease out with a small overshoot, so the paper model springs up and settles.
+  const springOut = (t) => { const c = 1.4; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
   function landmarks() {
-    const z = map.getZoom(); if (!LANDMARKS.length || z < 2.2 || z > 9.5) return [];
+    if (!LANDMARKS.length) return [];
+    const z = map.getZoom(), now = performance.now(), z0 = showZoom(), W = el.clientWidth, H = el.clientHeight;
     const mpp = 156543 * Math.cos(map.getCenter().lat * rad) / Math.pow(2, z), t = touched();
-    const grow = Math.max(.55, Math.min(1, (z - 2) / 4)), fade = Math.min(1, (z - 2.2) / .8, (9.5 - z) / .8);
+    const grow = Math.min(2.6, Math.pow(2, .7 * Math.max(0, z - z0)));
     const tilt = Math.max(0, 60 - map.getPitch()), b = map.getBearing();
-    return LANDMARKS.map((L, i) => {
-      const m = MODELS[L.model]; if (!m) return null;
-      const lng = L.lng ?? m.lng, lat = L.lat ?? m.lat, place = L.place ?? null; if (lng == null || lat == null) return null;
-      const k = (L.px || .55 * (m.px || 80)) * grow * mpp / Math.max(...m.size), on = !place || t.has(place) || S.ends.includes(place);
-      const pose = mat.mul(mat.rz(-b), mat.rx(tilt), mat.rz(150), mat.rx(90), mat.s(k));
+    // Rise in order across the screen, left to right, so a row of them comes up like a wave.
+    const items = LANDMARKS.map((L, i) => { const m = MODELS[L.model]; if (!m) return null;
+      const lng = L.lng ?? m.lng, lat = L.lat ?? m.lat; if (lng == null || lat == null) return null;
+      const q = map.project([lng, lat]); return { L, m, i, lng, lat, q, want: S.introDone && z >= z0 && z < 10 && q.x > -80 && q.x < W + 80 && q.y > -80 && q.y < H + 80 }; }).filter(Boolean);
+    const rising = items.filter((d) => d.want && !lmAnim[d.i].up).sort((a, c) => a.q.x - c.q.x);
+    rising.forEach((d, n) => Object.assign(lmAnim[d.i], { up: true, from: lmAnim[d.i].p, t0: now + n * 110 }));
+    for (const d of items) if (!d.want && lmAnim[d.i].up) Object.assign(lmAnim[d.i], { up: false, from: lmAnim[d.i].p, t0: now });
+    let busy = false;
+    const out = items.map(({ L, m, i, lng, lat }) => {
+      const a = lmAnim[i], u = Math.max(0, Math.min(1, (now - a.t0) / (a.up ? RISE : SINK)));
+      a.p = REDUCED ? (a.up ? 1 : 0) : a.up ? a.from + (1 - a.from) * springOut(u) : a.from * (1 - u * u);
+      if (!REDUCED && u < 1) busy = true;
+      if (a.p <= .001) return null;
+      // Screen size at the show zoom: about 40 px for a low subject, up to about 80 px for a tower.
+      const px = L.px || 40 * Math.pow(Math.max(...m.size) / 40, .3), place = L.place ?? null, on = !place || t.has(place) || S.ends.includes(place);
+      const k = Math.min(px, 84) * grow * mpp / Math.max(...m.size);
+      // The rise stretches the model up from its base (the model's own up is glTF +y).
+      const up = Math.max(.02, a.p), lift = [1, 0, 0, 0, 0, up, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+      const pose = mat.mul(mat.rz(-b), mat.rx(tilt), mat.rz(150), mat.rx(90), mat.s(k), lift);
       return new deck.ScenegraphLayer({ id: 'lm-' + i, data: [{ pt: [lng, lat, map.queryTerrainElevation?.([lng, lat]) || 0] }], scenegraph: KIT + 'art/3d/' + L.model + '.glb',
-        getPosition: (d) => d.pt, getTransformMatrix: pose, _lighting: 'pbr', getColor: [255, 255, 255, 255], opacity: fade * (on ? 1 : .45) });
+        getPosition: (d) => d.pt, getTransformMatrix: pose, _lighting: 'pbr', getColor: [255, 255, 255, 255],
+        opacity: Math.min(1, a.p * 2.5) * (on ? 1 : .45), updateTriggers: { getTransformMatrix: [k, up, tilt, b] } });
     }).filter(Boolean);
+    if (busy && !lmFrame) lmFrame = requestAnimationFrame(() => { lmFrame = 0; refresh(); });
+    return out;
   }
 
   function deckLayers() {
