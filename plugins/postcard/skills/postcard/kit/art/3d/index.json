@@ -220,10 +220,10 @@
   "px": 84,
   "size": [
    23.8,
-   15.5,
+   15.14,
    20.4
   ],
-  "tris": 820
+  "tris": 802
  },
  {
   "name": "athens",
@@ -234,11 +234,11 @@
   "label": "Parthenon",
   "px": 100,
   "size": [
-   91.5,
-   48.9,
-   21.15
+   90.3,
+   47.7,
+   18.95
   ],
-  "tris": 3038
+  "tris": 3000
  },
  {
   "name": "barcelona",
@@ -249,11 +249,11 @@
   "label": "Sagrada Família",
   "px": 110,
   "size": [
-   116,
-   86,
-   171
+   114.2,
+   84.2,
+   169
   ],
-  "tris": 3292
+  "tris": 3254
  },
  {
   "name": "basel",
@@ -264,11 +264,11 @@
   "label": "Basel Minster",
   "px": 98,
   "size": [
-   30,
-   70,
-   67.6
+   29.46,
+   69.46,
+   67
   ],
-  "tris": 628
+  "tris": 610
  },
  {
   "name": "bergen",
@@ -279,11 +279,11 @@
   "label": "Bryggen",
   "px": 80,
   "size": [
-   28,
+   27.36,
    34.9,
-   17.5
+   16.7
   ],
-  "tris": 520
+  "tris": 482
  },
  {
   "name": "berlin",
@@ -294,11 +294,11 @@
   "label": "Brandenburg Gate",
   "px": 100,
   "size": [
-   60,
-   18,
-   28.81
+   59.46,
+   17.46,
+   28.21
   ],
-  "tris": 1468
+  "tris": 1450
  },
  {
   "name": "brussels",
@@ -309,11 +309,11 @@
   "label": "Atomium",
   "px": 95,
   "size": [
-   96,
-   96,
-   114.21
+   95.19,
+   95.19,
+   113.25
   ],
-  "tris": 3440
+  "tris": 3322
  },
  {
   "name": "budapest",
@@ -324,11 +324,11 @@
   "label": "Parliament",
   "px": 110,
   "size": [
-   280,
-   58,
-   96
+   278.2,
+   56.2,
+   94
   ],
-  "tris": 1718
+  "tris": 1680
  },
  {
   "name": "copenhagen",
@@ -340,10 +340,10 @@
   "px": 88,
   "size": [
    43.2,
-   25,
+   24.64,
    19
   ],
-  "tris": 1112
+  "tris": 1094
  },
  {
   "name": "dublin",
@@ -358,7 +358,7 @@
    12,
    11.61
   ],
-  "tris": 928
+  "tris": 892
  },
  {
   "name": "dubrovnik",
@@ -369,11 +369,11 @@
   "label": "Walls of Dubrovnik",
   "px": 90,
   "size": [
-   100,
-   78,
-   49.4
+   99.2,
+   77.2,
+   47.9
   ],
-  "tris": 1468
+  "tris": 1430
  },
  {
   "name": "edinburgh",
@@ -384,11 +384,11 @@
   "label": "Edinburgh Castle",
   "px": 105,
   "size": [
-   206,
-   112,
-   95.9
+   205.2,
+   111.2,
+   94.5
   ],
-  "tris": 1022
+  "tris": 984
  },
  {
   "name": "florence",
@@ -399,11 +399,11 @@
   "label": "Florence Cathedral",
   "px": 105,
   "size": [
-   170,
-   104,
-   111.97
+   169.2,
+   103.2,
+   110.37
   ],
-  "tris": 1991
+  "tris": 1973
  },
  {
   "name": "frankfurt",
@@ -414,11 +414,11 @@
   "label": "Römer",
   "px": 84,
   "size": [
-   28.2,
-   21,
-   22.2
+   27.66,
+   20.46,
+   21.6
   ],
-  "tris": 1172
+  "tris": 1154
  },
  {
   "name": "geneva",
@@ -429,11 +429,11 @@
   "label": "Jet d'Eau",
   "px": 104,
   "size": [
-   84,
+   83.8,
    32,
-   141.5
+   141.1
   ],
-  "tris": 748
+  "tris": 730
  },
  {
   "name": "hamburg",
@@ -444,11 +444,11 @@
   "label": "Elbphilharmonie",
   "px": 104,
   "size": [
-   132,
-   48,
-   108.8
+   131.28,
+   47.28,
+   108
   ],
-  "tris": 1016
+  "tris": 998
  },
  {
   "name": "helsinki",
@@ -459,11 +459,11 @@
   "label": "Helsinki Cathedral",
   "px": 104,
   "size": [
-   66,
-   80,
+   65.64,
+   79.64,
    58.1
   ],
-  "tris": 3406
+  "tris": 3370
  },
  {
   "name": "hurghada",
@@ -474,11 +474,11 @@
   "label": "Red Sea diving",
   "px": 80,
   "size": [
-   40,
+   39.64,
    22,
-   10.6
+   9.8
   ],
-  "tris": 834
+  "tris": 796
  },
  {
   "name": "istanbul",
@@ -489,11 +489,11 @@
   "label": "Hagia Sophia",
   "px": 100,
   "size": [
-   114,
-   98,
-   65.9
+   113.2,
+   97.2,
+   64.5
   ],
-  "tris": 2784
+  "tris": 2746
  },
  {
   "name": "krakow",
@@ -504,11 +504,11 @@
   "label": "St Mary's Basilica",
   "px": 104,
   "size": [
-   106,
-   36,
-   81.5
+   105.36,
+   35.36,
+   80.7
   ],
-  "tris": 2062
+  "tris": 2024
  },
  {
   "name": "lanzarote",
@@ -534,11 +534,11 @@
   "label": "Belém Tower",
   "px": 86,
   "size": [
-   30,
-   36,
-   41
+   29.1,
+   35.1,
+   40
   ],
-  "tris": 2274
+  "tris": 2236
  },
  {
   "name": "london",
@@ -549,11 +549,11 @@
   "label": "Big Ben",
   "px": 104,
   "size": [
-   22,
-   22,
-   97.6
+   20.92,
+   20.92,
+   96.4
   ],
-  "tris": 906
+  "tris": 868
  },
  {
   "name": "madrid",
@@ -579,11 +579,11 @@
   "label": "Alcazaba of Málaga",
   "px": 92,
   "size": [
-   84,
-   76,
-   47
+   83.36,
+   75.36,
+   46.2
   ],
-  "tris": 2784
+  "tris": 2746
  },
  {
   "name": "marrakech",
@@ -594,11 +594,11 @@
   "label": "Koutoubia Mosque",
   "px": 96,
   "size": [
-   20,
-   20,
-   78.5
+   19.36,
+   19.36,
+   77.7
   ],
-  "tris": 1558
+  "tris": 1520
  },
  {
   "name": "milan",
@@ -609,11 +609,11 @@
   "label": "Milan Cathedral",
   "px": 105,
   "size": [
-   159,
-   104,
-   109.6
+   158.6,
+   103.2,
+   108
   ],
-  "tris": 1958
+  "tris": 1940
  },
  {
   "name": "munich",
@@ -624,11 +624,11 @@
   "label": "Frauenkirche",
   "px": 100,
   "size": [
-   126,
-   56,
-   100.8
+   125.2,
+   55.2,
+   99.4
   ],
-  "tris": 1917
+  "tris": 1899
  },
  {
   "name": "nice",
@@ -639,11 +639,11 @@
   "label": "Hotel Negresco",
   "px": 88,
   "size": [
-   38,
-   68,
+   37.36,
+   67.36,
    43.42
   ],
-  "tris": 1336
+  "tris": 1298
  },
  {
   "name": "oslo",
@@ -655,10 +655,10 @@
   "px": 108,
   "size": [
    150,
-   104,
+   103.8,
    38.6
   ],
-  "tris": 136
+  "tris": 118
  },
  {
   "name": "palma",
@@ -669,11 +669,11 @@
   "label": "Palma Cathedral",
   "px": 108,
   "size": [
-   142,
-   92,
-   62
+   141.36,
+   91.36,
+   61.2
   ],
-  "tris": 2112
+  "tris": 2074
  },
  {
   "name": "paris",
@@ -684,11 +684,11 @@
   "label": "Eiffel Tower",
   "px": 112,
   "size": [
-   142,
-   142,
+   140,
+   140,
    331
   ],
-  "tris": 884
+  "tris": 866
  },
  {
   "name": "porto",
@@ -699,11 +699,11 @@
   "label": "Dom Luís I Bridge",
   "px": 112,
   "size": [
-   240,
-   26,
-   50.4
+   239.36,
+   25.36,
+   49.6
   ],
-  "tris": 1404
+  "tris": 1366
  },
  {
   "name": "prague",
@@ -714,11 +714,11 @@
   "label": "Charles Bridge",
   "px": 96,
   "size": [
-   80,
-   22,
-   61
+   79.55,
+   21.1,
+   60
   ],
-  "tris": 820
+  "tris": 782
  },
  {
   "name": "reykjavik",
@@ -729,11 +729,11 @@
   "label": "Hallgrímskirkja",
   "px": 100,
   "size": [
-   80,
-   60,
-   75
+   79.36,
+   59.36,
+   74.2
   ],
-  "tris": 1418
+  "tris": 1380
  },
  {
   "name": "riga",
@@ -744,11 +744,11 @@
   "label": "House of the Blackheads",
   "px": 88,
   "size": [
-   25,
-   20,
-   32.9
+   24.46,
+   19.46,
+   32.3
   ],
-  "tris": 818
+  "tris": 800
  },
  {
   "name": "rome",
@@ -774,11 +774,11 @@
   "label": "Hohensalzburg Fortress",
   "px": 104,
   "size": [
-   72,
-   132,
-   73
+   71.36,
+   131.36,
+   72.2
   ],
-  "tris": 580
+  "tris": 542
  },
  {
   "name": "santorini",
@@ -789,11 +789,11 @@
   "label": "Oia blue-domed chapel",
   "px": 78,
   "size": [
-   18,
-   18,
-   14.9
+   17.6,
+   17.6,
+   14.4
   ],
-  "tris": 770
+  "tris": 732
  },
  {
   "name": "seville",
@@ -804,11 +804,11 @@
   "label": "La Giralda",
   "px": 104,
   "size": [
-   21,
-   21,
-   105.6
+   20.36,
+   20.36,
+   104.8
   ],
-  "tris": 2306
+  "tris": 2268
  },
  {
   "name": "stockholm",
@@ -819,11 +819,11 @@
   "label": "Stockholm City Hall",
   "px": 100,
   "size": [
-   138,
-   52,
-   107
+   137.2,
+   51.2,
+   105.6
   ],
-  "tris": 1492
+  "tris": 1474
  },
  {
   "name": "tenerife",
@@ -849,11 +849,11 @@
   "label": "Val Thorens",
   "px": 84,
   "size": [
-   58.4,
-   48,
-   38.2
+   57.86,
+   46.92,
+   37.03
   ],
-  "tris": 452
+  "tris": 414
  },
  {
   "name": "venice",
@@ -865,10 +865,10 @@
   "px": 110,
   "size": [
    26,
-   30,
+   29.6,
    99.7
   ],
-  "tris": 926
+  "tris": 908
  },
  {
   "name": "vienna",
@@ -880,10 +880,10 @@
   "px": 96,
   "size": [
    65.27,
-   26.5,
-   65.68
+   26.05,
+   64.85
   ],
-  "tris": 3076
+  "tris": 3038
  },
  {
   "name": "zurich",
@@ -894,10 +894,10 @@
   "label": "Grossmünster",
   "px": 96,
   "size": [
-   30,
-   58,
-   62.2
+   29.46,
+   57.46,
+   61.6
   ],
-  "tris": 1032
+  "tris": 1014
  }
 ]

@@ -22,10 +22,10 @@ export const TONES = {
 };
 
 const STYLE = process.env.MODEL_STYLE || 'shaded';
-// MODEL_PALETTE=strict (workshop): paper, navy and red only. Stone, sand, brass and cream become paper;
-// green copper becomes the second navy.
+// The palette is paper, navy and red (MODEL_PALETTE=strict, the default). Stone, sand, brass and cream
+// become paper; green copper becomes the second navy. MODEL_PALETTE=subject keeps each subject's tones.
 const STRICT = { cream: 'paper', stone: 'paper', sand: 'paper', brass: 'paper', green: 'ink2' };
-const toneOf = (t) => process.env.MODEL_PALETTE === 'strict' && STRICT[t] ? STRICT[t] : t;
+const toneOf = (t) => (process.env.MODEL_PALETTE || 'strict') === 'strict' && STRICT[t] ? STRICT[t] : t;
 
 // One light, from the north-west and high, as on a printed chart. Tops are lightest.
 const L = norm([-0.45, 0.55, 0.70]);

@@ -60,9 +60,9 @@ const SETS = {
 const SIZES = [['map', 'Map', 0], ['2x', '2×', 1], ['close', 'Close', 2.2]];
 const q = new URLSearchParams(location.search);
 const cols = [
-  { id: 'a', name: 'A', what: 'Now', v: { style: 'shaded', palette: 'subject', base: 'plinth' } },
-  { id: 'b', name: 'B', what: 'Recommended', v: { style: 'ink', palette: 'subject', base: 'footprint' } },
-  { id: 'c', name: 'C', what: 'Review', v: { style: 'flat', palette: 'strict', base: 'none' } },
+  { id: 'a', name: 'A', what: 'Default', v: { style: 'shaded', palette: 'strict', base: 'footprint' } },
+  { id: 'b', name: 'B', what: 'Two tones', v: { style: 'ink', palette: 'strict', base: 'footprint' } },
+  { id: 'c', name: 'C', what: 'Before', v: { style: 'shaded', palette: 'subject', base: 'plinth' } },
 ];
 for (const c of cols) if (q.get(c.id)) { const [style, palette, base] = q.get(c.id).split('-'); c.v = { style, palette, base }; }
 let set = q.get('set') || 'mix', size = q.get('size') || '2x', angle = +(q.get('turn') || 30);
