@@ -5,6 +5,7 @@
 
 /            site/
 /kit/...     the skill's kit (not copied into site/)
+/nordic/...  the skill's nordic-loop example, the live example page
 /skill/...   the skill's SKILL.md, references/ and scripts/, to read
 /postcard-skill.tar.gz   the whole skill folder, built on each request
 /api/...     204 for /api/checkout/latest, else 404, as on the static host
@@ -41,6 +42,8 @@ class Handler(SimpleHTTPRequestHandler):
         p = path.split("?", 1)[0].split("#", 1)[0]
         if p.startswith("/kit/"):
             return super().translate_path(p[len("/kit"):]).replace(SITE, os.path.join(SKILL, "kit"), 1)
+        if p.startswith("/nordic/"):
+            return super().translate_path(p[len("/nordic"):]).replace(SITE, os.path.join(SKILL, "examples", "nordic-loop"), 1)
         if p.startswith("/skill/"):
             rest = p[len("/skill"):]
             if not (rest == "/SKILL.md" or rest.startswith("/references/") or rest.startswith("/scripts/")):
@@ -62,8 +65,6 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             return self.wfile.write(body)
-        if p == "/view":
-            self.path = "/view/" + self.path[len("/view"):]
         return super().do_GET()
 
     do_POST = lambda self: self.send_error(404)

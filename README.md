@@ -1,8 +1,8 @@
 # Postcard
 
-A skill for coding agents. It finds flights, trains, buses and ferries for a trip, shows the
-options on an engraved airmail map with a page built for your question, and books the one you
-pick, up to the payment page.
+A skill for coding agents. It plans any trip: flights, trains, buses, ferries and drives. It reads
+real prices in a browser, shows the options on a globe with a page built for your question, and books
+the one you pick, up to the payment page.
 
 You tell your agent where, when and why you travel. The agent reads real journeys and prices in a
 browser, writes them into one `trip.json`, and builds a page from a fixed kit (the map, the trip
@@ -16,6 +16,8 @@ pay. The agent then adds the flights to your calendar and reminds you to check i
 
 The examples are real trips:
 
+- **nordic-loop**: Oslo, Copenhagen, Hamburg, Berlin and back in May 2027 by train, bus and ferry, as a
+  story on a globe. This is the default look. See it live at https://postcard.henrikkvamme.no/nordic/.
 - **junction-2026**: Zürich to Helsinki for the Junction hackathon in November 2026, with 22 flights
   ranked against the event schedule and work hours.
 - **winter-sun**: a warm week in January 2027 from Zürich or Basel, with Tenerife, Hurghada and
@@ -35,18 +37,27 @@ The map uses OpenFreeMap tiles, AWS terrain tiles and Natural Earth. No API key 
 
 ## Install
 
-In Claude Code:
+The easy way: open https://postcard.henrikkvamme.no, copy the prompt and paste it to your agent. The
+agent reads [llms.txt](https://postcard.henrikkvamme.no/llms.txt), installs the skill and plans the trip.
+
+Or install it yourself:
+
+```sh
+npx skills add henrikkvamme/postcard -g    # Claude Code, Codex, Cursor and other agents
+```
+
+In Claude Code you can also use the plugin:
 
 ```
 /plugin marketplace add henrikkvamme/postcard
 /plugin install postcard@postcard
 ```
 
-For another agent, copy `plugins/postcard/skills/postcard/` into its skills folder. The skill is a
-`SKILL.md` with references, Python 3 scripts (standard library only) and a static web page.
+The skill is a `SKILL.md` with references, Python 3 scripts (standard library only) and a static web
+page. Your agent also needs a browser tool it can drive, to read prices and to fill the booking.
 
-Then ask, for example: "Find flights from Zürich to Helsinki for Junction, 12 to 16 November. I work
-Friday and Monday."
+Then ask, for example: "Plan ten days from Oslo to Copenhagen, Hamburg and Berlin and back in May, by
+train, bus or ferry. Two adults."
 
 ## How it works
 

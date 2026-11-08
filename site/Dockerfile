@@ -12,6 +12,7 @@ FROM nginx:1.27-alpine
 COPY site/nginx.conf /etc/nginx/conf.d/default.conf
 COPY site/ /usr/share/nginx/html/
 COPY --from=skill /src/postcard/kit /usr/share/nginx/html/kit
+COPY --from=skill /src/postcard/examples/nordic-loop /usr/share/nginx/html/nordic
 COPY --from=skill /src/postcard/SKILL.md /usr/share/nginx/html/skill/SKILL.md
 COPY --from=skill /src/postcard/references /usr/share/nginx/html/skill/references
 COPY --from=skill /src/postcard/scripts /usr/share/nginx/html/skill/scripts

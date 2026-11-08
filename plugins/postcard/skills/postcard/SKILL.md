@@ -1,6 +1,6 @@
 ---
 name: postcard
-description: Find, compare and book travel (flights, trains, buses, ferries, drives), and show the options as a page on an engraved airmail map, with a HUD you design for the person's question. Use when someone asks to find flights or trains, compare ways or dates to travel, plan travel to an event, a holiday or a multi-stop trip, or see a trip on a map. The agent reads real prices in a browser, writes one trip.json, builds the page from the kit and the closest example, and stops at the payment page when booking.
+description: Find, compare and book travel (flights, trains, buses, ferries, drives), and show the options as a page on a globe, with a HUD you design for the person's question. Use when someone asks to find flights or trains, compare ways or dates to travel, plan travel to an event, a holiday or a multi-stop trip, or see a trip on a map. The agent reads real prices in a browser, writes one trip.json, builds the page from the kit and the closest example, and stops at the payment page when booking.
 ---
 
 # Postcard
@@ -16,6 +16,7 @@ fill the booking in their browser up to the payment page.
 | Path | What it is |
 | --- | --- |
 | `kit/` | The fixed parts: the chart, the trip model, time, the timeline, HUD parts, the checkout, the probe, the CSS and the art. API in `references/kit.md`. |
+| `examples/nordic-loop/` | The default look: a trip with several legs and stays (a loop, a tour, a return trip). A story page on a full-screen globe, one card per leg and per stay, ways to pick per leg, nights to change, and the bill. |
 | `examples/junction-2026/` | Flights to an event: ranked choices against the event schedule and work hours, on an hour-scale timeline. |
 | `examples/winter-sun/` | A holiday: three places by start week in a grid, the price with bags and travel time, a day-scale timeline. |
 | `scripts/check_trip.py` | Checks a trip folder. Run it after each edit of `trip.json`. |
@@ -75,7 +76,7 @@ Fix every error. Read every warning.
 ### 4. Build the page
 
 1. Read `references/craft.md` and `references/kit.md`.
-2. Copy `index.html` and `app.js` from the closest example into the trip folder.
+2. Copy `index.html`, `app.js` and any `app.css` from the closest example into the trip folder. Start from `examples/nordic-loop/` unless another example fits the question better.
 3. Write the model first: what one option is, what it costs, how options rank. Pure functions at the
    top of `app.js`, on top of `T.best`, `T.price` and `T.combos`. Give each option one bill
    (`kit/bill.js`) with every part from door to door; the row, the postcard, the band and the
