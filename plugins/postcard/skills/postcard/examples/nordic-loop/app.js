@@ -7,6 +7,8 @@
 // the map, opens that part's card, where the way or the nights change. No vehicle rides the map: a leg card
 // draws its line from start to end, and a way tile shows its vehicle as a small live 3D model on hover.
 // The model (ways per leg, hours lost, nights, the bill) and the store are the ones in v-editorial.js.
+// Everything about the trip comes from trip.json: the legs, the stays, the people, the dates and the names
+// (references/trip-schema.md, "Keys of a trip of several legs"). It works for N legs with N - 1 stays.
 import { loadTrip, openTrip, geo } from '/kit/trip.js';
 import { fmtDur } from '/kit/time.js';
 import { createChart, INK, PAPER, LAND, RED } from '/kit/chart.js';
@@ -15,11 +17,23 @@ import { esc, store } from '/kit/parts.js';
 import { bill, fare } from '/kit/bill.js';
 
 const T = await openTrip(await loadTrip());
-const X = T.raw.context, EST = X.estimates, WT = X.weights, P = T.places;
-const PAX = T.raw.passengers.adults, HOUR = EST.hour_value.value;
-const GROUPS = ['oslo-copenhagen', 'copenhagen-hamburg', 'hamburg-berlin', 'berlin-oslo'];
-const STAYS = ['Copenhagen', 'Hamburg', 'Berlin'];
-const START = T.raw.window.start.slice(0, 10);
+document.title = T.raw.title || document.title;
+const X = T.raw.context || {}, EST = X.estimates || {}, P = T.places;
+// The weights of the hours lost; the defaults hold when trip.json leaves one out.
+const WT = { change_h: 1, night_seat_h: 3, bed_night: ['23:00', '07:00'], ...X.weights };
+// The trip is read from trip.json, so this page works for any trip of N legs with N - 1 stays between them.
+// The legs: context.order (a list of group ids), else the journey groups by their first departure.
+const firstDep = (g) => d3.min(T.groups[g], (j) => j.dep);
+const GROUPS = (X.order || Object.keys(T.groups).sort((a, b) => firstDep(a) - firstDep(b))).filter((g) => T.groups[g]?.length);
+const N = GROUPS.length;
+// The stays: the cities in context.stays, else the city each leg ends in.
+const STAYS = X.stays?.length === N - 1 ? X.stays.map((s) => s.city) : GROUPS.slice(0, -1).map((g) => P[T.groups[g][0].to].label);
+const pax = T.raw.passengers || {}, PAX = (pax.adults || 1) + (pax.children || 0);
+const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
+const PAX_TXT = [plural(pax.adults || 1, 'adult'), pax.children ? plural(pax.children, 'child', 'children') : ''].filter(Boolean).join(', ');
+// The weight of an hour for the break-even fares. Without it the page shows no break-even.
+const HOUR = EST.hour_value?.value ?? null;
+const CUR = T.currency, SIGN = { EUR: '€', GBP: '£', USD: '$' }[CUR] ?? CUR + ' ';
 const phone = () => innerWidth < 760;
 const db = store(T.raw.id);
 // The map names a place by its city (Oslo, not Oslo ferry terminal (Akershusstranda)). The chart reads
@@ -55,19 +69,22 @@ function wayOf(j) {
   return { j, id: j.base || j.id, lost: lostOf(j), price: o ? o.total : null, offer: o, read: !!o, moved: !!j.shifted };
 }
 function breakEven(w, ways) {
-  if (w.read) return null;
+  if (w.read || HOUR == null) return null;
   const ref = ways.filter((x) => x.read).sort((a, b) => (a.price + HOUR * a.lost) - (b.price + HOUR * b.lost))[0];
   if (!ref || w.lost >= ref.lost) return null;
   return { fare: Math.floor(ref.price + HOUR * (ref.lost - w.lost)), ref, approx: ref.moved };
 }
-const nightsAt = (legs) => [0, 1, 2].map((i) => T.nights(legs[i], legs[i + 1]));
+const nightsAt = (legs) => legs.slice(0, -1).map((j, i) => T.nights(j, legs[i + 1]));
 function valid(legs) {
-  for (let i = 0; i < 3; i++) if (legs[i].arr > legs[i + 1].dep || T.nights(legs[i], legs[i + 1]) < 1) return false;
-  return legs[3].arr < T.T1;
+  for (let i = 0; i < N - 1; i++) if (legs[i].arr > legs[i + 1].dep || T.nights(legs[i], legs[i + 1]) < 1) return false;
+  return legs[N - 1].arr < T.T1;
 }
-const daysOf = (legs) => Math.round((Date.parse(legs[3].arrL.date) - Date.parse(START)) / 864e5) + 1;
+// Days count from the first departure (the first leg never moves) to the last arrival.
+const dayOf = (legs, date) => Math.round((Date.parse(date) - Date.parse(legs[0].depL.date)) / 864e5) + 1;
+const daysOf = (legs) => dayOf(legs, legs[N - 1].arrL.date);
 
-const SHOP = { 'Go Nordic Cruiseline': 'gonordiccruiseline.no', FlixBus: 'flixbus.com' };
+// The seller's shop domain for the checkout (context.shops: { seller: domain }).
+const SHOP = X.shops || {};
 const fdate = (iso) => { const l = T.clock.local(T.clock.H(iso)); return `${l.wd} ${l.day} ${l.mon}`; };
 function billOf(legs) {
   const parts = [];
@@ -78,10 +95,10 @@ function billOf(legs) {
       parts.push(...fare(T, j, off, { checked: PAX }, { ticket, shop: SHOP[o.seller] }));
     } else parts.push(...fare(T, j, { seller: j.carrierName }, {}, { ticket }));
   });
-  if (legs.some((j) => rides(j).some((s) => s.mode === 'train')))
-    parts.push({ what: 'luggage on the trains', kind: 'luggage', amount: 0, state: 'estimate', basis: EST.train_luggage.basis, who: 'none' });
+  if (EST.train_luggage && legs.some((j) => rides(j).some((s) => s.mode === 'train')))
+    parts.push({ what: 'luggage on the trains', kind: 'luggage', amount: EST.train_luggage.value ?? 0, state: 'estimate', basis: EST.train_luggage.basis, who: 'none' });
   const n = nightsAt(legs).reduce((a, b) => a + b, 0);
-  parts.push({ what: `${n} hotel nights`, kind: 'hotel', amount: null, basis: 'hotels not searched', who: 'out' });
+  if (n) parts.push({ what: plural(n, 'hotel night'), kind: 'hotel', amount: null, basis: 'hotels not searched', who: 'out' });
   return bill(T, parts);
 }
 
@@ -93,28 +110,41 @@ const MODE = (j) => {
   const night = overnight(j) ? 'Night ' : '';
   return night ? night + ms[0] : ms[0][0].toUpperCase() + ms[0].slice(1);
 };
-const SHORT = { DSB: 'DSB', 'Go Nordic Cruiseline': 'Go Nordic', 'Vy bus4you': 'Vy', 'Vy Norge': 'Vy', 'DB Fernverkehr AG': 'DB', 'Dänische Staatsbahnen': 'DSB', 'FlixTrain-eu': 'FlixTrain' };
+// A carrier's name in a tight space: context.carriers_short, else the trip's carriers, else the raw name.
+const SHORT = X.carriers_short || {};
+const shortName = (c) => SHORT[c] || T.carriers[c] || c;
 function who(j) {
-  const cs = [...new Set(rides(j).map((s) => s.number?.startsWith('ICE') ? 'DB ICE' : SHORT[s.carrier] || T.carriers[s.carrier] || s.carrier))];
+  const cs = [...new Set(rides(j).map((s) => s.number?.startsWith('ICE') ? 'DB ICE' : shortName(s.carrier)))];
   return cs.length > 1 ? `${cs[0]} +${cs.length - 1}` : cs[0];
 }
 const plusN = (j) => Math.round((Date.parse(j.arrL.date) - Date.parse(j.depL.date)) / 864e5);
+// A schedule read for another date ("transitous, proxy date 2026-12-08"): the times come from that date.
 const proxyOf = (j) => j.raw.schedule_source?.match(/proxy date (\d{4}-\d\d-\d\d)/)?.[1];
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const monthOf = (iso, short) => { const m = MONTHS[+iso.slice(5, 7) - 1]; return `${short ? m.slice(0, 3) : m} ${iso.slice(0, 4)}`; };
+// "December 2026" for the proxy dates of these legs, and "May 2027" for the days they stand for.
+const proxyMonths = (legs, short) => [...new Set(legs.filter(proxyOf).map((j) => monthOf(proxyOf(j), short)))].join(' and ');
+const tripMonths = (legs) => [...new Set(legs.filter(proxyOf).map((j) => monthOf(j.depL.date)))].join(' and ');
 const via = (j) => { const rs = rides(j); return rs.length > 1 ? 'Via ' + [...new Set(rs.slice(1).map((s) => P[s.from].label))].join(', ') : 'Direct'; };
-const MAIN = { Berlin: 'BERLIN-HBF', Hamburg: 'HAMBURG-HBF' };
-const far = (id) => { const m = MAIN[P[id].label]; if (!m || m === id) return ''; const k = geo.km(P[id].coord, P[m].coord); return k >= 2 ? `${P[id].code || FULL[id]}, ${Math.round(k)} km from ${FULL[m]}` : ''; };
+// The main station of a city (context.main_stations: { city: place id }), to say how far another stop is.
+const MAIN = X.main_stations || {};
+const far = (id) => { const m = MAIN[P[id].label]; if (!m || m === id || !P[m]) return ''; const k = geo.km(P[id].coord, P[m].coord); return k >= 2 ? `${P[id].code || FULL[id]}, ${Math.round(k)} km from ${FULL[m]}` : ''; };
 const fareTxt = (w) => `${w.moved ? '≈ ' : ''}${/from/.test(w.offer.limit || '') ? 'from ' : ''}${Math.round(w.price)}`;
+// Who a fare is for: "for both" for two people.
+const FOR_ALL = PAX === 1 ? '' : PAX === 2 ? ' for both' : ` for all ${PAX}`;
+const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 // The longer facts of a way: the facts line's tooltip and its screen-reader text.
 function detail(w, ways) {
   const j = w.j, be = breakEven(w, ways), xs = [];
-  if (j.mode === 'ferry') xs.push('From price; cabin type not read.');
+  // A ferry has no changes to name; its fare's limit says more.
+  if (j.mode === 'ferry' && w.offer?.limit) xs.push(cap(w.offer.limit) + '.');
   else xs.push(via(j) + '.');
   if (nightTrainUnknown(j)) xs.push(`Seat or bed not read; with a bed, ${fmtDur(lostOf(j, true))} lost.`);
   else if (overnight(j) && !bed(j)) xs.push('A night sitting up.');
   for (const id of [j.from, j.to]) { const f = far(id); if (f) xs.push(f + '.'); }
-  if (proxyOf(j)) xs.push('Times from Dec 2026.');
+  if (proxyOf(j)) xs.push(`Times from ${monthOf(proxyOf(j), true)}.`);
   if (j.shifted) xs.push(`Read for ${fdate(T.byId[j.base].raw.dep.slice(0, 10))}.`);
-  if (!w.read) xs.push(be ? `Fare not read; better below ${be.approx ? '≈ ' : ''}EUR ${be.fare} for both.` : 'Fare not read.');
+  if (!w.read) xs.push(be ? `Fare not read; better below ${be.approx ? '≈ ' : ''}${CUR} ${be.fare}${FOR_ALL}.` : 'Fare not read.');
   return xs.join(' ');
 }
 
@@ -124,6 +154,8 @@ const ICON = {
   train: svg('<path d="M5 2.5h6a2 2 0 0 1 2 2V10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4.5a2 2 0 0 1 2-2zM3 7.5h10M5.5 14.5l1-2.5M10.5 14.5l-1-2.5"/>'),
   bus: svg('<rect x="2.5" y="2.5" width="11" height="9.5" rx="1.8"/><path d="M2.5 7.5h11M4.8 12v2M11.2 12v2"/>'),
   ferry: svg('<path d="M1.8 9.8h12.4l-2.1 3.7H3.9zM4.6 9.8V6.8h6.8v3M7 6.8V4.3h2.2v2.5"/>'),
+  plane: svg('<path d="M8 1.8c.7 0 1.1.8 1.1 1.8v3.2l4.6 2.6v1.5L9.1 9.6v2.6l1.6 1.2v1.2L8 13.8l-2.7.8v-1.2l1.6-1.2V9.6L2.3 10.9V9.4l4.6-2.6V3.6c0-1 .4-1.8 1.1-1.8z"/>'),
+  car: svg('<path d="M2.5 10.5V8.2l1.4-3.4c.2-.5.7-.8 1.2-.8h5.8c.5 0 1 .3 1.2.8l1.4 3.4v2.3zM2.5 8.2h11M4.5 10.5v1.8M11.5 10.5v1.8"/>'),
   x: svg('<path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/>'),
   grid: svg('<rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1"/><rect x="9" y="9" width="4.5" height="4.5" rx="1"/>'),
   pause: svg('<path d="M5.5 3v10M10.5 3v10"/>'),
@@ -132,16 +164,27 @@ const ICON = {
   next: svg('<path d="M6 3l5 5-5 5"/>'),
   moon: svg('<path d="M12.6 10.4A5.4 5.4 0 0 1 5.6 3.4a5.4 5.4 0 1 0 7 7z"/>'),
 };
-const modeOf = (j) => j.mode === 'ferry' ? 'ferry' : (d3.greatest(rides(j), (s) => s.b - s.a)?.mode === 'bus' ? 'bus' : 'train');
+// The icon of a way: its longest ride's mode.
+const modeOf = (j) => { if (j.mode === 'ferry') return 'ferry'; const m = d3.greatest(rides(j), (s) => s.b - s.a)?.mode;
+  return m === 'plane' ? 'plane' : m === 'bus' || m === 'coach' ? 'bus' : m === 'car' || m === 'taxi' ? 'car' : 'train'; };
 const NUM = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen'];
 
 // ---------- State (the store of v-editorial.js) ----------
-const ASKED = T.groups[GROUPS[0]].find((j) => j.mode === 'ferry')?.id;
+// The first pick of a leg: the way the person asked for (context.default_picks: { group: journey id }),
+// else the way that loses the fewest hours.
+const ASKED = X.default_picks || {};
 const ranked = (ways) => [...ways].sort((a, b) => a.lost - b.lost || a.j.dep - b.j.dep);
-const TOP = GROUPS.map((g, i) => i === 0 && ASKED ? ASKED : ranked(T.groups[g].map(wayOf))[0].id);
-const okPicks = (v) => Array.isArray(v) && v.length === 4 && v.every((id, i) => T.byId[id]?.group === GROUPS[i]);
-const okDelta = (v) => Array.isArray(v) && v.length === 3 && v.every((n) => Number.isInteger(n) && Math.abs(n) <= 6);
-const state = { picks: db.get('picks', TOP, okPicks), delta: db.get('delta', [0, 0, 0], okDelta) };
+let TOP = GROUPS.map((g) => T.byId[ASKED[g]]?.group === g ? ASKED[g] : ranked(T.groups[g].map(wayOf))[0].id);
+// When those ways do not fit together (a leg leaves before the one before arrives), take the chain that fits
+// and loses the fewest hours.
+if (!valid(TOP.map((id) => T.byId[id]))) {
+  const fit = d3.least(T.combos(GROUPS, valid), (js) => d3.sum(js, lostOf));
+  if (fit) TOP = fit.map((j) => j.id);
+}
+const ZERO = Array(N - 1).fill(0);
+const okPicks = (v) => Array.isArray(v) && v.length === N && v.every((id, i) => T.byId[id]?.group === GROUPS[i]);
+const okDelta = (v) => Array.isArray(v) && v.length === N - 1 && v.every((n) => Number.isInteger(n) && Math.abs(n) <= 6);
+const state = { picks: db.get('picks', TOP, okPicks), delta: db.get('delta', [...ZERO], okDelta) };
 const save = () => { db.set('picks', state.picks); db.set('delta', state.delta); };
 const shiftOf = (i) => state.delta.slice(0, i).reduce((a, b) => a + b, 0);
 const cache = new Map();
@@ -153,7 +196,7 @@ async function model() {
   const ways = legsJ.map((js) => ranked(js.map(wayOf)));
   const picks = ways.map((ws, i) => ws.find((w) => w.id === state.picks[i]) || ws.find((w) => w.id === TOP[i]));
   const legs = picks.map((w) => w.j);
-  if (!valid(legs)) { state.picks = [...TOP]; state.delta = [0, 0, 0]; save(); return model(); }
+  if (!valid(legs)) { state.picks = [...TOP]; state.delta = [...ZERO]; save(); return model(); }
   const can = ways.map((ws, i) => new Map(ws.map((w) => { const l = [...legs]; l[i] = w.j; return [w.id, valid(l)]; })));
   return { ways, picks, legs, can, b: billOf(legs), nights: nightsAt(legs), days: daysOf(legs) };
 }
@@ -169,14 +212,22 @@ function totals() {
 }
 
 // ---------- Cards ----------
-// Cover, then leg, stay, leg, stay, leg, stay, leg. After the last leg the story closes on the cover.
-const CARDS = [{ k: 'cover' }].concat([0, 1, 2, 3].flatMap((i) => i < 3 ? [{ k: 'leg', i }, { k: 'stay', i }] : [{ k: 'leg', i }]));
+// Cover, then leg, stay, leg, stay, ... leg. After the last leg the story closes on the cover.
+const CARDS = [{ k: 'cover' }].concat(GROUPS.flatMap((_, i) => i < N - 1 ? [{ k: 'leg', i }, { k: 'stay', i }] : [{ k: 'leg', i }]));
 const LAST = CARDS.length - 1;
 const legCard = (i) => 1 + 2 * i, stayCard = (i) => 2 + 2 * i;
 // How long a card plays: the cover holds a moment, a leg holds while its line draws and a little after, a stay is a pause between legs.
 const PLAY = { cover: 5200, leg: 6500, stay: 5200 };
 const hoursOf = (c) => c.k === 'leg' ? M.legs[c.i].arr - M.legs[c.i].dep : c.k === 'stay' ? M.legs[c.i + 1].dep - M.legs[c.i].arr : 8;
 const stayAt = (i) => M.legs[i].to;
+// The stops of the trip in order: the start and each stay, then the end when it is not back at the start.
+function stops(legs) {
+  const s = [legs[0].from, ...legs.slice(0, -1).map((j) => j.to)], end = legs[N - 1].to;
+  return P[end].label === P[s[0]].label ? s : [...s, end];
+}
+// The places the map labels big: the stops, one per city.
+const endsOf = (legs) => stops(legs).filter((id, n, a) => a.findIndex((x) => P[x].label === P[id].label) === n);
+const isLoop = (legs) => N > 1 && P[legs[N - 1].to].label === P[legs[0].from].label;
 
 const $ = (id) => document.getElementById(id);
 const win = $('win'), head = $('head'), body = $('body'), top = $('top'), segs = $('segs'), stamp = $('stamp');
@@ -261,25 +312,46 @@ function showMap() {
   // While a leg draws itself, the chart leaves its line out; the chart's line comes back when the draw ends.
   if (c.k === 'leg') { const j = M.legs[c.i]; chart.show({ chosen: draw.id === j.id ? [] : [j], others: M.ways[c.i].filter((w) => w !== M.picks[c.i]).map((w) => w.j), ends: [j.from, j.to], refit: false }); }
   else if (c.k === 'stay') chart.show({ chosen: [M.legs[c.i], M.legs[c.i + 1]], others: [], ends: [stayAt(c.i)], refit: false, legNumbers: false });
-  else chart.show({ chosen: M.legs, others: [], ends: [M.legs[0].from, M.legs[0].to, M.legs[1].to, M.legs[2].to], refit: false });
+  else chart.show({ chosen: M.legs, others: [], ends: endsOf(M.legs), refit: false });
   scr = null;
 }
 
 // ---------- Drawing ----------
 // The script word sits across the two lines when it is short ("to", "in"); a longer one ("home to") takes a line of its own.
 const hl = (a, mid, b, one) => `<h2 class="hl${one || mid.length > 3 ? ' one' : ''}">${a ? `<span data-a>${esc(a)}</span>` : ''}<em data-a>${esc(mid)}</em><span data-a>${esc(b)}</span></h2>`;
-const legTitle = (i) => { const j = M.legs[i]; return [j.mode === 'ferry' && overnight(j) ? 'Night ferry' : MODE(j), i === 3 ? 'home to' : 'to', P[j.to].label]; };
-// A fare on a tile: the bill's "from" and "≈", in euros. An unread fare is a grey dash.
-const euro = (w) => `${w.moved ? '≈ ' : ''}${/from/.test(w.offer.limit || '') ? 'from ' : ''}€${Math.round(w.price)}`;
+// The last leg of a loop goes "home to" the start.
+const legTitle = (i) => { const j = M.legs[i]; return [j.mode === 'ferry' && overnight(j) ? 'Night ferry' : MODE(j), i === N - 1 && isLoop(M.legs) ? 'home to' : 'to', P[j.to].label]; };
+// A fare on a tile: the bill's "from" and "≈", with the currency sign. An unread fare is a grey dash.
+const euro = (w) => `${w.moved ? '≈ ' : ''}${/from/.test(w.offer.limit || '') ? 'from ' : ''}${SIGN}${Math.round(w.price)}`;
 const timeTxt = (j) => { const n = plusN(j); return `${j.depL.hm} → ${j.arrL.hm}${n ? `<sup>+${n}</sup>` : ''}`; };
 const legFacts = (j) => `${esc(who(j))} · ${timeTxt(j)} · ${fmtDur(j.arr - j.dep)}`;
-const dates = () => { const a = M.legs[0].depL, b = M.legs[3].arrL; return a.mon === b.mon ? `${a.day}–${b.day} ${b.mon}` : `${a.day} ${a.mon} – ${b.day} ${b.mon}`; };
+// "15–24 May", "30 Apr – 3 May", or "28 Dec 2026 – 2 Jan"; the caller adds the last year.
+const span = (a, b) => a.date === b.date ? `${b.day} ${b.mon}` : a.mon === b.mon && a.year === b.year ? `${a.day}–${b.day} ${b.mon}`
+  : `${a.day} ${a.mon}${a.year === b.year ? '' : ' ' + a.year} – ${b.day} ${b.mon}`;
+// The same with weekdays, for the checkout: "Sat 15 → Mon 24 May 2027".
+const wdSpan = (a, b, to = '→') => a.date === b.date ? `${a.wd} ${a.day} ${a.mon} ${a.year}` : a.mon === b.mon && a.year === b.year ? `${a.wd} ${a.day} ${to} ${b.wd} ${b.day} ${b.mon} ${b.year}`
+  : `${a.wd} ${a.day} ${a.mon}${a.year === b.year ? '' : ' ' + a.year} ${to} ${b.wd} ${b.day} ${b.mon} ${b.year}`;
+const dates = () => span(M.legs[0].depL, M.legs[N - 1].arrL);
+// The route in words: "Oslo → Copenhagen → Hamburg → Berlin → Oslo".
+const route = (legs) => [legs[0].from, ...legs.map((j) => j.to)].map((id) => P[id].label).join(' → ');
 // A night count in the strip is as big as its number of nights.
 const nightFs = (n) => `${Math.min(30, 12 + n * 3.5)}px`;
+// The cover headline, in three parts around a script word: context.headline ([a, word, b] or one line), else
+// "Four cities in ten days" from the data. A single leg reads "Oslo to Copenhagen".
+const numWord = (n) => NUM[n] || String(n);
+function headline() {
+  const h = X.headline;
+  if (Array.isArray(h) && h.length === 3) return h;
+  if (typeof h === 'string' && h) return [h, '', ''];
+  if (N === 1) return [P[M.legs[0].from].label, 'to', P[M.legs[0].to].label];
+  const cities = new Set(stops(M.legs).map((id) => P[id].label)).size;
+  return [cap(numWord(cities)) + ' cities', 'in', `${numWord(M.days)} ${M.days === 1 ? 'day' : 'days'}`];
+}
+const headHTML = ([a, mid, b], tag) => { const t = (x) => !x ? '' : tag ? `<${tag}>${esc(x)}</${tag}>` : esc(x); return `${t(a)}${mid ? `<em>${esc(mid)}</em>` : ''}${t(b)}`; };
 
 function drawHead() {
-  $('title').innerHTML = `<span>Four cities</span><em>in</em><span>${NUM[M.days] || M.days} days</span>`;
-  $('dek').textContent = `${dates()} ${M.legs[3].arrL.year} · ${PAX} adults`;
+  $('title').innerHTML = headHTML(headline(), 'span');
+  $('dek').textContent = `${dates()} ${M.legs[N - 1].arrL.year} · ${PAX_TXT}`;
 }
 
 // A night numeral and its count, read before a redraw, so the new one can roll from it.
@@ -294,7 +366,7 @@ function roll(root, was) {
   old.animate([{ transform: 'none', opacity: 1 }, { transform: `translateY(${-s * 105}%)`, opacity: 0 }], { ...o, fill: 'forwards' }).onfinish = () => old.remove();
   out.lastElementChild.animate([{ transform: `translateY(${s * 105}%)`, opacity: 0 }, { transform: 'none', opacity: 1 }], o);
 }
-const stepsHTML = (i, n) => { const canDown = n > 1, canUp = M.legs[3].arr + 24 < T.T1;
+const stepsHTML = (i, n) => { const canDown = n > 1, canUp = M.legs[N - 1].arr + 24 < T.T1;
   return `<button class="step" data-key="s-" data-d="-1" ${canDown ? '' : 'aria-disabled="true"'} aria-label="One night less in ${STAYS[i]}">−</button>
     <output class="num" data-i="${i}" data-n="${n}" aria-live="polite" aria-label="${n} night${n === 1 ? '' : 's'} in ${STAYS[i]}"><span>${n}</span></output>
     <button class="step" data-key="s+" data-d="1" ${canUp ? '' : 'aria-disabled="true" title="No day left: take a night from another city first"'} aria-label="One night more in ${STAYS[i]}">+</button>`; };
@@ -318,7 +390,7 @@ function drawBody(dir = 0) {
     const tiles = [...ways].sort((x, y) => x.j.dep - y.j.dep).map((w) => {
       const j = w.j, sel = w === pick, ok = M.can[i].get(w.id);
       return `<button class="way" data-key="w:${i}:${w.id}" data-id="${w.id}" aria-pressed="${sel}" ${ok ? '' : 'aria-disabled="true"'}
-        aria-label="${esc(`${MODE(j)}, ${who(j)}, ${j.depL.hm} to ${j.arrL.hm}${plusN(j) ? ' next day' : ''}, ${fmtDur(w.lost)} lost, ${w.read ? 'EUR ' + fareTxt(w) : 'fare not read'}${ok ? '' : ', does not fit the plan'}`)}">
+        aria-label="${esc(`${MODE(j)}, ${who(j)}, ${j.depL.hm} to ${j.arrL.hm}${plusN(j) ? ' next day' : ''}, ${fmtDur(w.lost)} lost, ${w.read ? CUR + ' ' + fareTxt(w) : 'fare not read'}${ok ? '' : ', does not fit the plan'}`)}">
         ${ICON[modeOf(j)]}<b>${j.depL.hm}</b><span class="${w.read ? '' : 'no'}">${w.read ? euro(w) : '–'}</span></button>`;
     }).join('');
     body.innerHTML = `${hl(a, mid, b)}<p class="facts" id="facts" data-a title="${esc(detail(pick, ways))}">${legFacts(pick.j)}</p>
@@ -348,7 +420,7 @@ function drawBody(dir = 0) {
       const l = j.depL;
       parts.push(`<button class="it leg" data-key="l:${i}" data-leg="${i}" style="--w:${(j.arr - j.dep).toFixed(1)}"
         aria-label="${esc(`${P[j.from].label} to ${P[j.to].label}: ${MODE(j).toLowerCase()} ${l.wd} ${l.day} ${l.mon} at ${l.hm}`)}">${ICON[modeOf(j)]}<span class="d">${l.wd} ${l.day}</span><b>${l.hm}</b></button>`);
-      if (i < 3) { const n = M.nights[i];
+      if (i < N - 1) { const n = M.nights[i];
         parts.push(`<button class="it stay" data-key="s:${i}" data-stay="${i}" style="--w:${(M.legs[i + 1].dep - j.arr).toFixed(1)}" aria-label="${n} night${n === 1 ? '' : 's'} in ${STAYS[i]}">${ICON.moon}<b style="--n-fs:${nightFs(n)}">${n}</b><i class="c" aria-hidden="true">${STAYS[i]}</i></button>`); }
     });
     body.innerHTML = `<nav class="strip" aria-label="Your trip" data-a><div class="legs">${parts.join('')}</div>
@@ -385,7 +457,7 @@ function drawStamp() {
   const c = CARDS[story.cur]; let s = '';
   if (c.k === 'leg') { const j = M.legs[c.i], r = Math.max(0, story.ride), l = T.clock.local(j.dep + r * (j.arr - j.dep), P[r < .5 ? j.from : j.to].tz || T.clock.tz);
     s = `${l.wd} ${l.day} ${l.mon} · ${l.hm}`; }
-  else if (c.k === 'stay') s = `Day ${Math.round((Date.parse(M.legs[c.i].arrL.date) - Date.parse(START)) / 864e5) + 1} of ${M.days}`;
+  else if (c.k === 'stay') s = `Day ${dayOf(M.legs, M.legs[c.i].arrL.date)} of ${M.days}`;
   if (stamp.textContent !== s) stamp.textContent = s;
 }
 
@@ -394,7 +466,7 @@ function bookState() {
   const job = co.busy(), t = totals();
   book.classList.toggle('pay', job?.status === 'at-payment');
   book.textContent = job ? BUSY_TEXT[job.status] : 'Book';
-  book.setAttribute('aria-label', job ? BUSY_TEXT[job.status] : `Book the ${M.b.tickets.length} tickets, ${t.fig} ${t.tail}`);
+  book.setAttribute('aria-label', job ? BUSY_TEXT[job.status] : `Book ${M.b.tickets.length === 1 ? 'the ticket' : `the ${M.b.tickets.length} tickets`}, ${t.fig} ${t.tail}`);
 }
 
 async function render() {
@@ -587,8 +659,8 @@ function screenParts() {
   if (key !== pathsFor) { pathsFor = key; paths = M.legs.map((j) => j.segments.map((s) => { const k = Math.max(1, Math.floor(s.path.length / 150)); return s.path.filter((_, n, a) => n % k === 0 || n === a.length - 1); })); }
   const xy = (ll) => { const q = map.project(ll); return [q.x, q.y]; };
   const legs = paths.map((segs, i) => ({ k: 'leg', i, segs: segs.map((s) => s.map(xy)) }));
-  const stays = [0, 1, 2].map((i) => ({ k: 'stay', i, city: xy(P[stayAt(i)].coord) }));
-  return (scr = { legs, stays, ends: [M.legs[0].from, ...M.legs.slice(0, 3).map((j) => j.to)].map((id) => xy(P[id].coord)) });
+  const stays = STAYS.map((_, i) => ({ k: 'stay', i, city: xy(P[stayAt(i)].coord) }));
+  return (scr = { legs, stays, ends: stops(M.legs).map((id) => xy(P[id].coord)) });
 }
 const toSeg = (s, x, y) => {
   let d = Infinity;
@@ -615,7 +687,7 @@ function partAt(x, y, reach = REACH) {
   return best;
 }
 // The chart's label for a stay city (a marker with the city's name).
-const nameOf = (i) => [...document.querySelectorAll('.pc-lbl.city')].find((e) => e.textContent.trim() === STAYS[i]);
+const nameOf = (i) => [...document.querySelectorAll('.pc-lbl.city')].find((e) => e.textContent.trim() === P[stayAt(i)].label);
 
 const hint = document.createElement('div');
 hint.className = 'hint'; hint.setAttribute('aria-hidden', 'true'); $('stage').append(hint);
@@ -731,7 +803,7 @@ document.addEventListener('visibilitychange', () => document.hidden ? story.held
 // that the leg card shows, so a phone does not show it. The models are the kit's (art/3d).
 const HOVER = matchMedia('(hover: hover) and (pointer: fine)');
 const ART = '/kit/art/3d/';
-const BY_MODE = { train: 'train-hs', bus: 'coach', coach: 'coach', car: 'car', taxi: 'taxi', ferry: 'ferry' };
+const BY_MODE = { train: 'train-hs', bus: 'coach', coach: 'coach', car: 'car', taxi: 'taxi', ferry: 'ferry', plane: 'plane' };
 let MODELS = {};
 const modelsP = fetch(ART + 'index.json').then((r) => r.ok ? r.json() : []).then((l) => { MODELS = Object.fromEntries(l.map((m) => [m.name, m])); }).catch(() => {});
 const mainRide = (j) => d3.greatest(rides(j), (s) => s.b - s.a);
@@ -1021,7 +1093,7 @@ function sketch(c) {
     const on = c.k === 'cover' || (c.k === 'leg' && c.i === i);
     return `<path d="${line(segs)}" fill="none" stroke="${on ? 'var(--red)' : 'var(--ink)'}" stroke-opacity="${on ? 1 : .28}" stroke-width="${(on ? 2.2 : 1.1) * k}" stroke-linecap="round" stroke-linejoin="round"/>`;
   }).join('');
-  const cities = [M.legs[0].from, ...M.legs.slice(0, 3).map((j) => j.to)].map((id, n) => {
+  const cities = stops(M.legs).map((id, n) => {
     const [x, y] = pr(P[id].coord), on = c.k === 'stay' && c.i === n - 1;
     return on ? `<circle cx="${x}" cy="${y}" r="${6 * k}" fill="none" stroke="var(--red)" stroke-width="${1.2 * k}"/><circle cx="${x}" cy="${y}" r="${2.6 * k}" fill="var(--red)"/>`
       : `<circle cx="${x}" cy="${y}" r="${1.8 * k}" fill="var(--land)" stroke="var(--ink)" stroke-width="${.9 * k}"/>`;
@@ -1033,7 +1105,7 @@ function drawGrid() {
     let text, label;
     if (c.k === 'leg') { const j = M.legs[c.i], [a, mid, b] = legTitle(c.i); text = `<div class="th">${esc(a)}<em>${esc(mid)}</em>${esc(b)}</div><div class="tm">${j.depL.wd} ${j.depL.day} · ${j.depL.hm}</div>`; label = `${a} ${mid} ${b}, ${j.depL.wd} ${j.depL.day} ${j.depL.mon} at ${j.depL.hm}`; }
     else if (c.k === 'stay') { const nn = M.nights[c.i]; text = `<span class="tn">${nn}</span><div class="th"><em>${nn === 1 ? 'night in' : 'nights in'}</em>${STAYS[c.i]}</div>`; label = `${nn} night${nn === 1 ? '' : 's'} in ${STAYS[c.i]}`; }
-    else { const t = totals(); text = `<div class="th">Four cities<em>in</em>${NUM[M.days] || M.days} days</div><div class="tm">${esc(t.fig)}</div>`; label = `The whole trip, ${t.fig}`; }
+    else { const t = totals(); text = `<div class="th">${headHTML(headline())}</div><div class="tm">${esc(t.fig)}</div>`; label = `The whole trip, ${t.fig}`; }
     return `<button class="thumb" data-n="${n}" aria-current="${n === story.cur}" aria-label="${esc(label)}">${sketch(c)}<div class="tt">${text}</div></button>`;
   }).join('');
   sheetEl.querySelectorAll('.thumb').forEach((b) => b.onclick = () => { const n = +b.dataset.n; closeGrid(false); go(n); });
@@ -1064,22 +1136,27 @@ const co = checkout({ id: T.raw.id, onJob: () => bookState() });
 function openCheckout() {
   if (!M) return;
   stopPlay(); hidePreview(true); hideAlt();
-  const { b, legs, nights, days } = M, first = legs[0].depL, home = legs[3].arrL;
+  const { b, legs, nights, days } = M, when = wdSpan(legs[0].depL, legs[N - 1].arrL), nTickets = b.tickets.length;
+  const ifCost = PAX === 1 ? 'If the ticket costs' : PAX === 2 ? 'If both tickets cost' : `If the ${PAX} tickets cost`;
   const extra = legs.map((j, i) => { const w = M.picks[i], be = breakEven(w, M.ways[i]);
-    return be ? `Leg ${i + 1} was chosen because it loses fewer hours. If both tickets cost ${be.approx ? 'about ' : ''}EUR ${be.fare} or more${nightTrainUnknown(j) ? ' with the night class' : ''}, stop and tell me: ${be.ref.j.carrierName} ${be.ref.j.depL.hm} at EUR ${Math.round(be.ref.price)} is then the better way.` : ''; }).filter(Boolean);
+    return be ? `Leg ${i + 1} was chosen because it loses fewer hours. ${ifCost} ${be.approx ? 'about ' : ''}${CUR} ${be.fare} or more${nightTrainUnknown(j) ? ' with the night class' : ''}, stop and tell me: ${be.ref.j.carrierName} ${be.ref.j.depL.hm} at ${CUR} ${Math.round(be.ref.price)} is then the better way.` : ''; }).filter(Boolean);
   const movedLegs = legs.filter((j) => j.shifted);
+  // The hotel line: "2 nights in Copenhagen, 3 in Hamburg and 3 in Berlin".
+  const stays = STAYS.map((s, i) => i ? `${nights[i]} in ${s}` : `${plural(nights[i], 'night')} in ${s}`);
+  const hotels = stays.length > 1 ? `${stays.slice(0, -1).join(', ')} and ${stays.at(-1)}` : stays[0];
+  const allNights = d3.sum(nights);
   const prompt = [
-    `Book our trip: Oslo → Copenhagen → Hamburg → Berlin → Oslo, ${first.wd} ${first.day} to ${home.wd} ${home.day} ${home.mon} 2027, 2 adults, normal luggage (one suitcase each). Use my browser.`,
+    `Book our trip: ${route(legs)}, ${wdSpan(legs[0].depL, legs[N - 1].arrL, 'to')}, ${PAX_TXT}, normal luggage (one suitcase each). Use my browser.`,
     ...b.promptLines(),
     ...extra,
-    legs.some(proxyOf) ? 'The train times come from the same trains in December 2026, because the May 2027 timetable is not published. Check each train on the seller site and report any change before you fill.' : '',
+    legs.some(proxyOf) ? `The train times come from the same trains in ${proxyMonths(legs)}, because the ${tripMonths(legs)} timetable is not published. Check each train on the seller site and report any change before you fill.` : '',
     movedLegs.length ? `These legs were moved to another day on the page, and their times (and price, where read) were read for the searched day: ${movedLegs.map((j) => `${MODE(j).toLowerCase()} ${j.depL.wd} ${j.depL.day} ${j.depL.mon} (searched for ${fdate(T.byId[j.base].raw.dep.slice(0, 10))})`).join('; ')}. Read the real times and price for the new day and report them before you fill.` : '',
-    `Hotels are not part of this booking: ${nights[0]} nights in Copenhagen, ${nights[1]} in Hamburg and ${nights[2]} in Berlin. Do not book them.`,
+    stays.length ? `Hotels are not part of this booking: ${hotels}. Do not book them.` : '',
     'If a price is more than 15% above the expected price, stop and tell me.',
     'Stop on each payment page. Do not pay.'].filter(Boolean).join('\n');
-  co.open({ title: 'Oslo → Copenhagen → Hamburg → Berlin → Oslo', sub: `${first.wd} ${first.day} → ${home.wd} ${home.day} ${home.mon} 2027 · 2 adults · ${days} days · ${b.tickets.length} tickets`,
-    items: b.items(), totalLabel: 'This booking, 2 adults', total: totals().text,
-    note: `${legs.some(proxyOf) ? 'Train times are from December 2026 timetables; your agent checks each one. ' : ''}${movedLegs.length ? `Moved legs (${movedLegs.map((j) => `${P[j.from].label} → ${P[j.to].label}`).join(', ')}): times${movedLegs.some((j) => wayOf(j).read) ? ' and prices' : ''} were read for another day. ` : ''}Hotels (${nights.reduce((a, c) => a + c, 0)} nights) are not part of this booking. Prices seen ${esc(T.raw.sources.seen)}.`,
+  co.open({ title: route(legs), sub: `${when} · ${PAX_TXT} · ${plural(days, 'day')} · ${plural(nTickets, 'ticket')}`,
+    items: b.items(), totalLabel: `This booking, ${PAX_TXT}`, total: totals().text,
+    note: `${legs.some(proxyOf) ? `Train times are from ${proxyMonths(legs)} timetables; your agent checks each one. ` : ''}${movedLegs.length ? `Moved legs (${movedLegs.map((j) => `${P[j.from].label} → ${P[j.to].label}`).join(', ')}): times${movedLegs.some((j) => wayOf(j).read) ? ' and prices' : ''} were read for another day. ` : ''}${stays.length ? `Hotels (${plural(allNights, 'night')}) are not part of this booking. ` : ''}Prices seen ${esc(T.raw.sources?.seen || '')}.`,
     prompt,
     trip: { title: T.raw.title, currency: T.currency, passengers: T.raw.passengers, legs: legs.map((j) => ({ ...j.raw, moved_days: j.shifted || 0 })), nights: Object.fromEntries(STAYS.map((s, i) => [s, nights[i]])), total: totals().text } });
 }

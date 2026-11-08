@@ -1103,6 +1103,23 @@
         "to": "2027-05-24"
       }
     ],
+    "default_picks": {
+      "oslo-copenhagen": "af1"
+    },
+    "shops": {
+      "Go Nordic Cruiseline": "gonordiccruiseline.no",
+      "FlixBus": "flixbus.com"
+    },
+    "main_stations": {
+      "Berlin": "BERLIN-HBF",
+      "Hamburg": "HAMBURG-HBF"
+    },
+    "carriers_short": {
+      "DSB": "DSB",
+      "Go Nordic Cruiseline": "Go Nordic",
+      "Vy bus4you": "Vy",
+      "Vy Norge": "Vy"
+    },
     "not_searched": [
       "Train fares (bahn.de flagged the browser; DSB, SJ and Vy were not tried)",
       "The 2027 rail timetable (train times come from the same trains on 7-12 Dec 2026)",

@@ -192,6 +192,28 @@ Two keys have a fixed shape, so pages and checks can share code:
 }
 ```
 
+### Keys of a trip of several legs
+
+The `nordic-loop` example reads its trip from these keys, so a copy of it works for any trip of N legs
+with N - 1 stays (a loop, a one-way trip with stops, a return trip or one leg). All keys are optional.
+
+```jsonc
+"context": {
+  "order": ["oslo-copenhagen", "copenhagen-hamburg"],     // the leg groups in order; without it, by first departure
+  "stays": [{ "city": "Copenhagen", "from": "2027-05-16", "to": "2027-05-18" }],  // one per stop between legs
+  "default_picks": { "oslo-copenhagen": "af1" },          // the way the person asked for; else the fewest hours lost
+  "shops": { "FlixBus": "flixbus.com" },                  // seller -> shop domain, for the checkout
+  "main_stations": { "Berlin": "BERLIN-HBF" },            // city -> place id; a stop 2 km or more away says how far
+  "carriers_short": { "Go Nordic Cruiseline": "Go Nordic" },  // short names for way tiles; else `carriers`
+  "headline": ["Four cities", "in", "ten days"]           // the cover title; else made from the cities and days
+}
+```
+
+- `stays` must have one entry per stop. When the count does not match the legs, the page names each stop
+  by the city its leg ends in.
+- `headline` is three parts around a short script word, or one string. Without it the cover counts the
+  cities and the days ("Four cities in ten days"), and one leg reads "Oslo to Copenhagen".
+
 ## From v1
 
 A v1 file has `flights` instead of `journeys`. Move each flight to a journey with `mode: "plane"`,
