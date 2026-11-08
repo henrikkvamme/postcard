@@ -83,7 +83,7 @@ export function sheet(label = 'Details') {
       if (e.key === 'Escape') { SHEET.close(); e.stopImmediatePropagation(); e.preventDefault(); return; }
       if (e.key !== 'Tab') return;
       const box = bg.firstElementChild;
-      const f = [...box.querySelectorAll('button, a[href], input, textarea, select, [tabindex]:not([tabindex="-1"])')].filter((x) => !x.disabled && x.offsetParent);
+      const f = [...box.querySelectorAll('button, a[href], input, textarea, select, summary, [tabindex]:not([tabindex="-1"])')].filter((x) => !x.disabled && x.offsetParent);
       if (!f.length) return;
       const first = f[0], last = f[f.length - 1];
       if (!box.contains(document.activeElement)) { first.focus(); e.preventDefault(); }

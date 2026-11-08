@@ -89,7 +89,7 @@ export function bill(T, parts) {
   });
   b.tickets = [...byTicket.entries()].map(([ticket, ps]) => {
     const s = sum(ps), head = ps[0];
-    return { ticket, seller: head.seller, shop: head.shop, when: head.when, what: head.what, legs: head.legs, fareRead: head.amount != null,
+    return { ticket, seller: head.seller, shop: head.shop, when: head.when, what: head.what, legs: head.legs, trip: head.trip, fareRead: head.amount != null,
       bags: [...new Set(ps.map((p) => p.bags).filter(Boolean))].join('; '), ...s };
   });
   // The rest: what the person buys and what is paid on the way, for the checkout and the prompt.
@@ -103,12 +103,16 @@ export function bill(T, parts) {
       ...b.tickets.map((t) => {
         const bags = t.bags && !told.has(t.seller + t.bags) ? t.bags : '';
         if (bags) told.add(t.seller + t.bags);
-        return { label: t.seller || 'Ticket', main: esc(t.what),
+        // trip (mode, from, to, dep, arr, by), figure and tail let the checkout lay the row out; main and meta are the plain fallback.
+      return { label: t.seller || 'Ticket', main: esc(t.what), trip: t.trip, seller: t.seller,
+        figure: t.fareRead ? t.figure() : null, tail: t.fareRead ? t.missing() : [],
+        // The fine print without the time the row already shows: each vehicle of a connection, extra parts, limits, bags.
+        fine: esc([t.legs?.includes('; ') ? t.legs : '', ...t.parts.slice(1).map((p) => `${p.what} ${amt(p)}`), ...t.limits, bags].filter(Boolean).join(' · ')),
           price: esc(!t.fareRead ? 'fare not read' : t.figure() + (t.known ? '' : ' + ' + t.missing().join(' + '))),
           // A ticket of more than one vehicle shows each leg (the connection and the arrival), not only the start.
           meta: esc([t.legs?.includes('; ') ? t.legs : t.when, ...t.parts.slice(1).map((p) => `${p.what} ${amt(p)}`), ...t.limits, bags].filter(Boolean).join(' · ')) };
       }),
-      ...b.others.map((p) => ({ label: p.who === 'person' ? 'You buy' : 'On the way', main: esc(p.what),
+      ...b.others.map((p) => ({ aside: true, label: p.who === 'person' ? 'You buy' : 'On the way', main: esc(p.what), figure: amt(p),
         price: esc(amt(p)), meta: esc(['Not in this booking', p.basis].filter(Boolean).join(' · ')) })),
     ];
   };
@@ -154,7 +158,13 @@ export function fare(T, j, offer, need = {}, opts = {}) {
     const d = T.clock.local(sg.a, P[sg.from]?.tz), a = T.clock.local(sg.b, P[sg.to]?.tz);
     return `${sg.number || sg.carrier || sg.mode} ${stopName(sg.from)} ${d.wd} ${d.day} ${d.mon} ${d.year} ${d.hm} → ${stopName(sg.to)} ${a.hm}${a.date !== d.date ? ` (${a.wd} ${a.day} ${a.mon})` : ''}`;
   }).join('; ');
-  const parts = [{ ...base, kind: 'fare', what: label, when, legs, amount: offer?.price ?? null,
+  // The ticket as data, for the checkout row: its vehicle, its ends and its local times.
+  // The ticket runs from its first flight's departure to its last flight's arrival.
+  const fz = fl ? (j.segments || []).findLast((sg) => sg.mode === 'plane') : null;
+  const al = fz ? T.clock.local(fz.b, P[fz.to]?.tz) : j.arrL;
+  const trip = dl && al ? { mode: fl ? 'plane' : j.mode, from: name(fl ? fl.from : j.from), to: name(fz ? fz.to : j.to), dep: dl, arr: al,
+    by: [j.carrierName, j.numbers].filter(Boolean).join(' ') } : undefined;
+  const parts = [{ ...base, kind: 'fare', what: label, when, legs, trip, amount: offer?.price ?? null,
     state: offer?.price == null ? 'unknown' : offer.basis === 'estimate' || offer.basis === 'other-date' ? 'estimate' : 'read',
     basis: offer?.price != null ? [`${offer.source || offer.seller}${offer.seen ? `, seen ${offer.seen}` : ''}`, offer.price_note].filter(Boolean).join('; ') : 'fare not read',
     limit: offer?.limit, bags: offer?.bags_note }];

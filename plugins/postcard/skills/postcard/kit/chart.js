@@ -266,6 +266,19 @@ export function createChart(opts) {
     const c = map.getCenter(), cv = map.getCanvas();
     return new deck.WebMercatorViewport({ width: cv.clientWidth, height: cv.clientHeight, longitude: c.lng, latitude: c.lat, zoom: map.getZoom(),
       bearing: map.getBearing(), pitch: map.getPitch(), padding: map.getPadding() }); };
+  // A vehicle's screen size: pixels per metre at its own point, across the view, so a vehicle near the camera
+  // on a tilted map is not drawn larger than one far away (the map centre's scale is wrong for both).
+  const ppmAt = (pt, z) => { const vp = deckView(), th = (map.getBearing() + 90) * rad, lat = pt[1] * rad;
+    const q = [pt[0] + 100 * Math.sin(th) / (111320 * Math.cos(lat)), pt[1] + 100 * Math.cos(th) / 110540];
+    const a = vp.project([pt[0], pt[1], z]), b = vp.project([q[0], q[1], z]); return Math.hypot(b[0] - a[0], b[1] - a[1]) / 100 || 1e-9; };
+  // The vehicle eases only its heading. A traced path zigzags at street scale, so its exact local direction
+  // makes the model shake; the heading looks along the path and turns smoothly toward it. Size and height are
+  // exact on every frame: an eased size lags a camera zoom and the vehicle swells. A new leg or a jump starts fresh.
+  const segKm = new WeakMap();
+  const kmOf = (seg) => { if (!segKm.has(seg)) { let t = 0; for (let i = 1; i < seg.path.length; i++) t += geo.km(seg.path[i - 1], seg.path[i]); segKm.set(seg, t); } return segKm.get(seg); };
+  const ride = { seg: null, s: 0, t: 0, head: 0, z: 0, k: 0 };
+  let rideFrame = 0;
+  const turn = (from, to, a) => from + ((((to - from) % 360) + 540) % 360 - 180) * a;
   function vehicle() {
     const w = S.where, mpp = 156543 * Math.cos(map.getCenter().lat * rad) / Math.pow(2, map.getZoom());
     const air = w?.moving && MODES[w.seg.mode]?.air, model = w?.moving && !air && modelFor(w.seg);
@@ -291,10 +304,19 @@ export function createChart(opts) {
         visible: map.getZoom() >= FAR, getOrientation: (d) => [0, 180 - d.head, 90], getColor: [250, 246, 236, 255] })];
     }
     if (model) {
-      // Heading from a short look ahead on the path; the model's nose is +x.
-      const s0 = Math.max(0, w.s - .004), s1 = Math.min(1, w.s + .004), pt = along(w.seg.path, w.s).pt;
-      const head = geo.heading(along(w.seg.path, s0).pt, along(w.seg.path, s1).pt), M = MODELS[model];
-      const z = map.queryTerrainElevation?.(pt) || 0, px = .7 * (M.px || 56), k = px * mpp / Math.max(...M.size);
+      // Heading from the path about 50 px behind and ahead on screen (at least 1 km), so it follows the bends
+      // you can see and not the street-scale zigzag of the trace; the model's nose is +x.
+      const pt = along(w.seg.path, w.s).pt, z0 = map.queryTerrainElevation?.(pt) || 0, ppm = ppmAt(pt, z0), M = MODELS[model];
+      const win = Math.max(1, 50 / ppm / 1000) / Math.max(kmOf(w.seg), 1e-6);
+      const s0 = Math.max(0, w.s - win), s1 = Math.min(1, w.s + win);
+      const aim = geo.heading(along(w.seg.path, s0).pt, along(w.seg.path, s1).pt);
+      const px = .7 * (M.px || 56), k0 = px / ppm / Math.max(...M.size);
+      const now = performance.now(), fresh = ride.seg !== w.seg || Math.abs(w.s - ride.s) > .05 || now - ride.t > 400 || REDUCED;
+      const a = fresh ? 1 : 1 - Math.exp(-(now - ride.t) / 200);
+      Object.assign(ride, { pt, ppm, size: Math.max(...M.size), seg: w.seg, s: w.s, t: now, head: fresh ? aim : turn(ride.head, aim, a), z: z0, k: k0 });
+      const head = ride.head, z = ride.z, k = ride.k;
+      // Keep easing after the last move until the heading has settled.
+      if (!fresh && Math.abs(((aim - head) % 360 + 540) % 360 - 180) > .3 && !rideFrame) rideFrame = requestAnimationFrame(() => { rideFrame = 0; refresh(); });
       // Seen from straight above, a train is a roof. The model leans toward the camera until the view
       // is about 60 degrees from overhead, so it always reads as a three-quarter paper model.
       const tilt = Math.max(0, 60 - map.getPitch()), b = map.getBearing();
@@ -356,28 +378,34 @@ export function createChart(opts) {
 
   // ---- Landmarks: 3D paper models (art/3d, kind 'landmark') from trip.json map.models. ----
   // An entry is a model name ('paris') or { model, lng, lat, place, px }; lng and lat default to the model's own.
-  // Landmarks rise out of the map as the camera lands on the trip's view, small there, and sink when you zoom
-  // out to a wider view. They belong to the map: each grows as you zoom in (at a slower rate than the ground,
-  // so a close view does not fill with it), and a tall subject stands taller than a low one. It is
+  // Landmarks belong to the city, not to the overview: on the trip's view and wider they stay down, so the
+  // route reads alone. One rises when the camera comes close to its city (about two zoom levels
+  // in from the trip's view) and sinks when the camera leaves. It grows as you zoom in further (at a slower
+  // rate than the ground, so a close view does not fill with it), and a tall subject stands taller than a low one. It is
   // turned a third toward the viewer, leans like the vehicles, and dims when its place is not on the chosen way.
   const LANDMARKS = (M.models || []).map((x) => typeof x === 'string' ? { model: x } : x);
   const RISE = 900, SINK = 350; // ms
   const lmAnim = LANDMARKS.map(() => ({ up: false, p: 0, from: 0, t0: 0 }));
   let lmFrame = 0;
-  // The zoom of the view the page lands on; landmarks show from a little below it, never on a continent view.
+  // The zoom of the view the page lands on; landmarks show only well inside it, at a city view.
   const homeZoom = () => C.viewOf?.(homePts()).zoom ?? 5;
   // Ease out with a small overshoot, so the paper model springs up and settles.
   const springOut = (t) => { const c = 1.4; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
   function landmarks() {
     if (!LANDMARKS.length) return [];
-    const z = map.getZoom(), now = performance.now(), zh = homeZoom(), z0 = Math.max(4.2, zh - .6), W = el.clientWidth, H = el.clientHeight;
+    if (LM.manual) return oneLandmark();
+    const z = map.getZoom(), now = performance.now(), zh = homeZoom(), z0 = Math.max(7, zh + 2), W = el.clientWidth, H = el.clientHeight;
     const mpp = 156543 * Math.cos(map.getCenter().lat * rad) / Math.pow(2, z), t = touched();
-    const grow = Math.max(.75, Math.min(2.6, Math.pow(2, .7 * (z - zh))));
+    const grow = Math.max(1.2, Math.min(3, 1.8 * Math.pow(2, .6 * (z - z0))));
     const tilt = Math.max(0, 60 - map.getPitch()), b = map.getBearing();
     // Rise in order across the screen, left to right, so a row of them comes up like a wave.
     const items = LANDMARKS.map((L, i) => { const m = MODELS[L.model]; if (!m) return null;
       const lng = L.lng ?? m.lng, lat = L.lat ?? m.lat; if (lng == null || lat == null) return null;
-      const q = map.project([lng, lat]); return { L, m, i, lng, lat, q, want: S.introDone && z >= z0 && z < 10 && q.x > -80 && q.x < W + 80 && q.y > -80 && q.y < H + 80 }; }).filter(Boolean);
+      // One that stands stays up through a small camera move: it sinks once well out of view or zoomed out of
+      // the city view, so a pan or a short flight does not make it sink and rise again.
+      const q = map.project([lng, lat]), up = lmAnim[i].up, fly = map.isMoving(), r = up ? (fly ? 1200 : 400) : 80;
+      const zin = up ? z >= z0 - (fly ? .4 : .25) && z < 12 : z >= z0 && z < 11;
+      return { L, m, i, lng, lat, q, want: S.introDone && zin && q.x > -r && q.x < W + r && q.y > -r && q.y < H + r }; }).filter(Boolean);
     const rising = items.filter((d) => d.want && !lmAnim[d.i].up).sort((a, c) => a.q.x - c.q.x);
     rising.forEach((d, n) => Object.assign(lmAnim[d.i], { up: true, from: lmAnim[d.i].p, t0: now + n * 110 }));
     for (const d of items) if (!d.want && lmAnim[d.i].up) Object.assign(lmAnim[d.i], { up: false, from: lmAnim[d.i].p, t0: now });
@@ -387,7 +415,7 @@ export function createChart(opts) {
       a.p = REDUCED ? (a.up ? 1 : 0) : a.up ? a.from + (1 - a.from) * springOut(u) : a.from * (1 - u * u);
       if (!REDUCED && u < 1) busy = true;
       if (a.p <= .001) return null;
-      // Screen size on the landing view: about 34 px for a low subject, up to about 64 px for a tower.
+      // Screen size as it rises at a city view: about 60 px for a low subject, up to about 115 px for a tower.
       const px = L.px || 34 * Math.pow(Math.max(...m.size) / 40, .3), place = L.place ?? null, on = !place || t.has(place) || S.ends.includes(place);
       const k = Math.min(px, 64) * grow * mpp / Math.max(...m.size);
       // The rise stretches the model up from its base (the model's own up is glTF +y).
@@ -399,6 +427,89 @@ export function createChart(opts) {
     }).filter(Boolean);
     if (busy && !lmFrame) lmFrame = requestAnimationFrame(() => { lmFrame = 0; refresh(); });
     return out;
+  }
+
+  // ---- One landmark at a time: C.landmark(place, { style }) for a page that gives each city its own card. ----
+  // The first call turns the automatic landmarks off. The landmark rises beside its city, at the free spot
+  // nearest the city inside the padding: off the route, the labels and the city's dot. Call it when the
+  // camera has come to rest on the city (or while it moves: it waits for the move to end). style 'model'
+  // is the 3D paper model; 'drawing' is the engraved PNG (the entry's img, else kit/art/<model>.png) that
+  // stands up like the sea drawings. null sinks it. It sinks when the person zooms far away from that view.
+  // LM holds the placed landmark (i, style, at), which keeps drawing while it sinks; want is the next one,
+  // placed when the camera rests. live: the placed one is still wanted, so a zoom back may raise it again.
+  const LM = { manual: false, i: -1, style: 'model', at: null, z: 0, up: false, from: 0, p: 0, t0: 0, px: 0, wait: null, want: null, live: false, gen: 0 };
+  const lmDraw = (() => { const e = document.createElement('div'); e.className = 'pc-lm'; const img = document.createElement('img'); img.alt = ''; e.appendChild(img);
+    quiet(e, true); return { e, img, m: new maplibregl.Marker({ element: e, anchor: 'bottom' }), on: false }; })();
+  const lmImg = (L) => L.img ? (L.img.startsWith('kit/') ? new URL(L.img.slice(4), KIT).href : new URL(L.img, T.base).href) : KIT + 'art/' + L.model + '.png';
+  const lmFind = (place) => LANDMARKS.findIndex((L) => L.place === place || L.model === String(place).toLowerCase());
+  // The best spot on screen for a w x h picture that stands on its point (bottom centre), near the city q.
+  function lmSpot(q, w, h) {
+    const W = el.clientWidth, H = el.clientHeight, o = el.getBoundingClientRect();
+    const area = [PAD.left + 8, PAD.top + 8, W - PAD.right - 8, H - PAD.bottom - 8];
+    const boxes = pins.filter((p) => p.e.textContent && p.e.offsetParent && getComputedStyle(p.e).visibility !== 'hidden' && +getComputedStyle(p.e).opacity > .05)
+      .map((p) => { const r = p.e.getBoundingClientRect(); return [r.left - o.left - 6, r.top - o.top - 4, r.right - o.left + 6, r.bottom - o.top + 4]; })
+      .concat([[q.x - 16, q.y - 16, q.x + 16, q.y + 16]]);
+    // The route as screen points every few pixels, so a long straight leg counts too.
+    const line = [];
+    for (const x of segs(S.chosen)) { const xy = (air(x) ? arc(x.seg) : x.seg.path).map((p) => map.project(p));
+      for (let k = 1; k < xy.length; k++) { const a = xy[k - 1], b = xy[k], n = Math.ceil(Math.hypot(b.x - a.x, b.y - a.y) / 6);
+        for (let s = 0; s <= n; s++) line.push([a.x + (b.x - a.x) * s / n, a.y + (b.y - a.y) * s / n]); } }
+    const over = (A, B) => Math.max(0, Math.min(A[2], B[2]) - Math.max(A[0], B[0])) * Math.max(0, Math.min(A[3], B[3]) - Math.max(A[1], B[1]));
+    let best = null;
+    for (const d of [70, 100, 135, 175, 220]) for (const deg of [-35, -145, 0, 180, -70, -110, 35, 145]) {
+      const x = q.x + d * Math.cos(deg * rad), y = q.y + d * Math.sin(deg * rad) + h * .35, b = [x - w / 2, y - h, x + w / 2, y];
+      const out = Math.max(0, area[0] - b[0]) + Math.max(0, b[2] - area[2]) + Math.max(0, area[1] - b[1]) + Math.max(0, b[3] - area[3]);
+      const hit = line.filter(([u, v]) => u > b[0] - 8 && u < b[2] + 8 && v > b[1] - 8 && v < b[3] + 8).length;
+      const cover = d3.sum(boxes, (B) => over(b, B));
+      // A spot that leaves the padding is no spot: the HUD would cover the picture.
+      if (out > 0) continue;
+      const score = cover * 2 + hit * 60 + d + (y > q.y + 20 ? 40 : 0);
+      if (!best || score < best.score) best = { score, x, y };
+    }
+    return best; // null when no spot fits: the landmark then stays down.
+  }
+  function lmPlace() {
+    LM.wait = null; const w = LM.want; LM.want = null; if (!w) return;
+    const L = LANDMARKS[w.i], m = MODELS[L?.model]; if (!L) return;
+    const city = T.places[L.place]?.coord || [L.lng ?? m?.lng, L.lat ?? m?.lat]; if (city[0] == null) return;
+    // About 120 px for a drawing and 64 to 110 px for a model, smaller on a phone.
+    const px = (w.style === 'drawing' ? 124 : 96) * (el.clientWidth < 760 ? .7 : 1);
+    const s = lmSpot(map.project(city), px, px); if (!s) return;
+    Object.assign(LM, { i: w.i, style: w.style, px, at: map.unproject([s.x, s.y]).toArray(), z: map.getZoom(), live: true, up: true, from: 0, p: 0, t0: performance.now() });
+    lmDraw.gen = ++LM.gen;
+    if (w.style === 'drawing') { lmDraw.img.src = lmImg(L); lmDraw.e.style.width = px + 'px'; lmDraw.m.setLngLat(LM.at).addTo(map); lmDraw.on = true;
+      lmDraw.e.classList.remove('up'); void lmDraw.e.offsetWidth; lmDraw.e.classList.add('up'); }
+    refresh();
+  }
+  // A sink removes the drawing's marker when done, unless a newer placement (a new gen) took it over.
+  const lmSink = () => { LM.live = false; if (LM.up) Object.assign(LM, { up: false, from: LM.p, t0: performance.now() });
+    if (lmDraw.on) { lmDraw.e.classList.remove('up'); const g = lmDraw.gen; setTimeout(() => { if (lmDraw.gen === g && !LM.live) { lmDraw.m.remove(); lmDraw.on = false; } }, SINK + 50); } refresh(); };
+  C.landmark = (place, { style = 'model' } = {}) => {
+    LM.manual = true; if (LM.wait) { map.off('moveend', LM.wait); LM.wait = null; }
+    const i = place == null ? -1 : lmFind(place);
+    if (LM.live || lmDraw.on) lmSink();
+    LM.want = i < 0 ? null : { i, style }; if (!LM.want) return;
+    if (map.isMoving()) { LM.wait = () => lmPlace(); map.once('moveend', LM.wait); } else lmPlace();
+  };
+  // A zoom far from the view it was placed in sinks the landmark; coming back raises it again.
+  map.on('zoom', () => { if (!LM.manual || !LM.live || !LM.at) return; const near = Math.abs(map.getZoom() - LM.z) < 1.6;
+    if (LM.style === 'drawing') lmDraw.e.classList.toggle('up', near);
+    if (near !== LM.up) Object.assign(LM, { up: near, from: LM.p, t0: performance.now() }); });
+  function oneLandmark() {
+    const L = LANDMARKS[LM.i], m = L && MODELS[L.model], now = performance.now();
+    const u = Math.max(0, Math.min(1, (now - LM.t0) / (LM.up ? RISE : SINK)));
+    LM.p = REDUCED ? (LM.up ? 1 : 0) : LM.up ? LM.from + (1 - LM.from) * springOut(u) : LM.from * (1 - u * u);
+    if (!REDUCED && u < 1 && !lmFrame) lmFrame = requestAnimationFrame(() => { lmFrame = 0; refresh(); });
+    if (!m || !LM.at || LM.style !== 'model' || LM.p <= .001) return [];
+    const z = map.getZoom(), mpp = 156543 * Math.cos(LM.at[1] * rad) / Math.pow(2, z), grow = Math.max(.7, Math.min(1.5, Math.pow(2, .5 * (z - LM.z))));
+    // A model draws about 2.1 times its largest size in index.json (its base plate and the turn toward the
+    // viewer), so this keeps it inside the px box that lmSpot kept free.
+    const tilt = Math.max(0, 60 - map.getPitch()), b = map.getBearing(), k = LM.px / 2.1 * grow * mpp / Math.max(...m.size);
+    const up = Math.max(.02, LM.p), lift = [1, 0, 0, 0, 0, up, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    const pose = mat.mul(mat.rz(-b), mat.rx(tilt), mat.rz(150), mat.rx(90), mat.s(k), lift);
+    return [new deck.ScenegraphLayer({ id: 'lm-one-' + LM.i, data: [{ pt: [...LM.at, map.queryTerrainElevation?.(LM.at) || 0] }], scenegraph: KIT + 'art/3d/' + L.model + '.glb',
+      getPosition: (d) => d.pt, getTransformMatrix: pose, _lighting: 'pbr', getColor: [255, 255, 255, 255], opacity: Math.min(1, LM.p * 2.5),
+      updateTriggers: { getTransformMatrix: [k, up, tilt, b] } })];
   }
 
   function deckLayers() {
@@ -428,7 +539,9 @@ export function createChart(opts) {
   const deckQuiet = () => document.querySelectorAll('#deckgl-overlay, .deckgl-overlay').forEach((c) => { c.removeAttribute('tabindex'); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; });
   deckQuiet(); map.once('idle', deckQuiet);
   const refresh = () => overlay.setProps({ layers: deckLayers() });
-  map.on('zoom', refresh); map.on('rotate', refresh); map.on('pitch', refresh);
+  map.on('zoom', refresh); map.on('rotate', refresh); map.on('pitch', refresh); map.on('moveend', refresh);
+  // A pan changes how near the camera a vehicle is on a tilted map, so its size is set again.
+  map.on('move', () => { if (S.where?.moving) refresh(); });
 
   // Hover on a chosen route: the nearest point gives the time there.
   // hovering: the kit draws the vehicle and card; hovered: the page was told of a hover (also with routeCard: false).
@@ -546,7 +659,10 @@ export function createChart(opts) {
   })();
   // For probes and checks: what the chart shows now.
   C.state = () => ({ chosen: S.chosen.map((j) => j.id), ends: [...(S.ends || [])], pad: { ...PAD }, far: map.getZoom() < FAR, intro: !S.introDone,
-    points: S.chosen.flatMap((j) => j.segments.flatMap((s) => [{ id: s.from, ll: s.path[0] }, { id: s.to, ll: s.path[s.path.length - 1] }])) });
+    points: S.chosen.flatMap((j) => j.segments.flatMap((s) => [{ id: s.from, ll: s.path[0] }, { id: s.to, ll: s.path[s.path.length - 1] }])),
+    // For tests: the vehicle's eased pose, and how far each landmark has risen (0 to 1).
+    vehicle: ride.seg ? { head: ride.head, z: ride.z, k: ride.k, s: ride.s, px: ride.k * ride.size * ride.ppm, xy: deckView().project([ride.pt[0], ride.pt[1], ride.z]).slice(0, 2), mode: ride.seg.mode } : null, landmarks: lmAnim.map((a) => a.p),
+    landmark: LM.manual ? { i: LM.live ? LM.i : -1, style: LM.style, p: LM.style === 'drawing' ? +lmDraw.e.classList.contains('up') : LM.p, at: LM.at, box: LM.style === 'drawing' && lmDraw.on ? lmDraw.e.getBoundingClientRect().toJSON() : null } : null });
   window.__chart = C;
   return C;
 }

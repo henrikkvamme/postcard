@@ -84,6 +84,7 @@ tip for the same hover. `routeCard: false` turns the card and the hover vehicle 
 | `frame(journeys or points)` | Flies to fit them inside the padding. |
 | `setPad(pad, { duration, refit })` | The part of the map that the HUD does not cover. Call it whenever the HUD changes size; a ResizeObserver on the card is the simple way. |
 | `reset()`, `home()` | Back to the start view. |
+| `landmark(place, { style })` | One landmark beside its city, placed clear of the route and labels; null sinks it. See Landmarks below. |
 | `over([lng, lat])` | "over France" or "over the Baltic Sea", for a status line. |
 | `map` | The MapLibre map, for anything else. |
 
@@ -218,14 +219,23 @@ classes, and SVG text classes `pc-caps`, `pc-tick`, `pc-note`, `pc-pill`, `pc-tr
 Landmarks go in `map.models`. Place a landmark only at its own city, for the places on the trip and at
 most two or three famous ones the route passes near; more makes the chart busy. A place without a
 model gets none; do not use another city's model. Give each one `lng` and `lat` beside its place, as for
-`map.art`: about 40 to 80 km off at a country view, on the side away from the route and from the place's
+`map.art`: beside the city at a city view, on the side away from the route and from the place's
 label (labels sit to the right of the dot). A model on the dot covers the route end. Map labels and the
 route card draw above the models.
 
-Landmarks rise out of the map as the camera lands on the trip's view, small there, and sink when the
-person zooms out to a wider view. Each grows with the map, at a slower rate than the ground, and a
-tall subject stands taller than a low one. `px` on an entry sets its screen size on the landing view;
-leave it out unless one model must stand out.
+Landmarks stay down on the trip's overview, so the route reads alone. One rises when the camera comes
+close to its city (about two zoom levels in from the trip's view, such as a page's city or stay
+view) and sinks when the camera leaves. Each grows with the map, at a slower rate than the ground, and a
+tall subject stands taller than a low one. `px` on an entry sets its base screen size; leave it out unless
+one model must stand out. Place it beside its city at that close view (a few km off), not 40 to 80 km off.
+
+A page that gives each city its own card or step (a story) shows one landmark at a time instead:
+`chart.landmark(place, { style })`. The first call turns the zoom rule above off; `chart.landmark(null)`
+sinks the one that stands. Call it when the camera comes to rest on the city. The kit puts the landmark
+at the free spot nearest the city inside the padding, off the route, the labels and the dot, so the
+entry's `lng` and `lat` do not matter here. `style: 'model'` is the 3D paper model; `style: 'drawing'`
+is the engraved PNG (the entry's `img`, else `kit/art/<model>.png`) that stands up like the sea
+drawings. It sinks when the person zooms more than about 1.5 levels away from that view.
 
 The models are generated, not drawn: `models/` at the repository root has the generator, the parts
 and a gallery (`models/gallery/`). A new model is a new file there, built with `node models/build.mjs`.
@@ -233,8 +243,8 @@ and a gallery (`models/gallery/`). A new model is a new file there, built with `
 ## art
 
 `kit/art/` has engraved drawings in navy ink on transparent ground, about 360 px tall, standing on
-their bottom edge: `alps`, `amsterdam`, `berlin`, `cartouche`, `compass`, `fjords`, `frankfurt`,
-`helsinki`, `lighthouse`, `paris`, `pines`, `riga`, `ship`, `whale`, `zurich`. Prefer a 3D landmark
+their bottom edge: `alps`, `amsterdam`, `berlin`, `cartouche`, `compass`, `copenhagen`, `fjords`, `frankfurt`,
+`hamburg`, `helsinki`, `lighthouse`, `oslo`, `paris`, `pines`, `riga`, `ship`, `whale`, `zurich`. Prefer a 3D landmark
 in `map.models` to a city drawing when both exist. Use a city drawing only for its own city. Use ship, whale, compass, lighthouse and
 pines on open ground or sea, away from the route. For other places, make new drawings in the same
 style when you can make images, and put them in the trip's `art/`. Without one, leave the place
