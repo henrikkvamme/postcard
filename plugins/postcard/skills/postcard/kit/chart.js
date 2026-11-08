@@ -216,7 +216,12 @@ export function createChart(opts) {
   const peak = (seg) => Math.min(220000, 30000 + geo.ang(seg.path[0], seg.path[seg.path.length - 1]) * 6371000 * .1);
   // It also bows a little to the left of its direction, so it reads as an arc from straight above (a phone
   // has little pitch), and an out and a back flight between the same places do not lie on one line.
-  const arc = (seg) => { const p = seg.path, n = p.length - 1, a = p[0], b = p[n], c = Math.cos((a[1] + b[1]) / 2 * rad) || 1;
+  // Longitudes unwrapped so that no step jumps more than 180 degrees: a flight across the date line
+  // (Tokyo to San Francisco) runs east over the Pacific, not west around the world.
+  const unwrapLng = (p) => { const out = []; let prev = null;
+    for (const q of p) { let x = q[0]; if (prev != null) { while (x - prev > 180) x -= 360; while (x - prev < -180) x += 360; } out.push([x, ...q.slice(1)]); prev = x; }
+    return out; };
+  const arc = (seg) => { const p = unwrapLng(seg.path), n = p.length - 1, a = p[0], b = p[n], c = Math.cos((a[1] + b[1]) / 2 * rad) || 1;
     const dx = (b[0] - a[0]) * c, dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1, k = .07 * L, h = peak(seg);
     return p.map((q, i) => { const t = Math.sin(Math.PI * i / n); return [q[0] - dy / L * k * t / c, q[1] + dx / L * k * t, t * h]; }); };
   const routesFC = () => ({ type: 'FeatureCollection', features: [...segs(S.others).map((x) => [x, false]), ...segs(S.chosen).map((x) => [x, true])].filter(([x]) => !air(x))
