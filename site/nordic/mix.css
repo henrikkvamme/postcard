@@ -1,0 +1,233 @@
+/* Mix: Stories is the structure. Every card is the full-bleed map (Editorial): the cover with its title and
+   strip, then each leg and stay with its headline, facts and controls over a soft paper fade at the bottom
+   left. Poster's idea in the cards: a night count is a big grotesk numeral. Type: the red condensed serif
+   (with its script "in") for headlines, Roboto Flex for numerals, Inter for the UI. */
+:root {
+  --display: "Noto Serif Display", Georgia, serif; --script: "Pinyon Script", cursive;
+  --grot: "Roboto Flex", "Helvetica Neue", Arial, sans-serif;
+  --serif: var(--display);
+  --sb: 24px; --hs: 64px; --t: .22s;
+  --halo: 0 0 2px var(--paper), 0 0 10px var(--paper), 0 0 22px var(--paper);
+  --p0: rgba(244, 242, 234, 0); --p1: rgba(244, 242, 234, .9);
+}
+/* A place name stands over the 3D drawings: the deck.gl canvas sits in a map control at z-index 2. */
+.maplibregl-canvas-container .maplibregl-marker { z-index: 3; }
+
+/* The stage lies over the map but lets the pointer through, so the person can drag and zoom the map;
+   only its controls (the top bar, the overlay's buttons and strip, the arrows) take the pointer. */
+.stage { position: fixed; inset: 0; z-index: 10; pointer-events: none; }
+#map.on-part .maplibregl-canvas-container.maplibregl-interactive { cursor: pointer; }
+.win { position: absolute; inset: 0; pointer-events: none; touch-action: manipulation; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+/* Top: the segments across the full width, one per card, as wide as the time each takes; the clock; the buttons.
+   .pc-title tells the chart to hide map names under the bar; the bar keeps its own place and its clicks. */
+.top { position: absolute; left: 0; right: 0; top: 0; z-index: 3; padding: 14px 24px 26px; pointer-events: auto;
+  background: linear-gradient(rgba(244, 242, 234, .92), rgba(244, 242, 234, .6) 55%, var(--p0)); transition: background .5s var(--ease); }
+.win[data-k="cover"] .top { background: linear-gradient(var(--p0), var(--p0)); }
+.segs { display: flex; gap: 3px; height: 14px; align-items: center; }
+.segs i { position: relative; flex: 1 1 0; min-width: 8px; height: 3px; border-radius: 2px; background: var(--rule); overflow: hidden; cursor: pointer; }
+.segs i::before { content: ""; position: absolute; inset: -6px 0; }
+.segs i b { position: absolute; inset: 0; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); }
+.segs i.lg b { background: var(--red); }
+.bar { display: flex; align-items: center; gap: 2px; height: 34px; margin-top: 2px; }
+.stamp { flex: 1; min-width: 0; font: 600 10px/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--ink2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ib { all: unset; cursor: pointer; width: 34px; height: 34px; border-radius: 17px; display: grid; place-items: center; color: var(--ink); }
+.ib svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.ib:hover { background: rgba(29, 42, 74, .07); }
+/* The way back to the cover shows only in the story; it keeps its place, so the other buttons never move. */
+.win[data-k="cover"] #home { visibility: hidden; }
+
+/* The cover title (Editorial). In the opening it stands large in the middle of the globe. */
+.win .head.pc-title { position: absolute; left: 16px; right: 16px; top: 64px; z-index: 3; text-align: center; pointer-events: none;
+  transform-origin: 50% 0; transition: transform .9s var(--ease), opacity .4s var(--ease); }
+.win:not([data-k="cover"]) .head { opacity: 0; transform: translateY(-14px); }
+body.intro .win .head { transform: translateY(calc(50vh - 64px - 50%)) scale(1.45); }
+.head .hl { --hs: 62px; }
+.dek { margin-top: 12px; font: 600 10px var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--ink2); text-shadow: 0 0 3px var(--paper), 0 0 8px var(--paper); }
+
+/* The overlay of a story card: bottom left on a wide screen, over a paper fade that thins out to the map. */
+.win .body.pc-title { position: absolute; left: 40px; right: auto; top: auto; bottom: 0; z-index: 3; width: min(600px, 44vw); padding: 0 0 calc(var(--sb) + 2px);
+  text-align: left; pointer-events: none; transition: opacity .9s var(--ease) .2s, transform 1.1s var(--ease) .2s; }
+.body::before { content: ""; position: absolute; inset: -150px -240px 0 -40px; z-index: -1; pointer-events: none;
+  background: linear-gradient(to top, var(--p1), rgba(244, 242, 234, .82) 60%, var(--p0));
+  -webkit-mask-image: linear-gradient(to right, #000 62%, transparent); mask-image: linear-gradient(to right, #000 62%, transparent); }
+.win[data-k="cover"] .body.pc-title { left: 0; right: 0; width: auto; padding: 0 16px calc(var(--sb) - 4px); text-align: center; }
+.win[data-k="cover"] .body::before { display: none; }
+.body button, .body .strip { pointer-events: auto; }
+
+.hl { position: relative; margin: 0; color: var(--red); font: 600 var(--hs)/.86 var(--display); font-stretch: 68%; letter-spacing: .01em; text-transform: uppercase; text-shadow: var(--halo); }
+.hl span { display: block; }
+.hl em { position: absolute; left: 50%; top: 50%; translate: -50% -42%; z-index: 1; font: 400 calc(var(--hs) * .9)/1 var(--script); font-style: normal; text-transform: none; letter-spacing: 0; white-space: nowrap;
+  text-shadow: 0 0 2px var(--paper), 0 0 4px var(--paper), 0 0 8px var(--paper); }
+/* A longer script word ("home to", "nights in") takes a line of its own. */
+.hl.one em { position: relative; display: block; left: auto; top: auto; translate: none; margin: -.06em 0 -.16em; font-size: calc(var(--hs) * .78); }
+/* On a story card the headline is as wide as its longest line, so the script "to" sits where the lines meet. */
+.body .hl { display: inline-block; }
+.facts { margin: 12px 0 0; min-height: 16px; font: 500 12px/16px var(--sans); color: var(--ink2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.facts sup, .way sup { font-size: 8.5px; line-height: 0; }
+
+/* A leg's ways: a row of tiles, in time order. */
+.ways { display: flex; gap: 6px; margin-top: 14px; }
+.way { all: unset; box-sizing: border-box; cursor: pointer; flex: 1 1 0; min-width: 0; height: 70px; border-radius: 14px; display: grid; place-items: center; align-content: center; gap: 3px;
+  background: rgba(251, 250, 245, .92); box-shadow: inset 0 0 0 1px var(--rule2); color: var(--ink); transition: box-shadow .15s, background .15s, color .15s; }
+.way:hover { box-shadow: inset 0 0 0 1px var(--rule); }
+.way svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; color: var(--ink2); }
+.way b { font: 600 21px/1 var(--display); font-stretch: 75%; }
+.way span { font-size: 11px; color: var(--ink2); }
+.way span.no { color: var(--muted); }
+.way[aria-pressed="true"] { background: #f6e9e2; box-shadow: inset 0 0 0 1.5px var(--red); color: var(--red); }
+.way[aria-pressed="true"] svg, .way[aria-pressed="true"] span { color: var(--red); }
+.way[aria-disabled="true"] { opacity: .35; cursor: default; }
+
+/* A stay: the night count is a heavy grotesk numeral (Poster) between - and +. It rolls when it changes. */
+.nights { display: grid; grid-template-columns: 52px auto 52px; justify-content: start; align-items: center; gap: 18px; }
+.num { display: inline-grid; overflow: clip; overflow-clip-margin: 6px; color: var(--ink);
+  font: 900 calc(var(--hs) * 3.3)/1 var(--grot); font-stretch: 84%; font-variation-settings: "opsz" 144; letter-spacing: -.045em; text-box: trim-both cap alphabetic; }
+.num span { grid-area: 1 / 1; display: block; text-align: center; }
+.step { all: unset; cursor: pointer; width: 52px; height: 52px; border-radius: 26px; display: grid; place-items: center; background: rgba(251, 250, 245, .92);
+  box-shadow: inset 0 0 0 1px var(--rule); color: var(--ink); font: 300 26px/1 var(--sans); }
+.step:hover { box-shadow: inset 0 0 0 1px var(--ink2); }
+.step[aria-disabled="true"] { opacity: .3; cursor: default; }
+.win[data-k="stay"] .hl { margin-top: 20px; }
+
+/* The strip on the cover is at the end of this file. */
+
+/* The arrows: on the cover one at the right edge starts the story; in the story a pair at the bottom right. */
+.nav { all: unset; pointer-events: auto; cursor: pointer; position: absolute; top: calc(100% - var(--sb) - 48px); width: 46px; height: 46px; border-radius: 23px; display: grid; place-items: center;
+  background: var(--card); color: var(--ink); box-shadow: 0 0 0 1px var(--rule2), 0 8px 20px -12px rgba(20, 30, 50, .5); transition: opacity .3s var(--ease), top .5s var(--ease); }
+.nav svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.nav.prev { left: calc(100% - 128px); }
+.nav.next { left: calc(100% - 70px); }
+.win[data-k="cover"] ~ .nav.next { top: calc(50% - 23px); }
+.nav:hover { box-shadow: 0 0 0 1px var(--rule), 0 8px 20px -12px rgba(20, 30, 50, .5); }
+.nav[aria-disabled="true"] { opacity: 0; pointer-events: none; }
+
+.ib:focus-visible, .way:focus-visible, .step:focus-visible, .book:focus-visible, .nav:focus-visible, .thumb:focus-visible, .it:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* The opening: the title alone while the globe turns to the north. */
+body.intro .top, body.intro .body, body.intro .nav { opacity: 0; pointer-events: none; }
+body.intro .body { transform: translateY(18px); }
+
+/* The contact sheet: every card at once. */
+.grid { position: fixed; inset: 0; z-index: 25; display: grid; place-items: center; padding: 64px 16px calc(var(--sb) + 8px); background: rgba(244, 242, 234, .9); overflow: auto; }
+.grid[hidden] { display: none; }
+.gx { position: absolute; right: 16px; top: 16px; background: var(--card); box-shadow: 0 0 0 1px var(--rule2); }
+.sheet { display: grid; grid-template-columns: repeat(4, minmax(0, 168px)); gap: 18px 16px; }
+.thumb { all: unset; box-sizing: border-box; cursor: pointer; position: relative; display: flex; flex-direction: column; aspect-ratio: .62; border-radius: 14px; overflow: hidden;
+  background: var(--land); box-shadow: 0 0 0 1px var(--rule2), 0 14px 30px -22px rgba(20, 30, 50, .5); transition: translate .2s var(--ease), box-shadow .2s; }
+.thumb:hover { translate: 0 -3px; box-shadow: 0 0 0 1px var(--rule), 0 18px 34px -22px rgba(20, 30, 50, .55); }
+.thumb[aria-current="true"] { box-shadow: 0 0 0 2px var(--ink), 0 14px 30px -22px rgba(20, 30, 50, .5); }
+.thumb svg { flex: 1; min-height: 0; width: 100%; }
+.thumb .tt { padding: 0 10px 12px; text-align: center; }
+.thumb .th { font: 600 17px/.88 var(--display); font-stretch: 68%; text-transform: uppercase; color: var(--red); }
+.thumb .th em { display: block; margin: -2px 0 -3px; font: 400 17px/1 var(--script); text-transform: none; font-style: normal; }
+.thumb .tn { display: block; margin: 0 0 8px; font: 900 50px/1 var(--grot); font-stretch: 84%; font-variation-settings: "opsz" 144; letter-spacing: -.04em; text-box: trim-both cap alphabetic; color: var(--ink); }
+.thumb .tm { margin-top: 6px; font: 600 9px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--ink2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+@media (max-height: 760px) and (min-width: 760px) { :root { --hs: 54px; } .way { height: 62px; } .head .hl { --hs: 50px; } }
+
+/* A phone: the overlay is centred at the bottom. Tap the right half for the next card, the left half to go back. */
+@media (max-width: 759px) {
+  :root { --hs: 52px; }
+  .top { padding: calc(8px + env(safe-area-inset-top)) 10px 18px; }
+  .win .head.pc-title { top: 58px; }
+  body.intro .win .head { transform: translateY(calc(50vh - 58px - 50%)) scale(1.3); }
+  .head .hl { --hs: 40px; }
+  .dek { margin-top: 8px; font-size: 9px; letter-spacing: .2em; }
+  .win .body.pc-title { left: 0; right: 0; width: auto; padding: 0 16px calc(var(--sb) + 6px); text-align: center; }
+  .body::before { inset: -120px 0 0; -webkit-mask-image: none; mask-image: none;
+    background: linear-gradient(var(--p0), rgba(244, 242, 234, .86) 120px, rgba(244, 242, 234, .94)); }
+  .win[data-k="cover"] .body.pc-title { padding: 0 8px calc(var(--sb) + 4px); }
+  .nav { display: none; }
+  .ways { gap: 5px; }
+  .way { height: 66px; border-radius: 12px; }
+  .way b { font-size: 19px; }
+  .nights { grid-template-columns: 48px auto 48px; justify-content: center; }
+  .step { width: 48px; height: 48px; }
+  .grid { padding: 60px 12px calc(var(--sb) + 8px); }
+  .sheet { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 8px; width: 100%; }
+  .thumb { aspect-ratio: .5; border-radius: 10px; }
+  .thumb .tt { padding: 0 4px 8px; }
+  .thumb .th { font-size: 11px; }
+  .thumb .th em { font-size: 12px; }
+  .thumb .tn { font-size: 32px; }
+  .thumb .tm { font-size: 7.5px; letter-spacing: .08em; }
+}
+/* A part of the route under the pointer: a small paper label at a fixed spot beside it. */
+.pc-lbl.city.mix-on { color: var(--red); }
+.hint { position: absolute; left: 0; top: 0; z-index: 4; pointer-events: none; white-space: nowrap; padding: 8px 12px 9px; border-radius: 10px;
+  background: rgba(248, 246, 239, .95); border: 1px solid rgba(29, 42, 74, .13); box-shadow: 0 8px 22px -12px rgba(29, 42, 74, .45);
+  color: var(--ink); opacity: 0; transition: opacity .16s ease-out; }
+.hint.on { opacity: 1; }
+.hint b { display: flex; align-items: center; gap: 7px; font: 600 16px/1.1 var(--display); font-stretch: 75%; }
+.hint b svg { width: 15px; height: 15px; flex: none; fill: none; stroke: var(--ink2); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.hint span { display: block; margin-top: 4px; font: 500 11.5px/1.2 var(--sans); color: var(--ink2); font-variant-numeric: tabular-nums; }
+.hint sup { font-size: 8px; line-height: 0; }
+/* A way's vehicle: a small paper card above the hovered tile, with a live 3D model and the way's facts.
+   It fades and rises in, glides from tile to tile, and fades out. */
+.pv { position: fixed; left: 0; top: 0; z-index: 12; width: 260px; pointer-events: none; opacity: 0;
+  transform: translate(var(--x, 0), var(--y, 0)); transition: opacity .18s ease-out, transform .26s var(--ease); }
+.pv.jump { transition: opacity .18s ease-out; }
+.pv.on { opacity: 1; }
+.pv-in { overflow: hidden; border-radius: 14px; background: var(--land); border: 1px solid rgba(29, 42, 74, .13);
+  box-shadow: 0 22px 44px -26px rgba(29, 42, 74, .6), 0 2px 8px -4px rgba(29, 42, 74, .22); transform: translateY(8px); transition: transform .2s var(--ease); }
+.pv.on .pv-in { transform: none; }
+.pv-3d { position: relative; height: 140px; background: radial-gradient(120% 90% at 50% 78%, #fbfaf5 0%, #f1eee3 70%, #ebe7da 100%); }
+.pv-3d canvas { display: block; width: 260px; height: 140px; opacity: 0; transition: opacity .2s ease-out; }
+.pv.ready .pv-3d canvas { opacity: 1; }
+.pv-k { position: absolute; left: 12px; top: 10px; font: 600 9px/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--ink2); }
+.pv-t { padding: 10px 14px 12px; border-top: 1px solid rgba(29, 42, 74, .1); }
+.pv-t b { display: block; font: 600 17px/1.05 var(--display); font-stretch: 75%; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pv-t span { display: block; margin-top: 4px; font: 500 11.5px/1.25 var(--sans); color: var(--ink2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pv-t sup { font-size: 8px; line-height: 0; }
+.pv-t .no { font-style: normal; color: var(--muted); }
+@media (hover: none), (pointer: coarse) { .pv { display: none; } }
+@media (prefers-reduced-motion: reduce) { .head, .top, .body, .nav, .thumb, .way, .hint, .pv, .pv-in, .pv-3d canvas { transition: none !important; } }
+
+/* ---------- The cover's strip (Timeline) ----------
+   No capsule. A thin line across the bottom; each leg is a tick with its mode above and its time below;
+   each stay is a span as long as its time (--w, in hours), with its night count on the line. The total and
+   Book stand at the right. */
+.strip, .legs, .pay { box-sizing: border-box; }
+.it { all: unset; box-sizing: border-box; cursor: pointer; position: relative; color: var(--ink); }
+.it svg { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; color: var(--ink2); }
+.it .c { display: none; font-style: normal; }
+.it.stay b { font: 860 var(--n-fs, 18px)/1 var(--grot); font-stretch: 84%; font-variation-settings: "opsz" 144; text-box: trim-both cap alphabetic; color: var(--ink); }
+.sum { line-height: 1.15; cursor: pointer; text-align: right; }
+.sum b { display: block; font: 600 19px/1.05 var(--display); font-stretch: 80%; color: var(--ink); }
+.sum.no b { color: var(--muted); }
+.sum span { display: block; font-size: 10.5px; color: var(--muted); }
+.book { all: unset; box-sizing: border-box; cursor: pointer; display: inline-grid; place-items: center; height: 40px; padding: 0 22px; border-radius: 20px;
+  background: var(--red); color: #fbf6ec; font: 600 13px/1 var(--sans); letter-spacing: .02em; white-space: nowrap; }
+.book:hover { background: #a42b24; }
+.book.pay { background: var(--green); }
+.book.pay:hover { background: #285c32; }
+
+.strip { position: relative; display: flex; align-items: center; gap: 28px; width: min(1180px, 100%); margin: 0 auto; height: 72px; padding: 0 8px; text-align: left; }
+.strip::before { content: ""; position: absolute; inset: -40px -400px -40px; z-index: -1; pointer-events: none;
+  background: linear-gradient(var(--p0), rgba(244, 242, 234, .78) 55%, rgba(244, 242, 234, .9)); }
+.legs { position: relative; flex: 1; min-width: 0; display: flex; align-items: center; height: 64px; }
+.legs::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--ink); opacity: .45; }
+.it.leg { flex: none; width: 52px; height: 64px; display: grid; grid-template-rows: 1fr 1fr; justify-items: center; }
+.it.leg svg { align-self: end; margin-bottom: 9px; }
+.it.leg::after { content: ""; position: absolute; left: 50%; top: 50%; width: 2px; height: 14px; translate: -1px -7px; border-radius: 1px; background: var(--ink); }
+.it.leg .d { display: none; }
+.it.leg b { grid-row: 2; align-self: start; margin-top: 9px; font: 600 12px/1 var(--sans); font-variant-numeric: tabular-nums; color: var(--ink2); }
+.it.stay { flex: var(--w) 1 0; min-width: 28px; height: 64px; display: grid; place-items: center; }
+.it.stay::before { content: ""; position: absolute; left: 4px; right: 4px; top: 50%; height: 5px; translate: 0 -2.5px; border-radius: 3px; background: var(--ink); opacity: .14; transition: opacity .15s; }
+.it.stay:hover::before { opacity: .26; }
+.it.stay svg { display: none; }
+.it.stay b { position: relative; padding: 0 7px; background: transparent; font-size: 22px; translate: 0 -15px; }
+.it.leg:hover svg, .it.leg:hover b { color: var(--ink); }
+.pay { flex: none; display: flex; align-items: center; gap: 16px; }
+
+@media (max-width: 759px) {
+  .strip { flex-direction: column; align-items: stretch; gap: 4px; height: auto; padding: 0 4px; }
+  .it.leg { width: 40px; }
+  .it.leg b { font-size: 10.5px; }
+  .it.stay { min-width: 24px; }
+  .it.stay b { font-size: 18px; }
+  .pay { justify-content: space-between; }
+  .sum { text-align: left; }
+}
+

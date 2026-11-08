@@ -1,0 +1,212 @@
+/* Type: the type leads and the globe is calm. The globe is fixed behind the whole page; the hero headline is
+   printed over it (multiply). Each section is a still stage: its line and its part fade in, nothing slides. */
+body[data-v="type"] { --g: 56px; --ts: 120px; }
+body[data-v="type"] .ty { position: relative; }
+
+/* The globe: hidden until the chart is ready, so it never shows the wrong place. It takes no pointer: the page scrolls. */
+body[data-v="type"] .ty-map { opacity: 0; pointer-events: none; transition: opacity 1.2s ease; }
+body[data-v="type"] .ty-map.on { opacity: 1; }
+body[data-v="type"] .ty-map .maplibregl-ctrl-bottom-right { pointer-events: auto; }
+body[data-v="type"] .ty-map[data-scene="globe"] .pc-lbl { visibility: hidden !important; }
+body[data-v="type"] .ty-map .pc-lbl.hub { display: none; }
+
+/* ---------- The hero ---------- */
+/* The routes: the hero's deck.gl canvas, lifted over the headline. */
+body[data-v="type"] .ty-top { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+/* The hero is taller than the window: its stage stays pinned while it parts, the top line up and the bottom down. */
+body[data-v="type"] .ty-hero { position: relative; height: 170svh; }
+body[data-v="type"] .ty-hero-in { position: sticky; top: 0; height: 100svh; min-height: 560px; overflow: clip; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 22px; padding: 40px 0 44px; box-sizing: border-box; }
+body[data-v="type"] .ty-hero .ty-hl span:first-of-type { translate: 0 calc(var(--h, 0) * -75svh); }
+body[data-v="type"] .ty-hero .ty-hl span:last-of-type, body[data-v="type"] .ty-hero-foot { translate: 0 calc(var(--h, 0) * 75svh); }
+body[data-v="type"] .ty-hero .ty-hl em { opacity: calc(1 - var(--h, 0) * 3); }
+body[data-v="type"] .ty-hero-type, body[data-v="type"] .ty-fin-type { position: relative; text-align: center; }
+/* The two red lines are printed over the chart: the engraving shows through the ink. The script word keeps its paper halo. */
+body[data-v="type"] .ty-hl { display: inline-block; text-shadow: none; letter-spacing: .01em; }
+body[data-v="type"] .ty-hl span { position: relative; mix-blend-mode: multiply; }
+body[data-v="type"] .ty-hero-foot { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+body[data-v="type"] .ty-hero .cpb, body[data-v="type"] .ty-fin .cpb { position: relative; z-index: 3; justify-content: center; }
+
+/* The scroll cue: a word and a line with a drop that runs down it. It fades as the headline parts. */
+body[data-v="type"] .ty-down { all: unset; position: absolute; left: 50%; bottom: 22px; z-index: 3; translate: -50% 0; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer; padding: 6px 12px; color: var(--ink); font: 600 11px var(--sans); letter-spacing: .24em; text-transform: uppercase; text-shadow: var(--halo);
+  opacity: calc(1 - var(--h, 0) * 6); transition: color .2s; }
+body[data-v="type"] .ty-down:hover { color: var(--red); }
+body[data-v="type"] .ty-down:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 6px; }
+body[data-v="type"] .ty-down i { position: relative; display: block; width: 2px; height: 46px; overflow: hidden; border-radius: 2px; background: rgba(29, 42, 74, .28); box-shadow: 0 0 0 3px rgba(244, 242, 234, .85); }
+body[data-v="type"] .ty-down i::after { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 40%; border-radius: 2px; background: var(--red); animation: ty-drop 1.8s cubic-bezier(.6, 0, .3, 1) infinite; }
+@keyframes ty-drop { 0% { translate: 0 -100%; } 70%, 100% { translate: 0 260%; } }
+@media (prefers-reduced-motion: reduce) { body[data-v="type"] .ty-down i::after { animation: none; translate: 0 75%; } }
+
+/* The caption: a small serif line that names the route on the globe. It fades; it does not move. */
+body[data-v="type"] .ty-cap { display: flex; align-items: center; justify-content: center; gap: 9px; min-height: 26px; margin: 0; color: var(--ink);
+  font: 600 20px/1.2 var(--display); font-stretch: 78%; text-shadow: var(--halo); opacity: 0; transition: opacity 1.4s ease; white-space: nowrap; }
+body[data-v="type"] .ty-cap.on { opacity: 1; }
+body[data-v="type"] .ty-cap-ic { display: grid; place-items: center; }
+body[data-v="type"] .ty-cap svg { width: 17px; height: 17px; fill: none; stroke: var(--red); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- The sections: a tall section, a still stage pinned to the window ---------- */
+body[data-v="type"] .ty-s { position: relative; height: 220svh; }
+body[data-v="type"] .ty-pin { position: sticky; top: 0; height: 100svh; overflow: clip; pointer-events: none;
+  opacity: min(clamp(0, calc(var(--e, 0) * 1.4 - .2), 1), calc(1 - var(--x, 0))); }
+body[data-v="type"] .ty-pin a, body[data-v="type"] .ty-pin button { pointer-events: auto; }
+
+/* The big line: the Mix serif, set large, top left. */
+body[data-v="type"] .ty-t { position: absolute; left: var(--g); top: 72px; margin: 0; color: var(--red); font: 600 var(--ts)/.86 var(--display); font-stretch: 68%;
+  letter-spacing: .01em; text-transform: uppercase; text-shadow: var(--halo); }
+body[data-v="type"] .ty-ln { display: block; white-space: nowrap; }
+body[data-v="type"] .ty-sc { position: relative; display: block; z-index: 1; margin: -.04em 0 -.12em .9em; color: var(--red); font: 400 calc(var(--ts) * .66)/1 var(--script);
+  font-style: normal; text-transform: none; letter-spacing: 0; white-space: nowrap; text-shadow: 0 0 2px var(--paper), 0 0 4px var(--paper), 0 0 8px var(--paper); }
+body[data-v="type"] [data-s="trip"] { --ts: min(104px, 11.5vh, 8vw); }
+body[data-v="type"] [data-s="book"] { --ts: min(150px, 16vh, 11vw); }
+body[data-v="type"] [data-s="book"] .ty-sc { margin: .04em 0 0 .04em; font-size: calc(var(--ts) * .5); }
+
+body[data-v="type"] .ty-ui { position: absolute; }
+
+/* 1. See it before you go: five trips as tabs. Each leg shows its ways as tiles; a tile picks the way, and its line
+   draws on the map with a light at its tip. The nights sit between the legs. The map behind takes the pointer, so
+   the kit's vehicle and card ride a red route under it. */
+body[data-v="type"] .ty-map.live { pointer-events: auto; }
+body[data-v="type"] .ty-s { z-index: 1; pointer-events: none; }
+body[data-v="type"] .ty-top.low { z-index: 0; }
+html.ty-snap { scroll-snap-type: y proximity; }
+body[data-v="type"] .ty-snap-at { position: absolute; left: 0; width: 1px; height: 1px; scroll-snap-align: start; pointer-events: none; }
+body[data-v="type"] .ty-trip, body[data-v="type"] .ty-bill { width: min(500px, calc(100vw - 2 * var(--g))); box-sizing: border-box; border-radius: 20px;
+  background: rgba(251, 250, 245, .97); border: 1px solid rgba(29, 42, 74, .08); font: 13px/1.4 var(--sans); color: var(--ink);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset, 0 2px 4px -2px rgba(29, 42, 74, .08), 0 30px 70px -36px rgba(29, 42, 74, .45); }
+body[data-v="type"] .ty-trip { left: var(--g); top: calc(72px + var(--ts) * 2.3 + 30px); padding: 6px 6px 0; }
+body[data-v="type"] .ty-trip svg, body[data-v="type"] .ty-bill svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* The tabs: a segmented strip; the trip on show is a white chip with a thin red line that fills while it plays. */
+body[data-v="type"] .ty-tabs { display: flex; gap: 2px; padding: 3px; border-radius: 14px; background: rgba(29, 42, 74, .05); overflow-x: auto; scrollbar-width: none; }
+body[data-v="type"] .ty-tabs button { all: unset; position: relative; flex: 1 0 auto; text-align: center; cursor: pointer; padding: 8px 10px; border-radius: 11px; overflow: hidden;
+  font: 600 13px/1 var(--sans); color: var(--ink2); transition: background .25s, color .25s, box-shadow .25s; }
+body[data-v="type"] .ty-tabs button:hover { color: var(--ink); }
+body[data-v="type"] .ty-tabs button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(29, 42, 74, .12), 0 2px 8px -4px rgba(29, 42, 74, .2); }
+body[data-v="type"] .ty-tabs button::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 3px; height: 2px; border-radius: 2px; background: var(--red);
+  transform: scaleX(var(--p, 0)); transform-origin: left; opacity: 0; transition: opacity .3s; }
+body[data-v="type"] .ty-tabs button[aria-selected="true"]::after { opacity: 1; }
+body[data-v="type"] .ty-tabs button:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+
+body[data-v="type"] .ty-itin { padding: 14px 14px 0; transition: opacity .26s ease, translate .26s ease; }
+body[data-v="type"] .ty-itin.out { opacity: 0; translate: 0 6px; }
+body[data-v="type"] .ty-ih { margin: 0 2px 10px; display: flex; align-items: baseline; gap: 10px; font: 600 30px/1 var(--display); font-stretch: 72%; color: var(--ink); letter-spacing: .005em; }
+body[data-v="type"] .ty-ih em { font: 400 26px/1 var(--script); font-style: normal; color: var(--red); }
+body[data-v="type"] .ty-legs { list-style: none; margin: 0; padding: 0; }
+body[data-v="type"] .ty-leg { padding: 6px 0 8px; }
+body[data-v="type"] .ty-lh { display: flex; align-items: baseline; justify-content: space-between; margin: 0 2px 8px; }
+body[data-v="type"] .ty-lh b { font-weight: 600; font-size: 13px; }
+body[data-v="type"] .ty-lh i { font-style: normal; color: var(--muted); margin: 0 6px; }
+body[data-v="type"] .ty-lh .dt { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+/* A way: a tile with its icon and price, the kind of trip and the time. The chosen tile has a red ring.
+   Under the pointer, its route shows in ink and its 3D vehicle stands on it. */
+body[data-v="type"] .ty-ways { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 8px; }
+body[data-v="type"] .ty-way { all: unset; position: relative; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 3px 8px; padding: 11px 12px 12px; cursor: pointer;
+  border-radius: 13px; background: #fff; box-shadow: 0 0 0 1px rgba(29, 42, 74, .1), 0 1px 2px rgba(29, 42, 74, .05); overflow: hidden;
+  transition: box-shadow .25s ease, translate .25s cubic-bezier(.3, 1.3, .5, 1), background .25s; }
+body[data-v="type"] .ty-way:hover { translate: 0 -2px; box-shadow: 0 0 0 1px rgba(29, 42, 74, .18), 0 10px 22px -12px rgba(29, 42, 74, .35); }
+body[data-v="type"] .ty-way:active { scale: .97; }
+body[data-v="type"] .ty-way:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+body[data-v="type"] .ty-way .ic { display: grid; color: var(--ink2); }
+body[data-v="type"] .ty-way .ic svg { width: 17px; height: 17px; }
+body[data-v="type"] .ty-way .pr { justify-self: end; font: 600 15px/1 var(--display); font-stretch: 80%; font-variant-numeric: tabular-nums; color: var(--ink); }
+body[data-v="type"] .ty-way .k { grid-column: 1 / -1; margin-top: 6px; font-weight: 600; font-size: 13px; color: var(--ink); white-space: nowrap; }
+body[data-v="type"] .ty-way .d { grid-column: 1 / -1; display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+body[data-v="type"] .ty-way .d i { display: grid; color: var(--ink2); }
+body[data-v="type"] .ty-way .d svg { width: 12px; height: 12px; }
+body[data-v="type"] .ty-way[aria-checked="true"] { background: #fffdfb; box-shadow: 0 0 0 1.5px var(--red), 0 10px 24px -14px rgba(184, 50, 42, .45); }
+body[data-v="type"] .ty-way[aria-checked="true"] .ic, body[data-v="type"] .ty-way[aria-checked="true"] .pr { color: var(--red); }
+
+/* The peek: a card above a way tile with its vehicle in 3D on paper, and the carrier, times and fare. It rises
+   a little as it shows. A way through the night shows at dusk, with stars. */
+.pk { position: fixed; left: 0; top: 0; z-index: 12; width: 280px; pointer-events: none; opacity: 0; translate: var(--x, 0) var(--y, 0);
+  transition: opacity .2s ease, translate .32s cubic-bezier(.3, 1.2, .5, 1); }
+.pk.jump { transition: opacity .2s ease; }
+.pk.on { opacity: 1; }
+.pk-in { overflow: hidden; border-radius: 18px; background: var(--card); border: 1px solid rgba(29, 42, 74, .1);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset, 0 2px 6px -2px rgba(29, 42, 74, .12), 0 28px 60px -28px rgba(29, 42, 74, .55);
+  transform: translateY(8px) scale(.97); transform-origin: 50% 100%; transition: transform .32s cubic-bezier(.3, 1.4, .5, 1); }
+.pk.side .pk-in { transform-origin: 0 50%; transform: translateX(-8px) scale(.97); }
+.pk.on .pk-in { transform: none; }
+.pk-3d { position: relative; height: 150px; background: radial-gradient(120% 95% at 50% 80%, #fdfcf8 0%, #f2efe5 65%, #e9e5d7 100%); transition: background .3s; }
+.pk-3d canvas { position: relative; z-index: 1; display: block; width: 280px; height: 150px; opacity: 0; transition: opacity .25s ease-out; }
+.pk.ready .pk-3d canvas { opacity: 1; }
+.pk-k { position: absolute; z-index: 2; left: 14px; top: 12px; font: 600 9.5px/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--ink2); }
+.pk-stars { position: absolute; inset: 0; opacity: 0; transition: opacity .3s;
+  background-image: radial-gradient(1px 1px at 12% 22%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 27% 48%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 41% 15%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 58% 33%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 73% 12%, #fff 50%, transparent 51%), radial-gradient(1.5px 1.5px at 86% 38%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 93% 18%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 6% 55%, #fff 50%, transparent 51%); }
+.pk.night .pk-3d { background: radial-gradient(120% 100% at 50% 95%, #3a4a78 0%, #24325a 55%, #182241 100%); }
+.pk.night .pk-stars { opacity: .8; }
+.pk.night .pk-k { color: #c9d0e6; }
+.pk-t { padding: 12px 16px 14px; border-top: 1px solid rgba(29, 42, 74, .08); }
+.pk-t b { display: block; font: 600 19px/1.1 var(--display); font-stretch: 75%; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pk-t span { display: block; margin-top: 5px; font: 500 12px/1.3 var(--sans); color: var(--ink2); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pk-t sup { font-size: 8px; line-height: 0; margin-left: 1px; }
+@media (hover: none), (pointer: coarse) { .pk { display: none; } }
+@media (prefers-reduced-motion: reduce) { .pk, .pk-in, .pk-3d canvas { transition: none !important; } }
+
+/* A night between two legs: a quiet line that turns warm while the night passes. */
+body[data-v="type"] .ty-night { display: flex; align-items: center; gap: 8px; margin: 4px 0; padding: 8px 10px; border-radius: 10px; color: var(--ink2); font-size: 12.5px;
+  background: transparent; transition: background .6s ease, color .6s ease; }
+body[data-v="type"] .ty-night .ic { display: grid; }
+body[data-v="type"] .ty-night .ic svg { width: 14px; height: 14px; }
+body[data-v="type"] .ty-night b { font-weight: 600; color: var(--ink); }
+body[data-v="type"] .ty-night.on { background: #f8ebe5; color: var(--red); }
+body[data-v="type"] .ty-night.on b { color: var(--red); }
+
+body[data-v="type"] .ty-foot { display: flex; align-items: center; justify-content: space-between; margin: 6px -14px 0; padding: 12px 16px 14px; border-top: 1px solid rgba(29, 42, 74, .07); }
+body[data-v="type"] .ty-foot .ty-hint { color: var(--muted); font-size: 12px; }
+body[data-v="type"] .ty-tot { margin-left: auto; display: flex; align-items: baseline; gap: 8px; }
+body[data-v="type"] .ty-tot small { color: var(--muted); font-size: 12px; }
+body[data-v="type"] .ty-tot b { font: 600 22px/1 var(--display); font-stretch: 80%; font-variant-numeric: tabular-nums; color: var(--ink); }
+@media (hover: none) { body[data-v="type"] .ty-foot .ty-hint { visibility: hidden; } }
+
+/* 2. Booked: one row per ticket (the kit's checkout rows, with their fine print), the total, and the prompt for this trip. */
+body[data-v="type"] .ty-bill { left: var(--g); top: calc(72px + var(--ts) * 1.5 + 36px); padding: 20px 22px 18px; }
+body[data-v="type"] .ty-eb { font: 600 10px var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--ink2); }
+body[data-v="type"] .ty-bill .pc-co-list { margin-top: 12px; }
+body[data-v="type"] .ty-bill .pc-co-total small { text-align: right; max-width: 34ch; }
+body[data-v="type"] .ty-bill .pc-co-list .pc-co-sum, body[data-v="type"] .ty-bill .pc-co-list summary { grid-template-columns: 22px 84px 1fr auto 16px; }
+body[data-v="type"] .ty-cta { display: flex; justify-content: flex-start; margin-top: 16px; }
+body[data-v="type"] .ty-ui { pointer-events: auto; }
+
+/* ---------- The finale: back to the turning globe, one line and the button ---------- */
+body[data-v="type"] .ty-fin { position: relative; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 34px;
+  padding: 60px 0 80px; overflow: clip; opacity: clamp(0, calc(var(--f, 0) * 1.6 - .4), 1); }
+/* "your" is a longer script word: it takes a line of its own between ASK and AGENT. */
+body[data-v="type"] .ty-fin .ty-hl em { position: relative; display: block; left: auto; top: auto; translate: none; margin: -.04em 0 -.2em; font-size: calc(var(--hs) * .62); }
+
+@media (max-height: 760px) and (min-width: 760px) {
+  body[data-v="type"] .ty-t { top: 56px; }
+}
+@media (max-width: 759px) {
+  body[data-v="type"] { --g: 16px; }
+  body[data-v="type"] [data-s="trip"] { --ts: 46px; }
+  body[data-v="type"] [data-s="book"] { --ts: 60px; }
+  body[data-v="type"] .ty-s { height: 200svh; }
+  body[data-v="type"] .ty-hero-in { justify-content: space-between; padding: calc(56px + env(safe-area-inset-top)) 0 calc(104px + env(safe-area-inset-bottom)); }
+  body[data-v="type"] .ty-down { bottom: calc(14px + env(safe-area-inset-bottom)); gap: 6px; }
+  body[data-v="type"] .ty-down i { height: 34px; }
+  body[data-v="type"] .ty-cap { font-size: 17px; }
+  body[data-v="type"] .ty-t { top: 56px; }
+  body[data-v="type"] .ty-trip, body[data-v="type"] .ty-bill { top: auto; bottom: 64px; }
+  body[data-v="type"] .ty-trip { bottom: 20px; padding: 4px 4px 0; }
+  body[data-v="type"] .ty-itin { padding: 8px 8px 0; }
+  body[data-v="type"] .ty-ih { display: none; }
+  body[data-v="type"] .ty-leg { padding: 2px 0 4px; }
+  body[data-v="type"] .ty-lh { margin-bottom: 5px; }
+  body[data-v="type"] .ty-ways { gap: 6px; }
+  body[data-v="type"] .ty-way { padding: 8px 9px 9px; gap: 2px 6px; }
+  body[data-v="type"] .ty-way .k { margin-top: 3px; font-size: 12px; }
+  body[data-v="type"] .ty-way .d { font-size: 11px; }
+  body[data-v="type"] .ty-night { margin: 2px 0; padding: 5px 8px; }
+  body[data-v="type"] .ty-foot { margin: 4px -8px 0; padding: 9px 12px 11px; }
+  body[data-v="type"] .ty-foot .ty-hint { display: none; }
+  body[data-v="type"] .ty-bill { padding: 16px 16px; }
+  body[data-v="type"] .ty-tabs button { padding: 7px 9px; font-size: 12px; }
+  body[data-v="type"] .ty-bill .pc-co-list .pc-co-sum, body[data-v="type"] .ty-bill .pc-co-list summary { grid-template-columns: 20px 1fr auto 14px; column-gap: 10px; padding: 8px 0; }
+  body[data-v="type"] .ty-bill .pc-co-tm { font-size: 13px; }
+}

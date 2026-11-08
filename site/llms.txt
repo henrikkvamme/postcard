@@ -1,0 +1,43 @@
+# Postcard
+
+> A skill for coding agents. It finds and compares travel (flights, trains, buses, ferries, drives) with real prices read in a browser, shows the options on an engraved map page, and books the pick up to the payment page. The person pays.
+
+You get here when a person asks you to install postcard, or to plan a trip with it. Install the skill when you can. Without a file system or a shell, use the short guide below.
+
+## Install the skill (preferred)
+
+Pick the first one that works:
+
+- Any agent with the skills CLI: `npx skills add henrikkvamme/postcard`
+- Claude Code: `/plugin marketplace add henrikkvamme/postcard`, then `/plugin install postcard@postcard`
+- Any agent with a skills folder: download https://postcard.henrikkvamme.no/postcard-skill.tar.gz and unpack it there, so the folder is `<skills>/postcard/SKILL.md`.
+
+Then read `SKILL.md` in the installed folder and follow it for the person's request. It needs Python 3 (standard library only) and a browser tool.
+
+## Without the skill
+
+When you cannot install files, do the same work by hand:
+
+1. Brief: find out from where, to where, the dates, the reason (an event, a holiday), what matters (price, time, comfort), passengers and bags. Ask only what you cannot find.
+2. Search: read real journeys and prices in a browser, every mode that makes sense, every seller you see, with the date you saw each price and the bag terms. Do not solve captchas; use another source.
+3. Write one trip.json in the format of https://postcard.henrikkvamme.no/skill/references/trip-schema.md. Facts only. Mark every value you did not read as an estimate.
+4. Show it: give the person https://postcard.henrikkvamme.no/view and the file to drop there, or a link `https://postcard.henrikkvamme.no/view#trip=<public URL of trip.json>`. The host of that URL must allow other sites to read it (CORS), as a GitHub gist raw link does. The viewer draws the trip in their browser and stores nothing.
+5. Book: when the person picks, the viewer gives them a request to paste back to you. Fill each booking in their browser and stop on the payment page. Never pay and never type card details.
+
+## Rules
+
+- Real prices only. Every price has a seller, a source and the date you saw it.
+- Say what you did not check (a bag fee, a seat class) next to the figure it changes.
+- Stop on the payment page, every time.
+- Keep personal data (names, booking references) out of trip.json.
+
+## Read more
+
+- [SKILL.md](https://postcard.henrikkvamme.no/skill/SKILL.md): the workflow
+- [trip.json format](https://postcard.henrikkvamme.no/skill/references/trip-schema.md)
+- [Searching](https://postcard.henrikkvamme.no/skill/references/sources.md): sources and what each one blocks
+- [Building the page](https://postcard.henrikkvamme.no/skill/references/craft.md) and [the kit](https://postcard.henrikkvamme.no/skill/references/kit.md)
+- [Checking the page](https://postcard.henrikkvamme.no/skill/references/verify.md)
+- [Booking](https://postcard.henrikkvamme.no/skill/references/booking.md)
+- [Viewer](https://postcard.henrikkvamme.no/view): open a trip.json; [example](https://postcard.henrikkvamme.no/view#trip=/nordic/trip.json)
+- [Live example](https://postcard.henrikkvamme.no/nordic/): a page an agent built for a loop from Oslo

@@ -1,0 +1,3003 @@
+{
+ "id": "postcard-world",
+ "title": "Trips around the world",
+ "subtitle": "Routes for the postcard home page",
+ "currency": "EUR",
+ "passengers": {
+  "adults": 1,
+  "children": 0,
+  "children_ages": []
+ },
+ "clock": "UTC",
+ "clock_label": "UTC",
+ "window": {
+  "start": "2027-05-13T00:00",
+  "end": "2027-05-24T00:00"
+ },
+ "places": {
+  "HND": {
+   "name": "Tokyo Haneda",
+   "city": "Tokyo",
+   "kind": "airport",
+   "coord": [
+    139.7798,
+    35.5494
+   ],
+   "tz": "Asia/Tokyo",
+   "code": "HND"
+  },
+  "SFO": {
+   "name": "San Francisco International",
+   "city": "San Francisco",
+   "kind": "airport",
+   "coord": [
+    -122.379,
+    37.6213
+   ],
+   "tz": "America/Los_Angeles",
+   "code": "SFO"
+  },
+  "LHR": {
+   "name": "London Heathrow",
+   "city": "London",
+   "kind": "airport",
+   "coord": [
+    -0.4543,
+    51.47
+   ],
+   "tz": "Europe/London",
+   "code": "LHR"
+  },
+  "SIN": {
+   "name": "Singapore Changi",
+   "city": "Singapore",
+   "kind": "airport",
+   "coord": [
+    103.9915,
+    1.3644
+   ],
+   "tz": "Asia/Singapore",
+   "code": "SIN"
+  },
+  "LIM": {
+   "name": "Lima Jorge Chávez",
+   "city": "Lima",
+   "kind": "airport",
+   "coord": [
+    -77.1143,
+    -12.0219
+   ],
+   "tz": "America/Lima",
+   "code": "LIM"
+  },
+  "MAD": {
+   "name": "Madrid Barajas",
+   "city": "Madrid",
+   "kind": "airport",
+   "coord": [
+    -3.5676,
+    40.4983
+   ],
+   "tz": "Europe/Madrid",
+   "code": "MAD"
+  },
+  "SYD": {
+   "name": "Sydney Kingsford Smith",
+   "city": "Sydney",
+   "kind": "airport",
+   "coord": [
+    151.1772,
+    -33.9461
+   ],
+   "tz": "Australia/Sydney",
+   "code": "SYD"
+  },
+  "AKL": {
+   "name": "Auckland Airport",
+   "city": "Auckland",
+   "kind": "airport",
+   "coord": [
+    174.785,
+    -37.0082
+   ],
+   "tz": "Pacific/Auckland",
+   "code": "AKL"
+  },
+  "PAR_GL": {
+   "name": "Paris Gare de Lyon",
+   "city": "Paris",
+   "kind": "station",
+   "coord": [
+    2.3734,
+    48.8443
+   ],
+   "tz": "Europe/Paris",
+   "code": "Paris"
+  },
+  "BCN_S": {
+   "name": "Barcelona Sants",
+   "city": "Barcelona",
+   "kind": "station",
+   "coord": [
+    2.1404,
+    41.379
+   ],
+   "tz": "Europe/Madrid",
+   "code": "Barcelona"
+  },
+  "BGO_S": {
+   "name": "Bergen stasjon",
+   "city": "Bergen",
+   "kind": "station",
+   "coord": [
+    5.3328,
+    60.3903
+   ],
+   "tz": "Europe/Oslo",
+   "code": "Bergen"
+  },
+  "OSL_S": {
+   "name": "Oslo S",
+   "city": "Oslo",
+   "kind": "station",
+   "coord": [
+    10.7533,
+    59.9109
+   ],
+   "tz": "Europe/Oslo",
+   "code": "Oslo"
+  },
+  "TYO_S": {
+   "name": "Tokyo Station",
+   "city": "Tokyo",
+   "kind": "station",
+   "coord": [
+    139.7671,
+    35.6812
+   ],
+   "tz": "Asia/Tokyo",
+   "code": "Tokyo"
+  },
+  "OSA_S": {
+   "name": "Shin-Osaka",
+   "city": "Osaka",
+   "kind": "station",
+   "coord": [
+    135.5003,
+    34.7334
+   ],
+   "tz": "Asia/Tokyo",
+   "code": "Osaka"
+  },
+  "CHU": {
+   "name": "Chur",
+   "city": "Chur",
+   "kind": "station",
+   "coord": [
+    9.5296,
+    46.853
+   ],
+   "tz": "Europe/Zurich",
+   "code": "Chur"
+  },
+  "TIR": {
+   "name": "Tirano",
+   "city": "Tirano",
+   "kind": "station",
+   "coord": [
+    10.168,
+    46.216
+   ],
+   "tz": "Europe/Rome",
+   "code": "Tirano"
+  },
+  "VIE_H": {
+   "name": "Wien Hauptbahnhof",
+   "city": "Vienna",
+   "kind": "station",
+   "coord": [
+    16.3757,
+    48.1852
+   ],
+   "tz": "Europe/Vienna",
+   "code": "Wien Hbf"
+  },
+  "VCE_S": {
+   "name": "Venezia Santa Lucia",
+   "city": "Venice",
+   "kind": "station",
+   "coord": [
+    12.321,
+    45.441
+   ],
+   "tz": "Europe/Rome",
+   "code": "Venezia"
+  },
+  "LAX": {
+   "name": "Los Angeles International",
+   "city": "Los Angeles",
+   "kind": "airport",
+   "coord": [
+    -118.4085,
+    33.9416
+   ],
+   "tz": "America/Los_Angeles",
+   "code": "LAX"
+  },
+  "HNL": {
+   "name": "Honolulu Daniel K. Inouye",
+   "city": "Honolulu",
+   "kind": "airport",
+   "coord": [
+    -157.9251,
+    21.3187
+   ],
+   "tz": "Pacific/Honolulu",
+   "code": "HNL"
+  },
+  "JFK": {
+   "name": "New York JFK",
+   "city": "New York",
+   "kind": "airport",
+   "coord": [
+    -73.7781,
+    40.6413
+   ],
+   "tz": "America/New_York",
+   "code": "JFK"
+  },
+  "BKK_KA": {
+   "name": "Krung Thep Aphiwat",
+   "city": "Bangkok",
+   "kind": "station",
+   "coord": [
+    100.5383,
+    13.8045
+   ],
+   "tz": "Asia/Bangkok",
+   "code": "Bangkok"
+  },
+  "CNX_S": {
+   "name": "Chiang Mai station",
+   "city": "Chiang Mai",
+   "kind": "station",
+   "coord": [
+    99.0164,
+    18.7843
+   ],
+   "tz": "Asia/Bangkok",
+   "code": "Chiang Mai"
+  },
+  "PIR": {
+   "name": "Piraeus port",
+   "city": "Piraeus",
+   "kind": "port",
+   "coord": [
+    23.637,
+    37.942
+   ],
+   "tz": "Europe/Athens",
+   "code": "Piraeus"
+  },
+  "JTR_P": {
+   "name": "Athinios port",
+   "city": "Santorini",
+   "kind": "port",
+   "coord": [
+    25.427,
+    36.386
+   ],
+   "tz": "Europe/Athens",
+   "code": "Santorini"
+  },
+  "KYO_S": {
+   "name": "Kyoto Station",
+   "city": "Kyoto",
+   "kind": "station",
+   "coord": [
+    135.7588,
+    34.9858
+   ],
+   "tz": "Asia/Tokyo",
+   "code": "Kyoto"
+  },
+  "HIJ_S": {
+   "name": "Hiroshima Station",
+   "city": "Hiroshima",
+   "kind": "station",
+   "coord": [
+    132.4757,
+    34.3976
+   ],
+   "tz": "Asia/Tokyo",
+   "code": "Hiroshima"
+  },
+  "CNX": {
+   "name": "Chiang Mai International",
+   "city": "Chiang Mai",
+   "kind": "airport",
+   "coord": [
+    98.9626,
+    18.7668
+   ],
+   "tz": "Asia/Bangkok",
+   "code": "CNX"
+  },
+  "BKK": {
+   "name": "Bangkok Suvarnabhumi",
+   "city": "Bangkok",
+   "kind": "airport",
+   "coord": [
+    100.7501,
+    13.69
+   ],
+   "tz": "Asia/Bangkok",
+   "code": "BKK"
+  },
+  "JTR": {
+   "name": "Santorini airport",
+   "city": "Santorini",
+   "kind": "airport",
+   "coord": [
+    25.4793,
+    36.3992
+   ],
+   "tz": "Europe/Athens",
+   "code": "JTR"
+  },
+  "ATH": {
+   "name": "Athens airport",
+   "city": "Athens",
+   "kind": "airport",
+   "coord": [
+    23.9445,
+    37.9364
+   ],
+   "tz": "Europe/Athens",
+   "code": "ATH"
+  },
+  "OKJ": {
+   "name": "Oakland Jack London Square",
+   "city": "Oakland",
+   "kind": "station",
+   "coord": [
+    -122.2774,
+    37.7939
+   ],
+   "tz": "America/Los_Angeles",
+   "code": "Oakland"
+  },
+  "LAUS": {
+   "name": "Los Angeles Union Station",
+   "city": "Los Angeles",
+   "kind": "station",
+   "coord": [
+    -118.2365,
+    34.0562
+   ],
+   "tz": "America/Los_Angeles",
+   "code": "Los Angeles"
+  },
+  "KEF": {
+   "name": "Keflavík airport",
+   "city": "Reykjavik",
+   "kind": "airport",
+   "coord": [
+    -22.6056,
+    63.985
+   ],
+   "tz": "Atlantic/Reykjavik",
+   "code": "KEF"
+  },
+  "TNG_S": {
+   "name": "Tanger Ville",
+   "city": "Tangier",
+   "kind": "station",
+   "coord": [
+    -5.7869,
+    35.7676
+   ],
+   "tz": "Africa/Casablanca",
+   "code": "Tangier"
+  },
+  "CAS_S": {
+   "name": "Casa-Voyageurs",
+   "city": "Casablanca",
+   "kind": "station",
+   "coord": [
+    -7.5899,
+    33.5893
+   ],
+   "tz": "Africa/Casablanca",
+   "code": "Casablanca"
+  },
+  "RAK_S": {
+   "name": "Marrakech station",
+   "city": "Marrakech",
+   "kind": "station",
+   "coord": [
+    -8.0189,
+    31.6323
+   ],
+   "tz": "Africa/Casablanca",
+   "code": "Marrakech"
+  },
+  "ESU_B": {
+   "name": "Essaouira bus station",
+   "city": "Essaouira",
+   "kind": "stop",
+   "coord": [
+    -9.7595,
+    31.5085
+   ],
+   "tz": "Africa/Casablanca",
+   "code": "Essaouira"
+  },
+  "SFO_C": {
+   "name": "San Francisco",
+   "city": "San Francisco",
+   "kind": "stop",
+   "coord": [
+    -122.4018,
+    37.7897
+   ],
+   "tz": "America/Los_Angeles",
+   "code": "San Francisco"
+  },
+  "SAN_S": {
+   "name": "San Diego Santa Fe Depot",
+   "city": "San Diego",
+   "kind": "station",
+   "coord": [
+    -117.1696,
+    32.7165
+   ],
+   "tz": "America/Los_Angeles",
+   "code": "San Diego"
+  },
+  "CDG": {
+   "name": "Paris Charles de Gaulle",
+   "city": "Paris",
+   "kind": "airport",
+   "coord": [
+    2.5479,
+    49.0097
+   ],
+   "tz": "Europe/Paris",
+   "code": "CDG"
+  },
+  "PAR_B": {
+   "name": "Paris Bercy",
+   "city": "Paris",
+   "kind": "stop",
+   "coord": [
+    2.382,
+    48.8386
+   ],
+   "tz": "Europe/Paris",
+   "code": "Paris Bercy"
+  },
+  "BCN": {
+   "name": "Barcelona El Prat",
+   "city": "Barcelona",
+   "kind": "airport",
+   "coord": [
+    2.0785,
+    41.2974
+   ],
+   "tz": "Europe/Madrid",
+   "code": "BCN"
+  },
+  "BCN_N": {
+   "name": "Barcelona Nord",
+   "city": "Barcelona",
+   "kind": "stop",
+   "coord": [
+    2.183,
+    41.3946
+   ],
+   "tz": "Europe/Madrid",
+   "code": "Barcelona Nord"
+  },
+  "BCN_P": {
+   "name": "Port of Barcelona",
+   "city": "Barcelona",
+   "kind": "port",
+   "coord": [
+    2.1757,
+    41.3657
+   ],
+   "tz": "Europe/Madrid",
+   "code": "Barcelona port"
+  },
+  "PMI_P": {
+   "name": "Port of Palma",
+   "city": "Palma",
+   "kind": "port",
+   "coord": [
+    2.6355,
+    39.5636
+   ],
+   "tz": "Europe/Madrid",
+   "code": "Palma port"
+  },
+  "PMI": {
+   "name": "Palma de Mallorca airport",
+   "city": "Palma",
+   "kind": "airport",
+   "coord": [
+    2.7388,
+    39.5517
+   ],
+   "tz": "Europe/Madrid",
+   "code": "PMI"
+  },
+  "BKK_MC": {
+   "name": "Mo Chit bus terminal",
+   "city": "Bangkok",
+   "kind": "stop",
+   "coord": [
+    100.5535,
+    13.8129
+   ],
+   "tz": "Asia/Bangkok",
+   "code": "Mo Chit"
+  },
+  "CNX_B": {
+   "name": "Chiang Mai Arcade",
+   "city": "Chiang Mai",
+   "kind": "stop",
+   "coord": [
+    99.0156,
+    18.8034
+   ],
+   "tz": "Asia/Bangkok",
+   "code": "Chiang Mai Arcade"
+  },
+  "ITM": {
+   "name": "Osaka Itami",
+   "city": "Osaka",
+   "kind": "airport",
+   "coord": [
+    135.438,
+    34.7855
+   ],
+   "tz": "Asia/Tokyo",
+   "code": "ITM"
+  },
+  "TYO_B": {
+   "name": "Busta Shinjuku",
+   "city": "Tokyo",
+   "kind": "stop",
+   "coord": [
+    139.7006,
+    35.6886
+   ],
+   "tz": "Asia/Tokyo",
+   "code": "Shinjuku"
+  },
+  "KYO_B": {
+   "name": "Kyoto Station bus stop",
+   "city": "Kyoto",
+   "kind": "stop",
+   "coord": [
+    135.758,
+    34.985
+   ],
+   "tz": "Asia/Tokyo",
+   "code": "Kyoto"
+  }
+ },
+ "journeys": [
+  {
+   "id": "tokyo-sanfrancisco",
+   "mode": "plane",
+   "group": "tokyo-sanfrancisco",
+   "from": "HND",
+   "to": "SFO",
+   "dep": "2027-05-14T17:05",
+   "arr": "2027-05-14T10:05",
+   "carrier": "ANA",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HND",
+     "to": "SFO",
+     "dep": "2027-05-14T17:05",
+     "arr": "2027-05-14T10:05",
+     "carrier": "ANA"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "london-singapore",
+   "mode": "plane",
+   "group": "london-singapore",
+   "from": "LHR",
+   "to": "SIN",
+   "dep": "2027-05-14T21:25",
+   "arr": "2027-05-15T17:35",
+   "carrier": "Singapore Airlines",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "LHR",
+     "to": "SIN",
+     "dep": "2027-05-14T21:25",
+     "arr": "2027-05-15T17:35",
+     "carrier": "Singapore Airlines"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "lima-madrid",
+   "mode": "plane",
+   "group": "lima-madrid",
+   "from": "LIM",
+   "to": "MAD",
+   "dep": "2027-05-14T19:20",
+   "arr": "2027-05-15T13:45",
+   "carrier": "Iberia",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "LIM",
+     "to": "MAD",
+     "dep": "2027-05-14T19:20",
+     "arr": "2027-05-15T13:45",
+     "carrier": "Iberia"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "sydney-auckland",
+   "mode": "plane",
+   "group": "sydney-auckland",
+   "from": "SYD",
+   "to": "AKL",
+   "dep": "2027-05-14T07:00",
+   "arr": "2027-05-14T12:10",
+   "carrier": "Air New Zealand",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "SYD",
+     "to": "AKL",
+     "dep": "2027-05-14T07:00",
+     "arr": "2027-05-14T12:10",
+     "carrier": "Air New Zealand"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "losangeles-honolulu",
+   "mode": "plane",
+   "group": "losangeles-honolulu",
+   "from": "LAX",
+   "to": "HNL",
+   "dep": "2027-05-14T08:00",
+   "arr": "2027-05-14T10:50",
+   "carrier": "Hawaiian Airlines",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "LAX",
+     "to": "HNL",
+     "dep": "2027-05-14T08:00",
+     "arr": "2027-05-14T10:50",
+     "carrier": "Hawaiian Airlines"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "sanfrancisco-newyork",
+   "mode": "plane",
+   "group": "sanfrancisco-newyork",
+   "from": "SFO",
+   "to": "JFK",
+   "dep": "2027-05-14T07:00",
+   "arr": "2027-05-14T15:35",
+   "carrier": "United",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "SFO",
+     "to": "JFK",
+     "dep": "2027-05-14T07:00",
+     "arr": "2027-05-14T15:35",
+     "carrier": "United"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "bangkok-chiangmai",
+   "mode": "train",
+   "group": "bangkok-chiangmai",
+   "from": "BKK_KA",
+   "to": "CNX_S",
+   "dep": "2027-05-14T18:40",
+   "arr": "2027-05-15T07:15",
+   "carrier": "SRT Special Express 9",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "BKK_KA",
+     "to": "CNX_S",
+     "dep": "2027-05-14T18:40",
+     "arr": "2027-05-15T07:15",
+     "carrier": "SRT Special Express 9",
+     "path": [
+      [
+       100.5383,
+       13.8045
+      ],
+      [
+       100.58,
+       14.36
+      ],
+      [
+       100.62,
+       14.8
+      ],
+      [
+       100.12,
+       15.7
+      ],
+      [
+       100.26,
+       16.82
+      ],
+      [
+       100.1,
+       17.62
+      ],
+      [
+       100.05,
+       17.98
+      ],
+      [
+       99.5,
+       18.29
+      ],
+      [
+       99.01,
+       18.58
+      ],
+      [
+       99.0164,
+       18.7843
+      ]
+     ]
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "paris-barcelona",
+   "mode": "train",
+   "group": "paris-barcelona",
+   "from": "PAR_GL",
+   "to": "BCN_S",
+   "dep": "2027-05-14T10:07",
+   "arr": "2027-05-14T16:41",
+   "carrier": "SNCF TGV inOui",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "PAR_GL",
+     "to": "BCN_S",
+     "dep": "2027-05-14T10:07",
+     "arr": "2027-05-14T16:41",
+     "carrier": "SNCF TGV inOui",
+     "path": [
+      [
+       2.3734,
+       48.8443
+      ],
+      [
+       2.7,
+       48.55
+      ],
+      [
+       3.4,
+       47.95
+      ],
+      [
+       4.1,
+       47.45
+      ],
+      [
+       4.55,
+       46.95
+      ],
+      [
+       4.83,
+       46.3
+      ],
+      [
+       4.86,
+       45.76
+      ],
+      [
+       4.97,
+       44.99
+      ],
+      [
+       4.79,
+       43.92
+      ],
+      [
+       4.37,
+       43.83
+      ],
+      [
+       3.88,
+       43.6
+      ],
+      [
+       3.0,
+       43.19
+      ],
+      [
+       2.88,
+       42.7
+      ],
+      [
+       2.95,
+       42.27
+      ],
+      [
+       2.82,
+       41.98
+      ],
+      [
+       2.45,
+       41.62
+      ],
+      [
+       2.1404,
+       41.379
+      ]
+     ]
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "bergen-oslo",
+   "mode": "train",
+   "group": "bergen-oslo",
+   "from": "BGO_S",
+   "to": "OSL_S",
+   "dep": "2027-05-14T08:25",
+   "arr": "2027-05-14T15:12",
+   "carrier": "Vy",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "BGO_S",
+     "to": "OSL_S",
+     "dep": "2027-05-14T08:25",
+     "arr": "2027-05-14T15:12",
+     "carrier": "Vy",
+     "path": [
+      [
+       5.3328,
+       60.3903
+      ],
+      [
+       5.75,
+       60.46
+      ],
+      [
+       6.42,
+       60.63
+      ],
+      [
+       7.12,
+       60.73
+      ],
+      [
+       7.5,
+       60.6
+      ],
+      [
+       8.21,
+       60.53
+      ],
+      [
+       8.94,
+       60.7
+      ],
+      [
+       9.7,
+       60.6
+      ],
+      [
+       10.25,
+       60.17
+      ],
+      [
+       10.2,
+       59.74
+      ],
+      [
+       10.5,
+       59.85
+      ],
+      [
+       10.7533,
+       59.9109
+      ]
+     ]
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "tokyo-osaka",
+   "mode": "train",
+   "group": "tokyo-osaka",
+   "from": "TYO_S",
+   "to": "OSA_S",
+   "dep": "2027-05-14T09:00",
+   "arr": "2027-05-14T11:27",
+   "carrier": "JR Central Nozomi",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "TYO_S",
+     "to": "OSA_S",
+     "dep": "2027-05-14T09:00",
+     "arr": "2027-05-14T11:27",
+     "carrier": "JR Central Nozomi",
+     "path": [
+      [
+       139.7671,
+       35.6812
+      ],
+      [
+       139.617,
+       35.507
+      ],
+      [
+       139.155,
+       35.256
+      ],
+      [
+       139.078,
+       35.104
+      ],
+      [
+       138.911,
+       35.126
+      ],
+      [
+       138.389,
+       34.972
+      ],
+      [
+       137.735,
+       34.704
+      ],
+      [
+       137.382,
+       34.763
+      ],
+      [
+       136.882,
+       35.171
+      ],
+      [
+       136.7,
+       35.32
+      ],
+      [
+       136.29,
+       35.31
+      ],
+      [
+       135.758,
+       34.986
+      ],
+      [
+       135.5003,
+       34.7334
+      ]
+     ]
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "chur-tirano",
+   "mode": "train",
+   "group": "chur-tirano",
+   "from": "CHU",
+   "to": "TIR",
+   "dep": "2027-05-14T08:28",
+   "arr": "2027-05-14T12:39",
+   "carrier": "Bernina Express",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "CHU",
+     "to": "TIR",
+     "dep": "2027-05-14T08:28",
+     "arr": "2027-05-14T12:39",
+     "carrier": "Bernina Express",
+     "path": [
+      [
+       9.5296,
+       46.853
+      ],
+      [
+       9.44,
+       46.7
+      ],
+      [
+       9.68,
+       46.67
+      ],
+      [
+       9.75,
+       46.63
+      ],
+      [
+       9.77,
+       46.59
+      ],
+      [
+       9.87,
+       46.53
+      ],
+      [
+       9.9,
+       46.49
+      ],
+      [
+       10.02,
+       46.41
+      ],
+      [
+       10.05,
+       46.37
+      ],
+      [
+       10.06,
+       46.33
+      ],
+      [
+       10.12,
+       46.26
+      ],
+      [
+       10.168,
+       46.216
+      ]
+     ]
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "vienna-venice",
+   "mode": "train",
+   "group": "vienna-venice",
+   "from": "VIE_H",
+   "to": "VCE_S",
+   "dep": "2027-05-14T21:27",
+   "arr": "2027-05-15T08:58",
+   "carrier": "ÖBB Nightjet",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "VIE_H",
+     "to": "VCE_S",
+     "dep": "2027-05-14T21:27",
+     "arr": "2027-05-15T08:58",
+     "carrier": "ÖBB Nightjet",
+     "path": [
+      [
+       16.3757,
+       48.1852
+      ],
+      [
+       16.23,
+       47.81
+      ],
+      [
+       15.83,
+       47.63
+      ],
+      [
+       15.27,
+       47.41
+      ],
+      [
+       15.09,
+       47.38
+      ],
+      [
+       14.66,
+       47.17
+      ],
+      [
+       14.41,
+       46.95
+      ],
+      [
+       14.31,
+       46.62
+      ],
+      [
+       13.85,
+       46.62
+      ],
+      [
+       13.58,
+       46.5
+      ],
+      [
+       13.23,
+       46.07
+      ],
+      [
+       12.8,
+       45.8
+      ],
+      [
+       12.23,
+       45.48
+      ],
+      [
+       12.321,
+       45.441
+      ]
+     ]
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "piraeus-santorini",
+   "mode": "ferry",
+   "group": "piraeus-santorini",
+   "from": "PIR",
+   "to": "JTR_P",
+   "dep": "2027-05-14T07:00",
+   "arr": "2027-05-14T14:40",
+   "carrier": "Blue Star Ferries",
+   "segments": [
+    {
+     "mode": "ferry",
+     "from": "PIR",
+     "to": "JTR_P",
+     "dep": "2027-05-14T07:00",
+     "arr": "2027-05-14T14:40",
+     "carrier": "Blue Star Ferries",
+     "path": [
+      [
+       23.637,
+       37.942
+      ],
+      [
+       23.7,
+       37.85
+      ],
+      [
+       23.95,
+       37.62
+      ],
+      [
+       24.15,
+       37.52
+      ],
+      [
+       24.6,
+       37.47
+      ],
+      [
+       24.945,
+       37.442
+      ],
+      [
+       25.05,
+       37.25
+      ],
+      [
+       25.15,
+       37.085
+      ],
+      [
+       25.37,
+       37.105
+      ],
+      [
+       25.35,
+       36.9
+      ],
+      [
+       25.27,
+       36.725
+      ],
+      [
+       25.33,
+       36.55
+      ],
+      [
+       25.427,
+       36.386
+      ]
+     ]
+    }
+   ],
+   "offers": []
+  },
+  {
+   "id": "sf-la-train",
+   "mode": "train",
+   "group": "sf-la-train",
+   "from": "OKJ",
+   "to": "LAUS",
+   "dep": "2027-05-18T09:10",
+   "arr": "2027-05-18T21:00",
+   "carrier": "Amtrak",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "OKJ",
+     "to": "LAUS",
+     "dep": "2027-05-18T09:10",
+     "arr": "2027-05-18T21:00",
+     "carrier": "Amtrak",
+     "number": "Coast Starlight 11",
+     "path": [
+      [
+       -122.2774,
+       37.7939
+      ],
+      [
+       -121.903,
+       37.33
+      ],
+      [
+       -121.656,
+       36.677
+      ],
+      [
+       -121.13,
+       36.2
+      ],
+      [
+       -120.69,
+       35.62
+      ],
+      [
+       -120.655,
+       35.276
+      ],
+      [
+       -120.6,
+       34.95
+      ],
+      [
+       -120.62,
+       34.68
+      ],
+      [
+       -120.47,
+       34.45
+      ],
+      [
+       -120.1,
+       34.47
+      ],
+      [
+       -119.698,
+       34.414
+      ],
+      [
+       -119.29,
+       34.28
+      ],
+      [
+       -119.18,
+       34.2
+      ],
+      [
+       -118.78,
+       34.27
+      ],
+      [
+       -118.45,
+       34.21
+      ],
+      [
+       -118.32,
+       34.19
+      ],
+      [
+       -118.2365,
+       34.0562
+      ]
+     ],
+     "vehicle": "train-regional"
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Amtrak",
+     "kind": "operator",
+     "price": 64,
+     "fare": "Coach seat",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "sf-la-flight",
+   "mode": "plane",
+   "group": "sf-la-flight",
+   "from": "SFO",
+   "to": "LAX",
+   "dep": "2027-05-18T08:00",
+   "arr": "2027-05-18T09:30",
+   "carrier": "United",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "SFO",
+     "to": "LAX",
+     "dep": "2027-05-18T08:00",
+     "arr": "2027-05-18T09:30",
+     "carrier": "United",
+     "number": "UA 1166"
+    }
+   ],
+   "offers": [
+    {
+     "seller": "United",
+     "kind": "operator",
+     "price": 89,
+     "fare": "Economy",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "sf-la-bus",
+   "mode": "bus",
+   "group": "sf-la-bus",
+   "from": "SFO_C",
+   "to": "LAUS",
+   "dep": "2027-05-18T07:00",
+   "arr": "2027-05-18T14:15",
+   "carrier": "FlixBus",
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "SFO_C",
+     "to": "LAUS",
+     "dep": "2027-05-18T07:00",
+     "arr": "2027-05-18T14:15",
+     "carrier": "FlixBus",
+     "path": [
+      [
+       -122.4018,
+       37.7897
+      ],
+      [
+       -122.1,
+       37.7
+      ],
+      [
+       -121.55,
+       37.62
+      ],
+      [
+       -121.25,
+       37.1
+      ],
+      [
+       -120.85,
+       36.75
+      ],
+      [
+       -120.38,
+       36.3
+      ],
+      [
+       -119.85,
+       35.7
+      ],
+      [
+       -119.2,
+       35.05
+      ],
+      [
+       -118.85,
+       34.8
+      ],
+      [
+       -118.6,
+       34.45
+      ],
+      [
+       -118.4,
+       34.2
+      ],
+      [
+       -118.2365,
+       34.0562
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "FlixBus",
+     "kind": "operator",
+     "price": 29,
+     "fare": "Standard",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "la-sd-train",
+   "mode": "train",
+   "group": "la-sd-train",
+   "from": "LAUS",
+   "to": "SAN_S",
+   "dep": "2027-05-20T10:00",
+   "arr": "2027-05-20T12:45",
+   "carrier": "Amtrak",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "LAUS",
+     "to": "SAN_S",
+     "dep": "2027-05-20T10:00",
+     "arr": "2027-05-20T12:45",
+     "carrier": "Amtrak",
+     "number": "Pacific Surfliner 768",
+     "path": [
+      [
+       -118.2365,
+       34.0562
+      ],
+      [
+       -118.1,
+       33.9
+      ],
+      [
+       -117.88,
+       33.78
+      ],
+      [
+       -117.66,
+       33.46
+      ],
+      [
+       -117.6,
+       33.39
+      ],
+      [
+       -117.38,
+       33.2
+      ],
+      [
+       -117.3,
+       33.05
+      ],
+      [
+       -117.25,
+       32.9
+      ],
+      [
+       -117.1696,
+       32.7165
+      ]
+     ],
+     "vehicle": "train-regional"
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Amtrak",
+     "kind": "operator",
+     "price": 37,
+     "fare": "Coach seat",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "la-sd-car",
+   "mode": "car",
+   "group": "la-sd-car",
+   "from": "LAUS",
+   "to": "SAN_S",
+   "dep": "2027-05-20T10:00",
+   "arr": "2027-05-20T12:10",
+   "carrier": "Rental car",
+   "segments": [
+    {
+     "mode": "car",
+     "from": "LAUS",
+     "to": "SAN_S",
+     "dep": "2027-05-20T10:00",
+     "arr": "2027-05-20T12:10",
+     "carrier": "Rental car",
+     "path": [
+      [
+       -118.2365,
+       34.0562
+      ],
+      [
+       -118.05,
+       33.93
+      ],
+      [
+       -117.85,
+       33.79
+      ],
+      [
+       -117.7,
+       33.56
+      ],
+      [
+       -117.62,
+       33.43
+      ],
+      [
+       -117.35,
+       33.19
+      ],
+      [
+       -117.21,
+       32.96
+      ],
+      [
+       -117.1696,
+       32.7165
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Rental car",
+     "kind": "operator",
+     "price": 48,
+     "fare": "One day, compact",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "la-sd-bus",
+   "mode": "bus",
+   "group": "la-sd-bus",
+   "from": "LAUS",
+   "to": "SAN_S",
+   "dep": "2027-05-20T09:30",
+   "arr": "2027-05-20T12:20",
+   "carrier": "FlixBus",
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "LAUS",
+     "to": "SAN_S",
+     "dep": "2027-05-20T09:30",
+     "arr": "2027-05-20T12:20",
+     "carrier": "FlixBus",
+     "path": [
+      [
+       -118.2365,
+       34.0562
+      ],
+      [
+       -118.05,
+       33.93
+      ],
+      [
+       -117.85,
+       33.79
+      ],
+      [
+       -117.7,
+       33.56
+      ],
+      [
+       -117.62,
+       33.43
+      ],
+      [
+       -117.35,
+       33.19
+      ],
+      [
+       -117.21,
+       32.96
+      ],
+      [
+       -117.1696,
+       32.7165
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "FlixBus",
+     "kind": "operator",
+     "price": 15,
+     "fare": "Standard",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "par-bcn-train",
+   "mode": "train",
+   "group": "par-bcn-train",
+   "from": "PAR_GL",
+   "to": "BCN_S",
+   "dep": "2027-05-18T10:07",
+   "arr": "2027-05-18T16:41",
+   "carrier": "SNCF",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "PAR_GL",
+     "to": "BCN_S",
+     "dep": "2027-05-18T10:07",
+     "arr": "2027-05-18T16:41",
+     "carrier": "SNCF",
+     "number": "TGV inOui 9713",
+     "path": [
+      [
+       2.3734,
+       48.8443
+      ],
+      [
+       2.7,
+       48.55
+      ],
+      [
+       3.4,
+       47.95
+      ],
+      [
+       4.1,
+       47.45
+      ],
+      [
+       4.55,
+       46.95
+      ],
+      [
+       4.83,
+       46.3
+      ],
+      [
+       4.86,
+       45.76
+      ],
+      [
+       4.97,
+       44.99
+      ],
+      [
+       4.79,
+       43.92
+      ],
+      [
+       4.37,
+       43.83
+      ],
+      [
+       3.88,
+       43.6
+      ],
+      [
+       3.0,
+       43.19
+      ],
+      [
+       2.88,
+       42.7
+      ],
+      [
+       2.95,
+       42.27
+      ],
+      [
+       2.82,
+       41.98
+      ],
+      [
+       2.45,
+       41.62
+      ],
+      [
+       2.1404,
+       41.379
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "SNCF",
+     "kind": "operator",
+     "price": 79,
+     "fare": "Second class",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "par-bcn-flight",
+   "mode": "plane",
+   "group": "par-bcn-flight",
+   "from": "CDG",
+   "to": "BCN",
+   "dep": "2027-05-18T07:15",
+   "arr": "2027-05-18T09:10",
+   "carrier": "Vueling",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "CDG",
+     "to": "BCN",
+     "dep": "2027-05-18T07:15",
+     "arr": "2027-05-18T09:10",
+     "carrier": "Vueling",
+     "number": "VY 8001"
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Vueling",
+     "kind": "operator",
+     "price": 68,
+     "fare": "Basic",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "par-bcn-bus",
+   "mode": "bus",
+   "group": "par-bcn-bus",
+   "from": "PAR_B",
+   "to": "BCN_N",
+   "dep": "2027-05-17T18:00",
+   "arr": "2027-05-18T09:30",
+   "carrier": "FlixBus",
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "PAR_B",
+     "to": "BCN_N",
+     "dep": "2027-05-17T18:00",
+     "arr": "2027-05-18T09:30",
+     "carrier": "FlixBus",
+     "path": [
+      [
+       2.382,
+       48.8386
+      ],
+      [
+       2.75,
+       47.9
+      ],
+      [
+       3.08,
+       46.9
+      ],
+      [
+       3.09,
+       45.78
+      ],
+      [
+       3.2,
+       44.8
+      ],
+      [
+       3.25,
+       43.7
+      ],
+      [
+       3.0,
+       43.2
+      ],
+      [
+       2.88,
+       42.7
+      ],
+      [
+       2.82,
+       41.98
+      ],
+      [
+       2.183,
+       41.3946
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "FlixBus",
+     "kind": "operator",
+     "price": 45,
+     "fare": "Standard",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "bcn-pmi-ferry",
+   "mode": "ferry",
+   "group": "bcn-pmi-ferry",
+   "from": "BCN_P",
+   "to": "PMI_P",
+   "dep": "2027-05-21T23:00",
+   "arr": "2027-05-22T06:30",
+   "carrier": "Baleària",
+   "segments": [
+    {
+     "mode": "ferry",
+     "from": "BCN_P",
+     "to": "PMI_P",
+     "dep": "2027-05-21T23:00",
+     "arr": "2027-05-22T06:30",
+     "carrier": "Baleària",
+     "path": [
+      [
+       2.1757,
+       41.3657
+      ],
+      [
+       2.3,
+       41.22
+      ],
+      [
+       2.55,
+       40.8
+      ],
+      [
+       2.62,
+       40.1
+      ],
+      [
+       2.58,
+       39.7
+      ],
+      [
+       2.6355,
+       39.5636
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Baleària",
+     "kind": "operator",
+     "price": 58,
+     "fare": "Seat, night crossing",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "bcn-pmi-flight",
+   "mode": "plane",
+   "group": "bcn-pmi-flight",
+   "from": "BCN",
+   "to": "PMI",
+   "dep": "2027-05-22T09:00",
+   "arr": "2027-05-22T09:55",
+   "carrier": "Vueling",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "BCN",
+     "to": "PMI",
+     "dep": "2027-05-22T09:00",
+     "arr": "2027-05-22T09:55",
+     "carrier": "Vueling",
+     "number": "VY 3900"
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Vueling",
+     "kind": "operator",
+     "price": 42,
+     "fare": "Basic",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "pir-jtr-ferry",
+   "mode": "ferry",
+   "group": "pir-jtr-ferry",
+   "from": "PIR",
+   "to": "JTR_P",
+   "dep": "2027-05-18T07:00",
+   "arr": "2027-05-18T14:40",
+   "carrier": "Blue Star Ferries",
+   "segments": [
+    {
+     "mode": "ferry",
+     "from": "PIR",
+     "to": "JTR_P",
+     "dep": "2027-05-18T07:00",
+     "arr": "2027-05-18T14:40",
+     "carrier": "Blue Star Ferries",
+     "path": [
+      [
+       23.637,
+       37.942
+      ],
+      [
+       23.7,
+       37.85
+      ],
+      [
+       23.95,
+       37.62
+      ],
+      [
+       24.15,
+       37.52
+      ],
+      [
+       24.6,
+       37.47
+      ],
+      [
+       24.945,
+       37.442
+      ],
+      [
+       25.05,
+       37.25
+      ],
+      [
+       25.15,
+       37.085
+      ],
+      [
+       25.37,
+       37.105
+      ],
+      [
+       25.35,
+       36.9
+      ],
+      [
+       25.27,
+       36.725
+      ],
+      [
+       25.33,
+       36.55
+      ],
+      [
+       25.427,
+       36.386
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Blue Star Ferries",
+     "kind": "operator",
+     "price": 52,
+     "fare": "Deck seat",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "pir-jtr-fast",
+   "mode": "ferry",
+   "group": "pir-jtr-fast",
+   "from": "PIR",
+   "to": "JTR_P",
+   "dep": "2027-05-18T07:00",
+   "arr": "2027-05-18T12:10",
+   "carrier": "SeaJets",
+   "segments": [
+    {
+     "mode": "ferry",
+     "from": "PIR",
+     "to": "JTR_P",
+     "dep": "2027-05-18T07:00",
+     "arr": "2027-05-18T12:10",
+     "carrier": "SeaJets",
+     "path": [
+      [
+       23.637,
+       37.942
+      ],
+      [
+       23.75,
+       37.8
+      ],
+      [
+       24.3,
+       37.55
+      ],
+      [
+       24.9,
+       37.3
+      ],
+      [
+       25.2,
+       37.0
+      ],
+      [
+       25.37,
+       36.7
+      ],
+      [
+       25.427,
+       36.386
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "SeaJets",
+     "kind": "operator",
+     "price": 98,
+     "fare": "Economy seat",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "ath-jtr-flight",
+   "mode": "plane",
+   "group": "ath-jtr-flight",
+   "from": "ATH",
+   "to": "JTR",
+   "dep": "2027-05-18T08:00",
+   "arr": "2027-05-18T08:45",
+   "carrier": "Aegean Airlines",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "ATH",
+     "to": "JTR",
+     "dep": "2027-05-18T08:00",
+     "arr": "2027-05-18T08:45",
+     "carrier": "Aegean Airlines",
+     "number": "A3 356"
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Aegean Airlines",
+     "kind": "operator",
+     "price": 96,
+     "fare": "Economy Light",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "jtr-ath-flight",
+   "mode": "plane",
+   "group": "jtr-ath-flight",
+   "from": "JTR",
+   "to": "ATH",
+   "dep": "2027-05-21T18:05",
+   "arr": "2027-05-21T18:50",
+   "carrier": "Aegean Airlines",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "JTR",
+     "to": "ATH",
+     "dep": "2027-05-21T18:05",
+     "arr": "2027-05-21T18:50",
+     "carrier": "Aegean Airlines",
+     "number": "A3 361"
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Aegean Airlines",
+     "kind": "operator",
+     "price": 84,
+     "fare": "Economy Light",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "jtr-pir-ferry",
+   "mode": "ferry",
+   "group": "jtr-pir-ferry",
+   "from": "JTR_P",
+   "to": "PIR",
+   "dep": "2027-05-21T15:30",
+   "arr": "2027-05-21T23:10",
+   "carrier": "Blue Star Ferries",
+   "segments": [
+    {
+     "mode": "ferry",
+     "from": "JTR_P",
+     "to": "PIR",
+     "dep": "2027-05-21T15:30",
+     "arr": "2027-05-21T23:10",
+     "carrier": "Blue Star Ferries",
+     "path": [
+      [
+       25.427,
+       36.386
+      ],
+      [
+       25.33,
+       36.55
+      ],
+      [
+       25.27,
+       36.725
+      ],
+      [
+       25.35,
+       36.9
+      ],
+      [
+       25.37,
+       37.105
+      ],
+      [
+       25.15,
+       37.085
+      ],
+      [
+       25.05,
+       37.25
+      ],
+      [
+       24.945,
+       37.442
+      ],
+      [
+       24.6,
+       37.47
+      ],
+      [
+       24.15,
+       37.52
+      ],
+      [
+       23.95,
+       37.62
+      ],
+      [
+       23.7,
+       37.85
+      ],
+      [
+       23.637,
+       37.942
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Blue Star Ferries",
+     "kind": "operator",
+     "price": 52,
+     "fare": "Deck seat",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "bkk-cnx-train",
+   "mode": "train",
+   "group": "bkk-cnx-train",
+   "from": "BKK_KA",
+   "to": "CNX_S",
+   "dep": "2027-05-18T18:40",
+   "arr": "2027-05-19T07:15",
+   "carrier": "State Railway of Thailand",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "BKK_KA",
+     "to": "CNX_S",
+     "dep": "2027-05-18T18:40",
+     "arr": "2027-05-19T07:15",
+     "carrier": "State Railway of Thailand",
+     "number": "Special Express 9",
+     "path": [
+      [
+       100.5383,
+       13.8045
+      ],
+      [
+       100.58,
+       14.36
+      ],
+      [
+       100.62,
+       14.8
+      ],
+      [
+       100.12,
+       15.7
+      ],
+      [
+       100.26,
+       16.82
+      ],
+      [
+       100.1,
+       17.62
+      ],
+      [
+       100.05,
+       17.98
+      ],
+      [
+       99.5,
+       18.29
+      ],
+      [
+       99.01,
+       18.58
+      ],
+      [
+       99.0164,
+       18.7843
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "State Railway of Thailand",
+     "kind": "operator",
+     "price": 36,
+     "fare": "Second class sleeper",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "bkk-cnx-flight",
+   "mode": "plane",
+   "group": "bkk-cnx-flight",
+   "from": "BKK",
+   "to": "CNX",
+   "dep": "2027-05-18T07:00",
+   "arr": "2027-05-18T08:15",
+   "carrier": "Thai Airways",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "BKK",
+     "to": "CNX",
+     "dep": "2027-05-18T07:00",
+     "arr": "2027-05-18T08:15",
+     "carrier": "Thai Airways",
+     "number": "TG 102"
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Thai Airways",
+     "kind": "operator",
+     "price": 48,
+     "fare": "Economy",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "bkk-cnx-bus",
+   "mode": "bus",
+   "group": "bkk-cnx-bus",
+   "from": "BKK_MC",
+   "to": "CNX_B",
+   "dep": "2027-05-18T20:30",
+   "arr": "2027-05-19T06:10",
+   "carrier": "Nakhonchai Air",
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "BKK_MC",
+     "to": "CNX_B",
+     "dep": "2027-05-18T20:30",
+     "arr": "2027-05-19T06:10",
+     "carrier": "Nakhonchai Air",
+     "path": [
+      [
+       100.5535,
+       13.8129
+      ],
+      [
+       100.58,
+       14.35
+      ],
+      [
+       100.1,
+       15.7
+      ],
+      [
+       99.53,
+       16.48
+      ],
+      [
+       99.13,
+       16.88
+      ],
+      [
+       99.0,
+       17.4
+      ],
+      [
+       99.48,
+       18.29
+      ],
+      [
+       99.0156,
+       18.8034
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Nakhonchai Air",
+     "kind": "operator",
+     "price": 22,
+     "fare": "Gold class",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "cnx-bkk-flight",
+   "mode": "plane",
+   "group": "cnx-bkk-flight",
+   "from": "CNX",
+   "to": "BKK",
+   "dep": "2027-05-22T12:20",
+   "arr": "2027-05-22T13:35",
+   "carrier": "Thai Airways",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "CNX",
+     "to": "BKK",
+     "dep": "2027-05-22T12:20",
+     "arr": "2027-05-22T13:35",
+     "carrier": "Thai Airways",
+     "number": "TG 115"
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Thai Airways",
+     "kind": "operator",
+     "price": 58,
+     "fare": "Economy",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "cnx-bkk-train",
+   "mode": "train",
+   "group": "cnx-bkk-train",
+   "from": "CNX_S",
+   "to": "BKK_KA",
+   "dep": "2027-05-22T08:50",
+   "arr": "2027-05-22T19:25",
+   "carrier": "State Railway of Thailand",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "CNX_S",
+     "to": "BKK_KA",
+     "dep": "2027-05-22T08:50",
+     "arr": "2027-05-22T19:25",
+     "carrier": "State Railway of Thailand",
+     "number": "Special Express 8",
+     "path": [
+      [
+       99.0164,
+       18.7843
+      ],
+      [
+       99.01,
+       18.58
+      ],
+      [
+       99.5,
+       18.29
+      ],
+      [
+       100.05,
+       17.98
+      ],
+      [
+       100.1,
+       17.62
+      ],
+      [
+       100.26,
+       16.82
+      ],
+      [
+       100.12,
+       15.7
+      ],
+      [
+       100.62,
+       14.8
+      ],
+      [
+       100.58,
+       14.36
+      ],
+      [
+       100.5383,
+       13.8045
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "State Railway of Thailand",
+     "kind": "operator",
+     "price": 28,
+     "fare": "Second class seat",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "tyo-kyo-train",
+   "mode": "train",
+   "group": "tyo-kyo-train",
+   "from": "TYO_S",
+   "to": "KYO_S",
+   "dep": "2027-05-18T09:00",
+   "arr": "2027-05-18T11:15",
+   "carrier": "JR Central",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "TYO_S",
+     "to": "KYO_S",
+     "dep": "2027-05-18T09:00",
+     "arr": "2027-05-18T11:15",
+     "carrier": "JR Central",
+     "number": "Nozomi 209",
+     "path": [
+      [
+       139.7671,
+       35.6812
+      ],
+      [
+       139.617,
+       35.507
+      ],
+      [
+       139.155,
+       35.256
+      ],
+      [
+       139.078,
+       35.104
+      ],
+      [
+       138.911,
+       35.126
+      ],
+      [
+       138.389,
+       34.972
+      ],
+      [
+       137.735,
+       34.704
+      ],
+      [
+       137.382,
+       34.763
+      ],
+      [
+       136.882,
+       35.171
+      ],
+      [
+       136.7,
+       35.32
+      ],
+      [
+       136.29,
+       35.31
+      ],
+      [
+       135.7588,
+       34.9858
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "JR Central",
+     "kind": "operator",
+     "price": 89,
+     "fare": "Reserved seat",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "tyo-kyo-flight",
+   "mode": "plane",
+   "group": "tyo-kyo-flight",
+   "from": "HND",
+   "to": "ITM",
+   "dep": "2027-05-18T08:00",
+   "arr": "2027-05-18T09:10",
+   "carrier": "ANA",
+   "segments": [
+    {
+     "mode": "plane",
+     "from": "HND",
+     "to": "ITM",
+     "dep": "2027-05-18T08:00",
+     "arr": "2027-05-18T09:10",
+     "carrier": "ANA",
+     "number": "NH 15"
+    }
+   ],
+   "offers": [
+    {
+     "seller": "ANA",
+     "kind": "operator",
+     "price": 95,
+     "fare": "Economy",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "tyo-kyo-bus",
+   "mode": "bus",
+   "group": "tyo-kyo-bus",
+   "from": "TYO_B",
+   "to": "KYO_B",
+   "dep": "2027-05-17T22:40",
+   "arr": "2027-05-18T06:30",
+   "carrier": "Willer Express",
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "TYO_B",
+     "to": "KYO_B",
+     "dep": "2027-05-17T22:40",
+     "arr": "2027-05-18T06:30",
+     "carrier": "Willer Express",
+     "path": [
+      [
+       139.7006,
+       35.6886
+      ],
+      [
+       139.45,
+       35.47
+      ],
+      [
+       139.1,
+       35.3
+      ],
+      [
+       138.9,
+       35.18
+      ],
+      [
+       138.4,
+       35.02
+      ],
+      [
+       137.75,
+       34.76
+      ],
+      [
+       137.1,
+       34.95
+      ],
+      [
+       136.75,
+       35.25
+      ],
+      [
+       136.3,
+       35.3
+      ],
+      [
+       135.758,
+       34.985
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "Willer Express",
+     "kind": "operator",
+     "price": 38,
+     "fare": "Relax seat",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "kyo-hij-train",
+   "mode": "train",
+   "group": "kyo-hij-train",
+   "from": "KYO_S",
+   "to": "HIJ_S",
+   "dep": "2027-05-20T10:16",
+   "arr": "2027-05-20T11:58",
+   "carrier": "JR West",
+   "segments": [
+    {
+     "mode": "train",
+     "from": "KYO_S",
+     "to": "HIJ_S",
+     "dep": "2027-05-20T10:16",
+     "arr": "2027-05-20T11:58",
+     "carrier": "JR West",
+     "number": "Nozomi 77",
+     "path": [
+      [
+       135.7588,
+       34.9858
+      ],
+      [
+       135.5003,
+       34.7334
+      ],
+      [
+       135.196,
+       34.703
+      ],
+      [
+       134.691,
+       34.827
+      ],
+      [
+       133.918,
+       34.666
+      ],
+      [
+       133.362,
+       34.489
+      ],
+      [
+       132.9,
+       34.43
+      ],
+      [
+       132.4757,
+       34.3976
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "JR West",
+     "kind": "operator",
+     "price": 72,
+     "fare": "Reserved seat",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "kyo-hij-bus",
+   "mode": "bus",
+   "group": "kyo-hij-bus",
+   "from": "KYO_B",
+   "to": "HIJ_S",
+   "dep": "2027-05-20T08:00",
+   "arr": "2027-05-20T14:30",
+   "carrier": "JR Bus",
+   "segments": [
+    {
+     "mode": "bus",
+     "from": "KYO_B",
+     "to": "HIJ_S",
+     "dep": "2027-05-20T08:00",
+     "arr": "2027-05-20T14:30",
+     "carrier": "JR Bus",
+     "path": [
+      [
+       135.758,
+       34.985
+      ],
+      [
+       135.45,
+       34.8
+      ],
+      [
+       135.05,
+       34.75
+      ],
+      [
+       134.5,
+       34.86
+      ],
+      [
+       133.9,
+       34.7
+      ],
+      [
+       133.3,
+       34.52
+      ],
+      [
+       132.85,
+       34.45
+      ],
+      [
+       132.4757,
+       34.3976
+      ]
+     ]
+    }
+   ],
+   "offers": [
+    {
+     "seller": "JR Bus",
+     "kind": "operator",
+     "price": 35,
+     "fare": "Standard",
+     "basis": "example",
+     "source": "example fare for the home page",
+     "seen": "2026-11-08"
+    }
+   ]
+  }
+ ],
+ "deals": [],
+ "carriers": {},
+ "sources": {
+  "note": "Typical timetable durations, rounded, for illustration. Ground paths are rough lines along the real routes. The stage trips have rounded example fares.",
+  "seen": "8 Nov 2026"
+ },
+ "map": {
+  "models": [
+   {
+    "model": "santorini",
+    "place": "JTR_P"
+   },
+   {
+    "model": "barcelona",
+    "place": "BCN_S"
+   },
+   {
+    "model": "palma",
+    "place": "PMI_P"
+   }
+  ]
+ },
+ "context": {
+  "hero": [
+   "tokyo-sanfrancisco",
+   "london-singapore",
+   "lima-madrid",
+   "sydney-auckland",
+   "losangeles-honolulu",
+   "sanfrancisco-newyork",
+   "bangkok-chiangmai",
+   "paris-barcelona",
+   "bergen-oslo",
+   "tokyo-osaka",
+   "vienna-venice",
+   "piraeus-santorini"
+  ],
+  "stage": [
+   {
+    "id": "california",
+    "name": "California",
+    "stops": [
+     "San Francisco",
+     "Los Angeles",
+     "San Diego"
+    ],
+    "legs": [
+     [
+      "sf-la-train",
+      "sf-la-flight",
+      "sf-la-bus"
+     ],
+     [
+      "la-sd-train",
+      "la-sd-car",
+      "la-sd-bus"
+     ]
+    ]
+   },
+   {
+    "id": "spain",
+    "name": "Spain",
+    "stops": [
+     "Paris",
+     "Barcelona",
+     "Palma"
+    ],
+    "legs": [
+     [
+      "par-bcn-train",
+      "par-bcn-flight",
+      "par-bcn-bus"
+     ],
+     [
+      "bcn-pmi-ferry",
+      "bcn-pmi-flight"
+     ]
+    ]
+   },
+   {
+    "id": "greece",
+    "name": "Greece",
+    "stops": [
+     "Athens",
+     "Santorini",
+     "Athens"
+    ],
+    "legs": [
+     [
+      "pir-jtr-ferry",
+      "pir-jtr-fast",
+      "ath-jtr-flight"
+     ],
+     [
+      "jtr-ath-flight",
+      "jtr-pir-ferry"
+     ]
+    ]
+   },
+   {
+    "id": "thailand",
+    "name": "Thailand",
+    "stops": [
+     "Bangkok",
+     "Chiang Mai",
+     "Bangkok"
+    ],
+    "legs": [
+     [
+      "bkk-cnx-train",
+      "bkk-cnx-flight",
+      "bkk-cnx-bus"
+     ],
+     [
+      "cnx-bkk-flight",
+      "cnx-bkk-train"
+     ]
+    ]
+   },
+   {
+    "id": "japan",
+    "name": "Japan",
+    "stops": [
+     "Tokyo",
+     "Kyoto",
+     "Hiroshima"
+    ],
+    "legs": [
+     [
+      "tyo-kyo-train",
+      "tyo-kyo-flight",
+      "tyo-kyo-bus"
+     ],
+     [
+      "kyo-hij-train",
+      "kyo-hij-bus"
+     ]
+    ]
+   }
+  ],
+  "captions": {
+   "tokyo-sanfrancisco": "Tokyo to San Francisco",
+   "london-singapore": "London to Singapore",
+   "lima-madrid": "Lima to Madrid",
+   "sydney-auckland": "Sydney to Auckland",
+   "losangeles-honolulu": "Los Angeles to Honolulu",
+   "sanfrancisco-newyork": "San Francisco to New York",
+   "bangkok-chiangmai": "Bangkok to Chiang Mai by night train",
+   "paris-barcelona": "Paris to Barcelona",
+   "bergen-oslo": "Bergen to Oslo",
+   "tokyo-osaka": "Tokyo to Osaka",
+   "chur-tirano": "Over the Bernina Pass",
+   "vienna-venice": "Vienna to Venice by night train",
+   "piraeus-santorini": "Piraeus to Santorini"
+  }
+ }
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nordic loop</title>
+<link rel="icon" href="/kit/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wdth,wght@0,62.5..100,400..800;1,62.5..100,400..800&family=Pinyon+Script&family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/deck.gl@9.4.0/dist.min.js"></script>
+<!-- three.js draws the 3D preview of a way; it loads when a leg card first shows. -->
+<script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.170.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/" } }</script>
+<link rel="stylesheet" href="/kit/kit.css">
+<link rel="stylesheet" href="mix.css">
+</head>
+<body class="intro">
+<div id="map" class="pc-map"></div>
+<div class="stage" id="stage">
+  <section class="win" id="win" data-k="cover" aria-roledescription="story" aria-label="Your trip, card by card">
+    <div class="top pc-title" id="top">
+      <div class="segs" id="segs" aria-hidden="true"></div>
+      <div class="bar">
+        <span class="stamp" id="stamp"></span>
+        <button class="ib" id="play" aria-label="Pause"></button>
+        <button class="ib" id="gridBtn" aria-label="All cards" aria-expanded="false" aria-controls="grid"></button>
+        <button class="ib" id="home" aria-label="Back to the cover"></button>
+      </div>
+    </div>
+    <header class="head pc-title" id="head"><h1 class="hl" id="title"></h1><div class="dek" id="dek"></div></header>
+    <div class="body pc-title" id="body" aria-live="polite"></div>
+  </section>
+  <button class="nav prev" id="prev" aria-label="Back"></button>
+  <button class="nav next" id="next" aria-label="Next"></button>
+</div>
+<div class="grid" id="grid" role="dialog" aria-label="All cards" hidden>
+  <button class="ib gx" id="gridX" aria-label="Close"></button>
+  <div class="sheet" id="sheet"></div>
+</div>
+<script type="module" src="mix.js"></script>
+</body>
+</html>

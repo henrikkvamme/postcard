@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Postcard: trips your agent finds, draws and books</title>
+<meta name="description" content="A skill for your coding agent. It finds real prices in your browser, draws every way to go on an engraved globe, and books the one you pick up to the payment page.">
+<link rel="icon" href="/kit/favicon.svg">
+<link rel="alternate" type="text/plain" href="/llms.txt" title="Agent guide">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wdth,wght@0,62.5..100,400..800;1,62.5..100,400..800&family=Pinyon+Script&family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/deck.gl@9.4.0/dist.min.js"></script>
+<link rel="stylesheet" href="/kit/kit.css">
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/hero/type.css">
+</head>
+<body class="intro" data-v="type">
+<!-- hero/type.js and hero/type.css own the page: the hero, then the scroll story. -->
+<div class="hero" id="hero"></div>
+
+<!-- three.js draws the 3D vehicle in the card above a way tile; it loads on the first hover. -->
+<script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.170.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/" } }</script>
+<script type="module" src="/home.js"></script>
+</body>
+</html>

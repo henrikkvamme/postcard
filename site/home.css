@@ -1,0 +1,67 @@
+/* The home page in the Mix look: cream paper, navy ink, one red, the condensed red serif with a script word,
+   grotesk numerals. No airmail border, no outlined cards. The hero variants (hero/<id>.css) style the first
+   screen; this file holds the tokens, the shared headline and prompt, and the sections below. */
+:root {
+  --display: "Noto Serif Display", Georgia, serif; --script: "Pinyon Script", cursive;
+  --grot: "Roboto Flex", "Helvetica Neue", Arial, sans-serif; --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --serif: var(--display);
+  --halo: 0 0 2px var(--paper), 0 0 10px var(--paper), 0 0 22px var(--paper);
+  --gut: 16px; --hs: 72px;
+  color-scheme: light;
+}
+/* kit.css fixes the page to the window for a trip page; the home page scrolls. */
+html, body { height: auto; }
+body { overflow-x: hidden; overflow-y: auto; font: 15px/1.55 var(--sans); background: var(--paper); color: var(--ink); }
+a { color: var(--ink); text-decoration-color: var(--rule); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--red); }
+code { font: 13px var(--mono); }
+
+.hero { position: relative; }
+
+/* The headline: red condensed serif lines with a script word over the seam (from the Mix page). */
+.hl { position: relative; display: inline-block; margin: 0; color: var(--red); font: 600 var(--hs)/.86 var(--display); font-stretch: 68%;
+  letter-spacing: .01em; text-transform: uppercase; text-shadow: var(--halo); }
+.hl span { display: block; }
+.hl em { position: absolute; left: 50%; top: 50%; translate: -50% -42%; z-index: 1; font: 400 calc(var(--hs) * .9)/1 var(--script); font-style: normal;
+  text-transform: none; letter-spacing: 0; white-space: nowrap; text-shadow: 0 0 2px var(--paper), 0 0 4px var(--paper), 0 0 8px var(--paper); }
+.eyebrow { font: 600 10px var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--ink2); text-shadow: 0 0 3px var(--paper), 0 0 8px var(--paper); }
+.num { font: 900 64px/1 var(--grot); font-stretch: 84%; font-variation-settings: "opsz" 144; letter-spacing: -.045em; color: var(--ink); }
+
+/* The copy button: a red outline, an icon and two words. A copy fills it red from the left, the copy icon
+   turns to a check that draws itself, and the button pops once. It empties to the right. */
+.cpb { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.cpb-b { all: unset; position: relative; isolation: isolate; overflow: hidden; cursor: pointer; box-sizing: border-box; display: inline-flex; align-items: center; gap: 12px;
+  height: 54px; padding: 0 30px 0 26px; border-radius: 27px; border: 1.5px solid var(--red); color: var(--red); background: var(--paper);
+  font: 600 19px/1 var(--display); font-stretch: 78%; letter-spacing: .07em; text-transform: uppercase; white-space: nowrap;
+  box-shadow: 0 0 0 4px rgba(244, 242, 234, .9), 0 16px 34px -22px rgba(184, 50, 42, .6); transition: color .35s ease, scale .15s ease, box-shadow .3s ease; }
+.cpb-b::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--red); transform: scaleX(0); transform-origin: right; transition: transform .5s cubic-bezier(.65, 0, .35, 1); }
+.cpb-b:hover { box-shadow: 0 0 0 4px rgba(244, 242, 234, .9), 0 18px 34px -16px rgba(184, 50, 42, .55); }
+.cpb-b:hover .cpb-cp { transform: translate(1px, -1px); }
+.cpb-b:active { scale: .95; }
+.cpb-b:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.cpb-ic { position: relative; display: grid; width: 20px; height: 20px; translate: 0 -1px; }
+.cpb-ic svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.cpb-cp { transform-origin: 9px 9px; transition: opacity .2s ease, transform .3s ease; }
+.cpb-ok { stroke-width: 2; stroke-dasharray: 16; stroke-dashoffset: 16; transition: stroke-dashoffset .15s ease; }
+.cpb-t { display: grid; overflow: hidden; height: 1.15em; line-height: 1.15em; padding-top: .08em; }
+.cpb-t > span { grid-area: 1 / 1; transition: translate .4s cubic-bezier(.3, 1.4, .5, 1), opacity .3s ease; }
+.cpb-t > span + span { translate: 0 110%; opacity: 0; }
+.cpb-b.done { color: #fff; animation: cpb-pop .45s cubic-bezier(.3, 1.6, .5, 1); }
+.cpb-b.done::before { transform: scaleX(1); transform-origin: left; transition-duration: .45s; }
+.cpb-b.done .cpb-cp { opacity: 0; transform: scale(.4) rotate(-20deg); }
+.cpb-b.done .cpb-ok { stroke-dashoffset: 0; transition: stroke-dashoffset .35s ease .18s; }
+.cpb-b.done .cpb-t > span:first-child { translate: 0 -110%; opacity: 0; }
+.cpb-b.done .cpb-t > span + span { translate: 0 0; opacity: 1; }
+.cpb-b.fail { animation: cpb-no .4s ease; }
+.cpb-s { font-size: 13px; color: var(--ink2); text-shadow: var(--halo); }
+.cpb-s:empty { display: none; }
+.cpb-b.done ~ .cpb-s { display: none; }
+@keyframes cpb-pop { 0% { scale: 1; } 35% { scale: 1.06; } 100% { scale: 1; } }
+@keyframes cpb-no { 20%, 60% { translate: -4px 0; } 40%, 80% { translate: 4px 0; } }
+@media (prefers-reduced-motion: reduce) { .cpb-b, .cpb-b *, .cpb-b::before { transition-duration: 0s !important; animation: none !important; } }
+
+
+
+@media (max-width: 640px) {
+  :root { --hs: 52px; }
+}
