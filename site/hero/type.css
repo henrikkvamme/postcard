@@ -23,6 +23,8 @@ body[data-v="type"] .ty-hero .ty-hl em { opacity: calc(1 - var(--h, 0) * 3); }
 body[data-v="type"] .ty-hero-type, body[data-v="type"] .ty-fin-type { position: relative; text-align: center; }
 /* The two red lines are printed over the chart: the engraving shows through the ink. The script word keeps its paper halo. */
 body[data-v="type"] .ty-hl { display: inline-block; text-shadow: none; letter-spacing: .01em; }
+/* While Noto Serif Display loads, a serif scaled to its width stands in (fonts/fonts.css), so the headline does not shift. */
+body[data-v="type"] .ty-hl { font-family: "Noto Serif Display", "Headline Fallback", Georgia, serif; }
 body[data-v="type"] .ty-hl span { position: relative; mix-blend-mode: multiply; }
 body[data-v="type"] .ty-hero-foot { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 18px; }
 body[data-v="type"] .ty-hero .cpb, body[data-v="type"] .ty-fin .cpb { position: relative; z-index: 3; justify-content: center; }

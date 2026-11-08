@@ -7,6 +7,7 @@
 import { SITE, REDUCED, phone, esc, world, headline, copyButton } from '/hero/common.js';
 import { createChart } from '/kit/chart.js';
 import { createPeek } from '/hero/peek.js';
+import { libs } from '/hero/libs.js';
 import { fmtDur } from '/kit/time.js';
 import { bill, fare } from '/kit/bill.js';
 import { MODES, along, geo } from '/kit/trip.js';
@@ -65,8 +66,11 @@ export async function mount(el) {
   heroEl.querySelector('.ty-hero-foot').append(copyButton());
   finEl.append(copyButton());
   for (const h of el.querySelectorAll('.hl')) h.classList.add('ty-hl');
+  // Size the headlines before the first paint, so they do not grow when the chart starts.
+  fitType();
 
-  const W = await world();
+  // The hero has painted; the chart waits for the map libraries and the routes.
+  const [W] = await Promise.all([world(), libs()]);
   const CAP = W.raw.context?.captions || {};
   // Keep each path's longitudes continuous across the date line, for the hero's own arcs below.
   for (const j of W.journeys) for (const sg of j.segments) for (let i = 1; i < sg.path.length; i++) {
@@ -474,7 +478,6 @@ export async function mount(el) {
     const fw = (innerWidth - 2 * g) / 3.25, fh = (innerHeight - (ph ? 330 : 360)) / 2.4;
     finEl.style.setProperty('--hs', Math.max(44, Math.min(fw, fh)).toFixed(1) + 'px');
   }
-  fitType();
   // Before the chart is ready the map stays hidden, so it never shows the wrong place.
   map.jumpTo({ center: [lon0, LAT], zoom: 1.6 });
 }

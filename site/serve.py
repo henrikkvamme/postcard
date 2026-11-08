@@ -5,6 +5,7 @@
 
 /            site/
 /kit/...     the skill's kit (not copied into site/)
+/vendor/...  site/vendor/dist, the map libraries (build them once: cd site/vendor && npm ci && npm run build)
 /nordic/...  the skill's nordic-loop example, the live example page
 /skill/...   the skill's SKILL.md, references/ and scripts/, to read
 /postcard-skill.tar.gz   the whole skill folder, built on each request
@@ -42,6 +43,8 @@ class Handler(SimpleHTTPRequestHandler):
         p = path.split("?", 1)[0].split("#", 1)[0]
         if p.startswith("/kit/"):
             return super().translate_path(p[len("/kit"):]).replace(SITE, os.path.join(SKILL, "kit"), 1)
+        if p.startswith("/vendor/"):
+            return super().translate_path(p[len("/vendor"):]).replace(SITE, os.path.join(SITE, "vendor", "dist"), 1)
         if p.startswith("/nordic/"):
             return super().translate_path(p[len("/nordic"):]).replace(SITE, os.path.join(SKILL, "examples", "nordic-loop"), 1)
         if p.startswith("/skill/"):

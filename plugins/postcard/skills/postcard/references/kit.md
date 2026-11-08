@@ -71,6 +71,8 @@ chart.show({ chosen: [j1, j2], others: [...], ends: ['ZRH', 'HEL'] });
 chart.where(T.whereAt([j1, j2], hour));   // put the vehicle on the route; null puts it back
 ```
 
+The chart reads its land, borders and country names from `kit/data/world.json`, next to `chart.js`. Serve the whole `kit/` folder; do not fetch another base map.
+
 Route hover belongs to the kit. Pointing at a chosen route puts the vehicle at that point and shows
 the route card beside it: the time there, the mode and carrier, the leg's ends with their times, and
 a bar of the time gone and to go (plus "over France" for a flight). `onRouteHover(hit)` still fires
