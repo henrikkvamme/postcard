@@ -69,7 +69,9 @@ export async function mount(el) {
   // Size the headlines before the first paint, so they do not grow when the chart starts.
   fitType();
 
-  // The hero has painted; the chart waits for the map libraries and the routes.
+  // The chart waits for the map libraries and the routes. They start after the hero has painted (rAF, then a
+  // task), so a cached script cannot run before that paint; the timeout keeps a hidden tab going.
+  await new Promise((ok) => { requestAnimationFrame(() => setTimeout(ok, 0)); setTimeout(ok, 200); });
   const [W] = await Promise.all([world(), libs()]);
   const CAP = W.raw.context?.captions || {};
   // Keep each path's longitudes continuous across the date line, for the hero's own arcs below.
