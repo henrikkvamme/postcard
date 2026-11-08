@@ -2,7 +2,7 @@
 import { loadTrip, openTrip } from '/kit/trip.js';
 
 export const SITE = 'https://postcard.henrikkvamme.no';
-export const PROMPT = `Read ${SITE}/llms.txt and install the postcard skill. Then find the best way from Oslo to Berlin in May, show it on a postcard map, and stop at the payment page when I book.`;
+export const PROMPT = "Read https://postcard.henrikkvamme.no/llms.txt and install the postcard skill. Then help me plan a trip: ask me where I want to go and what matters to me, find real prices, and show me the options on a postcard page.";
 export const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches || new URLSearchParams(location.search).get('reduced') === '1';
 export const phone = () => innerWidth < 760;
 export const esc = (s) => String(s ?? '').replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' })[c]);
