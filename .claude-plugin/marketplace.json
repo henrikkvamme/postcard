@@ -1,17 +1,17 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "postcard",
-  "description": "Postcard: find, compare and book trips, drawn as an engraved airmail map.",
+  "description": "Postcard: plan, compare and book any trip, shown on a globe.",
   "owner": { "name": "Henrik Halvorsen Kvamme" },
-  "metadata": { "version": "0.1.0" },
+  "metadata": { "version": "0.2.0" },
   "plugins": [
     {
       "name": "postcard",
       "source": "./plugins/postcard",
-      "description": "Find flights in a browser, compare them on an engraved map with a timeline and a trade-off chart, and book up to the payment page.",
+      "description": "Plan any trip in a browser: flights, trains, buses, ferries and drives. Compare the options on a globe with a timeline and a bill, and book up to the payment page.",
       "category": "productivity",
-      "tags": ["travel", "flights", "maps", "booking", "browser"],
-      "homepage": "https://github.com/henrikkvamme/postcard"
+      "tags": ["travel", "flights", "trains", "maps", "booking", "browser"],
+      "homepage": "https://postcard.henrikkvamme.no"
     }
   ]
 }
