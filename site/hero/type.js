@@ -8,6 +8,7 @@ import { SITE, REDUCED, phone, esc, world, headline, copyButton } from '/hero/co
 import { createChart } from '/kit/chart.js';
 import { createPeek } from '/hero/peek.js';
 import { libs } from '/hero/libs.js';
+import { pager } from '/hero/pager.js';
 import { fmtDur } from '/kit/time.js';
 import { bill, fare } from '/kit/bill.js';
 import { MODES, along, geo } from '/kit/trip.js';
@@ -396,14 +397,16 @@ export async function mount(el) {
   tabs.addEventListener('click', (e) => { const b = e.target.closest('button[data-i]'); if (b) goTrip(+b.dataset.i); });
   tabs.addEventListener('keydown', (e) => { const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (!k) return; e.preventDefault();
     const i = (sel + k + TRIPS.length) % TRIPS.length; goTrip(i); tabEls[i].focus(); });
-  $('ty-down').addEventListener('click', () => window.scrollTo({ top: stepY(0), behavior: REDUCED ? 'instant' : 'smooth' }));
+  let pg = null;
+  $('ty-down').addEventListener('click', () => pg ? pg.to(stepY(0)) : window.scrollTo({ top: stepY(0), behavior: REDUCED ? 'instant' : 'smooth' }));
   renderTrip(TRIPS[0]); setBill(TRIPS[0]);
   // One step of scroll for each trip; with the default ride each step is a snap point, in its middle.
   $('ty-s1').style.height = `calc(100svh + ${TRIPS.length * (RIDE === 'auto' ? 100 : 130)}svh)`;
   if (RIDE === 'auto') {
-    document.documentElement.classList.add('ty-snap');
     $('ty-s1').insertAdjacentHTML('afterbegin', TRIPS.map((_, i) => `<i class="ty-snap-at" style="top:${(i + .5) * 100}svh"></i>`).join(''));
     $('ty-s2').insertAdjacentHTML('afterbegin', '<i class="ty-snap-at" style="top:50svh"></i>');
+    for (const id of ['ty-hero', 'ty-fin']) $(id).insertAdjacentHTML('afterbegin', '<i class="ty-snap-at" style="top:0"></i>');
+    pg = pager({ reduced: REDUCED });
   }
 
   // ---------- The loop ----------

@@ -71,7 +71,7 @@ body[data-v="type"] .ty-ui { position: absolute; }
 body[data-v="type"] .ty-map.live { pointer-events: auto; }
 body[data-v="type"] .ty-s { z-index: 1; pointer-events: none; }
 body[data-v="type"] .ty-top.low { z-index: 0; }
-html.ty-snap { scroll-snap-type: y proximity; }
+/* The stops for hero/pager.js: each scroll gesture moves to the next one. */
 body[data-v="type"] .ty-snap-at { position: absolute; left: 0; width: 1px; height: 1px; scroll-snap-align: start; pointer-events: none; }
 body[data-v="type"] .ty-trip, body[data-v="type"] .ty-bill { width: min(500px, calc(100vw - 2 * var(--g))); box-sizing: border-box; border-radius: 20px;
   background: rgba(251, 250, 245, .97); border: 1px solid rgba(29, 42, 74, .08); font: 13px/1.4 var(--sans); color: var(--ink);
@@ -189,7 +189,7 @@ body[data-v="type"] .ty-fin .ty-hl em { position: relative; display: block; left
   body[data-v="type"] [data-s="trip"] { --ts: 46px; }
   body[data-v="type"] [data-s="book"] { --ts: 60px; }
   body[data-v="type"] .ty-s { height: 200svh; }
-  body[data-v="type"] .ty-hero-in { justify-content: space-between; padding: calc(56px + env(safe-area-inset-top)) 0 calc(104px + env(safe-area-inset-bottom)); }
+  body[data-v="type"] .ty-hero-in { gap: 40px; padding: calc(24px + env(safe-area-inset-top)) 0 calc(88px + env(safe-area-inset-bottom)); }
   body[data-v="type"] .ty-down { bottom: calc(14px + env(safe-area-inset-bottom)); gap: 6px; }
   body[data-v="type"] .ty-down i { height: 34px; }
   body[data-v="type"] .ty-cap { font-size: 17px; }
