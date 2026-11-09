@@ -193,6 +193,17 @@ class Serve(unittest.TestCase):
         finally:
             p.terminate(); p.wait()
 
+    def test_detach_returns_and_keeps_serving(self):
+        r = subprocess.run([sys.executable, SERVE, self.trip, "--port", str(self.port), "--host", "127.0.0.1", "--detach"],
+                           env=dict(os.environ, POSTCARD_QUEUE=self.queue), capture_output=True, text=True, timeout=10)
+        self.assertEqual(r.returncode, 0)
+        port = int(r.stdout.split("http://")[1].split("/")[0].rsplit(":", 1)[1])
+        pid = int(open(os.path.join(self.trip, "server.pid")).read())
+        try:
+            self.assertEqual(urllib.request.urlopen(f"http://127.0.0.1:{port}/trip.json").status, 200)
+        finally:
+            os.kill(pid, 15)
+
     def test_checkout_round_trip(self):
         code, r = self.post("/api/checkout", {"prompt": "Book it", "trip": {"price": 1}})
         self.assertEqual(code, 200)

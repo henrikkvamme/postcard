@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Serve a trip page, the postcard kit and a small checkout queue.
 
-    python3 serve.py <trip-folder> [--port 4471] [--host 0.0.0.0]
+    python3 serve.py <trip-folder> [--port 4471] [--host 0.0.0.0] [--detach]
+
+--detach prints the address and returns, while the server keeps running in its own session (log in
+<trip-folder>/server.log). Use it from an agent whose shell commands end their child processes.
 
 The trip folder holds trip.json and the page (index.html, app.js) that the agent wrote for this trip.
 A request for /kit/... comes from the kit in this skill, unless the trip folder has its own file at
@@ -206,6 +209,7 @@ def main():
     ap.add_argument("trip", help="folder that holds trip.json")
     ap.add_argument("--port", type=int, default=4471)
     ap.add_argument("--host", default="0.0.0.0", help="0.0.0.0 lets other machines on your tailnet open it")
+    ap.add_argument("--detach", action="store_true", help="return after start; the server runs on, log in <trip>/server.log")
     a = ap.parse_args()
     TRIP_DIR = os.path.abspath(a.trip)
     if not os.path.isfile(os.path.join(TRIP_DIR, "trip.json")):
@@ -226,6 +230,18 @@ def main():
         sys.exit(f"postcard: ports {a.port}-{a.port + 19} are all busy")
     host = socket.gethostname().split(".")[0] if a.host in ("0.0.0.0", "::") else a.host
     print(f"postcard: http://{host}:{server.server_address[1]}/  trip {TRIP_DIR}  queue {QUEUE}", flush=True)
+    if a.detach:
+        # The port is bound, so errors have shown. The child keeps the socket in a new session; the parent returns.
+        pid = os.fork()
+        if pid:
+            with open(os.path.join(TRIP_DIR, "server.pid"), "w") as f:
+                f.write(str(pid))
+            print(f"postcard: running in the background (pid in {os.path.join(TRIP_DIR, 'server.pid')}); stop it with kill", flush=True)
+            os._exit(0)
+        os.setsid()
+        log = os.open(os.path.join(TRIP_DIR, "server.log"), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+        null = os.open(os.devnull, os.O_RDONLY)
+        os.dup2(null, 0); os.dup2(log, 1); os.dup2(log, 2)
     server.serve_forever()
 
 

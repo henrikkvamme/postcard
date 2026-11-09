@@ -16,7 +16,7 @@ The source is https://github.com/henrikkvamme/postcard (MIT).
 
 ## 2. Plan the trip
 
-Read `SKILL.md` in the installed folder and follow it for the person's request. If they have not said which trip yet, ask first, in one short message: where from and to (or "somewhere warm"), when and for how long, who travels, and what matters most (price, time, comfort, no night travel). Then work. In short:
+Read `SKILL.md` in the installed folder and follow it for the person's request. If they have not said which trip yet, ask first, in one short message: where from and to (or "somewhere warm"), when and for how long, who travels, and what matters most (price, time, comfort, no night travel). Put the questions in your last message of the turn, so the person sees them. Then work. In short:
 
 1. Brief: where from, where to, the dates, the reason, what matters, passengers and bags. Ask only what you cannot find.
 2. Search every mode that makes sense, in a browser, and record each price with its seller, source and the date you saw it.

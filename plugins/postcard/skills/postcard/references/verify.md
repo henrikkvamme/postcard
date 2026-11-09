@@ -15,10 +15,11 @@ accept (an agency with no rating anywhere) is fine; say it on the page when it m
 ## 2. Serve
 
 ```sh
-python3 <skill>/scripts/serve.py ~/trips/<name> --port 4471
+python3 <skill>/scripts/serve.py ~/trips/<name> --port 4471 --detach
 ```
 
-Run it in the background. When the port is busy it takes the next free one; read the URL it
+`--detach` returns after the start and leaves the server running, also when your shell ends its
+child processes after each command. Stop it with `kill $(cat ~/trips/<name>/server.pid)`. When the port is busy it takes the next free one; read the URL it
 prints. It listens on all interfaces; give the person the machine's host name, not `localhost`.
 
 ## 3. Load it in a browser
