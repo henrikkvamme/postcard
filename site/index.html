@@ -7,13 +7,21 @@
 <meta name="description" content="A skill for your coding agent. It finds real prices in your browser, draws every way to go on an engraved globe, and books the one you pick up to the payment page.">
 <link rel="icon" href="/kit/favicon.svg">
 <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent guide">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wdth,wght@0,62.5..100,400..800;1,62.5..100,400..800&family=Pinyon+Script&family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script>
-<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
-<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
-<script src="https://unpkg.com/deck.gl@9.4.0/dist.min.js"></script>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/noto-serif-display-normal-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/pinyon-script-normal-latin.woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<!-- The map libraries (hero/libs.js) start after the hero has painted, so they do not take bandwidth from the CSS and fonts. -->
+<link rel="preload" as="fetch" href="/hero/world/trip.json" crossorigin>
+<link rel="modulepreload" href="/hero/type.js">
+<link rel="modulepreload" href="/hero/common.js">
+<link rel="modulepreload" href="/hero/libs.js">
+<link rel="modulepreload" href="/hero/pager.js">
+<link rel="modulepreload" href="/hero/peek.js">
+<link rel="modulepreload" href="/kit/chart.js">
+<link rel="modulepreload" href="/kit/trip.js">
+<link rel="modulepreload" href="/kit/bill.js">
+<link rel="modulepreload" href="/kit/time.js">
+<link rel="stylesheet" href="/vendor/maplibre-gl.css" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/kit/kit.css">
 <link rel="stylesheet" href="/home.css">
 <link rel="stylesheet" href="/hero/type.css">

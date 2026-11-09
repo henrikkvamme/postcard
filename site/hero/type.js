@@ -7,6 +7,8 @@
 import { SITE, REDUCED, phone, esc, world, headline, copyButton } from '/hero/common.js';
 import { createChart } from '/kit/chart.js';
 import { createPeek } from '/hero/peek.js';
+import { libs } from '/hero/libs.js';
+import { pager } from '/hero/pager.js';
 import { fmtDur } from '/kit/time.js';
 import { bill, fare } from '/kit/bill.js';
 import { MODES, along, geo } from '/kit/trip.js';
@@ -65,8 +67,13 @@ export async function mount(el) {
   heroEl.querySelector('.ty-hero-foot').append(copyButton());
   finEl.append(copyButton());
   for (const h of el.querySelectorAll('.hl')) h.classList.add('ty-hl');
+  // Size the headlines before the first paint, so they do not grow when the chart starts.
+  fitType();
 
-  const W = await world();
+  // The chart waits for the map libraries and the routes. They start after the hero has painted (rAF, then a
+  // task), so a cached script cannot run before that paint; the timeout keeps a hidden tab going.
+  await new Promise((ok) => { requestAnimationFrame(() => setTimeout(ok, 0)); setTimeout(ok, 200); });
+  const [W] = await Promise.all([world(), libs()]);
   const CAP = W.raw.context?.captions || {};
   // Keep each path's longitudes continuous across the date line, for the hero's own arcs below.
   for (const j of W.journeys) for (const sg of j.segments) for (let i = 1; i < sg.path.length; i++) {
@@ -390,14 +397,16 @@ export async function mount(el) {
   tabs.addEventListener('click', (e) => { const b = e.target.closest('button[data-i]'); if (b) goTrip(+b.dataset.i); });
   tabs.addEventListener('keydown', (e) => { const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (!k) return; e.preventDefault();
     const i = (sel + k + TRIPS.length) % TRIPS.length; goTrip(i); tabEls[i].focus(); });
-  $('ty-down').addEventListener('click', () => window.scrollTo({ top: stepY(0), behavior: REDUCED ? 'instant' : 'smooth' }));
+  let pg = null;
+  $('ty-down').addEventListener('click', () => pg ? pg.to(stepY(0)) : window.scrollTo({ top: stepY(0), behavior: REDUCED ? 'instant' : 'smooth' }));
   renderTrip(TRIPS[0]); setBill(TRIPS[0]);
   // One step of scroll for each trip; with the default ride each step is a snap point, in its middle.
   $('ty-s1').style.height = `calc(100svh + ${TRIPS.length * (RIDE === 'auto' ? 100 : 130)}svh)`;
   if (RIDE === 'auto') {
-    document.documentElement.classList.add('ty-snap');
     $('ty-s1').insertAdjacentHTML('afterbegin', TRIPS.map((_, i) => `<i class="ty-snap-at" style="top:${(i + .5) * 100}svh"></i>`).join(''));
     $('ty-s2').insertAdjacentHTML('afterbegin', '<i class="ty-snap-at" style="top:50svh"></i>');
+    for (const id of ['ty-hero', 'ty-fin']) $(id).insertAdjacentHTML('afterbegin', '<i class="ty-snap-at" style="top:0"></i>');
+    pg = pager({ reduced: REDUCED });
   }
 
   // ---------- The loop ----------
@@ -474,7 +483,6 @@ export async function mount(el) {
     const fw = (innerWidth - 2 * g) / 3.25, fh = (innerHeight - (ph ? 330 : 360)) / 2.4;
     finEl.style.setProperty('--hs', Math.max(44, Math.min(fw, fh)).toFixed(1) + 'px');
   }
-  fitType();
   // Before the chart is ready the map stays hidden, so it never shows the wrong place.
   map.jumpTo({ center: [lon0, LAT], zoom: 1.6 });
 }

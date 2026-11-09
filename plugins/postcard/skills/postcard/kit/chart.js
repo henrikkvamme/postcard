@@ -17,6 +17,7 @@ if (REDUCED) document.documentElement.classList.add('reduced');
 function tile(w, h, paint) { const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d'); paint(g);
   return { width: w, height: h, data: new Uint8Array(g.getImageData(0, 0, w, h).data.buffer) }; }
 const DEM = { type: 'raster-dem', tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'], encoding: 'terrarium', tileSize: 256, maxzoom: 13 };
+const SHADE_LO = 4.5; // below this zoom the hill shading reads demLo
 const lowZoom = (o) => ['interpolate', ['linear'], ['zoom'], 6.5, o, 7.5, 0];
 const EMPTY = { type: 'FeatureCollection', features: [] };
 
@@ -38,6 +39,8 @@ function chartStyle(land, borders) {
       ocean: { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [[[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]]] } } },
       land: { type: 'geojson', data: polys }, borders: { type: 'geojson', data: borders }, grat: { type: 'geojson', data: grat },
       omt: { type: 'vector', url: 'https://tiles.openfreemap.org/planet' }, dem: DEM, demShade: { ...DEM },
+      // The whole globe shades from tiles one zoom lower: four times fewer tiles, and the relief is too small to tell.
+      demLo: { ...DEM, tileSize: 512, maxzoom: 2 },
       routes: { type: 'geojson', data: EMPTY },
     },
     layers: [
@@ -53,8 +56,9 @@ function chartStyle(land, borders) {
       { id: 'stip', type: 'fill', source: 'land', paint: { 'fill-pattern': 'stip', 'fill-opacity': lowZoom(1) } },
       { id: 't-water', type: 'fill', source: 'omt', 'source-layer': 'water', minzoom: 6.5, paint: { 'fill-pattern': 'sea', 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 6.5, 0, 7.5, 1] } },
       { id: 't-shore', type: 'line', source: 'omt', 'source-layer': 'water', minzoom: 6.5, paint: { 'line-color': INK, 'line-width': ['interpolate', ['linear'], ['zoom'], 7, .6, 14, 1.4], 'line-opacity': .8 } },
-      { id: 'shade', type: 'hillshade', source: 'demShade', paint: { 'hillshade-method': 'igor', 'hillshade-illumination-direction': 315,
-        'hillshade-shadow-color': 'rgba(29,42,74,.55)', 'hillshade-highlight-color': 'rgba(255,255,255,0)', 'hillshade-exaggeration': .5 } },
+      ...[['shade-lo', 'demLo', { maxzoom: SHADE_LO }], ['shade', 'demShade', { minzoom: SHADE_LO }]].map(([id, source, zr]) => ({ id, type: 'hillshade', source, ...zr,
+        paint: { 'hillshade-method': 'igor', 'hillshade-illumination-direction': 315,
+          'hillshade-shadow-color': 'rgba(29,42,74,.55)', 'hillshade-highlight-color': 'rgba(255,255,255,0)', 'hillshade-exaggeration': .5 } })),
       { id: 'coast', type: 'line', source: 'land', paint: { 'line-color': INK, 'line-width': 1.1, 'line-opacity': lowZoom(1) } },
       { id: 'borders', type: 'line', source: 'borders', paint: { 'line-color': INK, 'line-width': .7, 'line-opacity': .5, 'line-dasharray': [6, 2, 1.5, 2] } },
       { id: 'grat', type: 'line', source: 'grat', paint: { 'line-color': INK, 'line-width': .5, 'line-opacity': ['interpolate', ['linear'], ['zoom'], 5, .3, 7, 0] } },
@@ -82,7 +86,7 @@ function chartStyle(land, borders) {
       routeLine('r-guess', ['==', ['get', 'guessed'], true], { 'line-color': col, 'line-opacity': .45, 'line-width': 1, 'line-dasharray': [1, 3] }),
       routeLine('r-hit', chosen, { 'line-color': '#000', 'line-opacity': 0, 'line-width': 18 }),
     ],
-    terrain: { source: 'dem', exaggeration: 2 },
+    // No terrain here: fitTerrain() turns it on once the camera is close enough to see it.
   };
 }
 
@@ -99,10 +103,14 @@ export function createChart(opts) {
   const S = { chosen: [], others: [], where: null, ready: false, countries: [], ends: [] };
   const C = { map, PAD, FAR };
 
-  // Terrain grows flatter as you zoom in.
+  // Terrain grows flatter as you zoom in. On the whole globe (below zoom TERRAIN_MIN) the relief is less than a
+  // pixel high, so the terrain is off there: it costs a full extra render pass and its own elevation tiles.
   let exag = 0;
+  const TERRAIN_MIN = 3.5;
   const fitTerrain = () => { const z = map.getZoom(), e = Math.round((z <= 6 ? 2 : z >= 11 ? 1 : 2 - (z - 6) / 5) * 10) / 10;
-    if (e !== exag && map.getTerrain()) { exag = e; map.setTerrain({ source: 'dem', exaggeration: e }); } };
+    if (!map.getSource('dem')) return;
+    if (z < TERRAIN_MIN) { if (map.getTerrain()) { map.setTerrain(null); exag = 0; } return; }
+    if (e !== exag || !map.getTerrain()) { exag = e; map.setTerrain({ source: 'dem', exaggeration: e }); } };
   map.on('zoom', fitTerrain);
 
   const addPatterns = () => {
@@ -653,10 +661,10 @@ export function createChart(opts) {
   setTimeout(intro, 7000); // If the chart never loads, still show the page.
   (async () => {
     try {
-      const NE = 'https://cdn.jsdelivr.net/gh/nvkelso/natural-earth-vector@v5.1.2/geojson/';
-      const [land, borders, c] = await Promise.all([fetch(NE + 'ne_50m_land.geojson').then((r) => r.json()), fetch(NE + 'ne_50m_admin_0_boundary_lines_land.geojson').then((r) => r.json()),
-        fetch('https://unpkg.com/world-atlas@2.0.2/countries-50m.json').then((r) => r.json())]);
-      S.countries = topojson.feature(c, c.objects.countries).features.map((f) => ({ f, b: d3.geoBounds(f) }));
+      // Natural Earth 1:50m land, land borders and countries in one TopoJSON (data/world.json; see data/README.md).
+      const w = await fetch(KIT + 'data/world.json').then((r) => { if (!r.ok) throw new Error('world.json ' + r.status); return r.json(); });
+      const land = topojson.feature(w, w.objects.land), borders = topojson.feature(w, w.objects.borders);
+      S.countries = topojson.feature(w, w.objects.countries).features.map((f) => ({ f, b: d3.geoBounds(f) }));
       map.setStyle(chartStyle(land, borders), { diff: false });
     } catch (e) {
       pin('The chart could not load. Check the connection and reload.', 'pc-lbl sea', map.getCenter().toArray(), { prio: 99 });

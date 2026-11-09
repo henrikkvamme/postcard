@@ -14,6 +14,13 @@ let index = {};
 const indexP = fetch(ART + 'index.json').then((r) => r.ok ? r.json() : []).then((l) => { index = Object.fromEntries(l.map((m) => [m.name, m])); }).catch(() => {});
 let threeP = null;
 const loadThree = () => threeP ??= Promise.all([import('three'), import('three/addons/loaders/GLTFLoader.js')]).then(([T3, { GLTFLoader }]) => ({ T3, loader: new GLTFLoader() }));
+// Warm up only after the page has loaded, the browser is idle and the mouse has moved, so three.js and the
+// models never compete with the first paint and the chart.
+let warmGate = null;
+const gate = () => Promise.all([
+  new Promise((r) => document.readyState === 'complete' ? r() : addEventListener('load', r, { once: true })),
+  new Promise((r) => addEventListener('pointermove', r, { once: true, passive: true })),
+]).then(() => new Promise((r) => (window.requestIdleCallback || setTimeout)(r, { timeout: 2000 })));
 const glbs = new Map();
 const loadModel = (name) => { if (!glbs.has(name)) glbs.set(name, loadThree().then(({ loader }) => loader.loadAsync(ART + name + '.glb')).then((g) => g.scene)); return glbs.get(name); };
 
@@ -195,7 +202,7 @@ export function createPeek(host = document.body) {
   // Load three.js, the viewer and the models of the ways on show, so a hover shows at once.
   async function warm(ways, nightOf = () => false) {
     if (!HOVER.matches) return;
-    await indexP; makeView().catch(() => {});
+    await (warmGate ??= gate()); await indexP; makeView().catch(() => {});
     for (const j of ways) loadModel(modelOf(j, nightOf(j))).catch(() => {});
   }
   return { show, hide, warm, get key() { return forKey; } };
